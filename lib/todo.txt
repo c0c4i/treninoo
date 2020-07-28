@@ -1,0 +1,6 @@
+1) Creare Interfaccia
+2) CheckBox Filtro Treni
+3) Fast Search
+
+
+In test.dart c'è una prova della ricerca per nome
