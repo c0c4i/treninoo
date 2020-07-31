@@ -15,9 +15,8 @@ class SearchSolutions extends StatefulWidget {
   @override
   _SearchSolutionsState createState() => _SearchSolutionsState();
 }
- 
-class _SearchSolutionsState extends State<SearchSolutions> {
 
+class _SearchSolutionsState extends State<SearchSolutions> {
   String _date;
   String _time;
   DateTime pickedDate;
@@ -26,8 +25,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   Map<String, String> suggestionDeparture;
   Map<String, String> suggestionArrival;
 
-
-  final TextEditingController inputDepartureController = TextEditingController();
+  final TextEditingController inputDepartureController =
+      TextEditingController();
   final TextEditingController inputArrivalController = TextEditingController();
   // final inputDepartureController = TextEditingController();
   // final inputArrivalController = TextEditingController();
@@ -53,7 +52,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
     inputArrivalController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,105 +70,112 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                     child: Column(
                       children: <Widget>[
                         TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.characters,
-                            controller: inputDepartureController,
-                            style: Theme.of(context).textTheme.display3,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0)
+                            textFieldConfiguration: TextFieldConfiguration(
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.characters,
+                              controller: inputDepartureController,
+                              style: Theme.of(context).textTheme.display3,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2,
                                   ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
                                 ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0)
-                                ),
+                                prefixIcon: Icon(Icons.gps_fixed,
+                                    size: 30,
+                                    color: Theme.of(context).primaryColor),
+                                labelText: 'Partenza',
+                                errorStyle: TextStyle(fontSize: 15),
+                                labelStyle: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor),
                               ),
-                              prefixIcon: Icon(Icons.gps_fixed, size: 30, color: Theme.of(context).primaryColor),
-                              labelText: 'Partenza',
-                              errorStyle: TextStyle(fontSize: 15),
-                              labelStyle: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
                             ),
-                          ),
-                          suggestionsCallback: (pattern) async {
-                            if(pattern.length > 2) {
-                              suggestionDeparture = await getStationListStartWith(pattern);
-                              return suggestionDeparture.keys.toList();
-                            }
-                            return null;
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              title: Text(suggestion),
-                            );
-                          },
-                          onSuggestionSelected: (clicked) {
-                            inputDepartureController.text = clicked;
-                          }
-                        ),
+                            suggestionsCallback: (pattern) async {
+                              if (pattern.length > 2) {
+                                suggestionDeparture =
+                                    await getStationListStartWith(pattern);
+                                return suggestionDeparture.keys.toList();
+                              }
+                              return null;
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion),
+                              );
+                            },
+                            onSuggestionSelected: (clicked) {
+                              inputDepartureController.text = clicked;
+                            }),
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                         ),
                         TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.characters,
-                            controller: inputArrivalController,
-                            style: Theme.of(context).textTheme.display3,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0)
+                            textFieldConfiguration: TextFieldConfiguration(
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.characters,
+                              controller: inputArrivalController,
+                              style: Theme.of(context).textTheme.display3,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 2,
                                   ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
                                 ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0)
-                                ),
+                                prefixIcon: Icon(Icons.gps_fixed,
+                                    size: 30,
+                                    color: Theme.of(context).primaryColor),
+                                labelText: 'Destinazione',
+                                errorStyle: TextStyle(fontSize: 15),
+                                labelStyle: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor),
                               ),
-                              prefixIcon: Icon(Icons.gps_fixed, size: 30, color: Theme.of(context).primaryColor),
-                              labelText: 'Destinazione',
-                              errorStyle: TextStyle(fontSize: 15),
-                              labelStyle: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
                             ),
-                          ),
-                          suggestionsCallback: (pattern) async {
-                            if(pattern.length > 2) {
-                              suggestionArrival = await getStationListStartWith(pattern);
-                              return suggestionArrival.keys.toList();
-                            }
-                            return null;
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              title: Text(suggestion),
-                            );
-                          },
-                          onSuggestionSelected: (clicked) {
-                            inputArrivalController.text = clicked;
-                          }
-                        ),
+                            suggestionsCallback: (pattern) async {
+                              if (pattern.length > 2) {
+                                suggestionArrival =
+                                    await getStationListStartWith(pattern);
+                                return suggestionArrival.keys.toList();
+                              }
+                              return null;
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion),
+                              );
+                            },
+                            onSuggestionSelected: (clicked) {
+                              inputArrivalController.text = clicked;
+                            }),
                         Padding(
                           padding: EdgeInsets.only(top: 15),
                         ),
                         OutlineButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                          padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: EdgeInsets.only(
+                              left: 5, right: 10, top: 5, bottom: 5),
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                             width: 2,
                           ),
-                          highlightedBorderColor: Theme.of(context).primaryColor,
+                          highlightedBorderColor:
+                              Theme.of(context).primaryColor,
                           textColor: Theme.of(context).primaryColor,
                           hoverColor: Theme.of(context).primaryColor,
                           onPressed: () {
@@ -189,11 +195,14 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                                           Icon(
                                             Icons.date_range,
                                             size: 35.0,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                           Text(
                                             "  $_date",
-                                            style: Theme.of(context).textTheme.display3,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display3,
                                           ),
                                         ],
                                       ),
@@ -215,13 +224,16 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                           padding: EdgeInsets.only(top: 15),
                         ),
                         OutlineButton(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                          padding: EdgeInsets.only(left: 5, right: 10, top: 5, bottom: 5),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: EdgeInsets.only(
+                              left: 5, right: 10, top: 5, bottom: 5),
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                             width: 2,
                           ),
-                          highlightedBorderColor: Theme.of(context).primaryColor,
+                          highlightedBorderColor:
+                              Theme.of(context).primaryColor,
                           textColor: Theme.of(context).primaryColor,
                           hoverColor: Theme.of(context).primaryColor,
                           onPressed: () {
@@ -240,13 +252,15 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                                         children: <Widget>[
                                           Icon(
                                             Icons.access_time,
-                                            
                                             size: 35.0,
-                                            color: Theme.of(context).primaryColor,
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
                                           Text(
                                             "  $_time",
-                                            style: Theme.of(context).textTheme.display3,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .display3,
                                           ),
                                         ],
                                       ),
@@ -270,14 +284,16 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                         ButtonTheme(
                           minWidth: double.infinity,
                           child: RaisedButton(
-                            padding: EdgeInsets.only(left: 50, right: 50, top: 20, bottom: 20),
+                            padding: EdgeInsets.only(
+                                left: 50, right: 50, top: 20, bottom: 20),
                             color: Theme.of(context).buttonColor,
                             onPressed: () {
                               // searchStaticSolution();
                               _getSolutionRequest();
                               //searchButtonClick(inputController.text);
                             },
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
                             child: Text(
                               'Cerca Soluzioni',
                               style: Theme.of(context).textTheme.display2,
@@ -288,7 +304,6 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                     ),
                   ),
                 ),
-                    
               ],
             ),
           ),
@@ -299,13 +314,12 @@ class _SearchSolutionsState extends State<SearchSolutions> {
 
   _pickDate() async {
     DateTime date = await showDatePicker(
-      context: context,
-      initialDate: pickedDate,
-      firstDate: DateTime(DateTime.now().year-1),
-      lastDate: DateTime(DateTime.now().year+1)
-    );
+        context: context,
+        initialDate: pickedDate,
+        firstDate: DateTime(DateTime.now().year - 1),
+        lastDate: DateTime(DateTime.now().year + 1));
 
-    if(date != null)
+    if (date != null)
       setState(() {
         pickedDate = date;
         _date = getCustomDate(date);
@@ -318,7 +332,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
       initialTime: TimeOfDay.now(),
     );
 
-    if(t != null)
+    if (t != null)
       setState(() {
         time = t;
         String _hour = addZeroToNumberLowerThan10(t.hour.toString());
@@ -328,13 +342,20 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   }
 
   _getSolutionRequest() {
-    String departureCode = suggestionDeparture['${inputDepartureController.text}'];
+    String departureCode =
+        suggestionDeparture['${inputDepartureController.text}'];
     String arrivalCode = suggestionArrival['${inputArrivalController.text}'];
 
+    pickedDate = pickedDate.toLocal();
+    pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
+        time.hour, time.minute);
+
     Navigator.push(
-      context, CupertinoPageRoute(
-        builder: (context) => TrainSolutions(
-          departureCode: departureCode, arrivalCode: arrivalCode, time: pickedDate)
-    ));
+        context,
+        CupertinoPageRoute(
+            builder: (context) => TrainSolutions(
+                departureCode: departureCode,
+                arrivalCode: arrivalCode,
+                time: pickedDate)));
   }
 }
