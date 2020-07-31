@@ -25,11 +25,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   Map<String, String> suggestionDeparture;
   Map<String, String> suggestionArrival;
 
-  final TextEditingController inputDepartureController =
-      TextEditingController();
-  final TextEditingController inputArrivalController = TextEditingController();
-  // final inputDepartureController = TextEditingController();
-  // final inputArrivalController = TextEditingController();
+  TextEditingController inputDepartureController = TextEditingController();
+  TextEditingController inputArrivalController = TextEditingController();
 
   @override
   void initState() {
@@ -48,8 +45,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    inputDepartureController.dispose();
-    inputArrivalController.dispose();
+    // inputDepartureController.dispose();
+    // inputArrivalController.dispose();
     super.dispose();
   }
 

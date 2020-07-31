@@ -5,6 +5,7 @@
 31/07/2020
 
 * Bloccare il bottone dopo il primo click e aspettare n secondi in modo da gestire la connessione lenta.
+    [provato ma non funziona ancora]
 
 * Pensare alla schermata delle impostazioni (figma)
 

@@ -1,4 +1,4 @@
-package it.samuelebesoli.train_status
+package it.samuelebesoli.treninoo
 
 import android.os.Bundle
 
