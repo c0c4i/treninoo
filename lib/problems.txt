@@ -2,3 +2,5 @@
 PROBLEMI
 2) Eccezioni più treni non funzionante (usare list string come prima)
 3) Mettere troppe variabili globali è troppo?
+
+4) Non torna piu indietro con i tasti android ma solo con le gesture?

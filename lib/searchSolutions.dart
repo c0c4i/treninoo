@@ -59,7 +59,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
             child: Column(
               children: <Widget>[
-                TopBar(text: 'Train Status', location: 0),
+                TopBar(text: 'Treninoo', location: 0),
                 Container(
                   padding: EdgeInsets.only(top: 100, left: 7, right: 7),
                   child: SizedBox(

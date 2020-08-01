@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:treninoo/favourites.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 import 'theme.dart';
@@ -51,11 +52,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   FocusNode myFocusNode;
 
   Search search;
   SearchSolutions solutions;
+  Favourites favourites;
   List<Widget> pages;
   Widget currentPage;
 
@@ -65,13 +66,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     search = Search();
     solutions = SearchSolutions();
-    pages = [search, solutions];
+    favourites = Favourites();
+    pages = [search, solutions, favourites];
 
     currentPage = search;
 
     super.initState();
   }
-
 
   /*
   // This widget is the root of your application.
@@ -117,11 +118,12 @@ class _MyAppState extends State<MyApp> {
         }
       },
       child: MaterialApp(
-        title: 'Train Status App',
+        title: 'Treninoo',
         darkTheme: CustomTheme.darkMode,
         theme: CustomTheme.defaultMode,
-        builder: (context, child) =>
-            MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),
+        builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+            child: child),
         home: Scaffold(
           body: PageStorage(
             child: currentPage,
@@ -138,8 +140,8 @@ class _MyAppState extends State<MyApp> {
                 title: Text('Ricerca'),
               ),
               BottomNavigationBarItem(
-                icon: Icon(OMIcons.settings),
-                title: Text('Other'),
+                icon: Icon(OMIcons.favorite),
+                title: Text('Preferiti'),
               ),
             ],
             currentIndex: _selectedIndex,

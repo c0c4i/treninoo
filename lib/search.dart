@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'topbar.dart';
 import 'trainstatus.dart';
-import 'preferiti.dart';
+import 'recents.dart';
 import 'newutils.dart';
 
 class Search extends StatefulWidget {
@@ -25,7 +25,7 @@ class _SearchState extends State<Search> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    // inputController.dispose();
+    inputController.dispose();
     super.dispose();
   }
 
@@ -53,6 +53,7 @@ class _SearchState extends State<Search> {
   */
   void searchButtonClick(String trainCode) {
     _isSearching = true;
+    FocusScope.of(context).unfocus();
 
     if (trainCode.length == 0) {
       setState(() {
@@ -78,6 +79,7 @@ class _SearchState extends State<Search> {
 
       if (numberOfTrain == 1) {
         // un treno
+        _isSearching = false;
         getSpecificStationCode(trainCode).then((stationCode) {
           Navigator.push(
               context,
@@ -87,6 +89,7 @@ class _SearchState extends State<Search> {
         });
       } else {
         // più treni
+        _isSearching = false;
         getMultipleTrainsType(trainCode)
             .then((type) => _showDialogMultipleTrainType(type, trainCode));
       }
@@ -111,7 +114,7 @@ class _SearchState extends State<Search> {
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
             child: Column(
               children: <Widget>[
-                TopBar(text: 'Train Status', location: SEARCH_TRAIN_STATUS),
+                TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
                 Container(
                   padding: EdgeInsets.only(top: 100, left: 7, right: 7),
                   child: SizedBox(
@@ -162,7 +165,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
-                Favourites(),
+                Recents(),
               ],
             ),
           ),
