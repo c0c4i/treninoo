@@ -4,6 +4,9 @@
 
 31/07/2020
 
+* riuscire ad ottenere i vari campi di cui ho bisogno nei treni salvati.
+
+
 * Bloccare il bottone dopo il primo click e aspettare n secondi in modo da gestire la connessione lenta.
     [provato ma non funziona ancora]
 

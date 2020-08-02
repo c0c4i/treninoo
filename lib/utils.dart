@@ -2,6 +2,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class SharedPrefJson {
+  static List<SavedTrain> recentsTrain = List<SavedTrain>();
+  static List<SavedTrain> favouritesTrain;
+
+  static final SharedPrefJson _instance = SharedPrefJson._internal();
+
+  factory SharedPrefJson() => _instance;
+
+  SharedPrefJson._internal() {
+    readSharedPreference();
+  }
+
+  void readSharedPreference() async {
+    var recents = await read("recents");
+    if (recents != null)
+      recentsTrain =
+          recents.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
+    // favouritesTrain =
+    //     (await read("favourites")).map((e) => SavedTrain.fromJson(e)).toList();
+  }
+
+  static void addRecents(SavedTrain t) {
+    if (recentsTrain.contains(t)) return;
+    if (recentsTrain.length == 3) recentsTrain.removeLast();
+    recentsTrain.insert(0, t);
+    save("recents", recentsTrain);
+  }
+
   static Map<String, String> hardCoded = {
     "favourite": """
     [
@@ -54,31 +81,11 @@ class SharedPrefJson {
         "departureTime": "22:21"
       }
     ]
-    """,
-    "recents": """
-    [
-      {
-        "trainCode": "27",
-        "trainType": "REG",
-        "departureStationCode": "S02430",
-        "departureStationName": "Verona Porta Nuova",
-        "arrivalStationName": "Venezia Santa Lucia",
-        "departureTime": "20:42"
-      },
-      {
-        "trainCode": "27",
-        "trainType": "REG",
-        "departureStationCode": "S02430",
-        "departureStationName": "Verona Porta Nuova",
-        "arrivalStationName": "Venezia Santa Lucia",
-        "departureTime": "20:42"
-      }
-    ]
     """
   };
 
   static Future<dynamic> read(String key) async {
-    if (hardCoded.containsKey(key)) return json.decode(hardCoded[key]);
+    // if (hardCoded.containsKey(key)) return json.decode(hardCoded[key]);
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(key))
       return null;
@@ -132,5 +139,10 @@ class SavedTrain {
       arrivalStationName: json['arrivalStationName'],
       departureTime: json['departureTime'],
     );
+  }
+
+  bool operator ==(Object other) {
+    SavedTrain tmp = other;
+    return (tmp.trainCode == trainCode);
   }
 }

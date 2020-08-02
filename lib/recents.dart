@@ -38,10 +38,15 @@ class _RecentsState extends State<Recents> {
             builder:
                 (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
               dynamic jsonDecoded = projectSnap.data;
-              if (jsonDecoded == null) return new Text("Nessun preferito");
-              List<SavedTrain> list = (jsonDecoded as List<dynamic>)
-                  .map((e) => SavedTrain.fromJson(e))
-                  .toList();
+              // if (jsonDecoded == null) return new Text("Nessun treno recente");
+              // SharedPrefJson.recentsTrain = (jsonDecoded as List<dynamic>)
+              //     .map((e) => SavedTrain.fromJson(e))
+              //     .toList();
+              List<SavedTrain> list = SharedPrefJson.recentsTrain;
+              // List<SavedTrain> list = (jsonDecoded as List<dynamic>)
+              //     .map((e) => SavedTrain.fromJson(e))
+              //     .toList();
+
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

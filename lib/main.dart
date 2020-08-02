@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:treninoo/favourites.dart';
+import 'package:treninoo/utils.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 import 'theme.dart';
@@ -12,6 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // appSettings = await SharedPreferences.getInstance();
   //runApp(RestartWidget(child: MyApp()));
+  var sharedMemory = SharedPrefJson();
   runApp(MyApp());
 }
 /*
@@ -73,29 +75,6 @@ class _MyAppState extends State<MyApp> {
 
     super.initState();
   }
-
-  /*
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: MaterialApp(
-        title: 'Train Status App',
-        darkTheme: CustomTheme.darkMode,
-        theme: CustomTheme.defaultMode,
-        home: SearchSolutions(),
-        builder: (context, child) =>
-          MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child),
-      ),
-    );
-  }*/
 
   int _selectedIndex = 0;
   // static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);

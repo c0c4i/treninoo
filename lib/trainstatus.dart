@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:treninoo/utils.dart';
 
 import 'newutils.dart';
 import 'topbar.dart';
@@ -10,9 +11,11 @@ import 'topbar.dart';
 int trainInfoErrorType = -1;
 
 // ritorna un oggetto TrainInfo creato dalla GET al Server
-Future<TrainInfo> fetchPostTrainInfo(String trainCode, String stationCode) async {
+Future<TrainInfo> fetchPostTrainInfo(
+    String trainCode, String stationCode) async {
   print('trainCode: $trainCode \nstationCode: $stationCode');
-  await Future.delayed(const Duration(milliseconds: 250));  // just for graphic satisfaction
+  await Future.delayed(
+      const Duration(milliseconds: 250)); // just for graphic satisfaction
   String urlTrainStatus = URL_TRAIN_INFO + stationCode + "/" + trainCode;
   final http.Response responseTrainStatus = await http.get(urlTrainStatus);
   if (responseTrainStatus.statusCode != 200) {
@@ -51,10 +54,14 @@ class Stop {
   factory Stop.fromJson(Map<String, dynamic> json) {
     return Stop(
       name: json['stazione'],
-      plannedDepartureTime: timeStampToString(json['partenza_teorica']),  // to converter from unix
-      actualDepartureTime: timeStampToString(json['partenzaReale']),     // to converter from unix
-      plannedArrivalTime: timeStampToString(json['arrivo_teorico']),  // to converter from unix
-      actualArrivalTime: timeStampToString(json['arrivoReale']),     // to converter from unix
+      plannedDepartureTime:
+          timeStampToString(json['partenza_teorica']), // to converter from unix
+      actualDepartureTime:
+          timeStampToString(json['partenzaReale']), // to converter from unix
+      plannedArrivalTime:
+          timeStampToString(json['arrivo_teorico']), // to converter from unix
+      actualArrivalTime:
+          timeStampToString(json['arrivoReale']), // to converter from unix
       plannedDepartureRail: json['binarioProgrammatoPartenzaDescrizione'],
       actualDepartureRail: json['binarioEffettivoPartenzaDescrizione'],
       plannedArrivalRail: json['binarioProgrammatoArrivoDescrizione'],
@@ -66,7 +73,7 @@ class Stop {
 
 class TrainInfo {
   final List<Stop> stops;
-  final String lastPositionRegister;   // to converter from unix
+  final String lastPositionRegister; // to converter from unix
   final String lastTimeRegister;
   final String trainType;
   final int delay;
@@ -82,7 +89,7 @@ class TrainInfo {
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
-    if(json['fermate'].length == 0) {
+    if (json['fermate'].length == 0) {
       trainInfoErrorType = 0;
       return null;
     }
@@ -111,22 +118,23 @@ class _TrainStatusState extends State<TrainStatus> {
   Future<TrainInfo> post;
 
   TrainStatus data;
-  _TrainStatusState({this.data}):super();
+  _TrainStatusState({this.data}) : super();
 
-  String _trainInfoErrorType(){
+  String _trainInfoErrorType() {
     switch (trainInfoErrorType) {
-      case 0: return 'Treno Cancellato';
-      case 1: return 'Errore Server';
-      default: return '';
+      case 0:
+        return 'Treno Cancellato';
+      case 1:
+        return 'Errore Server';
+      default:
+        return '';
     }
   }
 
   @override
   void initState() {
     super.initState();
-    new Future.delayed(const Duration(seconds: 5)).then(
-      null
-    );
+    new Future.delayed(const Duration(seconds: 5)).then(null);
     post = fetchPostTrainInfo(data.trainCode, data.stationCode);
   }
 
@@ -141,28 +149,27 @@ class _TrainStatusState extends State<TrainStatus> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<TrainInfo>(
-      future: post,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return _trainInfo(snapshot);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-        return Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: _ifNotLoadedInfo(),
+        future: post,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _trainInfo(snapshot);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          return Scaffold(
+            body: SafeArea(
+              child: Center(
+                child: _ifNotLoadedInfo(),
+              ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 
   // widget pre caricamento o gestione errori
   Widget _ifNotLoadedInfo() {
     String text = _trainInfoErrorType();
-    if(text.length == 0)
+    if (text.length == 0)
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -175,19 +182,34 @@ class _TrainStatusState extends State<TrainStatus> {
   Widget _trainInfo(AsyncSnapshot snapshot) {
     TrainInfo data = snapshot.data;
 
+    print(data.trainCode + data.trainType);
+
+    SavedTrain t = SavedTrain(
+        trainCode: data.trainCode,
+        trainType: data.trainType,
+        departureStationCode: "S02430",
+        departureStationName: "Verona Porta Nuova",
+        arrivalStationName: "Venezia Santa Lucia",
+        departureTime: "17:21");
+
+    SharedPrefJson.addRecents(t);
+
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
           color: Theme.of(context).buttonColor,
           onRefresh: refreshTrainStatus,
           child: ListView(
-          primary: true,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+            primary: true,
+            children: <Widget>[
+              Container(
+                padding:
+                    EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
                 child: Column(
                   children: <Widget>[
-                    TopBar(text: '${data.trainType} ${data.trainCode}', location: 1),
+                    TopBar(
+                        text: '${data.trainType} ${data.trainCode}',
+                        location: 1),
                     Container(
                       alignment: Alignment(-1, 0),
                       padding: EdgeInsets.only(top: 10, left: 7, right: 7),
@@ -199,47 +221,44 @@ class _TrainStatusState extends State<TrainStatus> {
                             child: Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).buttonColor,
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Theme.of(context).buttonColor, width: 2.0)
-                              ),
+                                  color: Theme.of(context).buttonColor,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(
+                                      color: Theme.of(context).buttonColor,
+                                      width: 2.0)),
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
-                                    flex: 2,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          (data.lastPositionRegister == '--') ? 
-                                          'Non ancora partito' : 
-                                          '${data.lastPositionRegister}',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white
-                                          ),
-                                        ),
-                                        (data.lastPositionRegister == '--') ? 
-                                          SizedBox.shrink() : 
+                                      flex: 2,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
                                           Text(
-                                            'Ultimo Rilevamento: ${data.lastTimeRegister}',
+                                            (data.lastPositionRegister == '--')
+                                                ? 'Non ancora partito'
+                                                : '${data.lastPositionRegister}',
                                             style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
+                                                fontSize: 20,
+                                                color: Colors.white),
                                           ),
-                                        
-                                      ],
-                                    )
-                                  ),
+                                          (data.lastPositionRegister == '--')
+                                              ? SizedBox.shrink()
+                                              : Text(
+                                                  'Ultimo Rilevamento: ${data.lastTimeRegister}',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white),
+                                                ),
+                                        ],
+                                      )),
                                   Expanded(
                                     flex: 1,
                                     child: Text(
                                       pickDelay(data.delay),
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white
-                                      ),
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                   ),
                                 ],
@@ -249,7 +268,8 @@ class _TrainStatusState extends State<TrainStatus> {
                           Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 5),
                             child: Container(
-                              padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                              padding:
+                                  EdgeInsets.only(left: 15, right: 15, top: 10),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
@@ -260,7 +280,10 @@ class _TrainStatusState extends State<TrainStatus> {
                                       child: Text(
                                         'Arrivo   ',
                                         style: TextStyle(
-                                          color: Theme.of(context).textTheme.display1.color,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .display1
+                                              .color,
                                           fontSize: 16,
                                         ),
                                       ),
@@ -273,7 +296,10 @@ class _TrainStatusState extends State<TrainStatus> {
                                       child: Text(
                                         'Partenza',
                                         style: TextStyle(
-                                          color: Theme.of(context).textTheme.display1.color,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .display1
+                                              .color,
                                           fontSize: 16,
                                         ),
                                       ),
@@ -286,9 +312,13 @@ class _TrainStatusState extends State<TrainStatus> {
                                       child: Text(
                                         'Stazione',
                                         style: TextStyle(
-                                          color: Theme.of(context).textTheme.display1.color,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .display1
+                                              .color,
                                           fontSize: 16,
-                                        ),),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Expanded(
@@ -298,8 +328,11 @@ class _TrainStatusState extends State<TrainStatus> {
                                       child: Text(
                                         'Bin.',
                                         style: TextStyle(
-                                            color: Theme.of(context).textTheme.display1.color,
-                                            fontSize: 16,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .display1
+                                              .color,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
@@ -311,9 +344,10 @@ class _TrainStatusState extends State<TrainStatus> {
                           Container(
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(color: Theme.of(context).buttonColor, width: 2.0)
-                            ),
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                    color: Theme.of(context).buttonColor,
+                                    width: 2.0)),
                             child: Column(
                               children: <Widget>[
                                 _stopList(snapshot),
@@ -339,115 +373,112 @@ class _TrainStatusState extends State<TrainStatus> {
     int nStop = data.stops.length;
     int i = 0;
     return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: nStop,
-      itemBuilder: (BuildContext ctxt, int index) {
-        i++;
-        Column c = Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          pickOrNot(data.stops[index].actualArrivalTime, 1, i, nStop),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          pickOrNot(data.stops[index].plannedArrivalTime, 1, i, nStop),
-                          style: TextStyle(
-                            fontSize: 16, 
-                            color: Colors.grey
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: nStop,
+        itemBuilder: (BuildContext ctxt, int index) {
+          i++;
+          Column c = Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            pickOrNot(data.stops[index].actualArrivalTime, 1, i,
+                                nStop),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            pickOrNot(data.stops[index].plannedArrivalTime, 1,
+                                i, nStop),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            pickOrNot(data.stops[index].actualDepartureTime, 0,
+                                i, nStop),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            pickOrNot(data.stops[index].plannedDepartureTime, 0,
+                                i, nStop),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "${data.stops[index].name}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: (data.stops[index].name ==
+                                        data.lastPositionRegister)
+                                    ? Theme.of(context).buttonColor
+                                    : null,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          pickOrNot(data.stops[index].actualDepartureTime, 0, i, nStop),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          pickOrNot(data.stops[index].plannedDepartureTime, 0, i, nStop),
-                          style: TextStyle(
-                            fontSize: 16, 
-                            color: Colors.grey
-                            ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            pickBinary(data.stops[index].actualArrivalRail,
+                                data.stops[index].actualDepartureRail),
+                            style: TextStyle(fontSize: 16),
                           ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Center(
-                          child: Text(
-                            "${data.stops[index].name}",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: (data.stops[index].name == data.lastPositionRegister) ?
-                                Theme.of(context).buttonColor : null,
-                            ),
-                            textAlign: TextAlign.center,
+                          Text(
+                            pickBinary(data.stops[index].plannedArrivalRail,
+                                data.stops[index].plannedDepartureRail),
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          pickBinary(data.stops[index].actualArrivalRail, data.stops[index].actualDepartureRail),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          pickBinary(data.stops[index].plannedArrivalRail, data.stops[index].plannedDepartureRail),
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        );
-        if(i < nStop)
-          c.children.add(Divider(color: Theme.of(context).textTheme.display1.color));
-        return c;
-      }
-    );
+                ],
+              )
+            ],
+          );
+          if (i < nStop)
+            c.children.add(
+                Divider(color: Theme.of(context).textTheme.display1.color));
+          return c;
+        });
   }
 
   // stringa con numero binario oppure - (perché le API torna null se non è assegnato il binario)
   String pickBinary(String arrival, String departure) {
-    if(departure != null)
-      return departure;
+    if (departure != null) return departure;
 
-    if(arrival != null)
-      return arrival;
+    if (arrival != null) return arrival;
 
     return '-';
   }
@@ -456,21 +487,17 @@ class _TrainStatusState extends State<TrainStatus> {
   // type = 1 = arrival
   // controllo dei null negli orari che riceve
   String pickOrNot(String test, int type, int index, int max) {
-    if(index == 1 && type == 1)
-      return '';
+    if (index == 1 && type == 1) return '';
 
-    if(index == max && type == 0)
-      return '';
+    if (index == max && type == 0) return '';
 
-    if(test == null)
-      return '-:-';
+    if (test == null) return '-:-';
 
     return test;
   }
 
   String pickDelay(int delay) {
-    if(delay < 0)
-      return 'Anticipo ${delay*(-1)}\'';
+    if (delay < 0) return 'Anticipo ${delay * (-1)}\'';
     return 'Ritardo $delay\'';
   }
 }
