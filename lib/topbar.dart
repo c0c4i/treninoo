@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:treninoo/utils.dart';
 import 'settings.dart';
 
 class TopBar extends StatelessWidget {
   TopBar({Key key, this.text, this.location}) : super(key: key);
   final String text;
   final int location;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,25 +31,18 @@ class TopBar extends StatelessWidget {
               child: IconButton(
                 iconSize: 40,
                 onPressed: () {
-                  if(location == 0) {
+                  if (location == 0) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => Settings()
-                      ),
+                      MaterialPageRoute(builder: (context) => Settings()),
                     );
                   } else {
-                    // salva
+                    // salva prendendoti il numero del treno
+                    // prova dura aggiungendo ai preferiti anche se c'è già
+                    SharedPrefJson.addFavourite();
                   }
-                    
                 },
-                icon: location == 0
-                ? Icon(
-                  OMIcons.settings,
-                )
-                : Icon(
-                  Icons.bookmark_border,
-                ),
+                icon: pickIcon(location),
               ),
             ),
           )
@@ -56,4 +50,12 @@ class TopBar extends StatelessWidget {
       ),
     );
   }
+}
+
+Icon pickIcon(int l) {
+  if (l == 0) return Icon(OMIcons.settings);
+
+  if (SharedPrefJson.isFavourite()) return Icon(Icons.bookmark);
+
+  return Icon(Icons.bookmark_border);
 }

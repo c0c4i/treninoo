@@ -10,6 +10,10 @@
 * Bloccare il bottone dopo il primo click e aspettare n secondi in modo da gestire la connessione lenta.
     [provato ma non funziona ancora]
 
-* Pensare alla schermata delle impostazioni (figma)
-
 * Salvare lo stato di ogni pagina (stato, ricerca)
+
+* FALLBACK CAMPI VUOTI JSON STATO TRENO
+
+* refactor con classe singleton (già usata in parte)
+
+* i preferiti vengono persi quando si chiude l'app, bisogna tenere sincronizzata shared prefercence e array nella classe singleton

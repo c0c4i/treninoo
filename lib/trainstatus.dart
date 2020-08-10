@@ -13,7 +13,6 @@ int trainInfoErrorType = -1;
 // ritorna un oggetto TrainInfo creato dalla GET al Server
 Future<TrainInfo> fetchPostTrainInfo(
     String trainCode, String stationCode) async {
-  print('trainCode: $trainCode \nstationCode: $stationCode');
   await Future.delayed(
       const Duration(milliseconds: 250)); // just for graphic satisfaction
   String urlTrainStatus = URL_TRAIN_INFO + stationCode + "/" + trainCode;
@@ -79,6 +78,11 @@ class TrainInfo {
   final int delay;
   final String trainCode;
 
+  String departureStationCode;
+  String departureStationName;
+  String arrivalStationName;
+  String departureTime;
+
   TrainInfo({
     this.stops,
     this.lastPositionRegister,
@@ -86,6 +90,10 @@ class TrainInfo {
     this.trainType,
     this.delay,
     this.trainCode,
+    this.departureStationCode,
+    this.departureStationName,
+    this.arrivalStationName,
+    this.departureTime,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
@@ -94,13 +102,16 @@ class TrainInfo {
       return null;
     }
     return TrainInfo(
-      stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
-      lastPositionRegister: json['stazioneUltimoRilevamento'],
-      lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
-      trainType: json['categoria'],
-      delay: json['ritardo'],
-      trainCode: json['numeroTreno'].toString(),
-    );
+        stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
+        lastPositionRegister: json['stazioneUltimoRilevamento'],
+        lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
+        trainType: json['categoria'],
+        delay: json['ritardo'],
+        trainCode: json['numeroTreno'].toString(),
+        departureStationCode: json['idOrigine'],
+        departureStationName: json['origine'],
+        arrivalStationName: json['destinazione'],
+        departureTime: json['compOrarioPartenzaZero']);
   }
 }
 
@@ -182,17 +193,17 @@ class _TrainStatusState extends State<TrainStatus> {
   Widget _trainInfo(AsyncSnapshot snapshot) {
     TrainInfo data = snapshot.data;
 
-    print(data.trainCode + data.trainType);
-
     SavedTrain t = SavedTrain(
         trainCode: data.trainCode,
         trainType: data.trainType,
-        departureStationCode: "S02430",
-        departureStationName: "Verona Porta Nuova",
-        arrivalStationName: "Venezia Santa Lucia",
-        departureTime: "17:21");
+        departureStationCode: data.departureStationCode,
+        departureStationName: data.departureStationName,
+        arrivalStationName: data.arrivalStationName,
+        departureTime: data.departureTime);
 
-    SharedPrefJson.addRecents(t);
+    SharedPrefJson.nowSearching = t;
+
+    SharedPrefJson.addRecent(t);
 
     return Scaffold(
       body: SafeArea(

@@ -31,7 +31,7 @@ class _FavouritesState extends State<Favourites> {
               children: <Widget>[
                 TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
                 FutureBuilder(
-                  future: SharedPrefJson.read("favourite"),
+                  future: SharedPrefJson.read("favourites"),
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> projectSnap) {
                     dynamic jsonDecoded = projectSnap.data;
