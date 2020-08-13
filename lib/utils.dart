@@ -20,8 +20,11 @@ class SharedPrefJson {
     if (recents != null)
       recentsTrain =
           recents.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
-    favouritesTrain =
-        (await read("favourites")).map((e) => SavedTrain.fromJson(e)).toList();
+
+    var favourites = await read("recents");
+    if (recents != null)
+      favouritesTrain =
+          favourites.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
   }
 
   static void addRecent(SavedTrain t) {
@@ -49,10 +52,10 @@ class SharedPrefJson {
     save("favourites", favouritesTrain);
   }
 
-  static void removeFavourite(int trainCode) {
+  static void removeFavourite() {
     SavedTrain trainToRemove;
     for (final savedTrain in favouritesTrain) {
-      trainToRemove = savedTrain.equals(trainCode);
+      trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
       if (trainToRemove != null) {
         favouritesTrain.remove(trainToRemove);
         save("favourites", favouritesTrain);
@@ -62,12 +65,8 @@ class SharedPrefJson {
   }
 
   static bool isFavourite() {
-    print(favouritesTrain.length);
-    print(recentsTrain.length);
-    for (final savedTrain in favouritesTrain) {
-      print('${nowSearching.trainCode} == ${savedTrain.trainCode}');
+    for (final savedTrain in favouritesTrain)
       if (nowSearching.trainCode == savedTrain.trainCode) return true;
-    }
     return false;
   }
 
