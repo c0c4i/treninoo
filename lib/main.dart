@@ -90,11 +90,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        // FocusScope.of(context).unfocus();
+        WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+        // print("eccomi");
+        // FocusScopeNode currentFocus = FocusScope.of(context);
+        // if (!currentFocus.hasPrimaryFocus) {
+        //   currentFocus.unfocus();
+        // }
       },
       child: MaterialApp(
         title: 'Treninoo',

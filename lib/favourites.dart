@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/topbar.dart';
 import 'newutils.dart';
@@ -94,7 +95,7 @@ class _FavouritesState extends State<Favourites> {
                   // cercalo
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) => TrainStatus(
                               trainCode: train.trainCode,
                               stationCode: train.departureStationCode,

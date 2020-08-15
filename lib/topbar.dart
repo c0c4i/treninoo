@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:treninoo/utils.dart';
@@ -52,7 +53,7 @@ class _TopBarState extends State<TopBar> {
                   if (widget.location == 0) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Settings()),
+                      CupertinoPageRoute(builder: (context) => Settings()),
                     );
                   } else {
                     // salva prendendoti il numero del treno
