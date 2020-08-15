@@ -18,6 +18,14 @@ class Favourites extends StatefulWidget {
 class _FavouritesState extends State<Favourites> {
   _FavouritesState();
 
+  Future<List<SavedTrain>> favourites;
+
+  @override
+  void initState() {
+    super.initState();
+    favourites = _fetchFavourites();
+  }
+
   // widget completo che ingloba i preferiti
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,7 @@ class _FavouritesState extends State<Favourites> {
               children: <Widget>[
                 TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
                 FutureBuilder(
-                  future: SharedPrefJson.read("favourites"),
+                  future: favourites,
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic> projectSnap) {
                     dynamic jsonDecoded = projectSnap.data;
@@ -40,15 +48,12 @@ class _FavouritesState extends State<Favourites> {
                         "Nessun preferito",
                         textAlign: TextAlign.center,
                       );
-                    List<SavedTrain> list = (jsonDecoded as List<dynamic>)
-                        .map((e) => SavedTrain.fromJson(e))
-                        .toList();
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: list.length,
+                      itemCount: jsonDecoded.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return _favouriteTrainWidget(list[index]);
+                        return _favouriteTrainWidget(jsonDecoded[index]);
                       },
                     );
                   },
@@ -59,6 +64,12 @@ class _FavouritesState extends State<Favourites> {
         ),
       ),
     );
+  }
+
+  Future<List<SavedTrain>> _fetchFavourites() async {
+    final pref = await SharedPrefJson.read("favourites");
+    if (pref == null) return null;
+    return (pref as List<dynamic>).map((e) => SavedTrain.fromJson(e)).toList();
   }
 
   // preferito univoco
@@ -90,20 +101,22 @@ class _FavouritesState extends State<Favourites> {
                             )),
                   );
                 } else {
-                  print(
-                      "Il treno è stato modificato o non esiste più. Verificare nell'app trenitalia.");
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: new Text(
-                            "Il treno è stato mofidicato o non esiste più.\nVuoi eliminarlo dai preferiti?"),
+                        title: new Text("Treno mofidicato"),
+                        content: Text("Vuoi rimuoverlo dai preferiti?"),
                         actions: <Widget>[
                           FlatButton(
-                            child: Text("Elimina"),
+                            child: Text("Rimuovi"),
                             onPressed: () {
                               SharedPrefJson.nowSearching = train;
                               SharedPrefJson.removeFavourite();
+                              setState(() {
+                                favourites = _fetchFavourites();
+                              });
+                              Navigator.pop(context);
                             },
                           ),
                           FlatButton(
@@ -120,6 +133,35 @@ class _FavouritesState extends State<Favourites> {
                 }
               });
             });
+          },
+          onLongPress: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: new Text("Vuoi rimuovere il treno dai preferiti?"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Rimuovi"),
+                      onPressed: () {
+                        SharedPrefJson.nowSearching = train;
+                        SharedPrefJson.removeFavourite();
+                        setState(() {
+                          favourites = _fetchFavourites();
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text("Annulla"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           },
           child: Column(
             children: <Widget>[
@@ -176,8 +218,6 @@ class _FavouritesState extends State<Favourites> {
       ),
     );
   }
-
-  void reloadList() {}
 
   void _showFutureReleaseDialog() {
     // flutter defined function

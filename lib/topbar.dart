@@ -36,8 +36,6 @@ class _TopBarState extends State<TopBar> {
             OMIcons.train,
             size: 40.0,
           ),
-          // Icon(TreninooIcon.treninoo_03),
-          // svgIcon,
           Padding(
             padding: EdgeInsets.only(left: 5),
             child: Text(
