@@ -23,6 +23,14 @@ class _SearchState extends State<Search> {
 
   TextEditingController inputController = TextEditingController();
 
+  Future<List<SavedTrain>> recents;
+
+  @override
+  void initState() {
+    super.initState();
+    recents = fetchSharedPreferenceWithListOf("recents");
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -86,7 +94,13 @@ class _SearchState extends State<Search> {
               context,
               CupertinoPageRoute(
                   builder: (context) => TrainStatus(
-                      trainCode: trainCode, stationCode: stationCode)));
+                      trainCode: trainCode,
+                      stationCode: stationCode))).then((value) {
+            print("qui aggiorno il child");
+            setState(() {
+              recents = fetchSharedPreferenceWithListOf("recents");
+            });
+          });
         });
       } else {
         // più treni
@@ -131,8 +145,17 @@ class _SearchState extends State<Search> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8.0)),
                               ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                              ),
                               prefixIcon: Icon(
                                 Icons.search,
+                                color: Theme.of(context).primaryColor,
                                 size: 35,
                               ),
                               labelText: 'Inserire Codice Treno',
@@ -166,7 +189,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                 ),
-                Recents(),
+                Recents(recents: recents),
               ],
             ),
           ),

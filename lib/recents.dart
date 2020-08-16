@@ -6,10 +6,9 @@ import 'trainstatus.dart';
 import 'theme.dart';
 
 class Recents extends StatefulWidget {
-  Recents({Key key, this.trainCode, this.stationCode}) : super(key: key);
+  Recents({Key key, this.recents}) : super(key: key);
 
-  final String trainCode;
-  final String stationCode;
+  Future<List<SavedTrain>> recents;
 
   @override
   _RecentsState createState() => _RecentsState();
@@ -18,13 +17,13 @@ class Recents extends StatefulWidget {
 class _RecentsState extends State<Recents> {
   _RecentsState();
 
-  Future<List<SavedTrain>> recents;
+  // Future<List<SavedTrain>> recents;
 
-  @override
-  void initState() {
-    super.initState();
-    recents = fetchSharedPreferenceWithListOf("recents");
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   recents = fetchSharedPreferenceWithListOf("recents");
+  // }
 
   // widget completo che ingloba i preferiti
   @override
@@ -43,7 +42,7 @@ class _RecentsState extends State<Recents> {
             ),
           ),
           FutureBuilder(
-            future: recents,
+            future: widget.recents,
             builder:
                 (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
               dynamic jsonDecoded = projectSnap.data;
@@ -107,9 +106,10 @@ class _RecentsState extends State<Recents> {
                             child: Text("Elimina"),
                             onPressed: () {
                               SharedPrefJson.nowSearching = train;
-                              SharedPrefJson.removeFavourite();
+                              SharedPrefJson.removeRecent();
+                              print("elimino");
                               setState(() {
-                                recents =
+                                widget.recents =
                                     fetchSharedPreferenceWithListOf("recents");
                               });
                               Navigator.pop(context);

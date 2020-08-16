@@ -21,26 +21,27 @@ class SharedPrefJson {
       recentsTrain =
           recents.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
 
-    var favourites = await read("recents");
+    var favourites = await read("favourites");
     if (recents != null)
       favouritesTrain =
           favourites.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
   }
 
   static void addRecent(SavedTrain t) {
-    if (recentsTrain.contains(t)) return;
-    if (recentsTrain.length == 3) recentsTrain.removeLast();
+    if (recentsTrain.contains(t)) {
+      recentsTrain.remove(t);
+    } else if (recentsTrain.length == 3) recentsTrain.removeLast();
     recentsTrain.insert(0, t);
     save("recents", recentsTrain);
   }
 
-  static void removeRecent(int trainCode) {
+  static void removeRecent() {
     SavedTrain trainToRemove;
     for (final savedTrain in recentsTrain) {
-      trainToRemove = savedTrain.equals(trainCode);
+      trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
       if (trainToRemove != null) {
         recentsTrain.remove(trainToRemove);
-        save("favourites", recentsTrain);
+        save("recents", recentsTrain);
         return;
       }
     }

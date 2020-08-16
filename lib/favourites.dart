@@ -100,7 +100,12 @@ class _FavouritesState extends State<Favourites> {
                               trainCode: train.trainCode,
                               stationCode: train.departureStationCode,
                             )),
-                  );
+                  ).then((value) {
+                    print("Sono tornato indietro e faccio il fetch");
+                    setState(() {
+                      favourites = _fetchFavourites();
+                    });
+                  });
                 } else {
                   showDialog(
                     context: context,
