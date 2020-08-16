@@ -4,6 +4,8 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:treninoo/utils.dart';
 import 'settings.dart';
 
+import 'package:treninoo/treninoo_icons.dart';
+
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:treninoo/treninoo_icons.dart';
 
@@ -34,7 +36,8 @@ class _TopBarState extends State<TopBar> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Icon(
-            OMIcons.train,
+            // OMIcons.train,
+            TreninooIcon.treninoo_red,
             size: 40.0,
           ),
           Padding(

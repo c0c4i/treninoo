@@ -6,13 +6,14 @@ class CustomColors {
 }
 
 class CustomTheme {
-
   static ThemeData defaultMode = ThemeData(
     brightness: Brightness.light,
     primaryColor: CustomColors.customRed,
     accentColor: CustomColors.customRed,
     buttonColor: CustomColors.customRed,
-    iconTheme: IconThemeData(color: CustomColors.customRed,),
+    iconTheme: IconThemeData(
+      color: CustomColors.customRed,
+    ),
     errorColor: CustomColors.customRed,
     scaffoldBackgroundColor: Colors.white,
     buttonTheme: ButtonThemeData(
@@ -20,7 +21,8 @@ class CustomTheme {
       shape: RoundedRectangleBorder(),
     ),
     hintColor: CustomColors.customRed,
-    primaryTextTheme: TextTheme(body1: TextStyle(color: CustomColors.customRed)),
+    primaryTextTheme:
+        TextTheme(body1: TextStyle(color: CustomColors.customRed)),
     cursorColor: CustomColors.customRed,
     textSelectionHandleColor: CustomColors.customRed,
     textTheme: TextTheme(
@@ -28,10 +30,7 @@ class CustomTheme {
         color: CustomColors.customRed,
         fontSize: 25,
       ),
-      display2: TextStyle(
-        fontSize: 25,
-        color: Colors.white
-      ),
+      display2: TextStyle(fontSize: 25, color: Colors.white),
       display3: TextStyle(
         fontSize: 20.0,
         color: Colors.black,
@@ -39,8 +38,7 @@ class CustomTheme {
     ),
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
     ),
   );
 
@@ -60,10 +58,7 @@ class CustomTheme {
         color: Colors.white,
         fontSize: 25,
       ),
-      display2: TextStyle(
-        fontSize: 25,
-        color: Colors.white
-      ),
+      display2: TextStyle(fontSize: 25, color: Colors.white),
       display3: TextStyle(
         fontSize: 20.0,
         color: Colors.white,
@@ -71,8 +66,7 @@ class CustomTheme {
     ),
     dialogTheme: DialogTheme(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
     ),
   );
 }

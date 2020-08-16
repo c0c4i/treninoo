@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'newutils.dart';
 import 'utils.dart';
@@ -17,6 +18,14 @@ class Recents extends StatefulWidget {
 class _RecentsState extends State<Recents> {
   _RecentsState();
 
+  Future<List<SavedTrain>> recents;
+
+  @override
+  void initState() {
+    super.initState();
+    recents = fetchSharedPreferenceWithListOf("recents");
+  }
+
   // widget completo che ingloba i preferiti
   @override
   Widget build(BuildContext context) {
@@ -34,25 +43,21 @@ class _RecentsState extends State<Recents> {
             ),
           ),
           FutureBuilder(
-            future: SharedPrefJson.read("recents"),
+            future: recents,
             builder:
                 (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
               dynamic jsonDecoded = projectSnap.data;
-              // if (jsonDecoded == null) return new Text("Nessun treno recente");
-              // SharedPrefJson.recentsTrain = (jsonDecoded as List<dynamic>)
-              //     .map((e) => SavedTrain.fromJson(e))
-              //     .toList();
-              List<SavedTrain> list = SharedPrefJson.recentsTrain;
-              // List<SavedTrain> list = (jsonDecoded as List<dynamic>)
-              //     .map((e) => SavedTrain.fromJson(e))
-              //     .toList();
-
+              if (jsonDecoded == null || jsonDecoded.length == 0)
+                return new Text(
+                  "Nessun recente",
+                  textAlign: TextAlign.center,
+                );
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: list.length,
+                itemCount: jsonDecoded.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _favouriteTrainWidget(list[index]);
+                  return _favouriteTrainWidget(jsonDecoded[index]);
                 },
               );
             },
@@ -75,8 +80,8 @@ class _RecentsState extends State<Recents> {
             borderRadius: BorderRadius.circular(8.0),
           ),
           onPressed: () {
-            _showFutureReleaseDialog();
-            return;
+            // _showFutureReleaseDialog();
+            // return;
             setState(() {
               verifyIfTrainExist(train.departureStationCode, train.trainCode)
                   .then((exist) {
@@ -84,25 +89,31 @@ class _RecentsState extends State<Recents> {
                   // cercalo
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) => TrainStatus(
-                              trainCode: '2747',
-                              stationCode: 'S02430',
+                              trainCode: train.trainCode,
+                              stationCode: train.departureStationCode,
                             )),
                   );
                 } else {
-                  print(
-                      "Il treno è stato modificato o non esiste più. Verificare nell'app trenitalia.");
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: new Text(
-                            "Il treno è stato mofidicato o non esiste più.\nVuoi eliminarlo dai preferiti?"),
+                        title: new Text("Treno mofidicato"),
+                        content: Text("Vuoi rimuoverlo dai recenti?"),
                         actions: <Widget>[
                           FlatButton(
                             child: Text("Elimina"),
-                            onPressed: () {},
+                            onPressed: () {
+                              SharedPrefJson.nowSearching = train;
+                              SharedPrefJson.removeFavourite();
+                              setState(() {
+                                recents =
+                                    fetchSharedPreferenceWithListOf("recents");
+                              });
+                              Navigator.pop(context);
+                            },
                           ),
                           FlatButton(
                             child: Text("Annulla"),

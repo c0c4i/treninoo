@@ -21,5 +21,5 @@ class TreninooIcon {
   static const _kFontFam = 'TreninooIcon';
   static const _kFontPkg = null;
 
-  static const IconData treninoo_03 = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData treninoo_red = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

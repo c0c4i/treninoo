@@ -136,3 +136,9 @@ class SavedTrain {
     return (tmp.trainCode == trainCode);
   }
 }
+
+Future<List<SavedTrain>> fetchSharedPreferenceWithListOf(String s) async {
+  final pref = await SharedPrefJson.read(s);
+  if (pref == null) return null;
+  return (pref as List<dynamic>).map((e) => SavedTrain.fromJson(e)).toList();
+}

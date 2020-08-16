@@ -11,11 +11,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String currentTheme = "Dark";
-  List themeList = ["Ligth", "Dark", "Auto"];
+  String currentTheme = "Ligth";
+  List themeList = ["Ligth"];
+  // List themeList = ["Ligth", "Dark", "Auto"];
 
   String currentFirstPage = "Stato";
-  List firstPageList = ["Stato", "Ricerca", "Preferiti"];
+  List firstPageList = ["Stato"];
+  // List firstPageList = ["Stato", "Ricerca", "Preferiti"];
 
   @override
   void initState() {
@@ -41,7 +43,8 @@ class _SettingsState extends State<Settings> {
               ),
               ListTile(
                 title: Text('Tema'),
-                subtitle: Text('Seleziona il tema dell\'applicazione'),
+                subtitle: Text(
+                    'Seleziona il tema dell\'applicazione\nProssima release'),
                 trailing: DropdownButton(
                   value: currentTheme,
                   items: themeList.map((value) {
@@ -59,7 +62,8 @@ class _SettingsState extends State<Settings> {
               ),
               ListTile(
                 title: Text('Schermata iniziale'),
-                subtitle: Text('Seleziona la schermata inziale'),
+                subtitle:
+                    Text('Seleziona la schermata inziale\nProssima release'),
                 trailing: DropdownButton(
                   value: currentFirstPage,
                   items: firstPageList.map((value) {

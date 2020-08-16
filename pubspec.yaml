@@ -47,6 +47,11 @@ flutter:
    - assets/images/propic.jpeg
    - assets/images/background-image.jpg
 
+  fonts:
+    - family:  TreninooIcon
+      fonts:
+        - asset: fonts/TreninooIcon.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
