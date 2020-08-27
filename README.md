@@ -1,6 +1,6 @@
-<img src="assets/icon/icon.png" alt="Icon" width="148px" style="border-radius: 30px"/>
-
-# Cos'è Treninoo?
+<img src="assets/icon/icon.png" alt="Icon" width="148px" style="border-radius: 20%"/>
+ 
+## Cos'è Treninoo?
 
 Treninoo è un'applicazione che permette di cercare un treno inserendo il suo codice oppure ricercare tutte le soluzioni data una partenza e una destinazione.
 In più permette di salvare i treni personali nella sezione preferiti.
@@ -22,3 +22,6 @@ Per poter compilare il codice nel proprio computer è necessario:
 
 ## Scaricabile
 
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/it_badge_web_generic.png" alt="Get it on Android" height="80">](https://play.google.com/store/apps/details?id=it.samuelebesoli.treninoo)
+
+> La versione iOS sarà disponibile a breve
