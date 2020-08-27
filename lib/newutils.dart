@@ -4,15 +4,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // ... + trainCode
-const String URL_STATION_CODE = 'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
+const String URL_STATION_CODE =
+    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
 
 // ... + stationCode/trainCode
-const String URL_TRAIN_INFO = 'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
+const String URL_TRAIN_INFO =
+    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
 
-const String URL_STATION_NAME = 'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
+const String URL_STATION_NAME =
+    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
 
 // ... + departureStationCode/arrivalStationCode/date
-const String URL_SOLUTIONS = 'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+const String URL_SOLUTIONS =
+    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
 
 const int SEARCH_TRAIN_STATUS = 0;
 const int SHOW_TRAIN_STATUS = 1;
@@ -37,48 +41,48 @@ Map<String, String> trainAcronym = {
 
 // Ritorna il numero di treni con il numero cercato
 Future<int> getAvailableNumberOfTrain(String trainCode) async {
-  if(trainCode.length == 0)
-    throw new ArgumentError();
-  http.Response responseStationCode = await http.get(URL_STATION_CODE + trainCode);
-  if(responseStationCode.statusCode != 200)
-    throw new Error();
+  if (trainCode.length == 0) throw new ArgumentError();
+  http.Response responseStationCode =
+      await http.get(URL_STATION_CODE + trainCode);
+  if (responseStationCode.statusCode != 200) throw new Error();
 
-  return responseStationCode.body.split('\n').length-1;
+  return responseStationCode.body.split('\n').length - 1;
 }
 
 // Ritorna il codice della stazione di partenza del treno
 Future<String> getSpecificStationCode(String trainCode) async {
-    http.Response responseStationCode = await http.get(URL_STATION_CODE + trainCode);
-    var text = responseStationCode.body;
-    var lines = text.split('\n');
-    return rgxTrainCode.firstMatch(lines[0]).group(1);
+  http.Response responseStationCode =
+      await http.get(URL_STATION_CODE + trainCode);
+  var text = responseStationCode.body;
+  var lines = text.split('\n');
+  return rgxTrainCode.firstMatch(lines[0]).group(1);
 }
 
 // converte tempo unix in stringa oo:mm
-String timeStampToString (int timeStampMillisecond) {
-  if(timeStampMillisecond == null) return null;
+String timeStampToString(int timeStampMillisecond) {
+  if (timeStampMillisecond == null) return null;
 
   var dateTime = new DateTime.fromMillisecondsSinceEpoch(timeStampMillisecond);
-  
-  if(dateTime.minute<10)
-    return "${dateTime.hour}:0${dateTime.minute}";
+
+  if (dateTime.minute < 10) return "${dateTime.hour}:0${dateTime.minute}";
   return "${dateTime.hour}:${dateTime.minute}";
 }
 
 // ritorna una mappa <stationCode, trainType>
 Future<Map<String, String>> getMultipleTrainsType(String trainCode) async {
-  LinkedHashMap<String, String> multipleStation = new LinkedHashMap<String, String>();
-  
-  http.Response responseStationCode = await http.get(URL_STATION_CODE + trainCode);
-  if(responseStationCode.statusCode != 200)
-    throw new Error();
+  LinkedHashMap<String, String> multipleStation =
+      new LinkedHashMap<String, String>();
+
+  http.Response responseStationCode =
+      await http.get(URL_STATION_CODE + trainCode);
+  if (responseStationCode.statusCode != 200) throw new Error();
 
   var lines = responseStationCode.body.split('\n');
 
   String trainType;
   String stationCode;
 
-  for(var i=0; i<lines.length-1; i++) {
+  for (var i = 0; i < lines.length - 1; i++) {
     stationCode = rgxTrainCode.firstMatch(lines[i]).group(1);
     trainType = await getTrainType(stationCode, trainCode);
     multipleStation.putIfAbsent(stationCode, () => trainType);
@@ -91,44 +95,40 @@ Future<String> getTrainType(String stationCode, String trainCode) async {
   String urlTypeTrain = URL_TRAIN_INFO + stationCode + '/' + trainCode;
   final http.Response responseTypeTrain = await http.get(urlTypeTrain);
   var text = responseTypeTrain.body;
-  if(responseTypeTrain.statusCode == 200)
+  if (responseTypeTrain.statusCode == 200)
     return json.decode(text)['categoria'];
   else
     return "NaN";
 }
 
 // Controlla se un treno esiste o no
-Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async{
-
-  if(trainCode.length == 0 || stationCode.length == 0)
+Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
+  if (trainCode.length == 0 || stationCode.length == 0)
     throw new ArgumentError();
 
-  String urlStationCode = URL_TRAIN_INFO+ stationCode + '/' + trainCode;
+  String urlStationCode = URL_TRAIN_INFO + stationCode + '/' + trainCode;
   http.Response responseStationCode = await http.get(urlStationCode);
-  
-  if(responseStationCode.statusCode == 204)
-    return false;
 
-  
-  if(responseStationCode.statusCode != 200)
-    throw new Error();
+  if (responseStationCode.statusCode == 204) return false;
+
+  if (responseStationCode.statusCode != 200) throw new Error();
 
   return true;
 }
 
 Future<Map<String, String>> getStationListStartWith(String searched) async {
   Map<String, String> stationList = new Map<String, String>();
-  
-  http.Response responseStationCode = await http.get(URL_STATION_NAME + searched);
-  if(responseStationCode.statusCode != 200)
-    throw new Error();
+
+  http.Response responseStationCode =
+      await http.get(URL_STATION_NAME + searched);
+  if (responseStationCode.statusCode != 200) throw new Error();
 
   var lines = responseStationCode.body.split('\n');
 
   String stationCode;
   String stationName;
 
-  for(var i=0; i<lines.length-1; i++) {
+  for (var i = 0; i < lines.length - 1; i++) {
     stationCode = lines[i].split("|")[1].substring(2).replaceAll("\n", "");
     stationName = lines[i].split("|")[0].split("\n")[0];
     stationList.putIfAbsent(stationName, () => stationCode);
@@ -137,11 +137,12 @@ Future<Map<String, String>> getStationListStartWith(String searched) async {
 }
 
 Future<String> getStationCodeFromStationName(String stationName) async {
-  http.Response responseStationCode = await http.get(URL_STATION_NAME + stationName);
-  if(responseStationCode.statusCode != 200)
-    throw new Error();
+  http.Response responseStationCode =
+      await http.get(URL_STATION_NAME + stationName);
+  if (responseStationCode.statusCode != 200) throw new Error();
 
-  String stationCode = responseStationCode.body.split("|")[1].substring(2).replaceAll("\n", "");
+  String stationCode =
+      responseStationCode.body.split("|")[1].substring(2).replaceAll("\n", "");
 
   return stationCode;
 }
@@ -164,4 +165,3 @@ String getCustomTime(DateTime d) {
 
   return "$hour:$minute";
 }
-

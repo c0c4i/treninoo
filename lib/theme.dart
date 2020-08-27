@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomColors {
-  static Color customRed = const Color(0xFFC4152B); // or 0xFFC41329
+  static Color customRed = const Color(0xFFC4152B);
   static Color customGreyNigthMode = const Color(0xff828282);
 }
 
