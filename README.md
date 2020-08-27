@@ -1,4 +1,4 @@
-<img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Icon"/>
+<img src="assets/icon/icon.png" alt="Icon" width="148px"/>
  
 ## Cos'è Treninoo?
 
