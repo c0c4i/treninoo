@@ -20,7 +20,7 @@ Per poter compilare il codice nel proprio computer è necessario:
 2. Eseguire il comando `run` in flutter </br>
 `flutter run`
 
-## Scaricabile
+## Download
 
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/it_badge_web_generic.png" alt="Get it on Android" height="80">](https://play.google.com/store/apps/details?id=it.samuelebesoli.treninoo)
 
