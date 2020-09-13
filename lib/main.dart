@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:treninoo/favourites.dart';
 import 'package:treninoo/utils.dart';
@@ -107,6 +108,8 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: child),
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [const Locale('it')],
         home: Scaffold(
           body: PageStorage(
             child: currentPage,

@@ -68,7 +68,7 @@ class _FavouritesState extends State<Favourites> {
   }
 
   Future<List<SavedTrain>> _fetchFavourites() async {
-    final pref = await SharedPrefJson.read("favourites");
+    final pref = await SharedPrefJson.read(shprFavouritesTrains);
     if (pref == null) return null;
     return (pref as List<dynamic>).map((e) => SavedTrain.fromJson(e)).toList();
   }

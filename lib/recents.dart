@@ -106,11 +106,12 @@ class _RecentsState extends State<Recents> {
                             child: Text("Elimina"),
                             onPressed: () {
                               SharedPrefJson.nowSearching = train;
-                              SharedPrefJson.removeRecent();
+                              SharedPrefJson.removeRecentTrain();
                               print("elimino");
                               setState(() {
                                 widget.recents =
-                                    fetchSharedPreferenceWithListOf("recents");
+                                    fetchSharedPreferenceWithListOf(
+                                        shprRecentsTrains);
                               });
                               Navigator.pop(context);
                             },

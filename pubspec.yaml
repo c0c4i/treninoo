@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^0.12.0+2
   outline_material_icons: ^0.1.0
   shared_preferences: ^0.5.3+4
@@ -42,10 +44,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
-  assets:
-   - assets/images/propic.jpeg
-   - assets/images/background-image.jpg
 
   fonts:
     - family:  TreninooIcon

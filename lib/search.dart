@@ -28,7 +28,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    recents = fetchSharedPreferenceWithListOf("recents");
+    recents = fetchSharedPreferenceWithListOf(shprRecentsTrains);
   }
 
   @override
@@ -98,7 +98,7 @@ class _SearchState extends State<Search> {
                       stationCode: stationCode))).then((value) {
             print("qui aggiorno il child");
             setState(() {
-              recents = fetchSharedPreferenceWithListOf("recents");
+              recents = fetchSharedPreferenceWithListOf(shprRecentsTrains);
             });
           });
         });

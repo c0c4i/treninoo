@@ -203,7 +203,7 @@ class _TrainStatusState extends State<TrainStatus> {
 
     SharedPrefJson.nowSearching = t;
 
-    SharedPrefJson.addRecent(t);
+    SharedPrefJson.addRecentTrain(t);
 
     return Scaffold(
       body: SafeArea(

@@ -1,4 +1,3 @@
 1) Nigth mode sospesa per deprecazione, rifare meglio
 2) TextFormField al posto di tutte le cose separate [guardare se è meglio]
-3) Usare una mappa/tupla per i nomi delle stazioni e il loro codice al posto della lista di stringhe
-    https://stackoverflow.com/questions/53824755/flutter-dart-how-to-access-a-single-entry-in-a-map-object
+3) Refactor per come uso le shared preference perché per ora mi sembra usato in modo abbastanza grezzo.

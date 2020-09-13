@@ -1,10 +1,18 @@
+import 'dart:collection';
+import 'dart:ui';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+String shprRecentsTrains = 'recentsTrains';
+String shprFavouritesTrains = 'favouritesTrains';
+String shprRecentsStations = 'recentsStations';
+
 // singleton class for recents and favourites train
 class SharedPrefJson {
-  static List<SavedTrain> recentsTrain = List<SavedTrain>();
+  static List<SavedTrain> recentsTrains = List<SavedTrain>();
   static List<SavedTrain> favouritesTrain = List<SavedTrain>();
+  static List<Station> recentStation = List<Station>();
   static SavedTrain nowSearching = new SavedTrain();
 
   static final SharedPrefJson _instance = SharedPrefJson._internal();
@@ -16,32 +24,37 @@ class SharedPrefJson {
   }
 
   void readSharedPreference() async {
-    var recents = await read("recents");
+    var recents = await read(shprRecentsTrains);
     if (recents != null)
-      recentsTrain =
+      recentsTrains =
           recents.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
 
-    var favourites = await read("favourites");
-    if (recents != null)
+    var favourites = await read(shprFavouritesTrains);
+    if (favourites != null)
       favouritesTrain =
           favourites.map<SavedTrain>((e) => SavedTrain.fromJson(e)).toList();
+
+    var recentStations = await read(shprRecentsStations);
+    if (recentStations != null)
+      recentStation =
+          recentStations.map<Station>((e) => Station.fromJson(e)).toList();
   }
 
-  static void addRecent(SavedTrain t) {
-    if (recentsTrain.contains(t)) {
-      recentsTrain.remove(t);
-    } else if (recentsTrain.length == 3) recentsTrain.removeLast();
-    recentsTrain.insert(0, t);
-    save("recents", recentsTrain);
+  static void addRecentTrain(SavedTrain t) {
+    if (recentsTrains.contains(t)) {
+      recentsTrains.remove(t);
+    } else if (recentsTrains.length == 3) recentsTrains.removeLast();
+    recentsTrains.insert(0, t);
+    save(shprRecentsTrains, recentsTrains);
   }
 
-  static void removeRecent() {
+  static void removeRecentTrain() {
     SavedTrain trainToRemove;
-    for (final savedTrain in recentsTrain) {
+    for (final savedTrain in recentsTrains) {
       trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
       if (trainToRemove != null) {
-        recentsTrain.remove(trainToRemove);
-        save("recents", recentsTrain);
+        recentsTrains.remove(trainToRemove);
+        save(shprRecentsTrains, recentsTrains);
         return;
       }
     }
@@ -50,7 +63,7 @@ class SharedPrefJson {
   static void addFavourite() {
     if (favouritesTrain.contains(nowSearching)) return;
     favouritesTrain.insert(0, nowSearching);
-    save("favourites", favouritesTrain);
+    save(shprFavouritesTrains, favouritesTrain);
   }
 
   static void removeFavourite() {
@@ -59,7 +72,7 @@ class SharedPrefJson {
       trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
       if (trainToRemove != null) {
         favouritesTrain.remove(trainToRemove);
-        save("favourites", favouritesTrain);
+        save(shprFavouritesTrains, favouritesTrain);
         return;
       }
     }
@@ -71,8 +84,15 @@ class SharedPrefJson {
     return false;
   }
 
+  static void addRecentStation(Station s) {
+    if (recentStation.contains(s)) {
+      recentStation.remove(s);
+    } else if (recentStation.length == 3) recentStation.removeLast();
+    recentStation.insert(0, s);
+    save(shprRecentsStations, recentStation);
+  }
+
   static Future<dynamic> read(String key) async {
-    // if (hardCoded.containsKey(key)) return json.decode(hardCoded[key]);
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(key))
       return null;
@@ -138,8 +158,45 @@ class SavedTrain {
   }
 }
 
+class Station {
+  String stationName;
+  String stationCode;
+
+  Station({
+    this.stationName,
+    this.stationCode,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'stationName': stationName,
+        'stationCode': stationCode,
+      };
+
+  factory Station.fromJson(Map<String, dynamic> json) {
+    return Station(
+      stationName: json['stationName'],
+      stationCode: json['stationCode'],
+    );
+  }
+
+  Station equals(int stationCode) {
+    return (stationCode.toString() == this.stationCode) ? this : null;
+  }
+
+  bool operator ==(Object other) {
+    Station tmp = other;
+    return (tmp.stationCode == stationCode);
+  }
+}
+
 Future<List<SavedTrain>> fetchSharedPreferenceWithListOf(String s) async {
   final pref = await SharedPrefJson.read(s);
   if (pref == null) return null;
   return (pref as List<dynamic>).map((e) => SavedTrain.fromJson(e)).toList();
+}
+
+Future<List<Station>> fetchRecentsStations(String s) async {
+  final pref = await SharedPrefJson.read(s);
+  if (pref == null) return null;
+  return (pref as List<dynamic>).map((e) => Station.fromJson(e)).toList();
 }

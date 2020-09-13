@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:treninoo/theme.dart';
+import 'package:treninoo/utils.dart';
 
 import 'topbar.dart';
 import 'newutils.dart';
@@ -22,8 +24,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   DateTime pickedDate;
   TimeOfDay time;
 
-  Map<String, String> suggestionDeparture;
-  Map<String, String> suggestionArrival;
+  List<Station> suggestionDeparture;
+  List<Station> suggestionArrival;
 
   TextEditingController inputDepartureController = TextEditingController();
   TextEditingController inputArrivalController = TextEditingController();
@@ -96,12 +98,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                               ),
                             ),
                             suggestionsCallback: (pattern) async {
-                              if (pattern.length > 2) {
-                                suggestionDeparture =
-                                    await getStationListStartWith(pattern);
-                                return suggestionDeparture.keys.toList();
-                              }
-                              return null;
+                              return suggestionCreator(pattern, 0);
                             },
                             itemBuilder: (context, suggestion) {
                               return ListTile(
@@ -144,12 +141,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                               ),
                             ),
                             suggestionsCallback: (pattern) async {
-                              if (pattern.length > 2) {
-                                suggestionArrival =
-                                    await getStationListStartWith(pattern);
-                                return suggestionArrival.keys.toList();
-                              }
-                              return null;
+                              return suggestionCreator(pattern, 1);
                             },
                             itemBuilder: (context, suggestion) {
                               return ListTile(
@@ -285,9 +277,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                                 left: 50, right: 50, top: 20, bottom: 20),
                             color: Theme.of(context).buttonColor,
                             onPressed: () {
-                              // searchStaticSolution();
                               _getSolutionRequest();
-                              //searchButtonClick(inputController.text);
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0)),
@@ -311,16 +301,55 @@ class _SearchSolutionsState extends State<SearchSolutions> {
 
   _pickDate() async {
     DateTime date = await showDatePicker(
-        context: context,
-        initialDate: pickedDate,
-        firstDate: DateTime(DateTime.now().year - 1),
-        lastDate: DateTime(DateTime.now().year + 1));
+      context: context,
+      initialDate: pickedDate,
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 1),
+      locale: const Locale('it'),
+      selectableDayPredicate: _decideWhichDayToEnable,
+      // builder: (context, child) {
+      //   return Theme(
+      //     data: ThemeData(primarySwatch: Colo),
+      //     child: child,
+      //   );
+      // },
+    );
 
     if (date != null)
       setState(() {
         pickedDate = date;
         _date = getCustomDate(date);
       });
+  }
+
+  bool _decideWhichDayToEnable(DateTime day) {
+    if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<List<String>> suggestionCreator(String s, int type) async {
+    List<String> names = List<String>();
+    if (s.length > 0) {
+      await getStationListStartWith(s).then((value) {
+        (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
+        value.forEach((element) {
+          names.add(element.stationName);
+        });
+      });
+      return names;
+    } else {
+      fetchRecentsStations(shprRecentsStations).then((value) {
+        if (value.length == 0) return null;
+        (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
+        value.forEach((element) {
+          names.add(element.stationName);
+        });
+      });
+    }
+
+    return names;
   }
 
   _pickTime() async {
@@ -339,9 +368,21 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   }
 
   _getSolutionRequest() {
-    String departureCode =
-        suggestionDeparture['${inputDepartureController.text}'];
-    String arrivalCode = suggestionArrival['${inputArrivalController.text}'];
+    Station departure = new Station(
+        stationName: inputDepartureController.text,
+        stationCode: getStationCodeByStationName(
+            inputDepartureController.text, suggestionDeparture));
+
+    Station arrival = new Station(
+        stationName: inputArrivalController.text,
+        stationCode: getStationCodeByStationName(
+            inputArrivalController.text, suggestionArrival));
+
+    print(departure.stationCode);
+    print(arrival.stationCode);
+
+    SharedPrefJson.addRecentStation(departure);
+    SharedPrefJson.addRecentStation(arrival);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
@@ -351,8 +392,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
         context,
         CupertinoPageRoute(
             builder: (context) => TrainSolutions(
-                departureCode: departureCode,
-                arrivalCode: arrivalCode,
+                departureCode: departure.stationCode,
+                arrivalCode: arrival.stationCode,
                 time: pickedDate)));
   }
 }

@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:treninoo/utils.dart';
+
 // ... + trainCode
 const String URL_STATION_CODE =
     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
@@ -25,6 +27,7 @@ const int SHOW_SOLUTIONS = 1;
 
 final RegExp rgxTrainCode = RegExp(r"\|.+-(\S+)$");
 
+// Utilizzato per far scegliere il treno quando hanno lo stesso numero
 Map<String, String> trainNames = {
   "REG": "Regionale",
   "EC": "EuroCity",
@@ -37,6 +40,13 @@ Map<String, String> trainAcronym = {
   "EuroCity": "EC",
   "Intercity": "IC",
   "Frecciarossa": "FR"
+};
+
+Map<String, String> trainTypeFromNumber = {
+  "246": "FR",
+  "235": "RV",
+  "196": "REG",
+  "205": "EC"
 };
 
 // Ritorna il numero di treni con il numero cercato
@@ -116,8 +126,8 @@ Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
   return true;
 }
 
-Future<Map<String, String>> getStationListStartWith(String searched) async {
-  Map<String, String> stationList = new Map<String, String>();
+Future<List<Station>> getStationListStartWith(String searched) async {
+  List<Station> stationList = new List<Station>();
 
   http.Response responseStationCode =
       await http.get(URL_STATION_NAME + searched);
@@ -131,9 +141,19 @@ Future<Map<String, String>> getStationListStartWith(String searched) async {
   for (var i = 0; i < lines.length - 1; i++) {
     stationCode = lines[i].split("|")[1].substring(2).replaceAll("\n", "");
     stationName = lines[i].split("|")[0].split("\n")[0];
-    stationList.putIfAbsent(stationName, () => stationCode);
+    stationList
+        .add(new Station(stationName: stationName, stationCode: stationCode));
   }
   return stationList;
+}
+
+String getStationCodeByStationName(String name, List<Station> l) {
+  for (var element in l) {
+    if (element.stationName == name) {
+      return element.stationCode;
+    }
+  }
+  return null;
 }
 
 Future<String> getStationCodeFromStationName(String stationName) async {

@@ -5,12 +5,28 @@ class CustomColors {
   static Color customGreyNigthMode = const Color(0xff828282);
 }
 
+Map<int, Color> colorCodes = {
+  50: Color.fromRGBO(196, 21, 43, .1),
+  100: Color.fromRGBO(196, 21, 43, .2),
+  200: Color.fromRGBO(196, 21, 43, .3),
+  300: Color.fromRGBO(196, 21, 43, .4),
+  400: Color.fromRGBO(196, 21, 43, .5),
+  500: Color.fromRGBO(196, 21, 43, .6),
+  600: Color.fromRGBO(196, 21, 43, .7),
+  700: Color.fromRGBO(196, 21, 43, .8),
+  800: Color.fromRGBO(196, 21, 43, .9),
+  900: Color.fromRGBO(196, 21, 43, 1),
+};
+
+MaterialColor color = new MaterialColor(0xFFC4152B, colorCodes);
+
 class CustomTheme {
   static ThemeData defaultMode = ThemeData(
     brightness: Brightness.light,
     primaryColor: CustomColors.customRed,
     accentColor: CustomColors.customRed,
     buttonColor: CustomColors.customRed,
+    primarySwatch: color,
     iconTheme: IconThemeData(
       color: CustomColors.customRed,
     ),
