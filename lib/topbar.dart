@@ -84,8 +84,16 @@ class _TopBarState extends State<TopBar> {
 
 Icon pickIcon(int l) {
   if (l == 0) return Icon(OMIcons.settings);
+  double size = 35.0;
+  IconData icon;
 
-  if (SharedPrefJson.isFavourite()) return Icon(Icons.bookmark);
+  if (SharedPrefJson.isFavourite())
+    icon = Icons.favorite;
+  else
+    icon = Icons.favorite_border;
 
-  return Icon(Icons.bookmark_border);
+  return Icon(
+    icon,
+    size: size,
+  );
 }

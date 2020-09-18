@@ -96,7 +96,6 @@ class _SearchState extends State<Search> {
                   builder: (context) => TrainStatus(
                       trainCode: trainCode,
                       stationCode: stationCode))).then((value) {
-            print("qui aggiorno il child");
             setState(() {
               recents = fetchSharedPreferenceWithListOf(shprRecentsTrains);
             });
@@ -226,8 +225,12 @@ class _SearchState extends State<Search> {
                 Navigator.push(
                     context,
                     CupertinoPageRoute(
-                        builder: (context) =>
-                            TrainStatus(trainCode: trainCode, stationCode: k)));
+                        builder: (context) => TrainStatus(
+                            trainCode: trainCode,
+                            stationCode: k))).then((value) => setState(() {
+                      recents =
+                          fetchSharedPreferenceWithListOf(shprRecentsTrains);
+                    }));
               });
             },
             child: Text(

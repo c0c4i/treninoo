@@ -51,7 +51,8 @@ class SharedPrefJson {
   static void removeRecentTrain() {
     SavedTrain trainToRemove;
     for (final savedTrain in recentsTrains) {
-      trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
+      trainToRemove = savedTrain.equals(
+          nowSearching.trainCode, nowSearching.departureStationCode);
       if (trainToRemove != null) {
         recentsTrains.remove(trainToRemove);
         save(shprRecentsTrains, recentsTrains);
@@ -69,7 +70,8 @@ class SharedPrefJson {
   static void removeFavourite() {
     SavedTrain trainToRemove;
     for (final savedTrain in favouritesTrain) {
-      trainToRemove = savedTrain.equals(int.parse(nowSearching.trainCode));
+      trainToRemove = savedTrain.equals(
+          nowSearching.trainCode, nowSearching.departureStationCode);
       if (trainToRemove != null) {
         favouritesTrain.remove(trainToRemove);
         save(shprFavouritesTrains, favouritesTrain);
@@ -148,13 +150,17 @@ class SavedTrain {
     );
   }
 
-  SavedTrain equals(int trainCode) {
-    return (trainCode.toString() == this.trainCode) ? this : null;
+  SavedTrain equals(String trainCode, String departureStationCode) {
+    return (trainCode == this.trainCode &&
+            departureStationCode == this.departureStationCode)
+        ? this
+        : null;
   }
 
   bool operator ==(Object other) {
     SavedTrain tmp = other;
-    return (tmp.trainCode == trainCode);
+    return (tmp.trainCode == trainCode &&
+        tmp.departureStationCode == departureStationCode);
   }
 }
 
