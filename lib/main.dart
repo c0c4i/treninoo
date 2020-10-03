@@ -102,8 +102,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Treninoo',
         debugShowCheckedModeBanner: false,
-        // darkTheme: CustomTheme.darkMode,
-        darkTheme: CustomTheme.defaultMode,
+        darkTheme: CustomTheme.darkMode,
         theme: CustomTheme.defaultMode,
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),

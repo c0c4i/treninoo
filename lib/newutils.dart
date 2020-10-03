@@ -5,20 +5,34 @@ import 'dart:convert';
 
 import 'package:treninoo/utils.dart';
 
+// // ... + trainCode
+// const String URL_STATION_CODE =
+//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
+
+// // ... + stationCode/trainCode
+// const String URL_TRAIN_INFO =
+//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
+
+// const String URL_STATION_NAME =
+//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
+
+// // ... + departureStationCode/arrivalStationCode/date
+// const String URL_SOLUTIONS =
+//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+
+const LOCALHOST = "http://localhost:3000";
+const HOST_ONLINE = "https://c0c4i.herokuapp.com";
+
 // ... + trainCode
-const String URL_STATION_CODE =
-    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
+const String URL_STATION_CODE = HOST_ONLINE + '/api/treninoo/departurestation/';
 
 // ... + stationCode/trainCode
-const String URL_TRAIN_INFO =
-    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
+const String URL_TRAIN_INFO = HOST_ONLINE + '/api/treninoo/details/';
 
-const String URL_STATION_NAME =
-    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
+const String URL_STATION_NAME = HOST_ONLINE + '/api/treninoo/autocomplete/';
 
 // ... + departureStationCode/arrivalStationCode/date
-const String URL_SOLUTIONS =
-    'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+const String URL_SOLUTIONS = HOST_ONLINE + '/api/treninoo/solutions/';
 
 const int SEARCH_TRAIN_STATUS = 0;
 const int SHOW_TRAIN_STATUS = 1;
@@ -45,8 +59,10 @@ Map<String, String> trainAcronym = {
 Map<String, String> trainTypeFromNumber = {
   "246": "FR",
   "235": "RV",
+  "197": "REG",
   "196": "REG",
-  "205": "EC"
+  "205": "EC",
+  "214": "IC"
 };
 
 // Ritorna il numero di treni con il numero cercato
@@ -117,7 +133,10 @@ Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
     throw new ArgumentError();
 
   String urlStationCode = URL_TRAIN_INFO + stationCode + '/' + trainCode;
+  print(urlStationCode);
   http.Response responseStationCode = await http.get(urlStationCode);
+
+  if (responseStationCode.body.isEmpty) return false;
 
   if (responseStationCode.statusCode == 204) return false;
 

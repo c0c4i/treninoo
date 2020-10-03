@@ -24,8 +24,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
   DateTime pickedDate;
   TimeOfDay time;
 
-  List<Station> suggestionDeparture;
-  List<Station> suggestionArrival;
+  List<Station> suggestionDeparture = new List<Station>();
+  List<Station> suggestionArrival = new List<Station>();
 
   TextEditingController inputDepartureController = TextEditingController();
   TextEditingController inputArrivalController = TextEditingController();
@@ -42,6 +42,10 @@ class _SearchSolutionsState extends State<SearchSolutions> {
     String _hour = addZeroToNumberLowerThan10(time.hour.toString());
     String _minute = addZeroToNumberLowerThan10(time.minute.toString());
     _time = "$_hour:$_minute";
+
+    fetchRecentsStations(shprRecentsStations).then((value) {
+      suggestionDeparture = value;
+    });
   }
 
   @override
@@ -69,6 +73,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                     child: Column(
                       children: <Widget>[
                         TypeAheadField(
+                            getImmediateSuggestions: true,
+                            hideOnEmpty: true,
                             textFieldConfiguration: TextFieldConfiguration(
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.characters,
@@ -112,6 +118,8 @@ class _SearchSolutionsState extends State<SearchSolutions> {
                           padding: EdgeInsets.only(top: 15),
                         ),
                         TypeAheadField(
+                            getImmediateSuggestions: true,
+                            hideOnEmpty: true,
                             textFieldConfiguration: TextFieldConfiguration(
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.characters,
@@ -333,6 +341,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
     List<String> names = List<String>();
     if (s.length > 0) {
       await getStationListStartWith(s).then((value) {
+        // serve per poi cercare e prendere il codice del treno - serve refactor
         (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
         value.forEach((element) {
           names.add(element.stationName);
@@ -348,7 +357,6 @@ class _SearchSolutionsState extends State<SearchSolutions> {
         });
       });
     }
-
     return names;
   }
 
@@ -377,9 +385,6 @@ class _SearchSolutionsState extends State<SearchSolutions> {
         stationName: inputArrivalController.text,
         stationCode: getStationCodeByStationName(
             inputArrivalController.text, suggestionArrival));
-
-    print(departure.stationCode);
-    print(arrival.stationCode);
 
     SharedPrefJson.addRecentStation(departure);
     SharedPrefJson.addRecentStation(arrival);

@@ -386,6 +386,7 @@ class _TrainSolutionsState extends State<TrainSolutions> {
   }
 
   String travelTimeFormat(String time) {
+    if (time == null) return "";
     int hours = int.parse(time.split(":")[0]);
     int minutes = int.parse(time.split(":")[1]);
 

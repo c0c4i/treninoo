@@ -67,6 +67,7 @@ class CustomTheme {
     scaffoldBackgroundColor: Color(0xff333333),
     iconTheme: IconThemeData(color: Colors.white),
     buttonColor: CustomColors.customGreyNigthMode,
+    primarySwatch: Colors.grey,
     cursorColor: CustomColors.customGreyNigthMode,
     textSelectionHandleColor: CustomColors.customGreyNigthMode,
     textTheme: TextTheme(

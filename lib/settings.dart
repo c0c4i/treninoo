@@ -11,8 +11,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String currentTheme = "Light";
-  List themeList = ["Light"];
+  String currentTheme = "Auto";
+  List themeList = ["Auto"];
   // List themeList = ["Ligth", "Dark", "Auto"];
 
   String currentFirstPage = "Stato";
