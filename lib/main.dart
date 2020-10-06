@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:treninoo/controller/notifiers.dart';
 import 'package:treninoo/favourites.dart';
+import 'package:treninoo/newutils.dart';
 import 'package:treninoo/utils.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,42 +14,40 @@ import 'search.dart';
 import 'searchSolutions.dart';
 // import 'utils.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // appSettings = await SharedPreferences.getInstance();
-  //runApp(RestartWidget(child: MyApp()));
-  var sharedMemory = SharedPrefJson();
-  runApp(MyApp());
-}
-/*
-class RestartWidget extends StatefulWidget {
-  final Widget child;
-  RestartWidget({this.child});
-  static restartApp(BuildContext context) {
-    final _RestartWidgetState state =
-        context.ancestorStateOfType(const TypeMatcher<_RestartWidgetState>());
-    state.restartApp();
-  }
-  @override
-  _RestartWidgetState createState() => new _RestartWidgetState();
-}
+// void main() async {
+//   // WidgetsFlutterBinding.ensureInitialized();
+//   // // appSettings = await SharedPreferences.getInstance();
+//   // //runApp(RestartWidget(child: MyApp()));
+//   // var sharedMemory = SharedPrefJson();
+//   runApp(MyApp());
+// }
 
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = new UniqueKey();
-  void restartApp() {
-    this.setState(() {
-      key = new UniqueKey();
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      key: key,
-      child: widget.child,
-    );
-  }
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPrefJson();
+  SharedPreferences.getInstance().then((prefs) {
+    String theme = prefs.getString("theme");
+    ThemeData t;
+    if (theme == null) {
+      t = lightTheme;
+      theme = "Light";
+    } else {
+      t = getThemeFromString(theme);
+    }
+
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<SingleNotifier>(
+          create: (_) => SingleNotifier(theme),
+        ),
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(t),
+        )
+      ],
+      child: MyApp(),
+    ));
+  });
 }
-*/
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);
@@ -89,21 +91,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return GestureDetector(
-      onTap: () {
-        // FocusScope.of(context).unfocus();
-        WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-        // print("eccomi");
-        // FocusScopeNode currentFocus = FocusScope.of(context);
-        // if (!currentFocus.hasPrimaryFocus) {
-        //   currentFocus.unfocus();
-        // }
-      },
+      onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
       child: MaterialApp(
         title: 'Treninoo',
         debugShowCheckedModeBanner: false,
-        darkTheme: CustomTheme.darkMode,
-        theme: CustomTheme.defaultMode,
+        // darkTheme: ,
+        theme: themeNotifier.getTheme(),
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
             child: child),

@@ -1,38 +1,41 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:treninoo/settings.dart';
+import 'package:treninoo/theme.dart';
 import 'dart:convert';
 
 import 'package:treninoo/utils.dart';
 
-// // ... + trainCode
-// const String URL_STATION_CODE =
-//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
-
-// // ... + stationCode/trainCode
-// const String URL_TRAIN_INFO =
-//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
-
-// const String URL_STATION_NAME =
-//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
-
-// // ... + departureStationCode/arrivalStationCode/date
-// const String URL_SOLUTIONS =
-//     'https://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
-
-const LOCALHOST = "http://localhost:3000";
-const HOST_ONLINE = "https://c0c4i.herokuapp.com";
-
 // ... + trainCode
-const String URL_STATION_CODE = HOST_ONLINE + '/api/treninoo/departurestation/';
+const String URL_STATION_CODE =
+    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
 
 // ... + stationCode/trainCode
-const String URL_TRAIN_INFO = HOST_ONLINE + '/api/treninoo/details/';
+const String URL_TRAIN_INFO =
+    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
 
-const String URL_STATION_NAME = HOST_ONLINE + '/api/treninoo/autocomplete/';
+const String URL_STATION_NAME =
+    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
 
 // ... + departureStationCode/arrivalStationCode/date
-const String URL_SOLUTIONS = HOST_ONLINE + '/api/treninoo/solutions/';
+const String URL_SOLUTIONS =
+    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+
+// const LOCALHOST = "http://localhost:3000";
+// const HOST_ONLINE = "https://c0c4i.herokuapp.com";
+
+// // ... + trainCode
+// const String URL_STATION_CODE = HOST_ONLINE + '/api/treninoo/departurestation/';
+
+// // ... + stationCode/trainCode
+// const String URL_TRAIN_INFO = HOST_ONLINE + '/api/treninoo/details/';
+
+// const String URL_STATION_NAME = HOST_ONLINE + '/api/treninoo/autocomplete/';
+
+// // ... + departureStationCode/arrivalStationCode/date
+// const String URL_SOLUTIONS = HOST_ONLINE + '/api/treninoo/solutions/';
 
 const int SEARCH_TRAIN_STATUS = 0;
 const int SHOW_TRAIN_STATUS = 1;
@@ -203,4 +206,14 @@ String getCustomTime(DateTime d) {
   String minute = addZeroToNumberLowerThan10(d.minute.toString());
 
   return "$hour:$minute";
+}
+
+ThemeData getThemeFromString(String value) {
+  int n = themes.indexOf(value);
+  switch (n) {
+    case 0:
+      return lightTheme;
+    case 1:
+      return darkTheme;
+  }
 }

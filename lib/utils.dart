@@ -81,8 +81,11 @@ class SharedPrefJson {
   }
 
   static bool isFavourite() {
-    for (final savedTrain in favouritesTrain)
+    for (final savedTrain in favouritesTrain) {
+      print(nowSearching.trainCode + "==" + savedTrain.trainCode);
       if (nowSearching.trainCode == savedTrain.trainCode) return true;
+    }
+
     return false;
   }
 
