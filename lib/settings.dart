@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 enum ThemeType { Light, Dark, Auto }
 
 final List<String> themes = ['Light', 'Dark'];
+final List<String> pages = ['Stato', "Ricerca", "Preferiti"];
 
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
@@ -60,21 +61,13 @@ class _SettingsState extends State<Settings> {
               contentPadding: EdgeInsets.only(left: 20),
               title: Text('Tema'),
               subtitle: Text('Seleziona il tema dell\'applicazione'),
-              onTap: () => _showSingleChoiceDialog(context),
+              onTap: () => _showThemeSelection(context),
             ),
-            // ListTile(
-            //   contentPadding: EdgeInsets.only(left: 20),
-            //   title: Text('Schermata iniziale'),
-            //   subtitle: Text('Seleziona la schermata inziale'),
-            //   onTap: () => showDialog(
-            //       context: context,
-            //       builder: (BuildContext context) {
-            //         return AlertDialog(
-            //           title: Text("Alert Dialog"),
-            //           content: Text("Dialog Content"),
-            //         );
-            //       }),
-            // ),
+            ListTile(
+                contentPadding: EdgeInsets.only(left: 20),
+                title: Text('Schermata iniziale'),
+                subtitle: Text('Seleziona la schermata inziale'),
+                onTap: () => _showStartPageSelection(context)),
             Expanded(
               child: Container(),
             ),
@@ -239,7 +232,7 @@ _openDonate() async {
   }
 }
 
-_showSingleChoiceDialog(BuildContext context) => showDialog(
+_showThemeSelection(BuildContext context) => showDialog(
     context: context,
     builder: (context) {
       var _singleNotifier = Provider.of<SingleNotifier>(context);
@@ -264,6 +257,41 @@ _showSingleChoiceDialog(BuildContext context) => showDialog(
                                   .setTheme(getThemeFromString(value));
                               SharedPreferences.getInstance().then(
                                   (prefs) => prefs.setString("theme", value));
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        ))
+                    .toList(),
+              ),
+            ),
+          ));
+    });
+
+_showStartPageSelection(BuildContext context) => showDialog(
+    context: context,
+    builder: (context) {
+      var _singleNotifier = Provider.of<SingleNotifier>(context);
+      // var _themeNotifier = Provider.of<ThemeNotifier>(context);
+      return AlertDialog(
+          title: Text("Seleziona schermata"),
+          content: SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: pages
+                    .map((e) => RadioListTile(
+                          title: Text(e),
+                          value: e,
+                          groupValue: pages[_singleNotifier.startPage],
+                          selected:
+                              _singleNotifier.startPage == pages.indexOf(e),
+                          onChanged: (value) {
+                            if (value != _singleNotifier.startPage) {
+                              _singleNotifier.updatePage(pages.indexOf(value));
+                              print(_singleNotifier.startPage);
+                              SharedPreferences.getInstance().then((prefs) =>
+                                  prefs.setInt("page", pages.indexOf(value)));
                               Navigator.of(context).pop();
                             }
                           },

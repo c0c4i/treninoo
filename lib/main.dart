@@ -22,12 +22,16 @@ import 'searchSolutions.dart';
 //   runApp(MyApp());
 // }
 
+int index;
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPrefJson();
   SharedPreferences.getInstance().then((prefs) {
     String theme = prefs.getString("theme");
+    index = prefs.getInt("page");
     ThemeData t;
+
     if (theme == null) {
       t = lightTheme;
       theme = "Light";
@@ -35,10 +39,14 @@ void main() {
       t = getThemeFromString(theme);
     }
 
+    if (index == null) {
+      index = 0;
+    }
+
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<SingleNotifier>(
-          create: (_) => SingleNotifier(theme),
+          create: (_) => SingleNotifier(theme, index),
         ),
         ChangeNotifierProvider<ThemeNotifier>(
           create: (_) => ThemeNotifier(t),
@@ -74,12 +82,14 @@ class _MyAppState extends State<MyApp> {
     favourites = Favourites();
     pages = [search, solutions, favourites];
 
-    currentPage = search;
+    _selectedIndex = index;
+    currentPage = pages[_selectedIndex];
 
     super.initState();
+    // final provider = Provider.of<SingleNotifier>(context);
   }
 
-  int _selectedIndex = 0;
+  int _selectedIndex;
   // static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _onItemTapped(int index) {
@@ -92,12 +102,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    // final provider = Provider.of<SingleNotifier>(context);
+    // int _selectedIndex = provider.startPage;
+    // currentPage = pages[_selectedIndex];
+
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
       child: MaterialApp(
         title: 'Treninoo',
         debugShowCheckedModeBanner: false,
-        // darkTheme: ,
         theme: themeNotifier.getTheme(),
         builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),

@@ -4,11 +4,21 @@ import 'package:flutter/material.dart';
 
 class SingleNotifier extends ChangeNotifier {
   String _currentTheme;
-  SingleNotifier(this._currentTheme);
+  int _startPage;
+  SingleNotifier(this._currentTheme, this._startPage);
   String get currentTheme => _currentTheme;
+  int get startPage => _startPage;
+
   updateTheme(String value) {
     if (value != _currentTheme) {
       _currentTheme = value;
+      notifyListeners();
+    }
+  }
+
+  updatePage(int value) {
+    if (value != _startPage) {
+      _startPage = value;
       notifyListeners();
     }
   }
