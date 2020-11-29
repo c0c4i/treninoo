@@ -1,9 +1,8 @@
 
 NUOVO REFACTOR 29/11/2020
-* Sistemare tutte le importazioni di file
-* Sistemare i nomi dei file in pages
+* Controllare gli errori nella ricerca del treno in modo furbo
 * Togliere le due funzioni in utils.dart e rinominare il file come sharedpreference.dart
 * Controllare il corretto utilizzo delle shared preference
 * Classe singleton con il treno cercato
-* Generalizzare l'oggetto treno in modo da usare lo stesso nei preferiti e nei recenti {{{really?}}}
+* Generalizzare il widget treno in modo da usare lo stesso nei preferiti e nei recenti
 * Migrazione ad android X 2.0

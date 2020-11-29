@@ -6,93 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/view/pages/trainstatus.dart';
-import 'package:treninoo/utils/final.dart';
+
+import 'package:treninoo/model/SolutionsList.dart';
+import 'package:treninoo/model/TrainSolutionInfo.dart';
+
+import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/core.dart';
-
-class Train {
-  final String departure_station;
-  final String arrival_station;
-  final DateTime departure_time;
-  final DateTime arrival_time;
-  final String typeNumber; // sono infami e quindi String e non int come volevo
-  final String trainType;
-  final String trainCode;
-
-  Train(
-      {this.departure_station,
-      this.arrival_station,
-      this.departure_time,
-      this.arrival_time,
-      this.typeNumber,
-      this.trainType,
-      this.trainCode});
-
-  factory Train.fromJson(Map<String, dynamic> json) {
-    String typeNumber = json['categoria'];
-
-    return Train(
-        departure_station: json['origine'],
-        arrival_station: json['destinazione'],
-        departure_time: DateTime.parse(json['orarioPartenza']),
-        arrival_time: DateTime.parse(json['orarioArrivo']),
-        typeNumber: typeNumber,
-        trainType: trainTypeFromNumber.containsKey(typeNumber)
-            ? trainTypeFromNumber[typeNumber]
-            : "EC",
-        trainCode: json['numeroTreno']);
-  }
-}
-
-class Solution {
-  final String travelTime;
-  final List<Train> trains;
-
-  Solution({this.travelTime, this.trains});
-
-  factory Solution.fromJson(Map<String, dynamic> json) {
-    return Solution(
-      travelTime: json['durata'],
-      trains: (json['vehicles'] as List).map((f) => Train.fromJson(f)).toList(),
-    );
-  }
-}
-
-class Solutions {
-  final List<Solution> solutions;
-  final String departureStation;
-  final String departureStationCode;
-  final String arrivalStation;
-  final String arrivalStationCode;
-  final DateTime fromTime;
-
-  Solutions({
-    this.solutions,
-    this.departureStation,
-    this.departureStationCode,
-    this.arrivalStation,
-    this.arrivalStationCode,
-    this.fromTime,
-  });
-
-  factory Solutions.fromJson(Map<String, dynamic> json, String departureCode,
-      String arrivalCode, DateTime time) {
-    if (json['soluzioni'].length == 0) {
-      // trainInfoErrorType = 0;
-      return null;
-    }
-    return Solutions(
-      solutions:
-          (json['soluzioni'] as List).map((f) => Solution.fromJson(f)).toList(),
-      departureStation: json['origine'],
-      departureStationCode: departureCode,
-      arrivalStation: json['destinazione'],
-      arrivalStationCode: arrivalCode,
-      fromTime: time,
-    );
-  }
-}
 
 // COSA SERVE
 //  - Codice Stazione di Partenza
@@ -100,7 +20,7 @@ class Solutions {
 //  - Data
 
 // http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/2593/2430/2019-05-06T23:14:00.000
-Future<Solutions> fetchPostSolutions(
+Future<SolutionsList> fetchPostSolutions(
     String departureCode, String arrivalCode, DateTime time) async {
   await Future.delayed(
       const Duration(milliseconds: 250)); // just for graphic satisfaction
@@ -110,29 +30,29 @@ Future<Solutions> fetchPostSolutions(
 
   final http.Response responseTrainStatus = await http.get(urlSolutions);
 
-  Solutions s = new Solutions.fromJson(
+  SolutionsList s = new SolutionsList.fromJson(
       json.decode(responseTrainStatus.body), departureCode, arrivalCode, time);
 
   return s;
 }
 
-class TrainSolutions extends StatefulWidget {
+class SolutionsResult extends StatefulWidget {
   final String departureCode;
   final String arrivalCode;
   final DateTime time;
 
-  TrainSolutions({Key key, this.departureCode, this.arrivalCode, this.time})
+  SolutionsResult({Key key, this.departureCode, this.arrivalCode, this.time})
       : super(key: key);
 
   @override
-  _TrainSolutionsState createState() => _TrainSolutionsState(data: this);
+  _SolutionsResultState createState() => _SolutionsResultState(data: this);
 }
 
-class _TrainSolutionsState extends State<TrainSolutions> {
-  Future<Solutions> post;
+class _SolutionsResultState extends State<SolutionsResult> {
+  Future<SolutionsList> post;
 
-  TrainSolutions data;
-  _TrainSolutionsState({this.data}) : super();
+  SolutionsResult data;
+  _SolutionsResultState({this.data}) : super();
 
   @override
   void initState() {
@@ -142,7 +62,7 @@ class _TrainSolutionsState extends State<TrainSolutions> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Solutions>(
+    return FutureBuilder<SolutionsList>(
         future: post,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -170,7 +90,7 @@ class _TrainSolutionsState extends State<TrainSolutions> {
 
   // widget schermata completa trainInfo
   Widget _solutionsInfo(AsyncSnapshot snapshot) {
-    Solutions data = snapshot.data;
+    SolutionsList data = snapshot.data;
 
     return Scaffold(
       body: SafeArea(
@@ -262,7 +182,7 @@ class _TrainSolutionsState extends State<TrainSolutions> {
   }
 
   Widget _showSolution(AsyncSnapshot snapshot) {
-    Solutions data = snapshot.data;
+    SolutionsList data = snapshot.data;
     int nStop = data.solutions.length;
     return ListView.builder(
         shrinkWrap: true,
@@ -308,9 +228,9 @@ class _TrainSolutionsState extends State<TrainSolutions> {
   }
 
   Widget _showSingleTrain(AsyncSnapshot snapshot, index) {
-    Solutions s = snapshot.data;
+    SolutionsList s = snapshot.data;
     int nTrain = s.solutions[index].trains.length;
-    List<Train> t = s.solutions[index].trains;
+    List<TrainSolutionInfo> t = s.solutions[index].trains;
 
     return ListView.builder(
         shrinkWrap: true,
@@ -371,7 +291,7 @@ class _TrainSolutionsState extends State<TrainSolutions> {
         });
   }
 
-  String getLabelTrains(List<Train> l) {
+  String getLabelTrains(List<TrainSolutionInfo> l) {
     String label = "";
     if (l.length == 1) {
       String trainType = l[0].trainType;

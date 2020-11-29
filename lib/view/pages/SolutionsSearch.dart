@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:treninoo/utils/utils.dart';
 
-import '../components/topbar.dart';
-import '../../utils/api.dart';
-import 'search_solution.dart';
+import 'package:treninoo/view/components/topbar.dart';
+import 'package:treninoo/view/pages/SolutionsResult.dart';
 
-import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/model/Station.dart';
 
-class SearchSolutions extends StatefulWidget {
-  SearchSolutions({Key key}) : super(key: key);
+import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/utils/api.dart';
+
+class SolutionsSearch extends StatefulWidget {
+  SolutionsSearch({Key key}) : super(key: key);
 
   @override
-  _SearchSolutionsState createState() => _SearchSolutionsState();
+  _SolutionsSearchState createState() => _SolutionsSearchState();
 }
 
-class _SearchSolutionsState extends State<SearchSolutions> {
+class _SolutionsSearchState extends State<SolutionsSearch> {
   String _date;
   String _time;
   DateTime pickedDate;
@@ -395,7 +397,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
     Navigator.push(
         context,
         CupertinoPageRoute(
-            builder: (context) => TrainSolutions(
+            builder: (context) => SolutionsResult(
                 departureCode: departure.stationCode,
                 arrivalCode: arrival.stationCode,
                 time: pickedDate)));

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../utils/api.dart';
-import '../../utils/utils.dart';
-import 'trainstatus.dart';
-import '../style/theme.dart';
+
+import '../pages/TrainStatus.dart';
+
 import 'package:treninoo/model/SavedTrain.dart';
+
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/utils.dart';
 
 class Recents extends StatefulWidget {
   Recents({Key key, this.recents}) : super(key: key);

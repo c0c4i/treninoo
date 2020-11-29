@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:treninoo/controller/notifiers.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:treninoo/controller/notifiers.dart';
+
 import 'package:treninoo/utils/core.dart';
-// import 'package:train_status/main.dart';
-// import 'utils.dart';
 
 enum ThemeType { Light, Dark, Auto }
 

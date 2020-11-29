@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:treninoo/utils/utils.dart';
-import '../pages/settings.dart';
 
+import 'package:outline_material_icons/outline_material_icons.dart';
+
+import 'package:treninoo/view/pages/Settings.dart';
 import 'package:treninoo/view/style/treninoo_icon_icons.dart';
 
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:treninoo/treninoo_icons.dart';
+import 'package:treninoo/utils/utils.dart';
 
 class TopBar extends StatefulWidget {
   TopBar({Key key, this.text, this.location}) : super(key: key);

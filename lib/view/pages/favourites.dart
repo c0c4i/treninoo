@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:treninoo/view/components/topbar.dart';
-import '../../utils/api.dart';
-import '../../utils/utils.dart';
-import 'trainstatus.dart';
-import 'package:treninoo/utils/final.dart';
+import 'package:treninoo/view/pages/trainstatus.dart';
+
 import 'package:treninoo/model/SavedTrain.dart';
+
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/utils/final.dart';
 
 class Favourites extends StatefulWidget {
   Favourites({Key key, this.trainCode, this.stationCode}) : super(key: key);

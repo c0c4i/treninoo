@@ -2,24 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:treninoo/utils/utils.dart';
 
-import '../components/topbar.dart';
-import 'trainstatus.dart';
-import 'recents.dart';
+import 'package:treninoo/view/pages/TrainStatus.dart';
+import 'package:treninoo/view/components/topbar.dart';
+import 'package:treninoo/view/components/recents.dart';
+
+import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/final.dart';
-import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/utils/utils.dart';
 
-class Search extends StatefulWidget {
-  Search({Key key}) : super(key: key);
+class TrainSearch extends StatefulWidget {
+  TrainSearch({Key key}) : super(key: key);
 
   @override
-  _SearchState createState() => _SearchState();
+  _TrainSearchState createState() => _TrainSearchState();
 }
 
-class _SearchState extends State<Search> {
+class _TrainSearchState extends State<TrainSearch> {
   int errorType = -1;
 
   bool _isSearching = false;

@@ -2,17 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:treninoo/utils/utils.dart';
 
-import '../../utils/api.dart';
-import '../components/topbar.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:treninoo/view/components/topbar.dart';
+
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/TrainStatusInfo.dart';
+
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/utils.dart';
 
 int trainInfoErrorType = -1;
 
 // ritorna un oggetto TrainInfo creato dalla GET al Server
-Future<TrainInfo> fetchPostTrainInfo(
+Future<TrainStatusInfo> fetchPostTrainInfo(
     String trainCode, String stationCode) async {
   await Future.delayed(
       const Duration(milliseconds: 250)); // just for graphic satisfaction
@@ -23,97 +27,7 @@ Future<TrainInfo> fetchPostTrainInfo(
     return null;
   }
   trainInfoErrorType = -1;
-  return TrainInfo.fromJson(json.decode(responseTrainStatus.body));
-}
-
-class Stop {
-  final String name;
-  final String plannedDepartureTime;
-  final String actualDepartureTime;
-  final String plannedArrivalTime;
-  final String actualArrivalTime;
-  final String plannedDepartureRail;
-  final String actualDepartureRail;
-  final String plannedArrivalRail;
-  final String actualArrivalRail;
-  final int delay;
-
-  Stop({
-    this.name,
-    this.plannedDepartureTime,
-    this.actualDepartureTime,
-    this.plannedArrivalTime,
-    this.actualArrivalTime,
-    this.plannedDepartureRail,
-    this.actualDepartureRail,
-    this.plannedArrivalRail,
-    this.actualArrivalRail,
-    this.delay,
-  });
-
-  factory Stop.fromJson(Map<String, dynamic> json) {
-    return Stop(
-      name: json['stazione'],
-      plannedDepartureTime:
-          timeStampToString(json['partenza_teorica']), // to converter from unix
-      actualDepartureTime:
-          timeStampToString(json['partenzaReale']), // to converter from unix
-      plannedArrivalTime:
-          timeStampToString(json['arrivo_teorico']), // to converter from unix
-      actualArrivalTime:
-          timeStampToString(json['arrivoReale']), // to converter from unix
-      plannedDepartureRail: json['binarioProgrammatoPartenzaDescrizione'],
-      actualDepartureRail: json['binarioEffettivoPartenzaDescrizione'],
-      plannedArrivalRail: json['binarioProgrammatoArrivoDescrizione'],
-      actualArrivalRail: json['binarioEffettivoArrivoDescrizione'],
-      delay: json['ritardo'],
-    );
-  }
-}
-
-class TrainInfo {
-  final List<Stop> stops;
-  final String lastPositionRegister; // to converter from unix
-  final String lastTimeRegister;
-  final String trainType;
-  final int delay;
-  final String trainCode;
-
-  String departureStationCode;
-  String departureStationName;
-  String arrivalStationName;
-  String departureTime;
-
-  TrainInfo({
-    this.stops,
-    this.lastPositionRegister,
-    this.lastTimeRegister,
-    this.trainType,
-    this.delay,
-    this.trainCode,
-    this.departureStationCode,
-    this.departureStationName,
-    this.arrivalStationName,
-    this.departureTime,
-  });
-
-  factory TrainInfo.fromJson(Map<String, dynamic> json) {
-    if (json['fermate'].length == 0) {
-      trainInfoErrorType = 0;
-      return null;
-    }
-    return TrainInfo(
-        stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
-        lastPositionRegister: json['stazioneUltimoRilevamento'],
-        lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
-        trainType: json['categoria'],
-        delay: json['ritardo'],
-        trainCode: json['numeroTreno'].toString(),
-        departureStationCode: json['idOrigine'],
-        departureStationName: json['origine'],
-        arrivalStationName: json['destinazione'],
-        departureTime: json['compOrarioPartenzaZero']);
-  }
+  return TrainStatusInfo.fromJson(json.decode(responseTrainStatus.body));
 }
 
 class TrainStatus extends StatefulWidget {
@@ -127,7 +41,7 @@ class TrainStatus extends StatefulWidget {
 }
 
 class _TrainStatusState extends State<TrainStatus> {
-  Future<TrainInfo> post;
+  Future<TrainStatusInfo> post;
 
   TrainStatus data;
   _TrainStatusState({this.data}) : super();
@@ -160,7 +74,7 @@ class _TrainStatusState extends State<TrainStatus> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<TrainInfo>(
+    return FutureBuilder<TrainStatusInfo>(
         future: post,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -192,7 +106,7 @@ class _TrainStatusState extends State<TrainStatus> {
 
   // widget schermata completa trainInfo
   Widget _trainInfo(AsyncSnapshot snapshot) {
-    TrainInfo data = snapshot.data;
+    TrainStatusInfo data = snapshot.data;
 
     SavedTrain t = SavedTrain(
         trainCode: data.trainCode,
@@ -381,7 +295,7 @@ class _TrainStatusState extends State<TrainStatus> {
 
   // widget lista delle fermate
   Widget _stopList(AsyncSnapshot snapshot) {
-    TrainInfo data = snapshot.data;
+    TrainStatusInfo data = snapshot.data;
     int nStop = data.stops.length;
     int i = 0;
     return ListView.builder(

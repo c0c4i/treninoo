@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:treninoo/controller/notifiers.dart';
-import 'package:treninoo/view/pages/favourites.dart';
+
+import 'package:treninoo/view/pages/Favourites.dart';
+import 'package:treninoo/view/pages/TrainSearch.dart';
+import 'package:treninoo/view/pages/SolutionsSearch.dart';
+import 'package:treninoo/view/style/theme.dart';
+
 import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/utils/core.dart';
-
-import 'view/style/theme.dart';
-import 'view/pages/search.dart';
-import 'view/pages/searchSolutions.dart';
 
 int index;
 
@@ -65,8 +68,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   FocusNode myFocusNode;
 
-  Search search;
-  SearchSolutions solutions;
+  TrainSearch search;
+  SolutionsSearch solutions;
   Favourites favourites;
   List<Widget> pages;
   Widget currentPage;
@@ -75,8 +78,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    search = Search();
-    solutions = SearchSolutions();
+    search = TrainSearch();
+    solutions = SolutionsSearch();
     favourites = Favourites();
     pages = [search, solutions, favourites];
 

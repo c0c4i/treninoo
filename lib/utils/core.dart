@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/pages/settings.dart';
+import 'package:treninoo/view/pages/Settings.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 String addZeroToNumberLowerThan10(String n) {
