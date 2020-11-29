@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:treninoo/utils.dart';
+import 'package:treninoo/utils/utils.dart';
 
-import 'topbar.dart';
+import '../components/topbar.dart';
 import 'trainstatus.dart';
 import 'recents.dart';
-import 'newutils.dart';
+
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/final.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -28,7 +31,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    recents = fetchSharedPreferenceWithListOf(shprRecentsTrains);
+    recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
   }
 
   @override
@@ -97,7 +100,7 @@ class _SearchState extends State<Search> {
                       trainCode: trainCode,
                       stationCode: stationCode))).then((value) {
             setState(() {
-              recents = fetchSharedPreferenceWithListOf(shprRecentsTrains);
+              recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
             });
           });
         });
@@ -229,7 +232,7 @@ class _SearchState extends State<Search> {
                             trainCode: trainCode,
                             stationCode: k))).then((value) => setState(() {
                       recents =
-                          fetchSharedPreferenceWithListOf(shprRecentsTrains);
+                          fetchSharedPreferenceWithListOf(spRecentsTrains);
                     }));
               });
             },

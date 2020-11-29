@@ -1,22 +1,11 @@
+NOVITÀ
 1) Creare Interfaccia
 2) CheckBox Filtro Treni
 3) Fast Search
 
-31/07/2020
-
-1) Preferiti implementati, manca la rimozione del treno dalla lista quando si clicca elimina nel pop up.
-2) Gestire la connessione lenta quando si clicca un treno recente o preferito
-
-* Bloccare il bottone dopo il primo click e aspettare n secondi in modo da gestire la connessione lenta.
+DA FARE DOPO IL REFACTOR
+1. Gestire la connessione lenta quando si clicca un treno recente o preferito
+    Bloccare il bottone dopo il primo click e aspettare n secondi in modo da gestire la connessione lenta.
     [provato ma non funziona ancora, in parte si dai, il click veloce non penso si possa gestire]
-
-* Salvare lo stato di ogni pagina (stato, ricerca)
-
-* FALLBACK CAMPI VUOTI JSON STATO TRENO
-
-* refactor con classe singleton (già usata in parte)
-
-* pensare a come unire il widget dei preferiti e recenti dato che sono identici circa
-
-REFACTOR
-1) Generalizzare l'oggetto treno in modo da usare lo stesso nei preferiti e nei recenti.
+2. Salvare lo stato di ogni pagina (stato, ricerca)
+3. Fallback campi vuoti json sullo stato del treno

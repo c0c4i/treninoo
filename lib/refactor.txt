@@ -1,3 +1,9 @@
-1) Nigth mode sospesa per deprecazione, rifare meglio
-2) TextFormField al posto di tutte le cose separate [guardare se è meglio]
-3) Refactor per come uso le shared preference perché per ora mi sembra usato in modo abbastanza grezzo.
+
+NUOVO REFACTOR 29/11/2020
+* Sistemare tutte le importazioni di file
+* Sistemare i nomi dei file in pages
+* Togliere le due funzioni in utils.dart e rinominare il file come sharedpreference.dart
+* Controllare il corretto utilizzo delle shared preference
+* Classe singleton con il treno cercato
+* Generalizzare l'oggetto treno in modo da usare lo stesso nei preferiti e nei recenti {{{really?}}}
+* Migrazione ad android X 2.0

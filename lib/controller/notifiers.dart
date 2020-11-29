@@ -1,5 +1,5 @@
 import 'package:provider/provider.dart';
-import 'package:treninoo/settings.dart';
+import 'package:treninoo/view/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class SingleNotifier extends ChangeNotifier {

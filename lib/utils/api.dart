@@ -1,12 +1,7 @@
 import 'dart:collection';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:treninoo/settings.dart';
-import 'package:treninoo/theme.dart';
 import 'dart:convert';
-
-import 'package:treninoo/utils.dart';
+import 'package:treninoo/model/Station.dart';
 
 // ... + trainCode
 const String URL_STATION_CODE =
@@ -23,50 +18,7 @@ const String URL_STATION_NAME =
 const String URL_SOLUTIONS =
     'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
 
-// const LOCALHOST = "http://localhost:3000";
-// const HOST_ONLINE = "https://c0c4i.herokuapp.com";
-
-// // ... + trainCode
-// const String URL_STATION_CODE = HOST_ONLINE + '/api/treninoo/departurestation/';
-
-// // ... + stationCode/trainCode
-// const String URL_TRAIN_INFO = HOST_ONLINE + '/api/treninoo/details/';
-
-// const String URL_STATION_NAME = HOST_ONLINE + '/api/treninoo/autocomplete/';
-
-// // ... + departureStationCode/arrivalStationCode/date
-// const String URL_SOLUTIONS = HOST_ONLINE + '/api/treninoo/solutions/';
-
-const int SEARCH_TRAIN_STATUS = 0;
-const int SHOW_TRAIN_STATUS = 1;
-const int SEARCH_SOLUTIONS = 0;
-const int SHOW_SOLUTIONS = 1;
-
 final RegExp rgxTrainCode = RegExp(r"\|.+-(\S+)$");
-
-// Utilizzato per far scegliere il treno quando hanno lo stesso numero
-Map<String, String> trainNames = {
-  "REG": "Regionale",
-  "EC": "EuroCity",
-  "IC": "Intercity",
-  "FR": "Frecciarossa"
-};
-
-Map<String, String> trainAcronym = {
-  "Regionale": "REG",
-  "EuroCity": "EC",
-  "Intercity": "IC",
-  "Frecciarossa": "FR"
-};
-
-Map<String, String> trainTypeFromNumber = {
-  "246": "FR",
-  "235": "RV",
-  "197": "REG",
-  "196": "REG",
-  "205": "EC",
-  "214": "IC"
-};
 
 // Ritorna il numero di treni con il numero cercato
 Future<int> getAvailableNumberOfTrain(String trainCode) async {
@@ -187,33 +139,4 @@ Future<String> getStationCodeFromStationName(String stationName) async {
       responseStationCode.body.split("|")[1].substring(2).replaceAll("\n", "");
 
   return stationCode;
-}
-
-String addZeroToNumberLowerThan10(String n) {
-  return (n.length < 2) ? "0$n" : n;
-}
-
-String getCustomDate(DateTime d) {
-  String day = addZeroToNumberLowerThan10(d.day.toString());
-  String month = addZeroToNumberLowerThan10(d.month.toString());
-  String year = addZeroToNumberLowerThan10(d.year.toString());
-
-  return "$day/$month/$year";
-}
-
-String getCustomTime(DateTime d) {
-  String hour = addZeroToNumberLowerThan10(d.hour.toString());
-  String minute = addZeroToNumberLowerThan10(d.minute.toString());
-
-  return "$hour:$minute";
-}
-
-ThemeData getThemeFromString(String value) {
-  int n = themes.indexOf(value);
-  switch (n) {
-    case 0:
-      return lightTheme;
-    case 1:
-      return darkTheme;
-  }
 }

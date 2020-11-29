@@ -1,69 +1,77 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'newutils.dart';
-import 'utils.dart';
+import 'package:treninoo/view/components/topbar.dart';
+import '../../utils/api.dart';
+import '../../utils/utils.dart';
 import 'trainstatus.dart';
-import 'theme.dart';
+import 'package:treninoo/utils/final.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 
-class Recents extends StatefulWidget {
-  Recents({Key key, this.recents}) : super(key: key);
+class Favourites extends StatefulWidget {
+  Favourites({Key key, this.trainCode, this.stationCode}) : super(key: key);
 
-  Future<List<SavedTrain>> recents;
+  final String trainCode;
+  final String stationCode;
 
   @override
-  _RecentsState createState() => _RecentsState();
+  _FavouritesState createState() => _FavouritesState();
 }
 
-class _RecentsState extends State<Recents> {
-  _RecentsState();
+class _FavouritesState extends State<Favourites> {
+  _FavouritesState();
 
-  // Future<List<SavedTrain>> recents;
+  Future<List<SavedTrain>> favourites;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   recents = fetchSharedPreferenceWithListOf("recents");
-  // }
+  @override
+  void initState() {
+    super.initState();
+    favourites = _fetchFavourites();
+  }
 
   // widget completo che ingloba i preferiti
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment(-1, 0),
-      padding: EdgeInsets.only(top: 80, left: 7, right: 7),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: Text(
-              'Recenti',
-              style: Theme.of(context).textTheme.display1,
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
+                FutureBuilder(
+                  future: favourites,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<dynamic> projectSnap) {
+                    dynamic jsonDecoded = projectSnap.data;
+                    if (jsonDecoded == null || jsonDecoded.length == 0)
+                      return new Text(
+                        "Nessun preferito",
+                        textAlign: TextAlign.center,
+                      );
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: jsonDecoded.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _favouriteTrainWidget(jsonDecoded[index]);
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
           ),
-          FutureBuilder(
-            future: widget.recents,
-            builder:
-                (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
-              dynamic jsonDecoded = projectSnap.data;
-              if (jsonDecoded == null || jsonDecoded.length == 0)
-                return new Text(
-                  "Nessun recente",
-                  textAlign: TextAlign.center,
-                );
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: jsonDecoded.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _favouriteTrainWidget(jsonDecoded[index]);
-                },
-              );
-            },
-          ),
-        ],
+        ),
       ),
     );
+  }
+
+  Future<List<SavedTrain>> _fetchFavourites() async {
+    final pref = await SharedPrefJson.read(spFavouritesTrains);
+    if (pref == null) return null;
+    return (pref as List<dynamic>).map((e) => SavedTrain.fromJson(e)).toList();
   }
 
   // preferito univoco
@@ -93,25 +101,27 @@ class _RecentsState extends State<Recents> {
                               trainCode: train.trainCode,
                               stationCode: train.departureStationCode,
                             )),
-                  );
+                  ).then((value) {
+                    print("Sono tornato indietro e faccio il fetch");
+                    setState(() {
+                      favourites = _fetchFavourites();
+                    });
+                  });
                 } else {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: new Text("Treno mofidicato"),
-                        content: Text("Vuoi rimuoverlo dai recenti?"),
+                        content: Text("Vuoi rimuoverlo dai preferiti?"),
                         actions: <Widget>[
                           FlatButton(
-                            child: Text("Elimina"),
+                            child: Text("Rimuovi"),
                             onPressed: () {
                               SharedPrefJson.nowSearching = train;
-                              SharedPrefJson.removeRecentTrain();
-                              print("elimino");
+                              SharedPrefJson.removeFavourite();
                               setState(() {
-                                widget.recents =
-                                    fetchSharedPreferenceWithListOf(
-                                        shprRecentsTrains);
+                                favourites = _fetchFavourites();
                               });
                               Navigator.pop(context);
                             },
@@ -130,6 +140,35 @@ class _RecentsState extends State<Recents> {
                 }
               });
             });
+          },
+          onLongPress: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: new Text("Vuoi rimuovere il treno dai preferiti?"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Rimuovi"),
+                      onPressed: () {
+                        SharedPrefJson.nowSearching = train;
+                        SharedPrefJson.removeFavourite();
+                        setState(() {
+                          favourites = _fetchFavourites();
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text("Annulla"),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           },
           child: Column(
             children: <Widget>[

@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:treninoo/theme.dart';
-import 'package:treninoo/utils.dart';
+import 'package:treninoo/utils/utils.dart';
 
-import 'topbar.dart';
-import 'newutils.dart';
+import '../components/topbar.dart';
+import '../../utils/api.dart';
 import 'search_solution.dart';
+
+import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/model/Station.dart';
 
 class SearchSolutions extends StatefulWidget {
   SearchSolutions({Key key}) : super(key: key);
@@ -43,7 +42,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
     String _minute = addZeroToNumberLowerThan10(time.minute.toString());
     _time = "$_hour:$_minute";
 
-    fetchRecentsStations(shprRecentsStations).then((value) {
+    fetchRecentsStations(spRecentsStations).then((value) {
       suggestionDeparture = value;
     });
   }
@@ -349,7 +348,7 @@ class _SearchSolutionsState extends State<SearchSolutions> {
       });
       return names;
     } else {
-      fetchRecentsStations(shprRecentsStations).then((value) {
+      fetchRecentsStations(spRecentsStations).then((value) {
         if (value.length == 0) return null;
         (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
         value.forEach((element) {

@@ -1,0 +1,2 @@
+INFORMARSI
+* TextFormField al posto di tutte le cose separate [guardare se è meglio]

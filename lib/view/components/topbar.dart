@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:treninoo/utils.dart';
-import 'settings.dart';
+import 'package:treninoo/utils/utils.dart';
+import '../pages/settings.dart';
 
-import 'package:treninoo/treninoo_icon_icons.dart';
+import 'package:treninoo/view/style/treninoo_icon_icons.dart';
 
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:treninoo/treninoo_icons.dart';

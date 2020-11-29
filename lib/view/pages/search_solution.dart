@@ -6,9 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'newutils.dart';
-import 'topbar.dart';
-import 'trainstatus.dart';
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/view/pages/trainstatus.dart';
+import 'package:treninoo/utils/final.dart';
+import 'package:treninoo/utils/core.dart';
 
 class Train {
   final String departure_station;

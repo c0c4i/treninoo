@@ -1,31 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:treninoo/controller/notifiers.dart';
-import 'package:treninoo/favourites.dart';
-import 'package:treninoo/newutils.dart';
-import 'package:treninoo/utils.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:treninoo/view/pages/favourites.dart';
+import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/utils/core.dart';
 
-import 'theme.dart';
-import 'search.dart';
-import 'searchSolutions.dart';
-// import 'utils.dart';
-
-// void main() async {
-//   // WidgetsFlutterBinding.ensureInitialized();
-//   // // appSettings = await SharedPreferences.getInstance();
-//   // //runApp(RestartWidget(child: MyApp()));
-//   // var sharedMemory = SharedPrefJson();
-//   runApp(MyApp());
-// }
+import 'view/style/theme.dart';
+import 'view/pages/search.dart';
+import 'view/pages/searchSolutions.dart';
 
 int index;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPrefJson();
   SharedPreferences.getInstance().then((prefs) {
     String theme = prefs.getString("theme");
@@ -55,6 +47,12 @@ void main() {
       child: MyApp(),
     ));
   });
+}
+
+void setAndroidColor(ThemeData t) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: t.canvasColor,
+      systemNavigationBarIconBrightness: t.brightness));
 }
 
 class MyApp extends StatefulWidget {
@@ -102,9 +100,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    // final provider = Provider.of<SingleNotifier>(context);
-    // int _selectedIndex = provider.startPage;
-    // currentPage = pages[_selectedIndex];
+    setAndroidColor(themeNotifier.getTheme());
 
     return GestureDetector(
       onTap: () => WidgetsBinding.instance.focusManager.primaryFocus?.unfocus(),
@@ -126,15 +122,15 @@ class _MyAppState extends State<MyApp> {
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(OMIcons.train),
-                title: Text('Stato'),
+                label: 'Stato',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
-                title: Text('Ricerca'),
+                label: 'Ricerca',
               ),
               BottomNavigationBarItem(
                 icon: Icon(OMIcons.favorite),
-                title: Text('Preferiti'),
+                label: 'Preferiti',
               ),
             ],
             currentIndex: _selectedIndex,
@@ -144,11 +140,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-}
-
-class Data {
-  final int id;
-  bool expanded;
-  final String title;
-  Data({this.id, this.expanded, this.title});
 }

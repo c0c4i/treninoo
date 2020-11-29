@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:treninoo/utils.dart';
+import 'package:treninoo/utils/utils.dart';
 
-import 'newutils.dart';
-import 'topbar.dart';
+import '../../utils/api.dart';
+import '../components/topbar.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 
 int trainInfoErrorType = -1;
 
