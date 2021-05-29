@@ -35,8 +35,12 @@ Future<String> getSpecificStationCode(String trainCode) async {
   http.Response responseStationCode =
       await http.get(URL_STATION_CODE + trainCode);
   var text = responseStationCode.body;
+  if (text.isEmpty) return null;
+
   var lines = text.split('\n');
-  return rgxTrainCode.firstMatch(lines[0]).group(1);
+  var details = lines[0].split("|")[1].split("-");
+
+  return details[1];
 }
 
 // converte tempo unix in stringa oo:mm
@@ -87,7 +91,12 @@ Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
   if (trainCode.length == 0 || stationCode.length == 0)
     throw new ArgumentError();
 
-  String urlStationCode = URL_TRAIN_INFO + stationCode + '/' + trainCode;
+  DateTime now = new DateTime.now();
+  DateTime date = new DateTime(now.year, now.month, now.day);
+  String timestamp = date.millisecondsSinceEpoch.toString();
+
+  String urlStationCode =
+      URL_TRAIN_INFO + stationCode + '/' + trainCode + '/' + timestamp;
   print(urlStationCode);
   http.Response responseStationCode = await http.get(urlStationCode);
 

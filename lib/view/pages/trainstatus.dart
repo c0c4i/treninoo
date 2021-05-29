@@ -20,7 +20,19 @@ Future<TrainStatusInfo> fetchPostTrainInfo(
     String trainCode, String stationCode) async {
   await Future.delayed(
       const Duration(milliseconds: 250)); // just for graphic satisfaction
-  String urlTrainStatus = URL_TRAIN_INFO + stationCode + "/" + trainCode;
+
+  if (stationCode == null) {
+    trainInfoErrorType = 1;
+    return null;
+  }
+
+  DateTime now = new DateTime.now();
+  DateTime date = new DateTime(now.year, now.month, now.day);
+  String timestamp = date.millisecondsSinceEpoch.toString();
+
+  String urlTrainStatus =
+      URL_TRAIN_INFO + stationCode + "/" + trainCode + "/" + timestamp;
+  print(urlTrainStatus);
   final http.Response responseTrainStatus = await http.get(urlTrainStatus);
   if (responseTrainStatus.statusCode != 200) {
     trainInfoErrorType = 1;
