@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/components/train_card.dart';
 
 import '../pages/TrainStatus.dart';
 
@@ -31,162 +32,89 @@ class _RecentsState extends State<Recents> {
   // widget completo che ingloba i preferiti
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment(-1, 0),
-      padding: EdgeInsets.only(top: 80, left: 7, right: 7),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: Text(
-              'Recenti',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ),
-          FutureBuilder(
-            future: widget.recents,
-            builder:
-                (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
-              dynamic jsonDecoded = projectSnap.data;
-              if (jsonDecoded == null || jsonDecoded.length == 0)
-                return new Text(
-                  "Nessun recente",
-                  textAlign: TextAlign.center,
-                );
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: jsonDecoded.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _favouriteTrainWidget(jsonDecoded[index]);
-                },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 50),
+        Container(
+          alignment: Alignment.centerLeft,
+          child: Text("Recenti", style: TextStyle(fontSize: 26)),
+        ),
+        SizedBox(height: 16),
+        FutureBuilder(
+          future: widget.recents,
+          builder: (BuildContext context, AsyncSnapshot<dynamic> projectSnap) {
+            dynamic jsonDecoded = projectSnap.data;
+            if (jsonDecoded == null || jsonDecoded.length == 0)
+              return new Text(
+                "Nessun recente",
+                textAlign: TextAlign.center,
               );
-            },
-          ),
-        ],
-      ),
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: jsonDecoded.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _favouriteTrainWidget(jsonDecoded[index]);
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 
   // preferito univoco
   Widget _favouriteTrainWidget(SavedTrain train) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: ButtonTheme(
-        padding: EdgeInsets.all(15),
-        minWidth: double.infinity,
-        child: RaisedButton(
-          color: Theme.of(context).buttonColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          onPressed: () {
-            // _showFutureReleaseDialog();
-            // return;
-            setState(() {
-              verifyIfTrainExist(train.departureStationCode, train.trainCode)
-                  .then((exist) {
-                if (exist) {
-                  // cercalo
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => TrainStatus(
-                              trainCode: train.trainCode,
-                              stationCode: train.departureStationCode,
-                            )),
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: new Text("Treno mofidicato"),
-                        content: Text("Vuoi rimuoverlo dai recenti?"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("Elimina"),
-                            onPressed: () {
-                              SharedPrefJson.nowSearching = train;
-                              SharedPrefJson.removeRecentTrain();
-                              print("elimino");
-                              setState(() {
-                                widget.recents =
-                                    fetchSharedPreferenceWithListOf(
-                                        spRecentsTrains);
-                              });
-                              Navigator.pop(context);
-                            },
-                          ),
-                          FlatButton(
-                            child: Text("Annulla"),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
+    return TrainCard(
+      train: train,
+      onPressed: () async {
+        var exist = await verifyIfTrainExist(
+            train.departureStationCode, train.trainCode);
+
+        if (exist) {
+          // cercalo
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TrainStatus(
+                      trainCode: train.trainCode,
+                      stationCode: train.departureStationCode,
+                    )),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: new Text("Treno mofidicato"),
+                content: Text("Vuoi rimuoverlo dai recenti?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Elimina"),
+                    onPressed: () {
+                      SharedPrefJson.nowSearching = train;
+                      SharedPrefJson.removeRecentTrain();
+                      print("elimino");
+                      setState(() {
+                        widget.recents =
+                            fetchSharedPreferenceWithListOf(spRecentsTrains);
+                      });
+                      Navigator.pop(context);
                     },
-                  );
-                  // alert and delete
-                }
-              });
-            });
-          },
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(
-                    train.trainType,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
-                  Text(
-                    train.trainCode,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                  Expanded(
-                    child: Text(
-                      train.departureTime,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
+                  FlatButton(
+                    child: Text("Annulla"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      train.departureStationName,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      train.arrivalStationName,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              );
+            },
+          );
+        }
+      },
     );
   }
 

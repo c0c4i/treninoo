@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/components/button.dart';
+import 'package:treninoo/view/components/header.dart';
+import 'package:treninoo/view/components/textfield.dart';
 
 import 'package:treninoo/view/pages/TrainStatus.dart';
 import 'package:treninoo/view/components/topbar.dart';
@@ -42,7 +45,7 @@ class _TrainSearchState extends State<TrainSearch> {
     super.dispose();
   }
 
-  String _errorType() {
+  String _errorType(String type) {
     switch (errorType) {
       case 0:
         return 'E\' necessario inserire il codice'; // empty train code
@@ -65,6 +68,7 @@ class _TrainSearchState extends State<TrainSearch> {
         - Due treni: 
   */
   void searchButtonClick(String trainCode) {
+    _formKey.currentState.validate();
     _isSearching = true;
     FocusScope.of(context).unfocus();
 
@@ -123,77 +127,54 @@ class _TrainSearchState extends State<TrainSearch> {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-            child: Column(
-              children: <Widget>[
-                TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
-                Container(
-                  padding: EdgeInsets.only(top: 100, left: 7, right: 7),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      children: <Widget>[
-                        TextField(
-                            style: Theme.of(context).textTheme.display3,
-                            keyboardType: TextInputType.number,
-                            controller: inputController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Theme.of(context).primaryColor,
-                                size: 35,
-                              ),
-                              labelText: 'Inserire Codice Treno',
-                              errorText: _errorType(),
-                              errorStyle: TextStyle(fontSize: 15),
-                              labelStyle: TextStyle(fontSize: 20),
-                            ),
-                            focusNode: null),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: ButtonTheme(
-                            minWidth: double.infinity,
-                            child: RaisedButton(
-                              padding: EdgeInsets.only(
-                                  left: 50, right: 50, top: 20, bottom: 20),
-                              color: Theme.of(context).buttonColor,
-                              onPressed: !_isSearching
-                                  ? () =>
-                                      searchButtonClick(inputController.text)
-                                  : null,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              child: Text(
-                                'Cerca',
-                                style: Theme.of(context).textTheme.display2,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          minimum: EdgeInsets.all(8),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
+                  Header(
+                    title: "Cerca il tuo treno",
+                    description:
+                        "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
+                  ),
+                  SizedBox(height: 50),
+                  Form(
+                    key: _formKey,
+                    child: BeautifulTextField(
+                      prefixIcon: Icons.search,
+                      labelText: "Codice treno",
+                      controller: inputController,
+                      keyboardType: TextInputType.number,
+                      validator: _errorType,
                     ),
                   ),
-                ),
-                Recents(recents: recents),
-              ],
+                  SizedBox(height: 20),
+                  ActionButton(
+                    title: "Cerca",
+                    onPressed: !_isSearching
+                        ? () => searchButtonClick(inputController.text)
+                        : null,
+                  ),
+                  Recents(recents: recents),
+                ],
+              ),
             ),
           ),
         ),
