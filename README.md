@@ -25,3 +25,6 @@ Per poter compilare il codice nel proprio computer è necessario:
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/it_badge_web_generic.png" alt="Get it on Android" height="80">](https://play.google.com/store/apps/details?id=it.samuelebesoli.treninoo)
 
 > La versione iOS sarà disponibile a breve
+
+## Icona
+L'icona è stata creata da @b.cat_art
