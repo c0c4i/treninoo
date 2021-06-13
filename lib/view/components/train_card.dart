@@ -9,16 +9,18 @@ class TrainCard extends StatelessWidget {
   final double height;
   final Color color;
   final VoidCallback onPressed;
+  final VoidCallback onLongPress;
 
-  const TrainCard(
-      {Key key,
-      this.train,
-      // this.number,
-      this.width = double.infinity,
-      this.height = 50,
-      this.color,
-      this.onPressed})
-      : super(key: key);
+  const TrainCard({
+    Key key,
+    this.train,
+    // this.number,
+    this.width = double.infinity,
+    this.height = 50,
+    this.color,
+    this.onPressed,
+    this.onLongPress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class TrainCard extends StatelessWidget {
         width: width,
         child: ElevatedButton(
           onPressed: onPressed,
+          onLongPress: onLongPress,
           child: Column(
             children: [
               Row(

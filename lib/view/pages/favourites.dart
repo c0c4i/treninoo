@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/components/header.dart';
 
 import 'package:treninoo/view/components/topbar.dart';
+import 'package:treninoo/view/components/train_card.dart';
 import 'package:treninoo/view/pages/trainstatus.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';
@@ -35,14 +37,20 @@ class _FavouritesState extends State<Favourites> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          minimum: EdgeInsets.all(8),
+          child: Padding(
+            padding: EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
+                Header(
+                  title: "I tuoi treni",
+                  description:
+                      "Qui puoi trovare i treni che hai contrassegnato come preferiti",
+                ),
+                SizedBox(height: 20),
                 FutureBuilder(
                   future: favourites,
                   builder: (BuildContext context,
@@ -79,6 +87,94 @@ class _FavouritesState extends State<Favourites> {
 
   // preferito univoco
   Widget _favouriteTrainWidget(SavedTrain train) {
+    return TrainCard(
+      train: train,
+      onPressed: () {
+        // _showFutureReleaseDialog();
+        // return;
+        setState(() {
+          verifyIfTrainExist(train.departureStationCode, train.trainCode)
+              .then((exist) {
+            if (exist) {
+              // cercalo
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => TrainStatus(
+                          trainCode: train.trainCode,
+                          stationCode: train.departureStationCode,
+                        )),
+              ).then((value) {
+                print("Sono tornato indietro e faccio il fetch");
+                setState(() {
+                  favourites = _fetchFavourites();
+                });
+              });
+            } else {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: new Text("Treno mofidicato"),
+                    content: Text("Vuoi rimuoverlo dai preferiti?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Rimuovi"),
+                        onPressed: () {
+                          SharedPrefJson.nowSearching = train;
+                          SharedPrefJson.removeFavourite();
+                          setState(() {
+                            favourites = _fetchFavourites();
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("Annulla"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              // alert and delete
+            }
+          });
+        });
+      },
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Vuoi rimuovere il treno dai preferiti?"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Rimuovi"),
+                  onPressed: () {
+                    SharedPrefJson.nowSearching = train;
+                    SharedPrefJson.removeFavourite();
+                    setState(() {
+                      favourites = _fetchFavourites();
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text("Annulla"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: ButtonTheme(
