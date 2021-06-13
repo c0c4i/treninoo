@@ -125,7 +125,7 @@ class ClickableTextField extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(icon: Icon(Icons.clear), onPressed: onClear)
+        // IconButton(icon: Icon(Icons.clear), onPressed: onClear)
       ],
     );
   }
@@ -144,25 +144,20 @@ class SuggestionTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, String> map = Map<String, String>();
 
-    Future<List<String>> suggestionCreator(String text, int type) async {
+    Future<List<String>> suggestionCreator(String text) async {
       List<String> names = [];
+      List<Station> stations = [];
       if (text.length > 0) {
-        await getStationListStartWith(text).then((value) {
-          value.forEach((station) {
-            map[station.stationName] = station.stationCode;
-            names.add(station.stationName);
-          });
-        });
-        return names;
+        stations = await getStationListStartWith(text);
       } else {
-        fetchRecentsStations(spRecentsStations).then((value) {
-          if (value.length == 0) return null;
-          value.forEach((station) {
-            map[station.stationName] = station.stationCode;
-            names.add(station.stationName);
-          });
-        });
+        stations = await fetchRecentsStations(spRecentsStations);
       }
+
+      if (stations == null) return null;
+      stations.forEach((station) {
+        map[station.stationName] = station.stationCode;
+        names.add(station.stationName);
+      });
       return names;
     }
 
@@ -183,8 +178,8 @@ class SuggestionTextField extends StatelessWidget {
             labelText: label,
           ),
         ),
-        suggestionsCallback: (pattern) async {
-          return suggestionCreator(pattern, 0);
+        suggestionsCallback: (text) async {
+          return suggestionCreator(text);
         },
         itemBuilder: (context, suggestion) {
           return SuggestionRow(suggestion: suggestion);
