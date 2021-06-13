@@ -61,6 +61,13 @@ final lightTheme = ThemeData(
       ),
       borderRadius: BorderRadius.all(Radius.circular(8.0)),
     ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: AppColors.borderGrey,
+        width: 1,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+    ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(
         color: AppColors.borderGrey,
