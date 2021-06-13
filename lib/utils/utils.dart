@@ -235,6 +235,6 @@ Future<List<SavedTrain>> fetchSharedPreferenceWithListOf(String s) async {
 
 Future<List<Station>> fetchRecentsStations(String s) async {
   final pref = await SharedPrefJson.read(s);
-  if (pref == null) return null;
+  if (pref == null) return [];
   return (pref as List<dynamic>).map((e) => Station.fromJson(e)).toList();
 }
