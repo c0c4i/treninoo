@@ -5,6 +5,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:treninoo/view/components/solutions_appbar.dart';
 
 import 'package:treninoo/view/pages/trainstatus.dart';
 
@@ -94,88 +95,76 @@ class _SolutionsResultState extends State<SolutionsResult> {
 
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          primary: true,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 5, right: 5, bottom: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment(-1, 0),
-                    padding: EdgeInsets.only(top: 10, left: 5, right: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).buttonColor,
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                  color: Theme.of(context).buttonColor,
-                                  width: 2.0)),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Center(
+        minimum: EdgeInsets.all(8),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: <Widget>[
+                SolutionsAppBar(),
+                SizedBox(height: 16),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: Theme.of(context).buttonColor, width: 2.0)),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "${data.departureStation} - ${data.arrivalStation}",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 10)),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 2,
+                                  child: Center(
                                     child: Text(
-                                      "${data.departureStation} - ${data.arrivalStation}",
+                                      "${getCustomDate(data.fromTime)}",
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                  Padding(padding: EdgeInsets.only(top: 10)),
-                                  Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 2,
-                                          child: Center(
-                                            child: Text(
-                                              "${getCustomDate(data.fromTime)}",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            "${getCustomTime(data.fromTime)}",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "${getCustomTime(data.fromTime)}",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                ],
-                              )),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 10)),
-                        _showSolution(snapshot),
-                      ],
-                    ),
+                        ],
+                      )),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                _showSolution(snapshot),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
