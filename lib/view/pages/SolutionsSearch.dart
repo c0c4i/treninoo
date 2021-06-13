@@ -73,9 +73,9 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Header(
-                    title: "Cerca il tuo treno",
+                    title: "Trova il treno ideale",
                     description:
-                        "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
+                        "Inserisci da dove vuoi partire e dove vuoi arrivare per trovare le soluzioni",
                   ),
                   SizedBox(height: 50),
                   SuggestionTextField(
