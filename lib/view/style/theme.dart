@@ -11,6 +11,7 @@ class AppColors {
   static Color lightRed = const Color(0x1CC4152B);
   static Color black = Colors.black;
   static Color secondaryGrey = const Color(0xFF979797);
+  static Color thinGrey = const Color(0xFFEAEEF4);
   static Color backgroundGrey = const Color(0xFFF7F9FC);
   static Color borderGrey = const Color(0xFFE4E9F2);
   static Color textGrey = const Color(0xFF8F9BB3);
