@@ -12,6 +12,7 @@ import 'package:treninoo/model/TrainStatusInfo.dart';
 
 import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/view/components/train_appbar.dart';
 
 int trainInfoErrorType = -1;
 
@@ -134,23 +135,27 @@ class _TrainStatusState extends State<TrainStatus> {
 
     return Scaffold(
       body: SafeArea(
+        minimum: EdgeInsets.all(8),
         child: RefreshIndicator(
           color: Theme.of(context).buttonColor,
           onRefresh: refreshTrainStatus,
           child: ListView(
             primary: true,
             children: <Widget>[
-              Container(
-                padding:
-                    EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+              Padding(
+                padding: EdgeInsets.all(16),
                 child: Column(
                   children: <Widget>[
-                    TopBar(
-                        text: '${data.trainType} ${data.trainCode}',
-                        location: 1),
+                    // TopBar(
+                    //     text: '${data.trainType} ${data.trainCode}',
+                    //     location: 1),
+                    TrainAppBar(
+                      number: '${data.trainType} ${data.trainCode}',
+                    ),
+                    SizedBox(height: 8),
                     Container(
-                      alignment: Alignment(-1, 0),
-                      padding: EdgeInsets.only(top: 10, left: 7, right: 7),
+                      // alignment: Alignment(-1, 0),
+                      // padding: EdgeInsets.only(top: 10, left: 7, right: 7),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
