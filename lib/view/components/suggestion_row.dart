@@ -11,33 +11,25 @@ class SuggestionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
-          child: Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                size: 24,
-                color: Colors.black,
-              ),
-              SizedBox(width: 20),
-              Text(
-                suggestion,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      child: Row(
+        children: [
+          Icon(
+            Icons.location_on_outlined,
+            size: 24,
+            color: Colors.black,
           ),
-        ),
-        Divider(
-          thickness: 1,
-          color: AppColors.thinGrey,
-        ),
-      ],
+          SizedBox(width: 20),
+          Text(
+            suggestion,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

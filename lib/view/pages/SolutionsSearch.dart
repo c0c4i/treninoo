@@ -29,13 +29,13 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
   DateTime pickedDate;
   TimeOfDay pickedTime;
 
-  List<Station> suggestionDeparture = [];
-  List<Station> suggestionArrival = [];
-
-  TextEditingController inputDepartureController = TextEditingController();
-  TextEditingController inputArrivalController = TextEditingController();
+  TextEditingController departureController = TextEditingController();
+  TextEditingController arrivalController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+
+  Station departureStation;
+  Station arrivalStation;
 
   @override
   void initState() {
@@ -51,18 +51,6 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
     String _minute = addZeroToNumberLowerThan10(pickedTime.minute.toString());
     String time = "$_hour:$_minute";
     timeController.text = time;
-
-    fetchRecentsStations(spRecentsStations).then((value) {
-      suggestionDeparture = value;
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    // inputDepartureController.dispose();
-    // inputArrivalController.dispose();
-    super.dispose();
   }
 
   @override
@@ -90,56 +78,25 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
                         "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
                   ),
                   SizedBox(height: 50),
-                  TypeAheadField(
-                      getImmediateSuggestions: true,
-                      hideOnEmpty: true,
-                      suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                        borderRadius: BorderRadius.circular(16.0),
-                        elevation: 8,
-                        shadowColor: Colors.red,
-                      ),
-                      textFieldConfiguration: TextFieldConfiguration(
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.characters,
-                        controller: inputDepartureController,
-                        style: TextStyle(fontSize: 18),
-                        decoration: InputDecoration(
-                          prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
-                          labelText: 'Partenza',
-                        ),
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        return suggestionCreator(pattern, 0);
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return SuggestionRow(suggestion: suggestion);
-                      },
-                      onSuggestionSelected: (clicked) {
-                        inputDepartureController.text = clicked;
-                      }),
+                  SuggestionTextField(
+                    label: "Partenza",
+                    controller: departureController,
+                    onSelect: (station) {
+                      setState(() {
+                        departureStation = station;
+                      });
+                    },
+                  ),
                   SizedBox(height: 20),
-                  TypeAheadField(
-                      getImmediateSuggestions: true,
-                      hideOnEmpty: true,
-                      textFieldConfiguration: TextFieldConfiguration(
-                        keyboardType: TextInputType.text,
-                        textCapitalization: TextCapitalization.characters,
-                        controller: inputArrivalController,
-                        style: TextStyle(fontSize: 18),
-                        decoration: InputDecoration(
-                          prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
-                          labelText: 'Destinazione',
-                        ),
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        return suggestionCreator(pattern, 1);
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return SuggestionRow(suggestion: suggestion);
-                      },
-                      onSuggestionSelected: (clicked) {
-                        inputArrivalController.text = clicked;
-                      }),
+                  SuggestionTextField(
+                    label: "Destinazione",
+                    controller: arrivalController,
+                    onSelect: (station) {
+                      setState(() {
+                        arrivalStation = station;
+                      });
+                    },
+                  ),
                   SizedBox(height: 20),
                   ClickableTextField(
                     prefixIcon: Icons.date_range_rounded,
@@ -195,36 +152,6 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
       });
   }
 
-  bool _decideWhichDayToEnable(DateTime day) {
-    if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-      return true;
-    }
-    return false;
-  }
-
-  Future<List<String>> suggestionCreator(String s, int type) async {
-    List<String> names = List<String>();
-    if (s.length > 0) {
-      await getStationListStartWith(s).then((value) {
-        // serve per poi cercare e prendere il codice del treno - serve refactor
-        (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
-        value.forEach((element) {
-          names.add(element.stationName);
-        });
-      });
-      return names;
-    } else {
-      fetchRecentsStations(spRecentsStations).then((value) {
-        if (value.length == 0) return null;
-        (type == 0) ? suggestionDeparture = value : suggestionArrival = value;
-        value.forEach((element) {
-          names.add(element.stationName);
-        });
-      });
-    }
-    return names;
-  }
-
   _pickTime() async {
     TimeOfDay t = await showTimePicker(
       context: context,
@@ -240,19 +167,16 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
       });
   }
 
+  bool _decideWhichDayToEnable(DateTime day) {
+    if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
+      return true;
+    }
+    return false;
+  }
+
   _getSolutionRequest() {
-    Station departure = new Station(
-        stationName: inputDepartureController.text,
-        stationCode: getStationCodeByStationName(
-            inputDepartureController.text, suggestionDeparture));
-
-    Station arrival = new Station(
-        stationName: inputArrivalController.text,
-        stationCode: getStationCodeByStationName(
-            inputArrivalController.text, suggestionArrival));
-
-    SharedPrefJson.addRecentStation(departure);
-    SharedPrefJson.addRecentStation(arrival);
+    SharedPrefJson.addRecentStation(departureStation);
+    SharedPrefJson.addRecentStation(arrivalStation);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
@@ -261,9 +185,10 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
     Navigator.push(
         context,
         CupertinoPageRoute(
-            builder: (context) => SolutionsResult(
-                departureCode: departure.stationCode,
-                arrivalCode: arrival.stationCode,
-                time: pickedDate)));
+          builder: (context) => SolutionsResult(
+              departureCode: departureStation.stationCode,
+              arrivalCode: arrivalStation.stationCode,
+              time: pickedDate),
+        ));
   }
 }

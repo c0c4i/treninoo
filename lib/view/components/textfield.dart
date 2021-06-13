@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
+import 'package:treninoo/view/components/suggestion_row.dart';
 
 class BeautifulTextField extends StatelessWidget {
   final String labelText;
@@ -126,35 +131,71 @@ class ClickableTextField extends StatelessWidget {
   }
 }
 
+class SuggestionTextField extends StatelessWidget {
+  final String label;
+  final TextEditingController controller;
+  final Function(Station) onSelect;
 
-// class CustomTextFieldClean extends StatelessWidget {
-//   final String labelText;
-//   final TextCapitalization textCapitalization;
-//   final TextInputType keyboardType;
-//   final TextEditingController controller;
-//   final String Function(String) validator;
+  const SuggestionTextField(
+      {Key key, this.label, this.controller, this.onSelect})
+      : super(key: key);
 
-//   const CustomTextFieldClean({
-//     Key key,
-//     this.labelText,
-//     this.textCapitalization = TextCapitalization.sentences,
-//     this.keyboardType = TextInputType.emailAddress,
-//     this.controller,
-//     this.validator,
-//   }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    Map<String, String> map = Map<String, String>();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       textCapitalization: textCapitalization,
-//       decoration: InputDecoration(
-//         labelText: labelText,
-//         contentPadding: EdgeInsets.all(14), // was set to 10
-//       ),
-//       controller: controller,
-//       keyboardType: keyboardType,
-//       autocorrect: false,
-//       validator: validator,
-//     );
-//   }
-// }
+    Future<List<String>> suggestionCreator(String text, int type) async {
+      List<String> names = [];
+      if (text.length > 0) {
+        await getStationListStartWith(text).then((value) {
+          value.forEach((station) {
+            map[station.stationName] = station.stationCode;
+            names.add(station.stationName);
+          });
+        });
+        return names;
+      } else {
+        fetchRecentsStations(spRecentsStations).then((value) {
+          if (value.length == 0) return null;
+          value.forEach((station) {
+            map[station.stationName] = station.stationCode;
+            names.add(station.stationName);
+          });
+        });
+      }
+      return names;
+    }
+
+    return TypeAheadField(
+        getImmediateSuggestions: true,
+        hideOnEmpty: true,
+        suggestionsBoxDecoration: SuggestionsBoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          elevation: 16,
+        ),
+        textFieldConfiguration: TextFieldConfiguration(
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.characters,
+          controller: controller,
+          style: TextStyle(fontSize: 18),
+          decoration: InputDecoration(
+            prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
+            labelText: label,
+          ),
+        ),
+        suggestionsCallback: (pattern) async {
+          return suggestionCreator(pattern, 0);
+        },
+        itemBuilder: (context, suggestion) {
+          return SuggestionRow(suggestion: suggestion);
+        },
+        onSuggestionSelected: (clicked) {
+          Station station = new Station(
+            stationCode: map[clicked],
+            stationName: clicked,
+          );
+          onSelect(station);
+          controller.text = clicked;
+        });
+  }
+}

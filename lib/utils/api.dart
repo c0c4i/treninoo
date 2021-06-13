@@ -110,7 +110,7 @@ Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
 }
 
 Future<List<Station>> getStationListStartWith(String searched) async {
-  List<Station> stationList = new List<Station>();
+  List<Station> stationList = [];
 
   http.Response responseStationCode =
       await http.get(URL_STATION_NAME + searched);
@@ -118,12 +118,10 @@ Future<List<Station>> getStationListStartWith(String searched) async {
 
   var lines = responseStationCode.body.split('\n');
 
-  String stationCode;
-  String stationName;
-
   for (var i = 0; i < lines.length - 1; i++) {
-    stationCode = lines[i].split("|")[1].substring(2).replaceAll("\n", "");
-    stationName = lines[i].split("|")[0].split("\n")[0];
+    String stationCode =
+        lines[i].split("|")[1].substring(2).replaceAll("\n", "");
+    String stationName = lines[i].split("|")[0].split("\n")[0];
     stationList
         .add(new Station(stationName: stationName, stationCode: stationCode));
   }
