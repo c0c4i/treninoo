@@ -1,8 +1,0 @@
-
-NUOVO REFACTOR 29/11/2020
-* Controllare gli errori nella ricerca del treno in modo furbo
-* Togliere le due funzioni in utils.dart e rinominare il file come sharedpreference.dart
-* Controllare il corretto utilizzo delle shared preference
-* Classe singleton con il treno cercato
-* Generalizzare il widget treno in modo da usare lo stesso nei preferiti e nei recenti
-* Migrazione ad android X 2.0

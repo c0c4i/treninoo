@@ -7,7 +7,6 @@ import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
 import 'package:treninoo/view/pages/TrainStatus.dart';
-import 'package:treninoo/view/components/topbar.dart';
 import 'package:treninoo/view/components/recents.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';

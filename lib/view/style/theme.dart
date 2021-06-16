@@ -34,6 +34,73 @@ Map<int, Color> colorCodes = {
 
 MaterialColor primarySwatch = new MaterialColor(0xFFC4152B, colorCodes);
 
+class AppTheme {
+  static final ThemeData lightTheme = ThemeData(
+    fontFamily: 'Cabin',
+    brightness: Brightness.light,
+    primaryColor: AppColors.red,
+    accentColor: AppColors.red,
+    buttonColor: AppColors.red,
+    primarySwatch: primarySwatch,
+    iconTheme: IconThemeData(
+      color: AppColors.textGrey,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      fillColor: AppColors.backgroundGrey,
+      filled: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.borderGrey,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.borderGrey,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.borderGrey,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.borderGrey,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.error,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: AppColors.error,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      labelStyle: TextStyle(color: AppColors.textGrey),
+    ),
+    errorColor: AppColors.error,
+    scaffoldBackgroundColor: Colors.white,
+    buttonTheme: ButtonThemeData(
+      shape:
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+    ),
+  );
+}
+
 final lightTheme = ThemeData(
   fontFamily: 'Cabin',
   brightness: Brightness.light,

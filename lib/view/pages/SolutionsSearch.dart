@@ -8,7 +8,6 @@ import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
-import 'package:treninoo/view/components/topbar.dart';
 import 'package:treninoo/view/pages/SolutionsResult.dart';
 
 import 'package:treninoo/model/Station.dart';

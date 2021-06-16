@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/components/header.dart';
 
-import 'package:treninoo/view/components/topbar.dart';
 import 'package:treninoo/view/components/train_card.dart';
 import 'package:treninoo/view/pages/trainstatus.dart';
 

@@ -9,7 +9,7 @@ import 'package:treninoo/view/components/solutions_appbar.dart';
 
 import 'package:treninoo/view/pages/trainstatus.dart';
 
-import 'package:treninoo/model/SolutionsList.dart';
+import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/TrainSolutionInfo.dart';
 
 import 'package:treninoo/utils/api.dart';
@@ -21,7 +21,7 @@ import 'package:treninoo/utils/core.dart';
 //  - Data
 
 // http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/2593/2430/2019-05-06T23:14:00.000
-Future<SolutionsList> fetchPostSolutions(
+Future<Solutions> fetchPostSolutions(
     String departureCode, String arrivalCode, DateTime time) async {
   await Future.delayed(
       const Duration(milliseconds: 250)); // just for graphic satisfaction
@@ -31,7 +31,7 @@ Future<SolutionsList> fetchPostSolutions(
 
   final http.Response responseTrainStatus = await http.get(urlSolutions);
 
-  SolutionsList s = new SolutionsList.fromJson(
+  Solutions s = new Solutions.fromJson(
       json.decode(responseTrainStatus.body), departureCode, arrivalCode, time);
 
   return s;
@@ -50,7 +50,7 @@ class SolutionsResult extends StatefulWidget {
 }
 
 class _SolutionsResultState extends State<SolutionsResult> {
-  Future<SolutionsList> post;
+  Future<Solutions> post;
 
   SolutionsResult data;
   _SolutionsResultState({this.data}) : super();
@@ -63,7 +63,7 @@ class _SolutionsResultState extends State<SolutionsResult> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SolutionsList>(
+    return FutureBuilder<Solutions>(
         future: post,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -91,7 +91,7 @@ class _SolutionsResultState extends State<SolutionsResult> {
 
   // widget schermata completa trainInfo
   Widget _solutionsInfo(AsyncSnapshot snapshot) {
-    SolutionsList data = snapshot.data;
+    Solutions data = snapshot.data;
 
     return Scaffold(
       body: SafeArea(
@@ -171,7 +171,7 @@ class _SolutionsResultState extends State<SolutionsResult> {
   }
 
   Widget _showSolution(AsyncSnapshot snapshot) {
-    SolutionsList data = snapshot.data;
+    Solutions data = snapshot.data;
     int nStop = data.solutions.length;
     return ListView.builder(
         shrinkWrap: true,
@@ -217,7 +217,7 @@ class _SolutionsResultState extends State<SolutionsResult> {
   }
 
   Widget _showSingleTrain(AsyncSnapshot snapshot, index) {
-    SolutionsList s = snapshot.data;
+    Solutions s = snapshot.data;
     int nTrain = s.solutions[index].trains.length;
     List<TrainSolutionInfo> t = s.solutions[index].trains;
 

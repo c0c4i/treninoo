@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:treninoo/view/components/topbar.dart';
-
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainStatusInfo.dart';
 

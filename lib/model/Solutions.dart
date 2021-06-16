@@ -1,6 +1,6 @@
 import 'package:treninoo/model/Solution.dart';
 
-class SolutionsList {
+class Solutions {
   final List<Solution> solutions;
   final String departureStation;
   final String departureStationCode;
@@ -8,7 +8,7 @@ class SolutionsList {
   final String arrivalStationCode;
   final DateTime fromTime;
 
-  SolutionsList({
+  Solutions({
     this.solutions,
     this.departureStation,
     this.departureStationCode,
@@ -17,13 +17,13 @@ class SolutionsList {
     this.fromTime,
   });
 
-  factory SolutionsList.fromJson(Map<String, dynamic> json,
+  factory Solutions.fromJson(Map<String, dynamic> json,
       String departureCode, String arrivalCode, DateTime time) {
     if (json['soluzioni'].length == 0) {
       // trainInfoErrorType = 0;
       return null;
     }
-    return SolutionsList(
+    return Solutions(
       solutions:
           (json['soluzioni'] as List).map((f) => Solution.fromJson(f)).toList(),
       departureStation: json['origine'],
