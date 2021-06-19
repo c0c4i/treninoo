@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
+import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/pages/solutions_result_page.dart';
 import 'package:treninoo/view/pages/train_status_page.dart';
 import 'package:treninoo/view/pages/home_page.dart';
 import 'package:treninoo/view/router/routes_names.dart';
@@ -45,8 +47,18 @@ class AppRouter {
             ),
           ),
         );
-      case '/solutions':
-        return null;
+      case RoutesNames.solutions:
+        final solutionsInfo = settings.arguments;
+        return CupertinoPageRoute(
+          builder: (_) => RepositoryProvider<TrainRepository>(
+            create: (context) => trainRepository,
+            child: BlocProvider(
+              create: (context) =>
+                  SolutionsBloc(context.read<TrainRepository>()),
+              child: SolutionsResultPage(solutionsInfo: solutionsInfo),
+            ),
+          ),
+        );
       default:
         return null;
     }
