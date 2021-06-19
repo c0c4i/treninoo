@@ -1,10 +1,14 @@
-class SavedTrain {
-  String trainCode;
-  String trainType;
-  String departureStationCode;
-  String departureStationName;
-  String arrivalStationName;
-  String departureTime;
+import 'package:equatable/equatable.dart';
+import 'package:treninoo/model/DepartureStation.dart';
+import 'package:treninoo/model/TrainInfo.dart';
+
+class SavedTrain extends Equatable {
+  final String trainCode;
+  final String trainType;
+  final String departureStationCode;
+  final String departureStationName;
+  final String arrivalStationName;
+  final String departureTime;
 
   SavedTrain({
     this.trainCode,
@@ -35,16 +39,26 @@ class SavedTrain {
     );
   }
 
-  SavedTrain equals(String trainCode, String departureStationCode) {
-    return (trainCode == this.trainCode &&
-            departureStationCode == this.departureStationCode)
-        ? this
-        : null;
+  factory SavedTrain.fromTrainInfo(TrainInfo trainInfo) {
+    return SavedTrain(
+      trainCode: trainInfo.trainCode,
+      trainType: trainInfo.trainType,
+      departureStationCode: trainInfo.departureStationCode,
+      departureStationName: trainInfo.departureStationName,
+      arrivalStationName: trainInfo.arrivalStationName,
+      departureTime: trainInfo.departureTime,
+    );
   }
 
-  bool operator ==(Object other) {
-    SavedTrain tmp = other;
-    return (tmp.trainCode == trainCode &&
-        tmp.departureStationCode == departureStationCode);
+  factory SavedTrain.fromDepartureStation(DepartureStation departureStation) {
+    return SavedTrain(
+      trainCode: departureStation.trainCode,
+      departureStationCode: departureStation.station.stationCode,
+    );
+  }
+
+  @override
+  List<Object> get props {
+    return [trainCode, departureStationCode];
   }
 }
