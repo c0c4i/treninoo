@@ -1,16 +1,16 @@
-import 'package:treninoo/model/TrainSolutionInfo.dart';
+import 'package:treninoo/model/TrainSolution.dart';
 
 class Solution {
-  final String travelTime;
-  final List<TrainSolutionInfo> trains;
+  // final String travelTime;
+  final List<TrainSolution> trains;
 
-  Solution({this.travelTime, this.trains});
+  Solution({this.trains});
 
   factory Solution.fromJson(Map<String, dynamic> json) {
     return Solution(
-      travelTime: json['durata'],
+      // travelTime: json['durata'],
       trains: (json['vehicles'] as List)
-          .map((f) => TrainSolutionInfo.fromJson(f))
+          .map((f) => TrainSolution.fromJson(f))
           .toList(),
     );
   }
