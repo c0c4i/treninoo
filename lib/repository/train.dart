@@ -2,22 +2,25 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:treninoo/model/DepartureStation.dart';
-import 'package:treninoo/model/Solutions.dart';
-import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/endpoint.dart';
+import 'package:treninoo/utils/shared_preference.dart';
+import 'package:treninoo/utils/shared_preference_methods.dart';
+import 'package:treninoo/utils/utils.dart';
 
 abstract class TrainRepository {
   Future<List<DepartureStation>> getDepartureStation(String trainCode);
   // Future<Solutions> getSolutions(
   //     Station departureStation, Station arrivalStation, DateTime time);
-  // Future<TrainInfo> getTrainStatus(DepartureStation details);
+  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
+  // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   // Future<List<Station>> getStationAutocomplete(String text);
 }
 
 class APITrain extends TrainRepository {
   @override
   Future<List<DepartureStation>> getDepartureStation(String trainCode) async {
-    await Future.delayed(Duration(seconds: 10));
     var uri = Uri.http(URL, GET_STATION_CODE + trainCode);
     var response = await http.get(uri);
 
@@ -33,15 +36,28 @@ class APITrain extends TrainRepository {
     return stations;
   }
 
+  @override
+  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain) async {
+    String stationCode = savedTrain.departureStationCode;
+    String trainCode = savedTrain.trainCode;
+
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    String timestamp = date.millisecondsSinceEpoch.toString();
+
+    var uri =
+        Uri.https(URL, "$GET_TRAIN_INFO$stationCode/$trainCode/$timestamp");
+    var response = await http.get(uri);
+
+    var body = jsonDecode(response.body);
+
+    return TrainInfo.fromJson(body);
+  }
+
   // @override
-  // Future<TrainInfo> getTrainStatus(DepartureStation details) async {
-  //   var uri = Uri.https(URL,
-  //       "$GET_TRAIN_INFO${details.station.stationCode}/${details.trainCode}/${details.random}");
-  //   var response = await http.get(uri);
-
-  //   var body = jsonDecode(response.body);
-
-  //   return TrainInfo.fromJson(body);
+  // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
+  //   SharedPreferencesUtils().
+  //   return getSavedTrain(savedTrainType);
   // }
 
   // @override
@@ -72,4 +88,9 @@ class APITrain extends TrainRepository {
 
   //   return Solutions.fromJson(body, departureStation, arrivalStation, time);
   // }
+}
+
+enum SavedTrainType {
+  recents,
+  favourites,
 }
