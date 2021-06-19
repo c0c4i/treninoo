@@ -1,7 +1,7 @@
 import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/utils/api.dart';
 
-class TrainStatusInfo {
+class TrainInfo {
   final List<Stop> stops;
   final String lastPositionRegister; // to converter from unix
   final String lastTimeRegister;
@@ -14,7 +14,7 @@ class TrainStatusInfo {
   String arrivalStationName;
   String departureTime;
 
-  TrainStatusInfo({
+  TrainInfo({
     this.stops,
     this.lastPositionRegister,
     this.lastTimeRegister,
@@ -27,12 +27,12 @@ class TrainStatusInfo {
     this.departureTime,
   });
 
-  factory TrainStatusInfo.fromJson(Map<String, dynamic> json) {
+  factory TrainInfo.fromJson(Map<String, dynamic> json) {
     if (json['fermate'].length == 0) {
       // trainInfoErrorType = 0;
       return null;
     }
-    return TrainStatusInfo(
+    return TrainInfo(
         stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
         lastPositionRegister: json['stazioneUltimoRilevamento'],
         lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
