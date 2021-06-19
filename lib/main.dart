@@ -9,6 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
+        statusBarColor: Theme.of(context).scaffoldBackgroundColor,
         // statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         // systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
         // localizationsDelegates: context.localizationDelegates,
         // supportedLocales: context.supportedLocales,
         // locale: context.locale,
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [const Locale('it')],
         onGenerateRoute: _appRouter.onGenerateRoute,
       ),
     );
