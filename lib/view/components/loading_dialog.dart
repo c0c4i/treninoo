@@ -24,11 +24,12 @@ class LoadingDialog extends StatelessWidget {
         child: Container(
           width: 80,
           height: 80,
-          padding: EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(16),
           child: CircularProgressIndicator(),
           decoration: new BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
             color: Colors.white,
-            shape: BoxShape.circle,
+            // shape: BoxShape.circle,
           ),
         ),
       ),
