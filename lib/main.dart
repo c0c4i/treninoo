@@ -9,11 +9,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await sharedPrefs.init();
   runApp(MyApp());
 }
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         statusBarColor: Colors.transparent,
         // statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+        // systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: MaterialApp(
