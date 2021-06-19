@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/pages/Favourites.dart';
+import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/SolutionsSearch.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
@@ -60,7 +60,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
       children: <Widget>[
         SearchTrainPage(),
         SolutionsSearch(),
-        Favourites(),
+        FavouritesPage(),
       ],
     );
   }

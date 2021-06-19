@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class TrainCard extends StatelessWidget {
@@ -28,7 +30,10 @@ class TrainCard extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 8),
         width: width,
         child: ElevatedButton(
-          onPressed: onPressed,
+          // onPressed: onPressed,
+          onPressed: () {
+            Navigator.pushNamed(context, RoutesNames.status, arguments: train);
+          },
           onLongPress: onLongPress,
           child: Column(
             children: [

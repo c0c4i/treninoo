@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/pages/Favourites.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/favourites/favourites.dart';
+import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/SolutionsSearch.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
@@ -16,7 +19,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     SearchTrainPage(),
     SolutionsSearch(),
-    Favourites()
+    BlocProvider(
+      create: (context) => FavouritesBloc(context.read<TrainRepository>()),
+      child: FavouritesPage(),
+    )
   ];
 
   void _onItemTapped(int index) {
