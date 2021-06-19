@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/Solutions.dart';
+import 'package:treninoo/model/SolutionsInfo.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/endpoint.dart';
 import 'package:treninoo/utils/shared_preference.dart';
@@ -11,8 +14,7 @@ import 'package:treninoo/utils/utils.dart';
 
 abstract class TrainRepository {
   Future<List<DepartureStation>> getDepartureStation(String trainCode);
-  // Future<Solutions> getSolutions(
-  //     Station departureStation, Station arrivalStation, DateTime time);
+  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
   // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   // Future<List<Station>> getStationAutocomplete(String text);
@@ -76,18 +78,24 @@ class APITrain extends TrainRepository {
   //   return stationList;
   // }
 
-  // Future<Solutions> getSolutions(
-  //     Station departureStation, Station arrivalStation, DateTime time) async {
-  //   String url =
-  //       "$GET_SOLUTIONS${departureStation.stationCode}/${arrivalStation.stationCode}/${time.toIso8601String()}";
+  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
+    String departureCode = solutionsInfo.departureStation.stationCode;
+    String arrivalCode = solutionsInfo.arrivalStation.stationCode;
+    String time = solutionsInfo.fromTime.toIso8601String();
 
-  //   var uri = Uri.https(URL, url);
-  //   var response = await http.get(uri);
+    String url = "$GET_SOLUTIONS$departureCode/$arrivalCode/$time";
+    print(url);
+    var uri = Uri.https(URL, url);
+    var response = await http.get(uri);
 
-  //   var body = jsonDecode(response.body);
+    var body = jsonDecode(response.body);
 
-  //   return Solutions.fromJson(body, departureStation, arrivalStation, time);
-  // }
+    Solutions solutions = Solutions.fromJson(body);
+    solutions.departureStation = solutionsInfo.departureStation;
+    solutions.arrivalStation = solutionsInfo.arrivalStation;
+    solutions.fromTime = solutionsInfo.fromTime;
+    return solutions;
+  }
 }
 
 enum SavedTrainType {
