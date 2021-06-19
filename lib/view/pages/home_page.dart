@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
-import 'package:treninoo/view/pages/SolutionsSearch.dart';
+import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
@@ -18,7 +18,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     SearchTrainPage(),
-    SolutionsSearch(),
+    SearchSolutionsPage(),
     BlocProvider(
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),
       child: FavouritesPage(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
-import 'package:treninoo/view/pages/SolutionsSearch.dart';
+import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
@@ -59,7 +59,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
       },
       children: <Widget>[
         SearchTrainPage(),
-        SolutionsSearch(),
+        SearchSolutionsPage(),
         FavouritesPage(),
       ],
     );

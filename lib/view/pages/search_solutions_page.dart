@@ -2,29 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/view/components/button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
-import 'package:treninoo/view/pages/SolutionsResult.dart';
+import 'package:treninoo/view/pages/solutions_result_page.dart';
 
 import 'package:treninoo/model/Station.dart';
 
 import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
-class SolutionsSearch extends StatefulWidget {
-  SolutionsSearch({Key key}) : super(key: key);
+class SearchSolutionsPage extends StatefulWidget {
+  SearchSolutionsPage({Key key}) : super(key: key);
 
   @override
-  _SolutionsSearchState createState() => _SolutionsSearchState();
+  _SearchSolutionsPageState createState() => _SearchSolutionsPageState();
 }
 
-class _SolutionsSearchState extends State<SolutionsSearch> {
+class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   DateTime pickedDate;
   TimeOfDay pickedTime;
 
@@ -147,7 +149,7 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
     if (date != null)
       setState(() {
         pickedDate = date;
-        dateController.text = getCustomDate(date);
+        dateController.text = formatDate(date);
       });
   }
 
@@ -181,6 +183,14 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
         pickedTime.hour, pickedTime.minute);
 
+    SolutionsInfo solutionsInfo = new SolutionsInfo(
+      departureStation: departureStation,
+      arrivalStation: arrivalStation,
+      fromTime: pickedDate,
+    );
+
+    Navigator.pushNamed(context, RoutesNames.solutions,
+        arguments: solutionsInfo);
     // Navigator.push(
     //     context,
     //     CupertinoPageRoute(

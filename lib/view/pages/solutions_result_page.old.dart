@@ -1,65 +1,28 @@
 // import 'dart:async';
-// import 'dart:convert';
 // import 'dart:core';
 
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
+// import 'package:treninoo/model/SolutionsInfo.dart';
+
 // import 'package:treninoo/view/components/solutions_appbar.dart';
 
-// import 'package:treninoo/view/pages/trainstatus.dart';
-
 // import 'package:treninoo/model/Solutions.dart';
-// import 'package:treninoo/model/TrainSolutionInfo.dart';
 
 // import 'package:treninoo/utils/api.dart';
 // import 'package:treninoo/utils/core.dart';
 
-// // COSA SERVE
-// //  - Codice Stazione di Partenza
-// //  - Codice Stazione di Arrivo
-// //  - Data
+// class SolutionsResultPage extends StatefulWidget {
+//   final SolutionsInfo solutionsInfo;
 
-// // http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/2593/2430/2019-05-06T23:14:00.000
-// Future<Solutions> fetchPostSolutions(
-//     String departureCode, String arrivalCode, DateTime time) async {
-//   await Future.delayed(
-//       const Duration(milliseconds: 250)); // just for graphic satisfaction
-//   String urlSolutions =
-//       "$URL_SOLUTIONS$departureCode/$arrivalCode/${time.toIso8601String()}";
-//   print(urlSolutions);
-
-//   final http.Response responseTrainStatus = await http.get(urlSolutions);
-
-//   Solutions s = new Solutions.fromJson(
-//       json.decode(responseTrainStatus.body), departureCode, arrivalCode, time);
-
-//   return s;
-// }
-
-// class SolutionsResult extends StatefulWidget {
-//   final String departureCode;
-//   final String arrivalCode;
-//   final DateTime time;
-
-//   SolutionsResult({Key key, this.departureCode, this.arrivalCode, this.time})
-//       : super(key: key);
+//   SolutionsResultPage({Key key, this.solutionsInfo}) : super(key: key);
 
 //   @override
-//   _SolutionsResultState createState() => _SolutionsResultState(data: this);
+//   _SolutionsResultPageState createState() => _SolutionsResultPageState();
 // }
 
-// class _SolutionsResultState extends State<SolutionsResult> {
-//   Future<Solutions> post;
-
-//   SolutionsResult data;
-//   _SolutionsResultState({this.data}) : super();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     post = fetchPostSolutions(data.departureCode, data.arrivalCode, data.time);
-//   }
+// class _SolutionsResultPageState extends State<SolutionsResultPage> {
+//   Solutions solutions;
 
 //   @override
 //   Widget build(BuildContext context) {
