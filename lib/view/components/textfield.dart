@@ -150,7 +150,7 @@ class SuggestionTextField extends StatelessWidget {
       if (text.length > 0) {
         stations = await getStationListStartWith(text);
       } else {
-        stations = await fetchRecentsStations(spRecentsStations);
+        // stations = await fetchRecentsStations(spRecentsStations);
       }
 
       if (stations == null) return null;

@@ -174,20 +174,20 @@ class _SolutionsSearchState extends State<SolutionsSearch> {
   }
 
   _getSolutionRequest() {
-    SharedPrefJson.addRecentStation(departureStation);
-    SharedPrefJson.addRecentStation(arrivalStation);
+    // SharedPrefJson.addRecentStation(departureStation);
+    // SharedPrefJson.addRecentStation(arrivalStation);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
         pickedTime.hour, pickedTime.minute);
 
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => SolutionsResult(
-              departureCode: departureStation.stationCode,
-              arrivalCode: arrivalStation.stationCode,
-              time: pickedDate),
-        ));
+    // Navigator.push(
+    //     context,
+    //     CupertinoPageRoute(
+    //       builder: (context) => SolutionsResult(
+    //           departureCode: departureStation.stationCode,
+    //           arrivalCode: arrivalStation.stationCode,
+    //           time: pickedDate),
+    //     ));
   }
 }

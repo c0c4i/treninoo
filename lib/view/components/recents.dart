@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/components/train_card.dart';
 
-import '../pages/TrainStatus.dart';
+import '../pages/train_status_page.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';
 
@@ -74,14 +74,14 @@ class _RecentsState extends State<Recents> {
 
         if (exist) {
           // cercalo
-          Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => TrainStatus(
-                      trainCode: train.trainCode,
-                      stationCode: train.departureStationCode,
-                    )),
-          );
+          // Navigator.push(
+          //   context,
+          //   CupertinoPageRoute(
+          //       builder: (context) => TrainStatusPage(
+          //             trainCode: train.trainCode,
+          //             stationCode: train.departureStationCode,
+          //           )),
+          // );
         } else {
           showDialog(
             context: context,
@@ -93,13 +93,13 @@ class _RecentsState extends State<Recents> {
                   FlatButton(
                     child: Text("Elimina"),
                     onPressed: () {
-                      SharedPrefJson.nowSearching = train;
-                      SharedPrefJson.removeRecentTrain();
-                      print("elimino");
-                      setState(() {
-                        widget.recents =
-                            fetchSharedPreferenceWithListOf(spRecentsTrains);
-                      });
+                      // SharedPrefJson.nowSearching = train;
+                      // SharedPrefJson.removeRecentTrain();
+                      // print("elimino");
+                      // setState(() {
+                      //   widget.recents =
+                      //       fetchSharedPreferenceWithListOf(spRecentsTrains);
+                      // });
                       Navigator.pop(context);
                     },
                   ),

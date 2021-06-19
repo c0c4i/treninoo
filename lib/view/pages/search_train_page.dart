@@ -4,12 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
+import 'package:treninoo/model/arguments/status_argument.dart';
 import 'package:treninoo/view/components/button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/loading_dialog.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
-import 'package:treninoo/view/pages/TrainStatus.dart';
+import 'package:treninoo/view/pages/train_status_page.dart';
 import 'package:treninoo/view/components/recents.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';
@@ -17,6 +18,7 @@ import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/final.dart';
 import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 
 class SearchTrainPage extends StatefulWidget {
   SearchTrainPage({Key key}) : super(key: key);
@@ -35,7 +37,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
   @override
   void initState() {
     super.initState();
-    recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
+    // recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
   }
 
   @override
@@ -46,6 +48,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
   }
 
   String _errorType(String text) {
+    if (text.length > 0) return null;
     switch (errorType) {
       case 0:
         return 'E\' necessario inserire il codice'; // empty train code
@@ -77,6 +80,9 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
         });
         return;
       }
+      context
+          .read<DepartureStationBloc>()
+          .add(DepartureStationRequest(trainCode: trainCode));
     }
   }
 
@@ -111,8 +117,11 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                     print("Più treni trovati!");
                   } else {
                     print("Treno trovato!");
-                    print(state.departureStations[0].station);
-                    print(state.departureStations[0].trainCode);
+                    SavedTrain savedTrain = SavedTrain.fromDepartureStation(
+                      state.departureStations[0],
+                    );
+                    Navigator.pushNamed(context, RoutesNames.status,
+                        arguments: savedTrain);
                   }
                 }
                 if (state is DepartureStationFailed)
@@ -179,15 +188,15 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
             onPressed: () {
               setState(() {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => TrainStatus(
-                            trainCode: trainCode,
-                            stationCode: k))).then((value) => setState(() {
-                      recents =
-                          fetchSharedPreferenceWithListOf(spRecentsTrains);
-                    }));
+                // Navigator.push(
+                //     context,
+                //     CupertinoPageRoute(
+                //         builder: (context) => TrainStatusPage(
+                //             trainCode: trainCode,
+                //             stationCode: k))).then((value) => setState(() {
+                //       recents =
+                //           fetchSharedPreferenceWithListOf(spRecentsTrains);
+                //     }));
               });
             },
             child: Text(
