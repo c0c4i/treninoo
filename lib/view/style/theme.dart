@@ -18,6 +18,11 @@ class AppColors {
   // static Color customGreyNigthMode = const Color(0xff828282);
 }
 
+class DialogColor {
+  static const Color lightGrey = const Color(0xFFEFF1F6);
+  static const Color darkGrey = const Color(0xFF5B5C5E);
+}
+
 // custom red material color for app
 Map<int, Color> colorCodes = {
   50: Color.fromRGBO(196, 21, 43, .1),
