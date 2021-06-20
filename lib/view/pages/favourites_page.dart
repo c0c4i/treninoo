@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/header.dart';
 
 import 'package:treninoo/view/components/train_card.dart';
@@ -46,7 +47,10 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     if (state is FavouritesInitial)
                       context.read<FavouritesBloc>().add(FavouritesRequest());
                     if (state is FavouritesSuccess) {
-                      return SavedTrainList(trains: state.trains);
+                      return SavedTrainList(
+                        trains: state.trains,
+                        savedTrainType: SavedTrainType.favourites,
+                      );
                     }
 
                     if (state is FavouritesLoading) {

@@ -40,29 +40,71 @@ void addRecentTrain(DepartureStation departureStation) {
 // }
 
 /// add favourite train to shared preference
-void addFavouriteTrain(TrainInfo trainInfo) {
-  SavedTrain train = SavedTrain.fromTrainInfo(trainInfo);
+void addTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+  String raw;
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      raw = sharedPrefs.favouritesTrains;
+      break;
+    case SavedTrainType.recents:
+      raw = sharedPrefs.recentsTrains;
+      break;
+  }
 
-  String raw = sharedPrefs.favouritesTrains;
   List<SavedTrain> savedTrains = [];
 
   if (raw == null) {
-    savedTrains.insert(0, train);
+    savedTrains.insert(0, savedTrain);
   } else {
     List<dynamic> trains = jsonDecode(raw);
     savedTrains = trains.map((e) => SavedTrain.fromJson(e)).toList();
-    if (!savedTrains.contains(train)) {
-      savedTrains.insert(0, train);
+    if (!savedTrains.contains(savedTrain)) {
+      savedTrains.insert(0, savedTrain);
     }
   }
 
-  sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
+      break;
+    case SavedTrainType.recents:
+      sharedPrefs.recentsTrains = jsonEncode(savedTrains);
+      break;
+  }
 }
 
 /// remove favourite train from shared preference
-void removeFavouriteTrain(TrainInfo trainInfo) {
-  SavedTrain train = SavedTrain.fromTrainInfo(trainInfo);
+void removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+  String raw;
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      raw = sharedPrefs.favouritesTrains;
+      break;
+    case SavedTrainType.recents:
+      raw = sharedPrefs.recentsTrains;
+      break;
+  }
 
+  if (raw == null) return;
+
+  List<dynamic> trains = jsonDecode(raw);
+  List<SavedTrain> savedTrains =
+      trains.map((e) => SavedTrain.fromJson(e)).toList();
+
+  if (savedTrains.contains(savedTrain)) savedTrains.remove(savedTrain);
+
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
+      break;
+    case SavedTrainType.recents:
+      sharedPrefs.recentsTrains = jsonEncode(savedTrains);
+      break;
+  }
+}
+
+/// remove favourite train from shared preference
+void removeRecentTrain(SavedTrain savedTrain) {
   String raw = sharedPrefs.favouritesTrains;
   if (raw == null) return;
 
@@ -70,7 +112,7 @@ void removeFavouriteTrain(TrainInfo trainInfo) {
   List<SavedTrain> savedTrains =
       trains.map((e) => SavedTrain.fromJson(e)).toList();
 
-  if (savedTrains.contains(train)) savedTrains.remove(train);
+  if (savedTrains.contains(savedTrain)) savedTrains.remove(savedTrain);
   sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
 }
 

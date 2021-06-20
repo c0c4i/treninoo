@@ -6,6 +6,8 @@ import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_list.dart';
@@ -51,10 +53,14 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                   children: <Widget>[
                     BlocConsumer<TrainStatusBloc, TrainStatusState>(
                       listener: (context, state) {
-                        if (state is TrainStatusSuccess)
+                        if (state is TrainStatusSuccess) {
+                          SavedTrain savedTrain =
+                              SavedTrain.fromTrainInfo(state.trainInfo);
+                          addTrain(savedTrain, SavedTrainType.recents);
                           setState(() {
                             trainInfo = state.trainInfo;
                           });
+                        }
                       },
                       builder: (context, state) {
                         if (state is TrainStatusSuccess) {
@@ -82,10 +88,11 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                     SizedBox(height: 8),
                     BlocBuilder<TrainStatusBloc, TrainStatusState>(
                       builder: (context, state) {
-                        if (state is TrainStatusInitial)
+                        if (state is TrainStatusInitial) {
                           context.read<TrainStatusBloc>().add(
                               TrainStatusRequest(
                                   savedTrain: widget.savedTrain));
+                        }
                         if (state is TrainStatusSuccess)
                           return Column(
                             children: [

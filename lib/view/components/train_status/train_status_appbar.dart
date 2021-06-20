@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/DepartureStation.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/utils/shared_preference.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
-import 'package:treninoo/utils/utils.dart';
-import 'package:treninoo/view/components/button.dart';
+import 'package:treninoo/view/components/buttons/back_button.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class TrainAppBar extends StatefulWidget {
@@ -47,9 +46,15 @@ class _TrainAppBarState extends State<TrainAppBar> {
                 iconSize: 40,
                 onPressed: () {
                   if (isFavouriteTrain(widget.trainInfo)) {
-                    removeFavouriteTrain(widget.trainInfo);
+                    removeTrain(
+                      SavedTrain.fromTrainInfo(widget.trainInfo),
+                      SavedTrainType.favourites,
+                    );
                   } else {
-                    addFavouriteTrain(widget.trainInfo);
+                    addTrain(
+                      SavedTrain.fromTrainInfo(widget.trainInfo),
+                      SavedTrainType.favourites,
+                    );
                   }
 
                   setState(() {
