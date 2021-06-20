@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
@@ -42,6 +43,11 @@ class APITrain extends TrainRepository {
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain) async {
     String stationCode = savedTrain.departureStationCode;
     String trainCode = savedTrain.trainCode;
+
+    if (stationCode == null) {
+      stationCode = await getStationCode(savedTrain.trainCode);
+      if (stationCode == null) return null;
+    }
 
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -95,6 +101,18 @@ class APITrain extends TrainRepository {
     solutions.arrivalStation = solutionsInfo.arrivalStation;
     solutions.fromTime = solutionsInfo.fromTime;
     return solutions;
+  }
+
+  Future<String> getStationCode(String trainCode) async {
+    String url = GET_STATION_CODE + trainCode;
+    var uri = Uri.https(URL, url);
+    Response response = await http.get(uri);
+
+    if (response.body.isEmpty) return null;
+
+    String stationCode = response.body.split("|")[1].split("-")[1];
+
+    return stationCode;
   }
 }
 

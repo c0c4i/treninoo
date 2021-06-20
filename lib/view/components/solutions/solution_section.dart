@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class SolutionSection extends StatelessWidget {
@@ -15,9 +17,12 @@ class SolutionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: TextButton(
-      // onPressed: onPressed,
       onPressed: () {
-        // Navigator.pushNamed(context, RoutesNames.status, arguments: train);
+        SavedTrain train = new SavedTrain(
+          trainCode: trainSolution.trainCode,
+          departureStationName: trainSolution.departureStation,
+        );
+        Navigator.pushNamed(context, RoutesNames.status, arguments: train);
       },
       child: Column(
         children: [

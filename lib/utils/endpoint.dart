@@ -8,7 +8,7 @@ const String GET_STATION_CODE =
 const String GET_TRAIN_INFO =
     '/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
 
-const String GET_STATION_NAME =
+const String GET_STATION =
     '/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
 
 // ... + departureStationCode/arrivalStationCode/date
