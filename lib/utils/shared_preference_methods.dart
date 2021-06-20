@@ -58,6 +58,7 @@ void addTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
   } else {
     List<dynamic> trains = jsonDecode(raw);
     savedTrains = trains.map((e) => SavedTrain.fromJson(e)).toList();
+
     if (!savedTrains.contains(savedTrain)) {
       savedTrains.insert(0, savedTrain);
     }
@@ -68,6 +69,7 @@ void addTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
       sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
       break;
     case SavedTrainType.recents:
+      if (savedTrains.length > 3) savedTrains.removeLast();
       sharedPrefs.recentsTrains = jsonEncode(savedTrains);
       break;
   }
