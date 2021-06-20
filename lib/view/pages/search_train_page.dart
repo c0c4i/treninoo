@@ -20,6 +20,12 @@ import 'package:treninoo/utils/final.dart';
 import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 
+enum ErrorType {
+  zero,
+  empty,
+  not_found,
+}
+
 class SearchTrainPage extends StatefulWidget {
   SearchTrainPage({Key key}) : super(key: key);
 
@@ -28,38 +34,42 @@ class SearchTrainPage extends StatefulWidget {
 }
 
 class _SearchTrainPageState extends State<SearchTrainPage> {
-  int errorType = -1;
+  String error;
 
   TextEditingController searchController = TextEditingController();
 
   Future<List<SavedTrain>> recents;
 
-  @override
-  void initState() {
-    super.initState();
-    // recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
+  // }
+
+  // @override
+  // void dispose() {
+  //   // Clean up the controller when the widget is disposed.
+  //   searchController.dispose();
+  //   super.dispose();
+  // }
+
+  void showError(ErrorType errorType) {
+    setState(() {
+      error = getError(errorType);
+    });
   }
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    searchController.dispose();
-    super.dispose();
-  }
+  String getError(ErrorType errorType) {
+    String trainCode = searchController.text;
+    if (trainCode.length > 0 && errorType == ErrorType.zero) {
+      return null;
+    }
 
-  String _errorType(String text) {
-    if (text.length > 0) return null;
     switch (errorType) {
-      case 0:
-        return 'E\' necessario inserire il codice'; // empty train code
-      case 1:
-        return 'Codice Treno non valido'; //invalid train code
-      case 2:
-        return 'Errore sconosciuto';
-      case 3:
-        return '(Argomento vuoto)'; // ricerca con trainStatus=""
-      case 4:
-        return 'Errore di connessione'; // nessuna connessione ad internet
+      case ErrorType.empty:
+        return 'E\' necessario inserire il codice';
+      case ErrorType.not_found:
+        return 'Codice Treno non valido';
       default:
         return null;
     }
@@ -72,18 +82,14 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
   */
   void searchButtonClick() {
     FocusScope.of(context).unfocus();
-    if (_formKey.currentState.validate()) {
-      String trainCode = searchController.text;
-      if (trainCode.length == 0) {
-        setState(() {
-          errorType = 0;
-        });
-        return;
-      }
-      context
-          .read<DepartureStationBloc>()
-          .add(DepartureStationRequest(trainCode: trainCode));
+    if (searchController.text.length == 0) {
+      showError(ErrorType.empty);
+      return;
     }
+    String trainCode = searchController.text;
+    context
+        .read<DepartureStationBloc>()
+        .add(DepartureStationRequest(trainCode: trainCode));
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -110,10 +116,13 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                   LoadingDialog.hide(context);
                   int trainFound = state.departureStations.length;
                   if (trainFound == 0) {
-                    setState(() {
-                      errorType = 1;
-                    });
-                  } else if (trainFound > 1) {
+                    showError(ErrorType.not_found);
+                    print("Treno non trovato");
+                    return;
+                  }
+                  showError(ErrorType.zero);
+
+                  if (trainFound > 1) {
                     print("Più treni trovati!");
                   } else {
                     print("Treno trovato!");
@@ -146,7 +155,8 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                         labelText: "Codice treno",
                         controller: searchController,
                         keyboardType: TextInputType.number,
-                        validator: _errorType,
+                        // validator: (text) => getError(text),
+                        errorText: error,
                       ),
                     ),
                     SizedBox(height: 20),

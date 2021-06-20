@@ -13,6 +13,7 @@ class BeautifulTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextEditingController controller;
   final String Function(String) validator;
+  final String errorText;
   final bool enabled;
 
   const BeautifulTextField({
@@ -23,6 +24,7 @@ class BeautifulTextField extends StatelessWidget {
     this.keyboardType = TextInputType.emailAddress,
     this.controller,
     this.validator,
+    this.errorText,
     this.enabled = true,
   }) : super(key: key);
 
@@ -31,10 +33,10 @@ class BeautifulTextField extends StatelessWidget {
     return TextFormField(
       textCapitalization: textCapitalization,
       decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: PrefixIcon(icon: prefixIcon),
-        contentPadding: EdgeInsets.all(18),
-      ),
+          labelText: labelText,
+          prefixIcon: PrefixIcon(icon: prefixIcon),
+          contentPadding: EdgeInsets.all(18),
+          errorText: errorText),
       style: TextStyle(fontSize: 18),
       controller: controller,
       keyboardType: keyboardType,
