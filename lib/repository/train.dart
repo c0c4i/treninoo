@@ -56,6 +56,7 @@ class APITrain extends TrainRepository {
 
     var uri =
         Uri.https(URL, "$GET_TRAIN_INFO$stationCode/$trainCode/$timestamp");
+    print(uri.host + uri.path);
     var response = await http.get(uri);
 
     var body = jsonDecode(response.body);
@@ -91,7 +92,6 @@ class APITrain extends TrainRepository {
     String time = solutionsInfo.fromTime.toIso8601String();
 
     String url = "$GET_SOLUTIONS$departureCode/$arrivalCode/$time";
-    print(url);
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
 
