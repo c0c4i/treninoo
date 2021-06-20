@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
+import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
@@ -26,10 +27,10 @@ class AppRouter {
                     create: (context) =>
                         DepartureStationBloc(context.read<TrainRepository>()),
                   ),
-                  // BlocProvider(
-                  //   create: (context) =>
-                  //       FavouritesBloc(context.read<TrainRepository>()),
-                  // ),
+                  BlocProvider(
+                    create: (context) =>
+                        ExistBloc(context.read<TrainRepository>()),
+                  ),
                 ],
                 child: HomePage(),
               )),
