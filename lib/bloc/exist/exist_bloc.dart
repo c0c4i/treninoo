@@ -25,7 +25,7 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
     try {
       final exist = await _trainRepository.trainExist(event.savedTrain);
       if (exist != null) {
-        yield ExistSuccess(exist: exist);
+        yield ExistSuccess(savedTrain: event.savedTrain);
       } else {
         yield ExistFailed();
       }

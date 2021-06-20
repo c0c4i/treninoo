@@ -23,137 +23,94 @@ class TrainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ExistBloc, ExistState>(
-      listener: (context, state) {
-        if (state is ExistSuccess) {
-          LoadingDialog.hide(context);
-          if (state.exist) {
-            Navigator.pushNamed(context, RoutesNames.status,
-                    arguments: savedTrain)
-                .then((value) {
-              switch (savedTrainType) {
-                case SavedTrainType.recents:
-                  context.read<RecentsBloc>().add(RecentsRequest());
-                  return;
-                case SavedTrainType.favourites:
-                  context.read<FavouritesBloc>().add(FavouritesRequest());
-                  return;
-              }
-            });
-          } else {
-            RemoveTrainDialog.show(context,
-                savedTrain: savedTrain,
-                savedTrainType: savedTrainType, onConfirm: () {
-              switch (savedTrainType) {
-                case SavedTrainType.recents:
-                  context.read<RecentsBloc>().add(RecentsRequest());
-                  break;
-                case SavedTrainType.favourites:
-                  context.read<FavouritesBloc>().add(FavouritesRequest());
-                  break;
-              }
-            });
-          }
-          return;
-        }
-
-        if (state is ExistFailed) LoadingDialog.hide(context);
-
-        if (state is ExistLoading) LoadingDialog.show(context);
-      },
-      child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          // width: width,
-          child: ElevatedButton(
-            // onPressed: onPressed,
-            onPressed: () {
-              context
-                  .read<ExistBloc>()
-                  .add(ExistRequest(savedTrain: savedTrain));
-            },
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        savedTrain.trainType + " " + savedTrain.trainCode,
-                        style: TextStyle(
-                            color: AppColors.red,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Text(
-                      savedTrain.departureTime,
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: ElevatedButton(
+          onPressed: () {
+            context.read<ExistBloc>().add(ExistRequest(savedTrain: savedTrain));
+          },
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      savedTrain.trainType + " " + savedTrain.trainCode,
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
+                          color: AppColors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
                     ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.black,
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      savedTrain.departureStationName,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 8),
-                Container(
-                  padding: EdgeInsets.only(left: 11),
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    color: Theme.of(context).primaryColor,
-                    width: 1,
-                    height: 16,
                   ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.black,
+                  Text(
+                    savedTrain.departureTime,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
                     ),
-                    SizedBox(width: 16),
-                    Text(
-                      savedTrain.arrivalStationName,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).scaffoldBackgroundColor),
-              elevation: MaterialStateProperty.all<double>(4),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.black,
+                  ),
+                  SizedBox(width: 16),
+                  Text(
+                    savedTrain.departureStationName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 8),
+              Container(
+                padding: EdgeInsets.only(left: 11),
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                  width: 1,
+                  height: 16,
                 ),
               ),
-              padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.black,
+                  ),
+                  SizedBox(width: 16),
+                  Text(
+                    savedTrain.arrivalStationName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.black,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                Theme.of(context).scaffoldBackgroundColor),
+            elevation: MaterialStateProperty.all<double>(4),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
-          )),
-    );
+            padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+          ),
+        ));
   }
 }
