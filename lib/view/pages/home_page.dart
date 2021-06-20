@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
+import 'package:treninoo/bloc/recents/recents_bloc.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
@@ -17,7 +18,10 @@ class HomePage extends StatefulWidget {
 class _MyStatefulWidgetState extends State<HomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    SearchTrainPage(),
+    BlocProvider(
+      create: (context) => RecentsBloc(context.read<TrainRepository>()),
+      child: SearchTrainPage(),
+    ),
     SearchSolutionsPage(),
     BlocProvider(
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),

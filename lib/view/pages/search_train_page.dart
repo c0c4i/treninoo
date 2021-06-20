@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
+import 'package:treninoo/bloc/recents/recents_bloc.dart';
+import 'package:treninoo/bloc/recents/recents_event.dart';
 import 'package:treninoo/model/arguments/status_argument.dart';
-import 'package:treninoo/view/components/button.dart';
+import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/loading_dialog.dart';
 import 'package:treninoo/view/components/textfield.dart';
@@ -130,7 +132,10 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                       state.departureStations[0],
                     );
                     Navigator.pushNamed(context, RoutesNames.status,
-                        arguments: savedTrain);
+                            arguments: savedTrain)
+                        .then((value) {
+                      context.read<RecentsBloc>().add(RecentsRequest());
+                    });
                   }
                 }
                 if (state is DepartureStationFailed)
@@ -162,7 +167,8 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                     SizedBox(height: 20),
                     ActionButton(
                         title: "Cerca", onPressed: () => searchButtonClick()),
-                    Recents(recents: recents),
+                    SizedBox(height: 50),
+                    Recents(),
                   ],
                 ),
               ),
