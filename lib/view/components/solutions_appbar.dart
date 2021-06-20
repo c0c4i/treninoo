@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/components/button.dart';
+import 'package:treninoo/view/components/buttons/back_button.dart';
 
 class SolutionsAppBar extends StatefulWidget {
   const SolutionsAppBar({Key key}) : super(key: key);

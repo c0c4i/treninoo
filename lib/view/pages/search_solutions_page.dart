@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
-import 'package:treninoo/view/components/button.dart';
+import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
