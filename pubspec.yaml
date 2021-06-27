@@ -29,6 +29,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  assets:
+    - assets/train_not_found.png
+
   fonts:
     - family: Cabin
       fonts:

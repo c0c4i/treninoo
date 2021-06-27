@@ -10,6 +10,7 @@ import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
+import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_list.dart';
 import 'package:treninoo/view/components/train_status/train_status_stops_header.dart';
 
@@ -131,6 +132,11 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),
+                          );
+
+                        if (state is TrainStatusFailed)
+                          return TrainStatusNotFound(
+                            savedTrain: widget.savedTrain,
                           );
                         return Container();
                       },
