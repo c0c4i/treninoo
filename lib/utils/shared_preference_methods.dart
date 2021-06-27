@@ -1,29 +1,28 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 
 /// add recent train to shared preference
-void addRecentTrain(DepartureStation departureStation) {
-  SavedTrain train = SavedTrain(
-    departureStationCode: departureStation.station.stationCode,
-    trainCode: departureStation.trainCode,
-  );
+// void addRecentTrain(DepartureStation departureStation) {
+//   SavedTrain train = SavedTrain(
+//     departureStationCode: departureStation.station.stationCode,
+//     trainCode: departureStation.trainCode,
+//   );
 
-  List<dynamic> trains = jsonDecode(sharedPrefs.recentsStations);
-  List<SavedTrain> savedTrains =
-      trains.map((e) => SavedTrain.fromJson(e)).toList();
+//   List<dynamic> trains = jsonDecode(sharedPrefs.recentsStations);
+//   List<SavedTrain> savedTrains =
+//       trains.map((e) => SavedTrain.fromJson(e)).toList();
 
-  if (savedTrains.contains(train)) {
-    savedTrains.remove(train);
-  } else if (savedTrains.length == 3) savedTrains.removeLast();
-  savedTrains.insert(0, train);
-  sharedPrefs.recentsStations = jsonEncode(savedTrains);
-}
+//   if (savedTrains.contains(train)) {
+//     savedTrains.remove(train);
+//   } else if (savedTrains.length == 3) savedTrains.removeLast();
+//   savedTrains.insert(0, train);
+//   sharedPrefs.recentsStations = jsonEncode(savedTrains);
+// }
 
 // static void removeRecentTrain(TrainInfo trainInfo) {
 //   SavedTrain train = SavedTrain.fromTrainInfo(trainInfo);
@@ -152,4 +151,31 @@ List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
       trains.map((e) => SavedTrain.fromJson(e)).toList();
 
   return savedTrains;
+}
+
+List<Station> fetchRecentsStations() {
+  String raw = sharedPrefs.recentsStations;
+  if (raw == null) return [];
+  List<dynamic> rawStations = jsonDecode(raw);
+  return rawStations.map((e) => Station.fromJson(e)).toList();
+}
+
+void addRecentStation(Station station) {
+  String raw = sharedPrefs.recentsStations;
+
+  List<Station> stations = [];
+
+  if (raw == null) {
+    stations.insert(0, station);
+  } else {
+    List<dynamic> rawStations = jsonDecode(raw);
+    stations = rawStations.map((e) => Station.fromJson(e)).toList();
+
+    if (!stations.contains(station)) {
+      stations.insert(0, station);
+    }
+    if (stations.length > 3) stations.removeLast();
+  }
+
+  sharedPrefs.recentsStations = jsonEncode(stations);
 }

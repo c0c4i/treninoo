@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/pages/Settings.dart';
+import 'package:treninoo/view/pages/old/Settings.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 String addZeroToNumberLowerThan10(String n) {
@@ -28,12 +28,12 @@ String travelTime(DateTime departure, DateTime arrival) {
   return "${twoDigits(time.inHours)}h $twoDigitMinutes\m";
 }
 
-ThemeData getThemeFromString(String value) {
-  int n = themes.indexOf(value);
-  switch (n) {
-    case 0:
-      return lightTheme;
-    case 1:
-      return darkTheme;
-  }
-}
+// ThemeData getThemeFromString(String value) {
+//   int n = themes.indexOf(value);
+//   switch (n) {
+//     case 0:
+//       return lightTheme;
+//     case 1:
+//       return darkTheme;
+//   }
+// }

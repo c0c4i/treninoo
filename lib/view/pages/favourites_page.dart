@@ -4,15 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/header.dart';
-
-import 'package:treninoo/view/components/train_card.dart';
 import 'package:treninoo/view/components/trains_list.dart';
-
-import 'package:treninoo/model/SavedTrain.dart';
-
-import 'package:treninoo/utils/api.dart';
-import 'package:treninoo/utils/utils.dart';
-import 'package:treninoo/utils/final.dart';
 
 class FavouritesPage extends StatefulWidget {
   FavouritesPage({Key key}) : super(key: key);

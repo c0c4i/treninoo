@@ -1,6 +1,8 @@
-class Station {
-  String stationName;
-  String stationCode;
+import 'package:equatable/equatable.dart';
+
+class Station extends Equatable {
+  final String stationName;
+  final String stationCode;
 
   Station({
     this.stationName,
@@ -23,8 +25,8 @@ class Station {
     return (stationCode.toString() == this.stationCode) ? this : null;
   }
 
-  bool operator ==(Object other) {
-    Station tmp = other;
-    return (tmp.stationCode == stationCode);
+  @override
+  List<Object> get props {
+    return [stationCode];
   }
 }

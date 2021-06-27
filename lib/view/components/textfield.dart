@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
@@ -133,66 +134,107 @@ class ClickableTextField extends StatelessWidget {
   }
 }
 
-class SuggestionTextField extends StatelessWidget {
+class SuggestionTextField extends StatefulWidget {
   final String label;
+  final String errorText;
   final TextEditingController controller;
   final Function(Station) onSelect;
+  final Function(String) validator;
 
-  const SuggestionTextField(
-      {Key key, this.label, this.controller, this.onSelect})
+  SuggestionTextField(
+      {Key key,
+      this.label,
+      this.controller,
+      this.onSelect,
+      this.validator,
+      this.errorText})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    Map<String, String> map = Map<String, String>();
+  _SuggestionTextFieldState createState() => _SuggestionTextFieldState();
+}
 
-    Future<List<String>> suggestionCreator(String text) async {
-      List<String> names = [];
-      List<Station> stations = [];
-      if (text.length > 0) {
-        stations = await getStationListStartWith(text);
-      } else {
-        // stations = await fetchRecentsStations(spRecentsStations);
-      }
+class _SuggestionTextFieldState extends State<SuggestionTextField> {
+  Map<String, String> map = Map<String, String>();
 
-      if (stations == null) return null;
-      stations.forEach((station) {
-        map[station.stationName] = station.stationCode;
-        names.add(station.stationName);
-      });
-      return names;
+  Future<List<String>> suggestionCreator(String text) async {
+    List<String> names = [];
+    List<Station> stations = [];
+    if (text.length > 0) {
+      stations = await getStationListStartWith(text);
+    } else {
+      stations = fetchRecentsStations();
     }
 
+    if (stations == null) return null;
+    stations.forEach((station) {
+      // setState(() {
+      map[station.stationName] = station.stationCode;
+      // });
+      names.add(station.stationName);
+    });
+
+    return names;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return TypeAheadField(
-        getImmediateSuggestions: true,
-        hideOnEmpty: true,
-        suggestionsBoxDecoration: SuggestionsBoxDecoration(
-          borderRadius: BorderRadius.circular(16.0),
-          elevation: 16,
-        ),
-        textFieldConfiguration: TextFieldConfiguration(
+      getImmediateSuggestions: true,
+      hideOnEmpty: true,
+      loadingBuilder: (context) {
+        return Container(
+          width: double.infinity,
+          height: 100,
+          alignment: Alignment.center,
+          child: Container(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+      noItemsFoundBuilder: (context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          child: Text(
+            "Stazione non trovata",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        );
+      },
+      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+        borderRadius: BorderRadius.circular(16.0),
+        elevation: 16,
+      ),
+      textFieldConfiguration: TextFieldConfiguration(
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.characters,
-          controller: controller,
+          controller: widget.controller,
           style: TextStyle(fontSize: 18),
           decoration: InputDecoration(
             prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
-            labelText: label,
+            labelText: widget.label,
+            errorText: widget.errorText,
           ),
-        ),
-        suggestionsCallback: (text) async {
-          return suggestionCreator(text);
-        },
-        itemBuilder: (context, suggestion) {
-          return SuggestionRow(suggestion: suggestion);
-        },
-        onSuggestionSelected: (clicked) {
-          Station station = new Station(
-            stationCode: map[clicked],
-            stationName: clicked,
-          );
-          onSelect(station);
-          controller.text = clicked;
-        });
+          onChanged: (station) {
+            widget.onSelect(null);
+          }),
+      suggestionsCallback: (text) async {
+        return suggestionCreator(text);
+      },
+      itemBuilder: (context, suggestion) {
+        return SuggestionRow(suggestion: suggestion);
+      },
+      onSuggestionSelected: (clicked) {
+        Station station = new Station(
+          stationCode: map[clicked],
+          stationName: clicked,
+        );
+        widget.onSelect(station);
+        widget.controller.text = clicked;
+      },
+    );
   }
 }

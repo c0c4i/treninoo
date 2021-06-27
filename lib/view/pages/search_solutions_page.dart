@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
+import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
@@ -29,6 +30,7 @@ class SearchSolutionsPage extends StatefulWidget {
 class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   DateTime pickedDate;
   TimeOfDay pickedTime;
+  bool validate;
 
   TextEditingController departureController = TextEditingController();
   TextEditingController arrivalController = TextEditingController();
@@ -52,6 +54,13 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     String _minute = addZeroToNumberLowerThan10(pickedTime.minute.toString());
     String time = "$_hour:$_minute";
     timeController.text = time;
+    validate = false;
+  }
+
+  String validator(Station station) {
+    if (!validate) return null;
+    if (station == null) return "Selezionare una stazione";
+    return null;
   }
 
   @override
@@ -87,6 +96,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                         departureStation = station;
                       });
                     },
+                    errorText: validator(departureStation),
                   ),
                   SizedBox(height: 20),
                   SuggestionTextField(
@@ -97,6 +107,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                         arrivalStation = station;
                       });
                     },
+                    errorText: validator(arrivalStation),
                   ),
                   SizedBox(height: 20),
                   ClickableTextField(
@@ -178,6 +189,19 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   _getSolutionRequest() {
     // SharedPrefJson.addRecentStation(departureStation);
     // SharedPrefJson.addRecentStation(arrivalStation);
+    setState(() {
+      validate = true;
+    });
+
+    if (departureStation == null) return;
+    if (arrivalStation == null) return;
+
+    setState(() {
+      validate = false;
+    });
+
+    addRecentStation(departureStation);
+    addRecentStation(arrivalStation);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,

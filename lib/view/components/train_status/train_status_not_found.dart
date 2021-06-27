@@ -32,7 +32,7 @@ class TrainStatusNotFound extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "Non sono riuscito a trovare il tuo treno",
+            "Lo stato di questo treno non è ancora disponibile",
             style: TextStyle(color: AppColors.secondaryGrey),
           ),
           SizedBox(height: 32),
