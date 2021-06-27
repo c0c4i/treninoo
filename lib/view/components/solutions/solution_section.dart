@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/view/components/solutions/solution_section_header.dart';
+import 'package:treninoo/view/components/solutions/solution_section_stations.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -26,73 +28,15 @@ class SolutionSection extends StatelessWidget {
       },
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  trainSolution.trainType + " " + trainSolution.trainCode,
-                  style: TextStyle(
-                      color: AppColors.red,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
-              Text(
-                travelTime(
-                    trainSolution.departureTime, trainSolution.arrivalTime),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              ),
-            ],
+          SolutionSectionHeader(
+            trainType: trainSolution.trainType,
+            trainCode: trainSolution.trainCode,
+            departureTime: trainSolution.departureTime,
+            arrivalTime: trainSolution.arrivalTime,
           ),
           SizedBox(height: 16),
-          Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: Colors.black,
-              ),
-              SizedBox(width: 16),
-              Text(
-                trainSolution.departureStation,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              )
-            ],
-          ),
-          SizedBox(height: 8),
-          Container(
-            padding: EdgeInsets.only(left: 11),
-            alignment: Alignment.centerLeft,
-            child: Container(
-              color: Theme.of(context).primaryColor,
-              width: 1,
-              height: 16,
-            ),
-          ),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(
-                Icons.location_on_outlined,
-                color: Colors.black,
-              ),
-              SizedBox(width: 16),
-              Text(
-                trainSolution.arrivalStation,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              )
-            ],
+          SolutionSectionStations(
+            trainSolution: trainSolution,
           ),
         ],
       ),
