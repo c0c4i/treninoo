@@ -7,6 +7,7 @@ import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/endpoint.dart';
 import 'package:treninoo/utils/shared_preference.dart';
@@ -18,6 +19,8 @@ abstract class TrainRepository {
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
+  Future<List<StationTrain>> getArrivalTrains(String stationCode);
+  Future<List<StationTrain>> getDepartureTrains(String stationCode);
   // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   // Future<List<Station>> getStationAutocomplete(String text);
 }
@@ -130,6 +133,38 @@ class APITrain extends TrainRepository {
     var response = await http.get(uri);
 
     return response.body.isNotEmpty;
+  }
+
+  @override
+  Future<List<StationTrain>> getArrivalTrains(String stationCode) async {
+    String time = DateTime.now().toIso8601String();
+
+    String url = "$GET_ARRIVAL_TRAINS$stationCode/$time";
+    var uri = Uri.https(URL, url);
+    var response = await http.get(uri);
+
+    var body = jsonDecode(response.body);
+
+    List<StationTrain> trains =
+        (body as List).map((f) => StationTrain.fromJson(f)).toList();
+
+    return trains;
+  }
+
+  @override
+  Future<List<StationTrain>> getDepartureTrains(String stationCode) async {
+    String time = DateTime.now().toIso8601String();
+
+    String url = "$GET_DEPARTURE_TRAINS$stationCode/$time";
+    var uri = Uri.https(URL, url);
+    var response = await http.get(uri);
+
+    var body = jsonDecode(response.body);
+
+    List<StationTrain> trains =
+        (body as List).map((f) => StationTrain.fromJson(f)).toList();
+
+    return trains;
   }
 }
 

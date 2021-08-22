@@ -5,7 +5,9 @@ import 'package:treninoo/bloc/recents/recents_bloc.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
+import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -26,7 +28,8 @@ class _MyStatefulWidgetState extends State<HomePage> {
     BlocProvider(
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),
       child: FavouritesPage(),
-    )
+    ),
+    SearchStationPage()
   ];
 
   void _onItemTapped(int index) {
@@ -42,6 +45,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.adjust_rounded),
@@ -54,6 +58,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_outline_rounded),
             label: 'Preferiti',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.place_outlined),
+            label: 'Stazione',
           ),
         ],
         currentIndex: _selectedIndex,

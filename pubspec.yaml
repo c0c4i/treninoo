@@ -1,7 +1,8 @@
 name: treninoo
 description: My first flutter project with Trenitalia API
 
-version: 1.0.5+6
+version: 1.0.0+1
+# android: 6
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

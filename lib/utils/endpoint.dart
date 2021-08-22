@@ -14,3 +14,11 @@ const String GET_STATION =
 // ... + departureStationCode/arrivalStationCode/date
 const String GET_SOLUTIONS =
     '/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+
+// ... + stationCode/date
+const String GET_DEPARTURE_TRAINS =
+    '/viaggiatrenonew/resteasy/viaggiatreno/partenze/';
+
+// ... + stationCode/date
+const String GET_ARRIVAL_TRAINS =
+    '/viaggiatrenonew/resteasy/viaggiatreno/arrivi/';
