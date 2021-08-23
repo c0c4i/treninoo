@@ -119,8 +119,7 @@ Future<List<Station>> getStationListStartWith(String searched) async {
   var lines = responseStationCode.body.split('\n');
 
   for (var i = 0; i < lines.length - 1; i++) {
-    String stationCode =
-        lines[i].split("|")[1].substring(2).replaceAll("\n", "");
+    String stationCode = lines[i].split("|")[1].replaceAll("\n", "");
     String stationName = lines[i].split("|")[0].split("\n")[0];
     stationList
         .add(new Station(stationName: stationName, stationCode: stationCode));

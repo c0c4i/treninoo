@@ -8,10 +8,10 @@ abstract class StationStatusEvent extends Equatable {
 }
 
 class StationStatusRequest extends StationStatusEvent {
-  final String trainCode;
+  final String stationCode;
 
-  StationStatusRequest({@required this.trainCode});
+  StationStatusRequest({@required this.stationCode});
 
   @override
-  List<Object> get props => [trainCode];
+  List<Object> get props => [stationCode];
 }

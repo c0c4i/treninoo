@@ -27,9 +27,9 @@ class StationStatusBloc extends Bloc<StationStatusEvent, StationStatusState> {
     yield StationStatusLoading();
     try {
       final departureTrains =
-          await _trainRepository.getDepartureTrains(event.trainCode);
+          await _trainRepository.getDepartureTrains(event.stationCode);
       final arrivalTrains =
-          await _trainRepository.getArrivalTrains(event.trainCode);
+          await _trainRepository.getArrivalTrains(event.stationCode);
       yield StationStatusSuccess(
           departureTrains: departureTrains, arrivalTrains: arrivalTrains);
     } catch (e) {

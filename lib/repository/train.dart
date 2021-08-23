@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
@@ -9,6 +10,7 @@ import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/utils/endpoint.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
@@ -137,34 +139,40 @@ class APITrain extends TrainRepository {
 
   @override
   Future<List<StationTrain>> getArrivalTrains(String stationCode) async {
-    String time = DateTime.now().toIso8601String();
+    String url = "$GET_ARRIVAL_TRAINS$stationCode/" + getDate();
 
-    String url = "$GET_ARRIVAL_TRAINS$stationCode/$time";
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
 
     var body = jsonDecode(response.body);
 
     List<StationTrain> trains =
-        (body as List).map((f) => StationTrain.fromJson(f)).toList();
+        (body as List).map((f) => StationTrain.fromJson(f, false)).toList();
 
     return trains;
   }
 
   @override
   Future<List<StationTrain>> getDepartureTrains(String stationCode) async {
-    String time = DateTime.now().toIso8601String();
+    String url = "$GET_DEPARTURE_TRAINS$stationCode/" + getDate();
 
-    String url = "$GET_DEPARTURE_TRAINS$stationCode/$time";
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
 
     var body = jsonDecode(response.body);
 
     List<StationTrain> trains =
-        (body as List).map((f) => StationTrain.fromJson(f)).toList();
+        (body as List).map((f) => StationTrain.fromJson(f, true)).toList();
 
     return trains;
+  }
+
+  String getDate() {
+    DateTime now = DateTime.now();
+    String formattedDate =
+        DateFormat('EEE MMM dd yyyy HH:mm:00').format(now) + LOCALE;
+
+    return formattedDate;
   }
 }
 

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:treninoo/view/pages/old/Settings.dart';
-import 'package:treninoo/view/style/theme.dart';
+final String LOCALE = " GMT+0200";
 
 String addZeroToNumberLowerThan10(String n) {
   return (n.length < 2) ? "0$n" : n;

@@ -5,9 +5,11 @@ import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
+import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/solutions_result_page.dart';
+import 'package:treninoo/view/pages/station_status_page.dart';
 import 'package:treninoo/view/pages/train_status_page.dart';
 import 'package:treninoo/view/pages/home_page.dart';
 import 'package:treninoo/view/router/routes_names.dart';
@@ -57,6 +59,18 @@ class AppRouter {
               create: (context) =>
                   SolutionsBloc(context.read<TrainRepository>()),
               child: SolutionsResultPage(solutionsInfo: solutionsInfo),
+            ),
+          ),
+        );
+      case RoutesNames.station:
+        final station = settings.arguments;
+        return CupertinoPageRoute(
+          builder: (_) => RepositoryProvider<TrainRepository>(
+            create: (context) => trainRepository,
+            child: BlocProvider(
+              create: (context) =>
+                  StationStatusBloc(context.read<TrainRepository>()),
+              child: StationStatusPage(station: station),
             ),
           ),
         );
