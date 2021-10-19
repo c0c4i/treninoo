@@ -12,6 +12,7 @@ import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/utils/endpoint.dart';
+import 'package:treninoo/utils/file_reader.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/utils/utils.dart';
@@ -142,9 +143,12 @@ class APITrain extends TrainRepository {
     String url = "$GET_ARRIVAL_TRAINS$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
-    var response = await http.get(uri);
+    // var response = await http.get(uri);
+    // var body = jsonDecode(response.body);
 
-    var body = jsonDecode(response.body);
+    // fake response for testing at 12 PM
+    var response = await readJson("arrivi_milano");
+    var body = jsonDecode(response);
 
     List<StationTrain> trains =
         (body as List).map((f) => StationTrain.fromJson(f, false)).toList();
@@ -157,9 +161,13 @@ class APITrain extends TrainRepository {
     String url = "$GET_DEPARTURE_TRAINS$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
-    var response = await http.get(uri);
+    // var response = await http.get(uri);
 
-    var body = jsonDecode(response.body);
+    // var body = jsonDecode(response.body);
+
+    // fake response for testing at 12 PM
+    var response = await readJson("partenze_milano");
+    var body = jsonDecode(response);
 
     List<StationTrain> trains =
         (body as List).map((f) => StationTrain.fromJson(f, true)).toList();

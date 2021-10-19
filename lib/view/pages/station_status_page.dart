@@ -17,111 +17,121 @@ class StationStatusPage extends StatefulWidget {
   _StationStatusPageState createState() => _StationStatusPageState();
 }
 
-class _StationStatusPageState extends State<StationStatusPage> {
+class _StationStatusPageState extends State<StationStatusPage>
+    with SingleTickerProviderStateMixin {
   _StationStatusPageState() : super();
 
   List<StationTrain> departureTrains;
   List<StationTrain> arrivalTrains;
 
+  TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        color: Theme.of(context).buttonColor,
-        onRefresh: () async {
-          context.read<StationStatusBloc>().add(
-              StationStatusRequest(stationCode: widget.station.stationCode));
-          return context
-              .read<StationStatusBloc>()
-              .stream
-              .firstWhere((e) => e is! StationStatusLoading);
-        },
-        child: Container(
-          height: double.infinity,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: SafeArea(
-              minimum: EdgeInsets.all(8),
-              child: Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: <Widget>[
-                    BlocListener<StationStatusBloc, StationStatusState>(
-                      listener: (context, state) {
-                        if (state is StationStatusSuccess) {
-                          setState(() {
-                            departureTrains = state.departureTrains;
-                            arrivalTrains = state.arrivalTrains;
-                          });
-                        }
-                      },
-                      child: StationAppBar(
-                        stationName: widget.station.stationName,
-                      ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: RefreshIndicator(
+          color: Theme.of(context).buttonColor,
+          onRefresh: () async {
+            context.read<StationStatusBloc>().add(
+                StationStatusRequest(stationCode: widget.station.stationCode));
+            return context
+                .read<StationStatusBloc>()
+                .stream
+                .firstWhere((e) => e is! StationStatusLoading);
+          },
+          child: SafeArea(
+            minimum: EdgeInsets.all(8),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: BlocListener<StationStatusBloc, StationStatusState>(
+                    listener: (context, state) {
+                      if (state is StationStatusSuccess) {
+                        setState(() {
+                          departureTrains = state.departureTrains;
+                          arrivalTrains = state.arrivalTrains;
+                        });
+                      }
+                    },
+                    child: StationAppBar(
+                      stationName: widget.station.stationName,
                     ),
-                    SizedBox(height: 8),
-                    BlocBuilder<StationStatusBloc, StationStatusState>(
-                      builder: (context, state) {
-                        print(state);
-                        if (state is StationStatusInitial) {
-                          context
-                              .read<StationStatusBloc>()
-                              .add(StationStatusRequest(
-                                stationCode: widget.station.stationCode,
-                              ));
-                        }
-                        if (state is StationStatusSuccess) {
-                          print(state.arrivalTrains.length);
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.arrivalTrains.length,
-                            itemBuilder: (context, index) {
-                              return StationTrainCard(
-                                  stationTrain: state.arrivalTrains[index]);
-                              // return TrainCard(
-                              //   savedTrain: trains[index],
-                              //   savedTrainType: savedTrainType,
-                              // );
-                            },
-                          );
-                        }
-                        // if (state is StationStatusLoading &&
-                        //     departureTrains != null) {
-                        //   return Column(
-                        //     children: [
-                        //       TrainInfoDetails(
-                        //         trainInfo: departureTrains,
-                        //       ),
-                        //       SizedBox(height: 24),
-                        //       TrainInfoStopsHeader(),
-                        //       SizedBox(height: 8),
-                        //       StationStatusStopList(
-                        //         stops: departureTrains.stops,
-                        //         currentStop:
-                        //             departureTrains.lastPositionRegister,
-                        //       )
-                        //     ],
-                        //   );
-                        // }
-                        if (state is StationStatusLoading)
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-
-                        // if (state is StationStatusFailed)
-                        //   return StationStatusNotFound(
-                        //     savedTrain: widget.station,
-                        //   );
-                        return Container();
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: TabBar(
+                    controller: _tabController,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    ),
+                    // indicatorPadding: EdgeInsets.all(16),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelColor: Colors.black,
+                    tabs: [
+                      Tab(text: 'Partenze'),
+                      Tab(text: 'Arrivi'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 16),
+                BlocBuilder<StationStatusBloc, StationStatusState>(
+                  builder: (context, state) {
+                    if (state is StationStatusInitial) {
+                      context
+                          .read<StationStatusBloc>()
+                          .add(StationStatusRequest(
+                            stationCode: widget.station.stationCode,
+                          ));
+                    }
+                    if (state is StationStatusSuccess) {
+                      return Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            ListView.builder(
+                              itemCount: state.departureTrains.length,
+                              itemBuilder: (context, index) {
+                                return StationTrainCard(
+                                    stationTrain: state.departureTrains[index]);
+                              },
+                            ),
+                            ListView.builder(
+                              itemCount: state.arrivalTrains.length,
+                              itemBuilder: (context, index) {
+                                return StationTrainCard(
+                                    stationTrain: state.arrivalTrains[index]);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (state is StationStatusLoading)
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    return Container();
+                  },
+                ),
+              ],
             ),
           ),
         ),
