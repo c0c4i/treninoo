@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
@@ -27,6 +28,24 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
   _TrainStatusPageState() : super();
 
   TrainInfo trainInfo;
+
+  Timer timer;
+
+  @override
+  void initState() {
+    timer = Timer.periodic(
+        Duration(seconds: 10),
+        (Timer t) => context.read<TrainStatusBloc>().add(
+              TrainStatusRequest(savedTrain: widget.savedTrain),
+            ));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

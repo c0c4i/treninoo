@@ -1,5 +1,11 @@
 const String URL = "www.viaggiatreno.it";
 
+const String BASE_URL = "cityhelper.app";
+
+class Endpoint {
+  static const String AUTOCOMPLETE = '/treninoo/autocomplete/';
+}
+
 /// ... + trainCode
 const String GET_STATION_CODE =
     '/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';

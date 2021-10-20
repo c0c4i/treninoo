@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/utils/endpoint.dart';
 
 // ... + trainCode
 const String URL_STATION_CODE =
@@ -86,63 +87,77 @@ Future<String> getTrainType(String stationCode, String trainCode) async {
     return "NaN";
 }
 
+// DEPRECATED
 // Controlla se un treno esiste o no
-Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
-  if (trainCode.length == 0 || stationCode.length == 0)
-    throw new ArgumentError();
+// Future<bool> verifyIfTrainExist(String stationCode, String trainCode) async {
+//   if (trainCode.length == 0 || stationCode.length == 0)
+//     throw new ArgumentError();
 
-  DateTime now = new DateTime.now();
-  DateTime date = new DateTime(now.year, now.month, now.day);
-  String timestamp = date.millisecondsSinceEpoch.toString();
+//   DateTime now = new DateTime.now();
+//   DateTime date = new DateTime(now.year, now.month, now.day);
+//   String timestamp = date.millisecondsSinceEpoch.toString();
 
-  String urlStationCode =
-      URL_TRAIN_INFO + stationCode + '/' + trainCode + '/' + timestamp;
-  print(urlStationCode);
-  http.Response responseStationCode = await http.get(urlStationCode);
+//   String urlStationCode =
+//       URL_TRAIN_INFO + stationCode + '/' + trainCode + '/' + timestamp;
+//   print(urlStationCode);
+//   http.Response responseStationCode = await http.get(urlStationCode);
 
-  if (responseStationCode.body.isEmpty) return false;
+//   if (responseStationCode.body.isEmpty) return false;
 
-  if (responseStationCode.statusCode == 204) return false;
+//   if (responseStationCode.statusCode == 204) return false;
 
-  if (responseStationCode.statusCode != 200) throw new Error();
+//   if (responseStationCode.statusCode != 200) throw new Error();
 
-  return true;
-}
+//   return true;
+// }
 
+// Future<List<Station>> getStationListStartWith(String searched) async {
+//   List<Station> stationList = [];
+
+//   http.Response responseStationCode =
+//       await http.get(URL_STATION_NAME + searched);
+//   if (responseStationCode.statusCode != 200) throw new Error();
+
+//   var lines = responseStationCode.body.split('\n');
+
+//   for (var i = 0; i < lines.length - 1; i++) {
+//     String stationCode = lines[i].split("|")[1].replaceAll("\n", "");
+//     String stationName = lines[i].split("|")[0].split("\n")[0];
+//     stationList
+//         .add(new Station(stationName: stationName, stationCode: stationCode));
+//   }
+//   return stationList;
+// }
+
+// NEW API - AUTOCOMPLETE
 Future<List<Station>> getStationListStartWith(String searched) async {
-  List<Station> stationList = [];
+  var uri = Uri.http(BASE_URL, Endpoint.AUTOCOMPLETE + searched);
+  var response = await http.get(uri);
+  var body = jsonDecode(response.body);
 
-  http.Response responseStationCode =
-      await http.get(URL_STATION_NAME + searched);
-  if (responseStationCode.statusCode != 200) throw new Error();
-
-  var lines = responseStationCode.body.split('\n');
-
-  for (var i = 0; i < lines.length - 1; i++) {
-    String stationCode = lines[i].split("|")[1].replaceAll("\n", "");
-    String stationName = lines[i].split("|")[0].split("\n")[0];
-    stationList
-        .add(new Station(stationName: stationName, stationCode: stationCode));
-  }
-  return stationList;
+  return List<Station>.from(
+      body['stations'].map((station) => Station.fromJson(station)));
 }
 
-String getStationCodeByStationName(String name, List<Station> l) {
-  for (var element in l) {
-    if (element.stationName == name) {
-      return element.stationCode;
-    }
-  }
-  return null;
-}
+// DEPRECATED
+// String getStationCodeByStationName(String name, List<Station> l) {
+//   for (var element in l) {
+//     if (element.stationName == name) {
+//       return element.stationCode;
+//     }
+//   }
+//   return null;
+// }
 
-Future<String> getStationCodeFromStationName(String stationName) async {
-  http.Response responseStationCode =
-      await http.get(URL_STATION_NAME + stationName);
-  if (responseStationCode.statusCode != 200) throw new Error();
 
-  String stationCode =
-      responseStationCode.body.split("|")[1].substring(2).replaceAll("\n", "");
+// DEPRECATED
+// Future<String> getStationCodeFromStationName(String stationName) async {
+//   http.Response responseStationCode =
+//       await http.get(URL_STATION_NAME + stationName);
+//   if (responseStationCode.statusCode != 200) throw new Error();
 
-  return stationCode;
-}
+//   String stationCode =
+//       responseStationCode.body.split("|")[1].substring(2).replaceAll("\n", "");
+
+//   return stationCode;
+// }

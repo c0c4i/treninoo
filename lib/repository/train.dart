@@ -93,8 +93,10 @@ class APITrain extends TrainRepository {
   // }
 
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
-    String departureCode = solutionsInfo.departureStation.stationCode;
-    String arrivalCode = solutionsInfo.arrivalStation.stationCode;
+    String departureCode =
+        solutionsInfo.departureStation.stationCode.replaceAll("S0", "");
+    String arrivalCode =
+        solutionsInfo.arrivalStation.stationCode.replaceAll("S0", "");
     String time = solutionsInfo.fromTime.toIso8601String();
 
     String url = "$GET_SOLUTIONS$departureCode/$arrivalCode/$time";
@@ -143,12 +145,12 @@ class APITrain extends TrainRepository {
     String url = "$GET_ARRIVAL_TRAINS$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
-    // var response = await http.get(uri);
-    // var body = jsonDecode(response.body);
+    var response = await http.get(uri);
+    var body = jsonDecode(response.body);
 
     // fake response for testing at 12 PM
-    var response = await readJson("arrivi_milano");
-    var body = jsonDecode(response);
+    // var response = await readJson("arrivi_milano");
+    // var body = jsonDecode(response);
 
     List<StationTrain> trains =
         (body as List).map((f) => StationTrain.fromJson(f, false)).toList();
@@ -161,13 +163,12 @@ class APITrain extends TrainRepository {
     String url = "$GET_DEPARTURE_TRAINS$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
-    // var response = await http.get(uri);
-
-    // var body = jsonDecode(response.body);
+    var response = await http.get(uri);
+    var body = jsonDecode(response.body);
 
     // fake response for testing at 12 PM
-    var response = await readJson("partenze_milano");
-    var body = jsonDecode(response);
+    // var response = await readJson("partenze_milano");
+    // var body = jsonDecode(response);
 
     List<StationTrain> trains =
         (body as List).map((f) => StationTrain.fromJson(f, true)).toList();
