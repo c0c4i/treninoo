@@ -170,31 +170,31 @@ final lightTheme = ThemeData(
   ),
 );
 
-final darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: CustomColors.customGreyNigthMode,
-  accentColor: CustomColors.customGreyNigthMode,
-  focusColor: CustomColors.customGreyNigthMode,
-  primaryTextTheme: TextTheme(body1: TextStyle(color: Colors.white)),
-  scaffoldBackgroundColor: Color(0xff333333),
-  iconTheme: IconThemeData(color: Colors.white),
-  buttonColor: CustomColors.customGreyNigthMode,
-  primarySwatch: Colors.grey,
-  cursorColor: CustomColors.customGreyNigthMode,
-  textSelectionHandleColor: CustomColors.customGreyNigthMode,
-  textTheme: TextTheme(
-    display1: TextStyle(
-      color: Colors.white,
-      fontSize: 25,
-    ),
-    display2: TextStyle(fontSize: 25, color: Colors.white),
-    display3: TextStyle(
-      fontSize: 20.0,
-      color: Colors.white,
-    ),
-  ),
-  dialogTheme: DialogTheme(
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0))),
-  ),
-);
+// final darkTheme = ThemeData(
+//   brightness: Brightness.dark,
+//   primaryColor: CustomColors.customGreyNigthMode,
+//   accentColor: CustomColors.customGreyNigthMode,
+//   focusColor: CustomColors.customGreyNigthMode,
+//   primaryTextTheme: TextTheme(body1: TextStyle(color: Colors.white)),
+//   scaffoldBackgroundColor: Color(0xff333333),
+//   iconTheme: IconThemeData(color: Colors.white),
+//   buttonColor: CustomColors.customGreyNigthMode,
+//   primarySwatch: Colors.grey,
+//   cursorColor: CustomColors.customGreyNigthMode,
+//   textSelectionHandleColor: CustomColors.customGreyNigthMode,
+//   textTheme: TextTheme(
+//     display1: TextStyle(
+//       color: Colors.white,
+//       fontSize: 25,
+//     ),
+//     display2: TextStyle(fontSize: 25, color: Colors.white),
+//     display3: TextStyle(
+//       fontSize: 20.0,
+//       color: Colors.white,
+//     ),
+//   ),
+//   dialogTheme: DialogTheme(
+//     shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.all(Radius.circular(8.0))),
+//   ),
+// );
