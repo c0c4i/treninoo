@@ -25,11 +25,11 @@ class _MyStatefulWidgetState extends State<HomePage> {
       child: SearchTrainPage(),
     ),
     SearchSolutionsPage(),
+    SearchStationPage(),
     BlocProvider(
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),
       child: FavouritesPage(),
     ),
-    SearchStationPage()
   ];
 
   void _onItemTapped(int index) {
@@ -56,12 +56,12 @@ class _MyStatefulWidgetState extends State<HomePage> {
             label: 'Ricerca',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline_rounded),
-            label: 'Preferiti',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.place_outlined),
             label: 'Stazione',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline_rounded),
+            label: 'Preferiti',
           ),
         ],
         currentIndex: _selectedIndex,
