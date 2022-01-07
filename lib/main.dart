@@ -14,8 +14,14 @@ import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await sharedPrefs.init();
   runApp(MyApp());
 }
