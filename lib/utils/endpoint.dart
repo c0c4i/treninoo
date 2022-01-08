@@ -1,9 +1,14 @@
 const String URL = "www.viaggiatreno.it";
 
-const String BASE_URL = "cityhelper.app";
+const bool isProd = false;
+const String BASE_URL =
+    isProd ? "cityhelper.app" : "520d-128-116-164-128.eu.ngrok.io";
 
 class Endpoint {
-  static const String AUTOCOMPLETE = '/treninoo/autocomplete/';
+  static const String AUTOCOMPLETE =
+      (isProd ? '/treninoo' : '') + '/autocomplete/';
+  static const String FOLLOWTRAIN_STATIONS =
+      (isProd ? '/treninoo' : '') + '/followtrain';
 }
 
 /// ... + trainCode

@@ -24,6 +24,8 @@ abstract class TrainRepository {
   Future<bool> trainExist(SavedTrain savedTrain);
   Future<List<StationTrain>> getArrivalTrains(String stationCode);
   Future<List<StationTrain>> getDepartureTrains(String stationCode);
+  Future<List<Station>> getFollowTrainStations(
+      DepartureStation departureStation);
   // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   // Future<List<Station>> getStationAutocomplete(String text);
 }
@@ -174,6 +176,23 @@ class APITrain extends TrainRepository {
         (body as List).map((f) => StationTrain.fromJson(f, true)).toList();
 
     return trains;
+  }
+
+  @override
+  Future<List<Station>> getFollowTrainStations(
+      DepartureStation departureStation) async {
+    String url =
+        "${Endpoint.FOLLOWTRAIN_STATIONS}/${departureStation.station.stationCode}/${departureStation.trainCode}";
+
+    print(url);
+    var uri = Uri.https(BASE_URL, url);
+    var response = await http.get(uri);
+    var body = jsonDecode(response.body)['stations'];
+
+    List<Station> stations =
+        (body as List).map((station) => Station.fromJson(station)).toList();
+
+    return stations;
   }
 
   String getDate() {
