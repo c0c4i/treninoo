@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class ActionButton extends StatelessWidget {
   final String title;
@@ -7,37 +8,34 @@ class ActionButton extends StatelessWidget {
   final Color color;
   final VoidCallback onPressed;
 
-  const ActionButton(
-      {Key key,
-      this.title,
-      this.width = double.infinity,
-      this.height = 54,
-      this.color,
-      this.onPressed})
-      : super(key: key);
+  const ActionButton({
+    Key key,
+    this.title,
+    this.width = double.infinity,
+    this.height = 54,
+    this.color,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: width,
-        height: height,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          child: Text(
-            title,
-            style: TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+    return SizedBox(
+      width: width,
+      height: height,
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        style: TextButton.styleFrom(
+          primary: Colors.white,
+          backgroundColor: color ?? Theme.of(context).primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kRadius),
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                color ?? Theme.of(context).primaryColor),
-            elevation: MaterialStateProperty.all<double>(0),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          ),
-        ));
+        ),
+      ),
+    );
   }
 }

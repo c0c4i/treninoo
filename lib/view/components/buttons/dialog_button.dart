@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/components/buttons/button_type.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class DialogButton extends StatelessWidget {
   final String title;
@@ -8,7 +8,6 @@ class DialogButton extends StatelessWidget {
   final Color textColor;
   final Color borderColor;
   final VoidCallback onPressed;
-  final ButtonType type;
 
   const DialogButton({
     Key key,
@@ -18,55 +17,28 @@ class DialogButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.borderColor,
     this.onPressed,
-    this.type = ButtonType.filled,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (type == ButtonType.outlined)
-      return Expanded(
-        child: Container(
-            height: height,
-            child: OutlinedButton(
-              onPressed: onPressed,
-              child: Text(
-                title,
-                style: TextStyle(color: textColor),
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).scaffoldBackgroundColor),
-                elevation: MaterialStateProperty.all<double>(0),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-            )),
-      );
-
     return Expanded(
-      child: Container(
-          height: height,
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: onPressed,
-            child: Text(
-              title,
-              style: TextStyle(color: textColor),
+      child: SizedBox(
+        height: height,
+        child: TextButton(
+          onPressed: onPressed,
+          child: Text(
+            title,
+            style: TextStyle(color: textColor),
+          ),
+          style: TextButton.styleFrom(
+            primary: Colors.white,
+            backgroundColor: color ?? Theme.of(context).primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius),
             ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  color ?? Theme.of(context).primaryColor),
-              elevation: MaterialStateProperty.all<double>(0),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

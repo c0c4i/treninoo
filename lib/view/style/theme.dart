@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+final double kRadius = 16;
+
 class CustomColors {
   static Color customRed = const Color(0xFFC4152B);
   static Color customGreyNigthMode = const Color(0xff828282);

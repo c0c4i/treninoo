@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class BeautifulBackButton extends StatelessWidget {
   const BeautifulBackButton({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 60,
       height: 60,
       child: TextButton(
@@ -17,11 +18,9 @@ class BeautifulBackButton extends StatelessWidget {
         )),
         style: TextButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-          elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(kRadius),
           ),
-          onSurface: Colors.green,
         ),
       ),
     );
