@@ -18,7 +18,7 @@ class BeautifulBackButton extends StatelessWidget {
           color: Primary.normal,
         )),
         style: TextButton.styleFrom(
-          backgroundColor: Primary.normal.withOpacity(0.1),
+          backgroundColor: Primary.lightest2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),
