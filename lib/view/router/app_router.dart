@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
-import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';

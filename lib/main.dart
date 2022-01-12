@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).scaffoldBackgroundColor,
         // statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
+        // statusBarIconBrightness: Brightness.dark,
         // systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        // systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: MaterialApp(
         title: 'Treninoo',
