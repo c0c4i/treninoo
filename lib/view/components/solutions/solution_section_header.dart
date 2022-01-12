@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/SavedTrain.dart';
-import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/utils/core.dart';
-import 'package:treninoo/view/router/routes_names.dart';
-import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class SolutionSectionHeader extends StatelessWidget {
   final String trainType;
@@ -11,13 +9,13 @@ class SolutionSectionHeader extends StatelessWidget {
   final DateTime departureTime;
   final DateTime arrivalTime;
 
-  const SolutionSectionHeader(
-      {Key key,
-      this.trainType,
-      this.trainCode,
-      this.departureTime,
-      this.arrivalTime})
-      : super(key: key);
+  const SolutionSectionHeader({
+    Key key,
+    this.trainType,
+    this.trainCode,
+    this.departureTime,
+    this.arrivalTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +24,15 @@ class SolutionSectionHeader extends StatelessWidget {
         Expanded(
           child: Text(
             "$trainType $trainCode",
-            style: TextStyle(
-                color: AppColors.red,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
+            style: Typo.subheaderHeavy.copyWith(
+              color: Primary.normal,
+            ),
           ),
         ),
         Text(
           travelTime(departureTime, arrivalTime),
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
+          style: Typo.subheaderHeavy.copyWith(
+            color: Theme.of(context).colorScheme.onBackground,
           ),
         ),
       ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/Solutions.dart';
-import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/view/components/solutions/solution_card.dart';
-import 'package:treninoo/view/components/train_status/train_status_stop_row.dart';
 
 class SolutionsList extends StatelessWidget {
   const SolutionsList({Key key, this.solutions}) : super(key: key);

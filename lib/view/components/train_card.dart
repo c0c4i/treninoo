@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
-import 'package:treninoo/bloc/favourites/favourites.dart';
-import 'package:treninoo/bloc/recents/recents.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/view/components/dialog/remove_train_dialog.dart';
-import 'package:treninoo/view/components/loading_dialog.dart';
-import 'package:treninoo/view/router/routes_names.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class TrainCard extends StatelessWidget {
   final SavedTrain savedTrain;
@@ -23,9 +19,13 @@ class TrainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: ElevatedButton(
+    return Card(
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadius),
+        ),
+        child: OutlinedButton(
           onPressed: () {
             context.read<ExistBloc>().add(ExistRequest(savedTrain: savedTrain));
           },
@@ -36,18 +36,19 @@ class TrainCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       savedTrain.trainType + " " + savedTrain.trainCode,
-                      style: TextStyle(
-                          color: AppColors.red,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
+                      style: Typo.subheaderHeavy.copyWith(
+                        color: Primary.normal,
+                      ),
+                      // style: TextStyle(
+                      //     color: Primary.normal,
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.w500),
                     ),
                   ),
                   Text(
                     savedTrain.departureTime,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    style: Typo.subheaderHeavy.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                 ],
@@ -62,10 +63,8 @@ class TrainCard extends StatelessWidget {
                   SizedBox(width: 16),
                   Text(
                     savedTrain.departureStationName,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    style: Typo.subheaderHeavy.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )
                 ],
@@ -75,9 +74,9 @@ class TrainCard extends StatelessWidget {
                 padding: EdgeInsets.only(left: 11),
                 alignment: Alignment.centerLeft,
                 child: Container(
-                  color: Theme.of(context).primaryColor,
+                  color: Primary.normal,
                   width: 1,
-                  height: 16,
+                  height: 8,
                 ),
               ),
               SizedBox(height: 8),
@@ -90,26 +89,19 @@ class TrainCard extends StatelessWidget {
                   SizedBox(width: 16),
                   Text(
                     savedTrain.arrivalStationName,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    style: Typo.subheaderHeavy.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )
                 ],
               ),
             ],
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).scaffoldBackgroundColor),
-            elevation: MaterialStateProperty.all<double>(4),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+            padding: EdgeInsets.all(kPadding),
           ),
         ));
   }

@@ -6,9 +6,10 @@ import 'package:treninoo/bloc/station_status/stationstatus.dart';
 
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/StationTrain.dart';
+import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/station_train_card.dart';
-import 'package:treninoo/view/components/train_status/station_status_appbar.dart';
-import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class StationStatusPage extends StatefulWidget {
   final Station station;
@@ -68,8 +69,8 @@ class _StationStatusPageState extends State<StationStatusPage>
                       });
                     }
                   },
-                  child: StationAppBar(
-                    stationName: widget.station.stationName,
+                  child: BeautifulAppBar(
+                    title: widget.station.stationName,
                   ),
                 ),
               ),
@@ -79,12 +80,12 @@ class _StationStatusPageState extends State<StationStatusPage>
                 child: TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(kRadius),
+                    color: Primary.lightest2,
                   ),
                   // indicatorPadding: EdgeInsets.all(16),
                   overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  labelColor: Theme.of(context).primaryColor,
+                  labelColor: Primary.normal,
                   unselectedLabelColor: Colors.black,
                   tabs: [
                     Tab(text: 'Partenze'),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/view/components/solutions/solution_section_station_row.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 
 class SolutionSectionStations extends StatelessWidget {
   final TrainSolution trainSolution;
@@ -21,9 +22,9 @@ class SolutionSectionStations extends StatelessWidget {
           padding: EdgeInsets.only(left: 11),
           alignment: Alignment.centerLeft,
           child: Container(
-            color: Theme.of(context).primaryColor,
+            color: Primary.normal,
             width: 1,
-            height: 16,
+            height: 8,
           ),
         ),
         SizedBox(height: 8),

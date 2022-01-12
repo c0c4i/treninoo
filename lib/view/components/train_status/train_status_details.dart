@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class TrainInfoDetails extends StatelessWidget {
   final TrainInfo trainInfo;
 
   const TrainInfoDetails({Key key, this.trainInfo}) : super(key: key);
+
+  get isDeparted {
+    return trainInfo.lastPositionRegister != '--';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +20,8 @@ class TrainInfoDetails extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(16),
+          color: Primary.normal,
+          borderRadius: BorderRadius.circular(kRadius),
         ),
         child: Row(
           children: <Widget>[
@@ -22,27 +29,34 @@ class TrainInfoDetails extends StatelessWidget {
                 flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      (trainInfo.lastPositionRegister == '--')
-                          ? 'Non ancora partito'
-                          : '${trainInfo.lastPositionRegister}',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    (trainInfo.lastPositionRegister == '--')
-                        ? SizedBox.shrink()
-                        : Text(
-                            'Ultimo Rilevamento: ${trainInfo.lastTimeRegister}',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                  children: isDeparted
+                      ? [
+                          Text(
+                            '${trainInfo.lastPositionRegister}',
+                            style:
+                                Typo.titleHeavy.copyWith(color: Colors.white),
                           ),
-                  ],
+                          Text(
+                            'Ultimo Rilevamento: ${trainInfo.lastTimeRegister}',
+                            style: Typo.bodyLight.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ]
+                      : [
+                          Text(
+                            'Non ancora partito',
+                            style:
+                                Typo.titleHeavy.copyWith(color: Colors.white),
+                          ),
+                        ],
                 )),
             Expanded(
               flex: 1,
               child: Text(
-                pickDelay(trainInfo.delay),
+                delay,
                 textAlign: TextAlign.right,
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: Typo.subheaderLight.copyWith(color: Colors.white),
               ),
             ),
           ],
@@ -51,8 +65,8 @@ class TrainInfoDetails extends StatelessWidget {
     );
   }
 
-  String pickDelay(int delay) {
-    String text = delay < 0 ? 'Anticipo' : 'Ritardo';
-    return text + " $delay\'";
+  get delay {
+    String text = trainInfo.delay < 0 ? 'Anticipo' : 'Ritardo';
+    return text + " ${trainInfo.delay}\'";
   }
 }

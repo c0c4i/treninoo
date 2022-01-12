@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/StationTrain.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class StationTrainCard extends StatelessWidget {
   final StationTrain stationTrain;
@@ -12,9 +14,13 @@ class StationTrainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: ElevatedButton(
+    return Card(
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadius),
+        ),
+        child: OutlinedButton(
           onPressed: () {
             // context.read<ExistBloc>().add(ExistRequest(savedTrain: savedTrain));
           },
@@ -25,18 +31,15 @@ class StationTrainCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       stationTrain.category + " " + stationTrain.trainCode,
-                      style: TextStyle(
-                          color: AppColors.red,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500),
+                      style: Typo.subheaderHeavy.copyWith(
+                        color: Primary.normal,
+                      ),
                     ),
                   ),
                   Text(
                     stationTrain.time,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    style: Typo.subheaderHeavy.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                 ],
@@ -70,16 +73,11 @@ class StationTrainCard extends StatelessWidget {
               ),
             ],
           ),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Theme.of(context).scaffoldBackgroundColor),
-            elevation: MaterialStateProperty.all<double>(4),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+            padding: EdgeInsets.all(kPadding),
           ),
         ));
   }
@@ -105,10 +103,8 @@ class TextWithIcon extends StatelessWidget {
         SizedBox(width: 8),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: AppColors.black,
+          style: Typo.subheaderHeavy.copyWith(
+            color: Theme.of(context).colorScheme.onBackground,
           ),
         )
       ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class SuggestionRow extends StatelessWidget {
   final String suggestion;
@@ -18,15 +18,11 @@ class SuggestionRow extends StatelessWidget {
           Icon(
             Icons.location_on_outlined,
             size: 24,
-            color: Colors.black,
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 16),
           Text(
             suggestion,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Typo.subheaderHeavy,
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class TrainInfoStopsHeader extends StatelessWidget {
   const TrainInfoStopsHeader({Key key}) : super(key: key);
@@ -26,7 +27,6 @@ class TrainInfoStopsHeader extends StatelessWidget {
             flex: 2,
             child: TrainStatusStopsHeaderCell(title: "Partenza"),
           ),
-          
         ],
       ),
     );
@@ -45,10 +45,7 @@ class TrainStatusStopsHeaderCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(
-        color: AppColors.secondaryGrey,
-        fontSize: 16,
-      ),
+      style: Typo.subheaderLight.copyWith(color: Grey.dark),
       textAlign: TextAlign.center,
     );
   }

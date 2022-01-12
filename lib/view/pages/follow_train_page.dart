@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/followtrain_stations/followtrainstations.dart';
 import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
-import 'package:treninoo/view/components/follow_train_appbar.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class FollowTrainPage extends StatefulWidget {
   final DepartureStation departureStation;
@@ -30,7 +31,9 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
             padding: EdgeInsets.all(16),
             child: Column(
               children: <Widget>[
-                FollowTrainAppBar(),
+                BeautifulAppBar(
+                  title: "Segui il treno",
+                ),
                 SizedBox(height: 16),
                 BlocBuilder<FollowTrainStationsBloc, FollowTrainStationsState>(
                   builder: (context, state) {
@@ -58,7 +61,7 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
                                   });
                                 },
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(kRadius),
                                 ),
                               );
                             },

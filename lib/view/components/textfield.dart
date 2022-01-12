@@ -3,9 +3,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
-import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class BeautifulTextField extends StatelessWidget {
   final String labelText;
@@ -205,7 +205,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
         );
       },
       suggestionsBoxDecoration: SuggestionsBoxDecoration(
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(kRadius),
         elevation: 16,
       ),
       textFieldConfiguration: TextFieldConfiguration(

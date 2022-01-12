@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:treninoo/bloc/favourites/favourites.dart';
-import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/dialog_button.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class RemoveTrainDialog extends StatelessWidget {
   final SavedTrain savedTrain;
@@ -49,7 +48,7 @@ class RemoveTrainDialog extends StatelessWidget {
       child: Center(
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(kRadius),
           ),
           child: Container(
             padding: EdgeInsets.all(20),
@@ -62,29 +61,30 @@ class RemoveTrainDialog extends StatelessWidget {
                 children: [
                   Text(
                     "Treno non trovato",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: Typo.titleHeavy,
                   ),
-                  SizedBox(height: 12),
+                  SizedBox(height: 4),
                   Text(
-                    "Non sembra essere presente lo stato del treno.\nVuoi rimuoverlo?",
-                    style: TextStyle(color: AppColors.secondaryGrey),
+                    "Stato del treno non disponibile.\nVuoi rimuoverlo?",
+                    style: Typo.subheaderLight.copyWith(color: Grey.dark),
                   ),
                   SizedBox(height: 16),
                   Row(
                     children: [
                       DialogButton(
                         title: "Annulla",
-                        color: DialogColor.lightGrey,
-                        textColor: DialogColor.darkGrey,
+                        color: Grey.light,
+                        textColor: Grey.darker,
                         onPressed: () => Navigator.pop(context),
                       ),
                       SizedBox(width: 10),
                       DialogButton(
                         title: "Rimuovi",
-                        color: Theme.of(context).primaryColor,
+                        color: Primary.normal,
                         onPressed: () {
                           removeTrain(savedTrain, savedTrainType);
                           onConfirm();
+                          Navigator.pop(context);
                         },
                       ),
                     ],

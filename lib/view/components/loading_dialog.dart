@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class LoadingDialog extends StatelessWidget {
   static void show(BuildContext context, {Key key}) => showDialog<void>(
@@ -27,9 +28,8 @@ class LoadingDialog extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: CircularProgressIndicator(),
           decoration: new BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(kRadius),
             color: Colors.white,
-            // shape: BoxShape.circle,
           ),
         ),
       ),

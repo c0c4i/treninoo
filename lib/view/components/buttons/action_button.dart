@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class ActionButton extends StatelessWidget {
@@ -30,7 +31,7 @@ class ActionButton extends StatelessWidget {
         ),
         style: TextButton.styleFrom(
           primary: Colors.white,
-          backgroundColor: color ?? Theme.of(context).primaryColor,
+          backgroundColor: color ?? Primary.normal,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

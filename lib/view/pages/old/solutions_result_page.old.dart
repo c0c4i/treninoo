@@ -70,7 +70,7 @@
 //                   padding: EdgeInsets.all(10),
 //                   decoration: BoxDecoration(
 //                       color: Theme.of(context).buttonColor,
-//                       borderRadius: BorderRadius.circular(16),
+//                       borderRadius: BorderRadius.circular(kRadius),
 //                       border: Border.all(
 //                           color: Theme.of(context).buttonColor, width: 2.0)),
 //                   child: Row(

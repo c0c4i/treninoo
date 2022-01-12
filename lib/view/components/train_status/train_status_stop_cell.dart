@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class TrainStatusStopCell extends StatelessWidget {
   const TrainStatusStopCell({
@@ -17,7 +18,7 @@ class TrainStatusStopCell extends StatelessWidget {
   final String actualArrival;
   final String actualDeparture;
 
-  String pickText() {
+  get text {
     if (actualArrival != null) return actualArrival;
     if (plannedArrival != null) return plannedArrival;
 
@@ -33,21 +34,20 @@ class TrainStatusStopCell extends StatelessWidget {
     return null;
   }
 
-  bool confirmed() {
+  get confirmed {
     if (actualArrival != null) return true;
     if (actualDeparture != null) return true;
     if (plannedArrival != null) return false;
     if (plannedDeparture != null) return false;
-    return true;
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      pickText(),
-      style: TextStyle(
-        fontSize: 16,
-        color: confirmed() ? AppColors.black : AppColors.secondaryGrey,
+      text,
+      style: Typo.subheaderLight.copyWith(
+        color: !confirmed ? Grey.dark : null,
       ),
       textAlign: TextAlign.center,
     );

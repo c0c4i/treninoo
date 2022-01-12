@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class BeautifulBackButton extends StatelessWidget {
@@ -14,10 +15,10 @@ class BeautifulBackButton extends StatelessWidget {
         child: Center(
             child: Icon(
           Icons.arrow_back_ios_rounded,
-          color: Theme.of(context).primaryColor,
+          color: Primary.normal,
         )),
         style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+          backgroundColor: Primary.normal.withOpacity(0.1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

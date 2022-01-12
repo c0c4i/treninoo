@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class TrainStatusNotFound extends StatelessWidget {
   final SavedTrain savedTrain;
@@ -20,20 +22,21 @@ class TrainStatusNotFound extends StatelessWidget {
         children: [
           Image(
             image: AssetImage('assets/train_not_found.png'),
-            height: 200,
+            height: 140,
           ),
           SizedBox(height: 32),
           Text(
             "Treno non trovato",
-            style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black),
+            style: Typo.headlineHeavy,
           ),
           SizedBox(height: 8),
-          Text(
-            "Lo stato di questo treno non è ancora disponibile",
-            style: TextStyle(color: AppColors.secondaryGrey),
+          SizedBox(
+            width: 200,
+            child: Text(
+              "Lo stato di questo treno non è ancora disponibile",
+              style: Typo.subheaderLight.copyWith(color: Grey.dark),
+              textAlign: TextAlign.center,
+            ),
           ),
           SizedBox(height: 32),
           ActionButton(

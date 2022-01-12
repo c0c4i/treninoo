@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Treninoo',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        theme: AppTheme.light,
         // localizationsDelegates: context.localizationDelegates,
         // supportedLocales: context.supportedLocales,
         // locale: context.locale,

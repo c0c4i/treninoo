@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class Header extends StatelessWidget {
   const Header({Key key, this.title, this.description}) : super(key: key);
@@ -17,14 +19,14 @@ class Header extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
+            style: Typo.displayHeavy,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 4),
           Container(
             width: 300,
             child: Text(
               description,
-              style: TextStyle(color: AppColors.secondaryGrey),
+              style: Typo.subheaderLight.copyWith(color: Grey.dark),
             ),
           ),
         ],

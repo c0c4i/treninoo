@@ -1,17 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/view/components/train_card.dart';
 import 'package:treninoo/view/components/trains_list.dart';
-
-import '../pages/train_status_page.dart';
-
 import 'package:treninoo/model/SavedTrain.dart';
-
-import 'package:treninoo/utils/api.dart';
-import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class Recents extends StatefulWidget {
   Recents({Key key}) : super(key: key);
@@ -30,9 +23,9 @@ class _RecentsState extends State<Recents> {
       children: <Widget>[
         Container(
           alignment: Alignment.centerLeft,
-          child: Text("Recenti", style: TextStyle(fontSize: 26)),
+          child: Text("Recenti", style: Typo.headlineLight),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 8),
         BlocBuilder<RecentsBloc, RecentsState>(
           builder: (context, state) {
             print(state);

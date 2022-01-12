@@ -7,7 +7,7 @@ import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/back_button.dart';
 import 'package:treninoo/view/router/routes_names.dart';
-import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 
 class TrainAppBar extends StatefulWidget {
   final String number;
@@ -39,7 +39,7 @@ class _TrainAppBarState extends State<TrainAppBar> {
             widget.number,
             style: TextStyle(
               fontSize: 26,
-              color: Theme.of(context).primaryColor,
+              color: Primary.normal,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -65,7 +65,7 @@ class _TrainAppBarState extends State<TrainAppBar> {
                     icon: Icon(
                       Icons.notifications_none_rounded,
                       size: 35,
-                      color: AppColors.red,
+                      color: Primary.normal,
                     ),
                   ),
                   IconButton(
@@ -90,7 +90,7 @@ class _TrainAppBarState extends State<TrainAppBar> {
                     icon: Icon(
                       pickIcon(),
                       size: 35,
-                      color: AppColors.red,
+                      color: Primary.normal,
                     ),
                   ),
                 ],
