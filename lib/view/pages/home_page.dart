@@ -4,6 +4,7 @@ import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
+import 'package:treninoo/view/pages/old/Settings.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
@@ -30,6 +31,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),
       child: FavouritesPage(),
     ),
+    Settings(),
   ];
 
   void _onItemTapped(int index) {
@@ -57,6 +59,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
       BottomNavigationBarItem(
         icon: Icon(Icons.favorite_outline_rounded),
         label: 'Preferiti',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.settings_rounded),
+        label: 'Generali',
       ),
     ];
   }
