@@ -7,6 +7,7 @@
 // amber. The `_onItemTapped` function changes the selected item's index
 // and displays a corresponding message in the center of the [Scaffold].
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -39,16 +40,22 @@ class MyApp extends StatelessWidget {
         // systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
         // systemNavigationBarIconBrightness: Brightness.dark,
       ),
-      child: MaterialApp(
-        title: 'Treninoo',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        // localizationsDelegates: context.localizationDelegates,
-        // supportedLocales: context.supportedLocales,
-        // locale: context.locale,
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-        supportedLocales: [const Locale('it')],
-        onGenerateRoute: _appRouter.onGenerateRoute,
+      child: AdaptiveTheme(
+        light: AppTheme.light,
+        dark: AppTheme.dark,
+        initial: AdaptiveThemeMode.light,
+        builder: (theme, darkTheme) => MaterialApp(
+          title: 'Treninoo',
+          debugShowCheckedModeBanner: false,
+          theme: theme,
+          darkTheme: darkTheme,
+          // localizationsDelegates: context.localizationDelegates,
+          // supportedLocales: context.supportedLocales,
+          // locale: context.locale,
+          localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+          supportedLocales: [const Locale('it')],
+          onGenerateRoute: _appRouter.onGenerateRoute,
+        ),
       ),
     );
   }

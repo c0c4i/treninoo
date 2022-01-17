@@ -1,3 +1,5 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -5,8 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 import 'package:treninoo/controller/notifiers.dart';
+import 'package:treninoo/utils/shared_preference.dart';
+import 'package:treninoo/view/components/buttons/menu/menu_button_switch.dart';
 import 'package:treninoo/view/components/header.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 enum ThemeType { Light, Dark, Auto }
 
@@ -41,18 +48,25 @@ class _SettingsState extends State<Settings> {
                     "Qui puoi modificare l'app a tuo piacimento per renderla più comoda",
               ),
               SizedBox(height: 16),
-              ListTile(
-                contentPadding: EdgeInsets.only(left: 20),
-                title: Text('Dark Mode'),
-                subtitle: Text('Attiva il tema scuro'),
-                onTap: () {},
+              MenuButtonSwitch(
+                title: "Dark Mode",
+                description: "Attiva il tema scuro",
+                value: sharedPrefs.darkMode,
+                onChanged: (value) {
+                  setState(() {
+                    sharedPrefs.darkMode = value;
+                  });
+                  value
+                      ? AdaptiveTheme.of(context).setDark()
+                      : AdaptiveTheme.of(context).setLight();
+                },
               ),
-              ListTile(
-                contentPadding: EdgeInsets.only(left: 20),
-                title: Text('Schermata iniziale'),
-                subtitle: Text('Seleziona la schermata inziale'),
-                onTap: () {},
-              ),
+              // ListTile(
+              //   contentPadding: EdgeInsets.only(left: 20),
+              //   title: Text('Schermata iniziale'),
+              //   subtitle: Text('Seleziona la schermata inziale'),
+              //   onTap: () {},
+              // ),
             ],
           ),
         ),

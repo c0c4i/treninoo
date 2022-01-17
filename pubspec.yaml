@@ -22,6 +22,7 @@ dependencies:
   intl: ^0.17.0
   firebase_core: ^1.10.6
   url_launcher: ^6.0.18
+  adaptive_theme: ^2.3.0
 
 dev_dependencies:
   flutter_test:

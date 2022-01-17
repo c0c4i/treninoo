@@ -7,6 +7,7 @@ class SharedPrefs {
   static const String SPrecentsTrains = 'recentsTrains';
   static const String SPfavouritesTrains = 'favouritesTrains';
   static const String SPrecentsStations = 'recentsStations';
+  static const String SPDarkMode = 'darkMode';
 
   init() async {
     if (_sharedPrefs == null) {
@@ -32,6 +33,12 @@ class SharedPrefs {
 
   set recentsStations(String value) {
     _sharedPrefs.setString(SPrecentsStations, value);
+  }
+
+  bool get darkMode => _sharedPrefs.getBool(SPDarkMode) ?? false;
+
+  set darkMode(bool value) {
+    _sharedPrefs.setBool(SPDarkMode, value);
   }
 }
 
