@@ -4,7 +4,7 @@ import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
-import 'package:treninoo/view/pages/old/Settings.dart';
+import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
