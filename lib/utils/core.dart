@@ -1,22 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 final String LOCALE = " GMT+0200";
 
 String addZeroToNumberLowerThan10(String n) {
   return (n.length < 2) ? "0$n" : n;
 }
 
-String formatDate(DateTime d) {
-  String day = addZeroToNumberLowerThan10(d.day.toString());
-  String month = addZeroToNumberLowerThan10(d.month.toString());
-  String year = addZeroToNumberLowerThan10(d.year.toString());
-
-  return "$day/$month/$year";
+String formatDate(DateTime date) {
+  return DateFormat("dd/MM/yyyy").format(date);
 }
 
-String formatTime(DateTime d) {
-  String hour = addZeroToNumberLowerThan10(d.hour.toString());
-  String minute = addZeroToNumberLowerThan10(d.minute.toString());
+String formatTime(DateTime date) {
+  return DateFormat("HH:mm").format(date);
+}
 
-  return "$hour:$minute";
+String formatTimeOfDay(TimeOfDay time) {
+  DateTime date = DateTime(0, 0, 0, time.hour, time.minute);
+  return DateFormat("HH:mm").format(date);
 }
 
 String travelTime(DateTime departure, DateTime arrival) {

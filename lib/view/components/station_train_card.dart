@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/exist/exist.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/StationTrain.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -16,13 +20,16 @@ class StationTrainCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 0,
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kRadius),
         ),
         child: OutlinedButton(
           onPressed: () {
-            // context.read<ExistBloc>().add(ExistRequest(savedTrain: savedTrain));
+            Navigator.pushNamed(
+              context,
+              RoutesNames.status,
+              arguments: SavedTrain.fromStationTrain(stationTrain),
+            );
           },
           child: Column(
             children: [

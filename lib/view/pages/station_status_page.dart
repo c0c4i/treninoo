@@ -54,13 +54,11 @@ class _StationStatusPageState extends State<StationStatusPage>
       length: 2,
       child: Scaffold(
         body: SafeArea(
-          minimum: EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: BlocListener<StationStatusBloc, StationStatusState>(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kPadding),
+            child: Column(
+              children: <Widget>[
+                BlocListener<StationStatusBloc, StationStatusState>(
                   listener: (context, state) {
                     if (state is StationStatusSuccess) {
                       setState(() {
@@ -73,11 +71,8 @@ class _StationStatusPageState extends State<StationStatusPage>
                     title: widget.station.stationName,
                   ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: TabBar(
+                SizedBox(height: 16),
+                TabBar(
                   controller: _tabController,
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(kRadius),
@@ -92,92 +87,96 @@ class _StationStatusPageState extends State<StationStatusPage>
                     Tab(text: 'Arrivi'),
                   ],
                 ),
-              ),
-              SizedBox(height: 16),
-              BlocConsumer<StationStatusBloc, StationStatusState>(
-                listener: (context, state) {
-                  if (state is StationStatusSuccess) {
-                    setState(() {
-                      departureTrains = state.departureTrains;
-                      arrivalTrains = state.arrivalTrains;
-                    });
-                  }
-                },
-                builder: (context, state) {
-                  if (state is StationStatusInitial) {
-                    context.read<StationStatusBloc>().add(StationStatusRequest(
-                          stationCode: widget.station.stationCode,
-                        ));
-                  }
-                  if (state is StationStatusSuccess) {
-                    return Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          departureTrains.length > 0
-                              ? ListView.builder(
-                                  itemCount: departureTrains.length,
-                                  itemBuilder: (context, index) {
-                                    return StationTrainCard(
-                                        stationTrain: departureTrains[index]);
-                                  },
-                                )
-                              : Center(child: Text("Nessun treno in partenza")),
-                          arrivalTrains.length > 0
-                              ? ListView.builder(
-                                  itemCount: arrivalTrains.length,
-                                  itemBuilder: (context, index) {
-                                    return StationTrainCard(
-                                        stationTrain: arrivalTrains[index]);
-                                  },
-                                )
-                              : Center(child: Text("Nessun treno in arrivo")),
-                        ],
-                      ),
-                    );
-                  }
-                  if (state is StationStatusLoading &&
-                      departureTrains != null &&
-                      arrivalTrains != null) {
-                    return Expanded(
-                      child: TabBarView(
-                        controller: _tabController,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          departureTrains.length > 0
-                              ? ListView.builder(
-                                  itemCount: departureTrains.length,
-                                  itemBuilder: (context, index) {
-                                    return StationTrainCard(
-                                        stationTrain: departureTrains[index]);
-                                  },
-                                )
-                              : Center(child: Text("Nessun treno in partenza")),
-                          arrivalTrains.length > 0
-                              ? ListView.builder(
-                                  itemCount: arrivalTrains.length,
-                                  itemBuilder: (context, index) {
-                                    return StationTrainCard(
-                                        stationTrain: arrivalTrains[index]);
-                                  },
-                                )
-                              : Center(child: Text("Nessun treno in arrivo")),
-                        ],
-                      ),
-                    );
-                  }
-                  if (state is StationStatusLoading)
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  return Container();
-                },
-              ),
-            ],
+                SizedBox(height: 16),
+                BlocConsumer<StationStatusBloc, StationStatusState>(
+                  listener: (context, state) {
+                    if (state is StationStatusSuccess) {
+                      setState(() {
+                        departureTrains = state.departureTrains;
+                        arrivalTrains = state.arrivalTrains;
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is StationStatusInitial) {
+                      context
+                          .read<StationStatusBloc>()
+                          .add(StationStatusRequest(
+                            stationCode: widget.station.stationCode,
+                          ));
+                    }
+                    if (state is StationStatusSuccess) {
+                      return Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            departureTrains.length > 0
+                                ? ListView.builder(
+                                    itemCount: departureTrains.length,
+                                    itemBuilder: (context, index) {
+                                      return StationTrainCard(
+                                          stationTrain: departureTrains[index]);
+                                    },
+                                  )
+                                : Center(
+                                    child: Text("Nessun treno in partenza")),
+                            arrivalTrains.length > 0
+                                ? ListView.builder(
+                                    itemCount: arrivalTrains.length,
+                                    itemBuilder: (context, index) {
+                                      return StationTrainCard(
+                                          stationTrain: arrivalTrains[index]);
+                                    },
+                                  )
+                                : Center(child: Text("Nessun treno in arrivo")),
+                          ],
+                        ),
+                      );
+                    }
+                    if (state is StationStatusLoading &&
+                        departureTrains != null &&
+                        arrivalTrains != null) {
+                      return Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            departureTrains.length > 0
+                                ? ListView.builder(
+                                    itemCount: departureTrains.length,
+                                    itemBuilder: (context, index) {
+                                      return StationTrainCard(
+                                          stationTrain: departureTrains[index]);
+                                    },
+                                  )
+                                : Center(
+                                    child: Text("Nessun treno in partenza")),
+                            arrivalTrains.length > 0
+                                ? ListView.builder(
+                                    itemCount: arrivalTrains.length,
+                                    itemBuilder: (context, index) {
+                                      return StationTrainCard(
+                                          stationTrain: arrivalTrains[index]);
+                                    },
+                                  )
+                                : Center(child: Text("Nessun treno in arrivo")),
+                          ],
+                        ),
+                      );
+                    }
+                    if (state is StationStatusLoading)
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    return Container();
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

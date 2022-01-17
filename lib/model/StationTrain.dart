@@ -2,6 +2,7 @@ import 'package:treninoo/utils/api.dart';
 
 class StationTrain {
   final String trainCode;
+  final String departureCode;
   final String category;
   final String name;
   final String time;
@@ -12,6 +13,7 @@ class StationTrain {
 
   StationTrain({
     this.trainCode,
+    this.departureCode,
     this.category,
     this.name,
     this.time,
@@ -41,6 +43,7 @@ class StationTrain {
 
     return StationTrain(
       trainCode: json['numeroTreno'].toString(),
+      departureCode: json['codOrigine'],
       category: json['categoriaDescrizione'],
       name: name,
       time: time,

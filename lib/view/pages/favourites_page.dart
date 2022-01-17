@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/trains_list.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class FavouritesPage extends StatefulWidget {
   FavouritesPage({Key key}) : super(key: key);
@@ -21,9 +21,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -32,10 +31,9 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   description:
                       "Qui puoi trovare i treni che hai contrassegnato come preferiti",
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 16),
                 BlocBuilder<FavouritesBloc, FavouritesState>(
                   builder: (context, state) {
-                    print(state);
                     if (state is FavouritesInitial)
                       context.read<FavouritesBloc>().add(FavouritesRequest());
                     if (state is FavouritesSuccess) {

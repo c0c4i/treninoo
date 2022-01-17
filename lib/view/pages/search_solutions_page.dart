@@ -1,22 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
-import 'package:treninoo/view/components/prefixicon.dart';
-import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/components/textfield.dart';
-
-import 'package:treninoo/view/pages/solutions_result_page.dart';
 
 import 'package:treninoo/model/Station.dart';
 
-import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/utils/core.dart';
-import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -45,15 +37,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     super.initState();
     pickedDate = DateTime.now();
     pickedTime = TimeOfDay.now();
-    String _day = addZeroToNumberLowerThan10(pickedDate.day.toString());
-    String _month = addZeroToNumberLowerThan10(pickedDate.month.toString());
-    String date = "$_day/$_month/${pickedDate.year}";
-    dateController.text = date;
 
-    String _hour = addZeroToNumberLowerThan10(pickedTime.hour.toString());
-    String _minute = addZeroToNumberLowerThan10(pickedTime.minute.toString());
-    String time = "$_hour:$_minute";
-    timeController.text = time;
+    dateController.text = formatDate(pickedDate);
+    timeController.text = formatTimeOfDay(pickedTime);
     validate = false;
   }
 
@@ -68,7 +54,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -78,7 +63,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
               }
             },
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -165,17 +150,15 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   }
 
   _pickTime() async {
-    TimeOfDay t = await showTimePicker(
+    TimeOfDay picked = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: pickedTime,
     );
 
-    if (t != null)
+    if (picked != null)
       setState(() {
-        pickedTime = t;
-        String _hour = addZeroToNumberLowerThan10(t.hour.toString());
-        String _minute = addZeroToNumberLowerThan10(t.minute.toString());
-        timeController.text = "$_hour:$_minute";
+        pickedTime = picked;
+        timeController.text = formatTimeOfDay(picked);
       });
   }
 
@@ -187,8 +170,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   }
 
   _getSolutionRequest() {
-    // SharedPrefJson.addRecentStation(departureStation);
-    // SharedPrefJson.addRecentStation(arrivalStation);
     setState(() {
       validate = true;
     });
@@ -213,15 +194,10 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       fromTime: pickedDate,
     );
 
-    Navigator.pushNamed(context, RoutesNames.solutions,
-        arguments: solutionsInfo);
-    // Navigator.push(
-    //     context,
-    //     CupertinoPageRoute(
-    //       builder: (context) => SolutionsResult(
-    //           departureCode: departureStation.stationCode,
-    //           arrivalCode: arrivalStation.stationCode,
-    //           time: pickedDate),
-    //     ));
+    Navigator.pushNamed(
+      context,
+      RoutesNames.solutions,
+      arguments: solutionsInfo,
+    );
   }
 }

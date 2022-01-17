@@ -26,9 +26,8 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: kPadding),
             child: Column(
               children: <Widget>[
                 BeautifulAppBar(

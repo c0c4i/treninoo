@@ -1,26 +1,21 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/bloc/recents/recents_bloc.dart';
 import 'package:treninoo/bloc/recents/recents_event.dart';
-import 'package:treninoo/model/arguments/status_argument.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/dialog/departure_stations_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/loading_dialog.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
-import 'package:treninoo/view/pages/train_status_page.dart';
 import 'package:treninoo/view/components/recents.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';
 
-import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/utils/final.dart';
-import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/router/routes_names.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 enum ErrorType {
   zero,
@@ -41,19 +36,6 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
   TextEditingController searchController = TextEditingController();
 
   Future<List<SavedTrain>> recents;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // recents = fetchSharedPreferenceWithListOf(spRecentsTrains);
-  // }
-
-  // @override
-  // void dispose() {
-  //   // Clean up the controller when the widget is disposed.
-  //   searchController.dispose();
-  //   super.dispose();
-  // }
 
   void showError(ErrorType errorType) {
     setState(() {
@@ -101,7 +83,6 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -119,15 +100,16 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                   int trainFound = state.departureStations.length;
                   if (trainFound == 0) {
                     showError(ErrorType.not_found);
-                    print("Treno non trovato");
                     return;
                   }
                   showError(ErrorType.zero);
 
                   if (trainFound > 1) {
-                    print("Più treni trovati!");
+                    DepartureStationsDialog.show(
+                      context,
+                      departureStations: state.departureStations,
+                    );
                   } else {
-                    print("Treno trovato!");
                     SavedTrain savedTrain = SavedTrain.fromDepartureStation(
                       state.departureStations[0],
                     );
@@ -142,11 +124,10 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                   LoadingDialog.hide(context);
               },
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    // TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
                     Header(
                       title: "Cerca il tuo treno",
                       description:
@@ -160,7 +141,6 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                         labelText: "Codice treno",
                         controller: searchController,
                         keyboardType: TextInputType.number,
-                        // validator: (text) => getError(text),
                         errorText: error,
                       ),
                     ),

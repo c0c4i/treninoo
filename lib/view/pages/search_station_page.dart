@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/Station.dart';
@@ -8,6 +7,7 @@ import 'package:treninoo/view/components/header.dart';
 
 import 'package:treninoo/view/components/textfield.dart';
 import 'package:treninoo/view/router/routes_names.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class SearchStationPage extends StatefulWidget {
   SearchStationPage({Key key}) : super(key: key);
@@ -47,7 +47,6 @@ class _SearchStationPageState extends State<SearchStationPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -57,11 +56,9 @@ class _SearchStationPageState extends State<SearchStationPage> {
               }
             },
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  // TopBar(text: 'Treninoo', location: SEARCH_TRAIN_STATUS),
                   Header(
                     title: "Cerca la tua stazione",
                     description:
@@ -83,9 +80,9 @@ class _SearchStationPageState extends State<SearchStationPage> {
                   ),
                   SizedBox(height: 20),
                   ActionButton(
-                      title: "Cerca", onPressed: () => searchButtonClick()),
-                  SizedBox(height: 50),
-                  // Recents(),
+                    title: "Cerca",
+                    onPressed: searchButtonClick,
+                  ),
                 ],
               ),
             ),

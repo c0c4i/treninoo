@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:treninoo/model/DepartureStation.dart';
+import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 
 class SavedTrain extends Equatable {
@@ -54,6 +55,13 @@ class SavedTrain extends Equatable {
     return SavedTrain(
       trainCode: departureStation.trainCode,
       departureStationCode: departureStation.station.stationCode,
+    );
+  }
+
+  factory SavedTrain.fromStationTrain(StationTrain stationTrain) {
+    return SavedTrain(
+      trainCode: stationTrain.trainCode,
+      departureStationCode: stationTrain.departureCode,
     );
   }
 

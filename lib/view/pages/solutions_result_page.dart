@@ -7,6 +7,7 @@ import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/solutions/solutions_header.dart';
 import 'package:treninoo/view/components/solutions/solutions_list.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class SolutionsResultPage extends StatefulWidget {
   final SolutionsInfo solutionsInfo;
@@ -23,9 +24,8 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: EdgeInsets.all(8),
-          child: Container(
-            padding: EdgeInsets.all(16),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: kPadding),
             child: Column(
               children: <Widget>[
                 BeautifulAppBar(
@@ -43,6 +43,7 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
                           SolutionsDetails(
                             solutionsInfo: widget.solutionsInfo,
                           ),
+                          SizedBox(height: 8),
                           SolutionsList(
                             solutions: state.solutions,
                           )
