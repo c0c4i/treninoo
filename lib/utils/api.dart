@@ -6,18 +6,18 @@ import 'package:treninoo/utils/endpoint.dart';
 
 // ... + trainCode
 const String URL_STATION_CODE =
-    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
+    'http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
 
 // ... + stationCode/trainCode
 const String URL_TRAIN_INFO =
-    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/andamentoTreno/';
+    'http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/andamentoTreno/';
 
 const String URL_STATION_NAME =
-    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/autocompletaStazione/';
+    'http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/autocompletaStazione/';
 
 // ... + departureStationCode/arrivalStationCode/date
 const String URL_SOLUTIONS =
-    'http://www.viaggiatreno.it/viaggiatrenonew/resteasy/viaggiatreno/soluzioniViaggioNew/';
+    'http://www.viaggiatreno.it/infomobilita/resteasy/viaggiatreno/soluzioniViaggioNew/';
 
 final RegExp rgxTrainCode = RegExp(r"\|.+-(\S+)$");
 
