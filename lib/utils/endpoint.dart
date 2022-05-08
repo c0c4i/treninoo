@@ -1,8 +1,8 @@
 const String URL = "www.viaggiatreno.it";
 
-const bool isProd = false;
+const bool isProd = true;
 const String BASE_URL =
-    isProd ? "cityhelper.app" : "520d-128-116-164-128.eu.ngrok.io";
+    isProd ? "cityhelper.app" : "cityhelper.wesellbrain.com";
 
 class Endpoint {
   static const String AUTOCOMPLETE =

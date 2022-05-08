@@ -81,7 +81,8 @@ class _StationStatusPageState extends State<StationStatusPage>
                   // indicatorPadding: EdgeInsets.all(16),
                   overlayColor: MaterialStateProperty.all(Colors.transparent),
                   labelColor: Primary.normal,
-                  unselectedLabelColor: Colors.black,
+                  unselectedLabelColor:
+                      Theme.of(context).colorScheme.onBackground,
                   tabs: [
                     Tab(text: 'Partenze'),
                     Tab(text: 'Arrivi'),

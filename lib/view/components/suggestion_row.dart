@@ -17,12 +17,15 @@ class SuggestionRow extends StatelessWidget {
         children: [
           Icon(
             Icons.location_on_outlined,
-            size: 24,
+            color: Theme.of(context).iconTheme.color,
           ),
           SizedBox(width: 16),
-          Text(
-            suggestion,
-            style: Typo.subheaderHeavy,
+          Expanded(
+            child: Text(
+              suggestion,
+              style: Typo.subheaderHeavy,
+              overflow: TextOverflow.clip,
+            ),
           ),
         ],
       ),

@@ -34,12 +34,6 @@ class SharedPrefs {
   set recentsStations(String value) {
     _sharedPrefs.setString(SPrecentsStations, value);
   }
-
-  bool get darkMode => _sharedPrefs.getBool(SPDarkMode) ?? false;
-
-  set darkMode(bool value) {
-    _sharedPrefs.setBool(SPDarkMode, value);
-  }
 }
 
 final sharedPrefs = SharedPrefs();

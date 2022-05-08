@@ -47,27 +47,28 @@ class _TrainAppBarState extends State<TrainAppBar> {
         widget.trainInfo != null
             ? Row(
                 children: [
-                  IconButton(
-                    iconSize: 40,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RoutesNames.followTrainStations,
-                        arguments: DepartureStation(
-                          station: Station(
-                            stationName: widget.trainInfo.departureStationName,
-                            stationCode: widget.trainInfo.departureStationCode,
-                          ),
-                          trainCode: widget.trainInfo.trainCode,
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.notifications_none_rounded,
-                      size: 35,
-                      color: Primary.normal,
-                    ),
-                  ),
+                  // TODO: Implement notification in app
+                  // IconButton(
+                  //   iconSize: 40,
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(
+                  //       context,
+                  //       RoutesNames.followTrainStations,
+                  //       arguments: DepartureStation(
+                  //         station: Station(
+                  //           stationName: widget.trainInfo.departureStationName,
+                  //           stationCode: widget.trainInfo.departureStationCode,
+                  //         ),
+                  //         trainCode: widget.trainInfo.trainCode,
+                  //       ),
+                  //     );
+                  //   },
+                  //   icon: Icon(
+                  //     Icons.notifications_none_rounded,
+                  //     size: 35,
+                  //     color: Primary.normal,
+                  //   ),
+                  // ),
                   IconButton(
                     iconSize: 40,
                     onPressed: () {

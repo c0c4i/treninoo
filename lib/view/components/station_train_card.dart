@@ -106,7 +106,10 @@ class TextWithIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: Colors.black),
+        Icon(
+          icon,
+          color: Theme.of(context).iconTheme.color,
+        ),
         SizedBox(width: 8),
         Text(
           label,

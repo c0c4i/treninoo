@@ -22,7 +22,7 @@ class AppTheme {
     colorScheme: ColorScheme(
       primary: kPrimaryColor,
       primaryVariant: kPrimaryColor,
-      secondary: ThemeData.light().colorScheme.secondary,
+      secondary: kPrimaryColor,
       secondaryVariant: ThemeData.light().colorScheme.secondaryVariant,
       surface: Colors.white,
       background: Grey.lightest2,
@@ -64,6 +64,7 @@ class AppTheme {
   static ThemeData dark = ThemeData(
     colorScheme: const ColorScheme.dark().copyWith(
       primary: kPrimaryColor,
+      secondary: kPrimaryColor,
     ),
     fontFamily: "Cabin",
     inputDecorationTheme: InputDecorationTheme(

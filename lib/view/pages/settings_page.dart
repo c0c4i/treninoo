@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:treninoo/controller/notifiers.dart';
 import 'package:treninoo/utils/shared_preference.dart';
+import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/components/buttons/menu/menu_button_switch.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
@@ -51,14 +53,14 @@ class _SettingsState extends State<Settings> {
               MenuButtonSwitch(
                 title: "Dark Mode",
                 description: "Attiva il tema scuro",
-                value: sharedPrefs.darkMode,
-                onChanged: (value) {
-                  setState(() {
-                    sharedPrefs.darkMode = value;
-                  });
-                  value
+                value: AdaptiveTheme.of(context).mode.isDark,
+                onChanged: (isDark) {
+                  isDark
                       ? AdaptiveTheme.of(context).setDark()
                       : AdaptiveTheme.of(context).setLight();
+
+                  Utils.setAppBarBrightness(isDark);
+                  setState(() {});
                 },
               ),
               // ListTile(

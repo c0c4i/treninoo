@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:treninoo/utils/shared_preference.dart';
+import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -24,38 +25,37 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await sharedPrefs.init();
-  runApp(MyApp());
+
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+
+  // Make status bar and navigation look beautiful
+  Utils.setAppBarBrightness(savedThemeMode != null && savedThemeMode.isDark);
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
+
+  runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
 class MyApp extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
+  final AdaptiveThemeMode savedThemeMode;
+
+  MyApp({Key key, this.savedThemeMode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-        // statusBarBrightness: Brightness.light,
-        // statusBarIconBrightness: Brightness.dark,
-        // systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
-        // systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-      child: AdaptiveTheme(
-        light: AppTheme.light,
-        dark: AppTheme.dark,
-        initial: AdaptiveThemeMode.light,
-        builder: (theme, darkTheme) => MaterialApp(
-          title: 'Treninoo',
-          debugShowCheckedModeBanner: false,
-          theme: theme,
-          darkTheme: darkTheme,
-          // localizationsDelegates: context.localizationDelegates,
-          // supportedLocales: context.supportedLocales,
-          // locale: context.locale,
-          localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-          supportedLocales: [const Locale('it')],
-          onGenerateRoute: _appRouter.onGenerateRoute,
-        ),
+    return AdaptiveTheme(
+      light: AppTheme.light,
+      dark: AppTheme.dark,
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Treninoo',
+        debugShowCheckedModeBanner: false,
+        theme: theme,
+        darkTheme: darkTheme,
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [const Locale('it'), const Locale('en')],
+        onGenerateRoute: _appRouter.onGenerateRoute,
       ),
     );
   }

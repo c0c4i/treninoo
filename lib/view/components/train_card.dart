@@ -58,7 +58,7 @@ class TrainCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    color: Colors.black,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   SizedBox(width: 16),
                   Text(
@@ -84,7 +84,7 @@ class TrainCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    color: Colors.black,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                   SizedBox(width: 16),
                   Text(

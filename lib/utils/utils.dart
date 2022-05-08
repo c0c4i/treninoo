@@ -1,3 +1,27 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class Utils {
+  static setAppBarBrightness(bool isDark) {
+    Brightness brightness =
+        Platform.isAndroid ? Brightness.dark : Brightness.light;
+
+    if (isDark != null && isDark) {
+      brightness = Platform.isAndroid ? Brightness.light : Brightness.dark;
+    }
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      statusBarBrightness: brightness,
+      statusBarIconBrightness: brightness,
+    ));
+  }
+}
+
+
 // import 'dart:collection';
 // import 'dart:ui';
 

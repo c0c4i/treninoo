@@ -146,7 +146,9 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                     ),
                     SizedBox(height: 20),
                     ActionButton(
-                        title: "Cerca", onPressed: () => searchButtonClick()),
+                      title: "Cerca",
+                      onPressed: searchButtonClick,
+                    ),
                     SizedBox(height: 50),
                     Recents(),
                   ],
