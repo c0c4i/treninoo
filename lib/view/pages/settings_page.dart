@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:treninoo/controller/notifiers.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/utils/utils.dart';
+import 'package:treninoo/view/components/buttons/menu/menu_button_click.dart';
 import 'package:treninoo/view/components/buttons/menu/menu_button_switch.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
@@ -63,6 +64,12 @@ class _SettingsState extends State<Settings> {
                   setState(() {});
                 },
               ),
+              SizedBox(height: 8),
+              MenuButtonClick(
+                title: "Schermata iniziale",
+                description: "Seleziona la schermata di avvio",
+                onPressed: () {},
+              )
               // ListTile(
               //   contentPadding: EdgeInsets.only(left: 20),
               //   title: Text('Schermata iniziale'),
