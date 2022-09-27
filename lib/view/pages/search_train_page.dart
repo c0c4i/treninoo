@@ -182,7 +182,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
     List<Widget> list = List<Widget>();
 
     type.forEach((k, v) => list.add(
-          FlatButton(
+          ElevatedButton(
             onPressed: () {
               setState(() {
                 Navigator.pop(context);
