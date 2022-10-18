@@ -1,7 +1,7 @@
 name: treninoo
 description: My first flutter project with Trenitalia API
 
-version: 2.1.0+1
+version: 2.1.1+1
 # android: 8
 
 environment:
@@ -27,7 +27,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: "^0.10.0"
+  
+flutter_icons:
+  android: false
+  ios: true
+  image_path: "assets/icon/icon.png"
+  remove_alpha_ios: true
+
 
 flutter:
   uses-material-design: true
