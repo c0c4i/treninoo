@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/final.dart';
 
 class DepartureStationBloc
     extends Bloc<DepartureStationEvent, DepartureStationState> {

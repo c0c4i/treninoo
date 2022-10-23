@@ -1,8 +1,6 @@
-import 'package:treninoo/model/Station.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:treninoo/model/StationTrain.dart';
-import 'package:treninoo/utils/final.dart';
 
 abstract class StationStatusState extends Equatable {
   @override

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/final.dart';
 
 class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
   final TrainRepository _trainRepository;

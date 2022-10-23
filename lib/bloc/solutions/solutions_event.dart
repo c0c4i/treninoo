@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:meta/meta.dart';
-import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
 
 @immutable

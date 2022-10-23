@@ -4,7 +4,6 @@ import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
-import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class TrainStatusNotFound extends StatelessWidget {

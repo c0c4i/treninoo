@@ -21,9 +21,7 @@ class AppTheme {
   static ThemeData light = ThemeData(
     colorScheme: ColorScheme(
       primary: kPrimaryColor,
-      primaryVariant: kPrimaryColor,
       secondary: kPrimaryColor,
-      secondaryVariant: ThemeData.light().colorScheme.secondaryVariant,
       surface: Colors.white,
       background: Grey.lightest2,
       error: kErrorColor,

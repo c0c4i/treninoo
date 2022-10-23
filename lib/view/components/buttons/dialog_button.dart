@@ -32,8 +32,7 @@ class DialogButton extends StatelessWidget {
             style: TextStyle(color: textColor),
           ),
           style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: color ?? Primary.normal,
+            foregroundColor: Colors.white, backgroundColor: color ?? Primary.normal,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(kRadius),
             ),

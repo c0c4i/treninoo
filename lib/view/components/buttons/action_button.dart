@@ -30,8 +30,7 @@ class ActionButton extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         style: TextButton.styleFrom(
-          primary: Colors.white,
-          backgroundColor: color ?? Primary.normal,
+          foregroundColor: Colors.white, backgroundColor: color ?? Primary.normal,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

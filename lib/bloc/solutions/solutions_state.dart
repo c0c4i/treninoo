@@ -1,5 +1,4 @@
 import 'package:treninoo/model/Solutions.dart';
-import 'package:treninoo/model/TrainInfo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
