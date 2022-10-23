@@ -25,6 +25,3 @@ Per poter compilare il codice nel proprio computer è necessario:
 [<img src="https://www.coccoma.it/images/google-play-badge.png" alt="Get it on Android" height="53">](https://play.google.com/store/apps/details?id=it.samuelebesoli.treninoo)
 
 [<img src="https://static-cse.canva.com/_next/static/assets/app-store-badge.503x168.54f98aa5b55c74742a427d7f473c685c.png" alt="Get it on iOS" height="60">](https://apps.apple.com/us/app/treninoo/id1574219058)
-
-## Icona
-L'icona è stata creata da @b.cat_art
