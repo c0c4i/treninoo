@@ -53,7 +53,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme,
         darkTheme: darkTheme,
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        localizationsDelegates: [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate
+        ],
         supportedLocales: [const Locale('it'), const Locale('en')],
         onGenerateRoute: _appRouter.onGenerateRoute,
       ),
