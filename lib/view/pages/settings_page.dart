@@ -56,11 +56,11 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SizedBox(height: 8),
-              MenuButtonClick(
-                title: "Schermata iniziale",
-                description: "Seleziona la schermata di avvio",
-                onPressed: () {},
-              )
+              // MenuButtonClick(
+              //   title: "Schermata iniziale",
+              //   description: "Seleziona la schermata di avvio",
+              //   onPressed: () {},
+              // )
               // ListTile(
               //   contentPadding: EdgeInsets.only(left: 20),
               //   title: Text('Schermata iniziale'),
