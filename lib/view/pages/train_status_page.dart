@@ -9,6 +9,7 @@ import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
+import 'package:treninoo/view/components/description/description_card.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
@@ -121,7 +122,11 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             TrainStatusStopList(
                               stops: state.trainInfo.stops,
                               currentStop: state.trainInfo.lastPositionRegister,
-                            )
+                            ),
+                            if (isFavouriteTrain(state.trainInfo))
+                              DescriptionCard(
+                                description: widget.savedTrain.description,
+                              ),
                           ],
                         );
                       if (state is TrainStatusLoading && trainInfo != null) {
@@ -136,7 +141,11 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             TrainStatusStopList(
                               stops: trainInfo.stops,
                               currentStop: trainInfo.lastPositionRegister,
-                            )
+                            ),
+                            if (isFavouriteTrain(trainInfo))
+                              DescriptionCard(
+                                description: widget.savedTrain.description,
+                              ),
                           ],
                         );
                       }

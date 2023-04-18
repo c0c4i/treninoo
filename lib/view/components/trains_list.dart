@@ -80,7 +80,6 @@ class SavedTrainList extends StatelessWidget {
         itemBuilder: (context, index) {
           return TrainCard(
             savedTrain: trains[index],
-            savedTrainType: savedTrainType,
           );
         },
       ),

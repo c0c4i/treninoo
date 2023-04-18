@@ -10,6 +10,7 @@ class SavedTrain extends Equatable {
   final String departureStationName;
   final String arrivalStationName;
   final String departureTime;
+  final String description;
 
   SavedTrain({
     this.trainCode,
@@ -18,6 +19,7 @@ class SavedTrain extends Equatable {
     this.departureStationName,
     this.arrivalStationName,
     this.departureTime,
+    this.description,
   });
 
   Map<String, dynamic> toJson() => {
@@ -27,6 +29,7 @@ class SavedTrain extends Equatable {
         'departureStationName': departureStationName,
         'arrivalStationName': arrivalStationName,
         'departureTime': departureTime,
+        'description': description,
       };
 
   factory SavedTrain.fromJson(Map<String, dynamic> json) {
@@ -37,6 +40,7 @@ class SavedTrain extends Equatable {
       departureStationName: json['departureStationName'],
       arrivalStationName: json['arrivalStationName'],
       departureTime: json['departureTime'],
+      description: json['description'],
     );
   }
 
