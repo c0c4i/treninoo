@@ -22,27 +22,27 @@ const String URL_SOLUTIONS =
 final RegExp rgxTrainCode = RegExp(r"\|.+-(\S+)$");
 
 // Ritorna il numero di treni con il numero cercato
-Future<int> getAvailableNumberOfTrain(String trainCode) async {
-  if (trainCode.length == 0) throw new ArgumentError();
-  http.Response responseStationCode =
-      await http.get(URL_STATION_CODE + trainCode);
-  if (responseStationCode.statusCode != 200) throw new Error();
+// Future<int> getAvailableNumberOfTrain(String trainCode) async {
+//   if (trainCode.length == 0) throw new ArgumentError();
+//   http.Response responseStationCode =
+//       await http.get(URL_STATION_CODE + trainCode);
+//   if (responseStationCode.statusCode != 200) throw new Error();
 
-  return responseStationCode.body.split('\n').length - 1;
-}
+//   return responseStationCode.body.split('\n').length - 1;
+// }
 
 // Ritorna il codice della stazione di partenza del treno
-Future<String> getSpecificStationCode(String trainCode) async {
-  http.Response responseStationCode =
-      await http.get(URL_STATION_CODE + trainCode);
-  var text = responseStationCode.body;
-  if (text.isEmpty) return null;
+// Future<String> getSpecificStationCode(String trainCode) async {
+//   http.Response responseStationCode =
+//       await http.get(URL_STATION_CODE + trainCode);
+//   var text = responseStationCode.body;
+//   if (text.isEmpty) return null;
 
-  var lines = text.split('\n');
-  var details = lines[0].split("|")[1].split("-");
+//   var lines = text.split('\n');
+//   var details = lines[0].split("|")[1].split("-");
 
-  return details[1];
-}
+//   return details[1];
+// }
 
 // converte tempo unix in stringa oo:mm
 String timeStampToString(int timeStampMillisecond) {
@@ -55,37 +55,37 @@ String timeStampToString(int timeStampMillisecond) {
 }
 
 // ritorna una mappa <stationCode, trainType>
-Future<Map<String, String>> getMultipleTrainsType(String trainCode) async {
-  LinkedHashMap<String, String> multipleStation =
-      new LinkedHashMap<String, String>();
+// Future<Map<String, String>> getMultipleTrainsType(String trainCode) async {
+//   LinkedHashMap<String, String> multipleStation =
+//       new LinkedHashMap<String, String>();
 
-  http.Response responseStationCode =
-      await http.get(URL_STATION_CODE + trainCode);
-  if (responseStationCode.statusCode != 200) throw new Error();
+//   Uri uri = Uri.parse(URL_STATION_CODE + trainCode);
+//   http.Response responseStationCode = await http.get(uri);
+//   if (responseStationCode.statusCode != 200) throw new Error();
 
-  var lines = responseStationCode.body.split('\n');
+//   var lines = responseStationCode.body.split('\n');
 
-  String trainType;
-  String stationCode;
+//   String trainType;
+//   String stationCode;
 
-  for (var i = 0; i < lines.length - 1; i++) {
-    stationCode = rgxTrainCode.firstMatch(lines[i]).group(1);
-    trainType = await getTrainType(stationCode, trainCode);
-    multipleStation.putIfAbsent(stationCode, () => trainType);
-  }
-  return multipleStation;
-}
+//   for (var i = 0; i < lines.length - 1; i++) {
+//     stationCode = rgxTrainCode.firstMatch(lines[i]).group(1);
+//     trainType = await getTrainType(stationCode, trainCode);
+//     multipleStation.putIfAbsent(stationCode, () => trainType);
+//   }
+//   return multipleStation;
+// }
 
 // ritorna il tipo di treno cercato
-Future<String> getTrainType(String stationCode, String trainCode) async {
-  String urlTypeTrain = URL_TRAIN_INFO + stationCode + '/' + trainCode;
-  final http.Response responseTypeTrain = await http.get(urlTypeTrain);
-  var text = responseTypeTrain.body;
-  if (responseTypeTrain.statusCode == 200)
-    return json.decode(text)['categoria'];
-  else
-    return "NaN";
-}
+// Future<String> getTrainType(String stationCode, String trainCode) async {
+//   Uri uri = Uri.parse(URL_TRAIN_INFO + stationCode + '/' + trainCode);
+//   final http.Response responseTypeTrain = await http.get(uri);
+//   var text = responseTypeTrain.body;
+//   if (responseTypeTrain.statusCode == 200)
+//     return json.decode(text)['categoria'];
+//   else
+//     return "NaN";
+// }
 
 // DEPRECATED
 // Controlla se un treno esiste o no

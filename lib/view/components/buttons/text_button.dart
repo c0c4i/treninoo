@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
-class ActionButton extends StatelessWidget {
+class ActionTextButton extends StatelessWidget {
   final String title;
   final double width;
   final double height;
@@ -10,7 +11,7 @@ class ActionButton extends StatelessWidget {
   final Color color;
   final VoidCallback onPressed;
 
-  const ActionButton({
+  const ActionTextButton({
     Key key,
     this.title,
     this.width = double.infinity,
@@ -32,8 +33,7 @@ class ActionButton extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         style: TextButton.styleFrom(
-          foregroundColor: color ?? Colors.white,
-          backgroundColor: backgroundColor ?? Primary.normal,
+          foregroundColor: Grey.darker,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

@@ -10,7 +10,11 @@ import 'package:treninoo/model/Station.dart';
 
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/router/routes_names.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+
+import '../components/buttons/text_button.dart';
 
 class SearchSolutionsPage extends StatefulWidget {
   SearchSolutionsPage({Key key}) : super(key: key);
@@ -35,18 +39,45 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   @override
   void initState() {
     super.initState();
-    pickedDate = DateTime.now();
-    pickedTime = TimeOfDay.now();
+    initFields();
+  }
 
-    dateController.text = formatDate(pickedDate);
-    timeController.text = formatTimeOfDay(pickedTime);
-    validate = false;
+  initFields() {
+    setState(() {
+      departureStation = null;
+      arrivalStation = null;
+      departureController.text = '';
+      arrivalController.text = '';
+      pickedDate = DateTime.now();
+      pickedTime = TimeOfDay.now();
+      pickedDate = DateTime.now();
+      pickedTime = TimeOfDay.now();
+      dateController.text = formatDate(pickedDate);
+      timeController.text = formatTimeOfDay(pickedTime);
+      validate = false;
+    });
   }
 
   String validator(Station station) {
     if (!validate) return null;
     if (station == null) return "Selezionare una stazione";
     return null;
+  }
+
+  swapStations() {
+    setState(() {
+      Station temp = departureStation;
+      departureStation = arrivalStation;
+      arrivalStation = temp;
+
+      departureStation != null
+          ? departureController.text = departureStation.stationName
+          : departureController.text = '';
+
+      arrivalStation != null
+          ? arrivalController.text = arrivalStation.stationName
+          : arrivalController.text = '';
+    });
   }
 
   @override
@@ -73,26 +104,60 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                         "Inserisci da dove vuoi partire e dove vuoi arrivare per trovare le soluzioni",
                   ),
                   SizedBox(height: 50),
-                  SuggestionTextField(
-                    label: "Partenza",
-                    controller: departureController,
-                    onSelect: (station) {
-                      setState(() {
-                        departureStation = station;
-                      });
-                    },
-                    errorText: validator(departureStation),
-                  ),
-                  SizedBox(height: 20),
-                  SuggestionTextField(
-                    label: "Destinazione",
-                    controller: arrivalController,
-                    onSelect: (station) {
-                      setState(() {
-                        arrivalStation = station;
-                      });
-                    },
-                    errorText: validator(arrivalStation),
+                  IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              SuggestionTextField(
+                                label: "Partenza",
+                                controller: departureController,
+                                onSelect: (station) {
+                                  setState(() {
+                                    departureStation = station;
+                                  });
+                                },
+                                errorText: validator(departureStation),
+                              ),
+                              SizedBox(height: 20),
+                              SuggestionTextField(
+                                label: "Destinazione",
+                                controller: arrivalController,
+                                onSelect: (station) {
+                                  setState(() {
+                                    arrivalStation = station;
+                                  });
+                                },
+                                errorText: validator(arrivalStation),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: kPadding),
+                        SizedBox(
+                          height: double.infinity,
+                          width: 48,
+                          child: TextButton(
+                            onPressed: swapStations,
+                            child: Icon(
+                              Icons.swap_vert_rounded,
+                              color: Primary.normal,
+                            ),
+                            style: TextButton.styleFrom(
+                              backgroundColor: Grey.lightest1,
+                              side: BorderSide(
+                                color: Grey.light,
+                                width: 1,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(kRadius),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20),
                   ClickableTextField(
@@ -116,6 +181,11 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                   ActionButton(
                     title: "Trova soluzioni",
                     onPressed: _getSolutionRequest,
+                  ),
+                  SizedBox(height: kPadding),
+                  ActionTextButton(
+                    title: "Pulisci ricerca",
+                    onPressed: initFields,
                   ),
                 ],
               ),
