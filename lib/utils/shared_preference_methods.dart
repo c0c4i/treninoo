@@ -105,17 +105,17 @@ void removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
 }
 
 /// remove favourite train from shared preference
-void removeRecentTrain(SavedTrain savedTrain) {
-  String raw = sharedPrefs.favouritesTrains;
-  if (raw == null) return;
+// void removeRecentTrain(SavedTrain savedTrain) {
+//   String raw = sharedPrefs.favouritesTrains;
+//   if (raw == null) return;
 
-  List<dynamic> trains = jsonDecode(raw);
-  List<SavedTrain> savedTrains =
-      trains.map((e) => SavedTrain.fromJson(e)).toList();
+//   List<dynamic> trains = jsonDecode(raw);
+//   List<SavedTrain> savedTrains =
+//       trains.map((e) => SavedTrain.fromJson(e)).toList();
 
-  if (savedTrains.contains(savedTrain)) savedTrains.remove(savedTrain);
-  sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
-}
+//   if (savedTrains.contains(savedTrain)) savedTrains.remove(savedTrain);
+//   sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
+// }
 
 /// true/false if favourites train
 bool isFavouriteTrain(TrainInfo trainInfo) {

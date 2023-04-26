@@ -17,7 +17,7 @@ class SavedTrainList extends StatelessWidget {
   final List<SavedTrain> trains;
   final SavedTrainType savedTrainType;
 
-  String getText() {
+  get emptyText {
     switch (savedTrainType) {
       case SavedTrainType.recents:
         return "Nessun recente";
@@ -30,7 +30,7 @@ class SavedTrainList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (trains.length == 0)
       return Text(
-        getText(),
+        emptyText,
         textAlign: TextAlign.center,
       );
 
@@ -80,6 +80,7 @@ class SavedTrainList extends StatelessWidget {
         itemBuilder: (context, index) {
           return TrainCard(
             savedTrain: trains[index],
+            type: savedTrainType,
           );
         },
       ),

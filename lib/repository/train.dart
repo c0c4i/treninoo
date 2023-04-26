@@ -12,6 +12,7 @@ import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/utils/endpoint.dart';
+import 'package:treninoo/utils/shared_preference.dart';
 
 abstract class TrainRepository {
   Future<List<DepartureStation>> getDepartureStation(String trainCode);
@@ -22,8 +23,6 @@ abstract class TrainRepository {
   Future<List<StationTrain>> getDepartureTrains(String stationCode);
   Future<List<Station>> getFollowTrainStations(
       DepartureStation departureStation);
-  // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
-  // Future<List<Station>> getStationAutocomplete(String text);
 }
 
 class APITrain extends TrainRepository {
