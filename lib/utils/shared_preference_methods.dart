@@ -132,27 +132,6 @@ bool isFavouriteTrain(TrainInfo trainInfo) {
   return savedTrains.contains(train);
 }
 
-List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
-  String raw;
-  switch (savedTrainType) {
-    case SavedTrainType.favourites:
-      raw = sharedPrefs.favouritesTrains;
-      break;
-    case SavedTrainType.recents:
-      raw = sharedPrefs.recentsTrains;
-      break;
-  }
-
-  if (raw == null) return [];
-
-  List<dynamic> trains = jsonDecode(raw);
-
-  List<SavedTrain> savedTrains =
-      trains.map((e) => SavedTrain.fromJson(e)).toList();
-
-  return savedTrains;
-}
-
 List<Station> fetchRecentsStations() {
   String raw = sharedPrefs.recentsStations;
   if (raw == null) return [];

@@ -29,9 +29,6 @@ class DepartureStationsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var phoneWidth = MediaQuery.of(context).size.width;
-    var dialogWidth = phoneWidth * 0.90;
-
     return SimpleDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kRadius),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
-import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class ActionTextButton extends StatelessWidget {

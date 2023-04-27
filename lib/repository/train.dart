@@ -10,7 +10,6 @@ import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/utils/endpoint.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 
@@ -23,6 +22,8 @@ abstract class TrainRepository {
   Future<List<StationTrain>> getDepartureTrains(String stationCode);
   Future<List<Station>> getFollowTrainStations(
       DepartureStation departureStation);
+  void changeDescription(SavedTrain savedTrain);
+  List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
 }
 
 class APITrain extends TrainRepository {
@@ -193,9 +194,43 @@ class APITrain extends TrainRepository {
   String getDate() {
     DateTime now = DateTime.now();
     String formattedDate =
-        DateFormat('EEE MMM dd yyyy HH:mm:00').format(now) + LOCALE;
+        DateFormat('EEE MMM dd yyyy HH:mm:00').format(now) + " GMT+0200";
 
     return formattedDate;
+  }
+
+  @override
+  void changeDescription(SavedTrain savedTrain) {
+    List<dynamic> trains = jsonDecode(sharedPrefs.favouritesTrains);
+    List<SavedTrain> savedTrains =
+        trains.map((e) => SavedTrain.fromJson(e)).toList();
+
+    int index = savedTrains.indexWhere((element) => element == savedTrain);
+    savedTrains[index] = savedTrain;
+
+    sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
+  }
+
+  @override
+  List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
+    String raw;
+    switch (savedTrainType) {
+      case SavedTrainType.favourites:
+        raw = sharedPrefs.favouritesTrains;
+        break;
+      case SavedTrainType.recents:
+        raw = sharedPrefs.recentsTrains;
+        break;
+    }
+
+    if (raw == null) return [];
+
+    List<dynamic> trains = jsonDecode(raw);
+
+    List<SavedTrain> savedTrains =
+        trains.map((e) => SavedTrain.fromJson(e)).toList();
+
+    return savedTrains;
   }
 }
 

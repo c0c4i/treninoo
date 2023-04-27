@@ -161,25 +161,9 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
     );
   }
 
-  // dialogo di scelta treno se multiplo
-  void _showDialogMultipleTrainType(
-      Map<String, String> type, String trainCode) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Quale precisamente?"),
-          content: Container(
-            child: widgetMultipleTrainsType(type, trainCode),
-          ),
-        );
-      },
-    );
-  }
-
   // widget con la lista dei tipi di treno con quel codice
   Widget widgetMultipleTrainsType(Map<String, String> type, String trainCode) {
-    List<Widget> list = List<Widget>();
+    List<Widget> list = [];
 
     type.forEach((k, v) => list.add(
           ElevatedButton(

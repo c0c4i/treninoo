@@ -69,6 +69,20 @@ class SavedTrain extends Equatable {
     );
   }
 
+  SavedTrain copyWith({
+    String description,
+  }) {
+    return SavedTrain(
+      trainCode: this.trainCode,
+      trainType: this.trainType,
+      departureStationCode: this.departureStationCode,
+      departureStationName: this.departureStationName,
+      arrivalStationName: this.arrivalStationName,
+      departureTime: this.departureTime,
+      description: description,
+    );
+  }
+
   @override
   List<Object> get props {
     return [trainCode, departureStationCode];

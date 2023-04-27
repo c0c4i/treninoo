@@ -28,7 +28,7 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   Stream<RecentsState> _mapRecentsRequest(RecentsRequest event) async* {
     yield RecentsLoading();
     try {
-      final trains = getSavedTrain(SavedTrainType.recents);
+      final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
       if (trains != null) {
         yield RecentsSuccess(trains: trains);
       } else {
@@ -44,7 +44,7 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
     yield RecentsLoading();
     try {
       removeTrain(event.savedTrain, SavedTrainType.recents);
-      final trains = getSavedTrain(SavedTrainType.recents);
+      final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
       if (trains != null) {
         yield RecentsSuccess(trains: trains);
       } else {

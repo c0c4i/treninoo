@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final String LOCALE = " GMT+0200";
-
 String addZeroToNumberLowerThan10(String n) {
   return (n.length < 2) ? "0$n" : n;
 }

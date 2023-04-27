@@ -7,12 +7,15 @@ import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/pages/edit_description_page.dart';
 import 'package:treninoo/view/pages/follow_train_page.dart';
 import 'package:treninoo/view/pages/solutions_result_page.dart';
 import 'package:treninoo/view/pages/station_status_page.dart';
 import 'package:treninoo/view/pages/train_status_page.dart';
 import 'package:treninoo/view/pages/home_page.dart';
 import 'package:treninoo/view/router/routes_names.dart';
+
+import '../../bloc/edit_description/edit_description_bloc.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
@@ -85,6 +88,20 @@ class AppRouter {
                 context.read<TrainRepository>(),
               ),
               child: FollowTrainPage(departureStation: departureStation),
+            ),
+          ),
+        );
+
+      case RoutesNames.editDescription:
+        final description = settings.arguments;
+        return CupertinoPageRoute(
+          builder: (_) => RepositoryProvider<TrainRepository>(
+            create: (context) => trainRepository,
+            child: BlocProvider(
+              create: (context) => EditDescriptionBloc(
+                context.read<TrainRepository>(),
+              ),
+              child: EditDescriptionPage(savedTrain: description),
             ),
           ),
         );
