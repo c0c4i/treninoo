@@ -1,6 +1,6 @@
 const String URL = "www.viaggiatreno.it";
 
-const bool isProd = false;
+const bool isProd = true;
 const String BASE_URL =
     isProd ? "cityhelper.app" : "cityhelper.wesellbrain.com";
 
