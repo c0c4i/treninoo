@@ -1,14 +1,14 @@
 const String URL = "www.viaggiatreno.it";
 
-const bool isProd = true;
+const bool isProd = false;
 const String BASE_URL =
     isProd ? "cityhelper.app" : "cityhelper.wesellbrain.com";
 
 class Endpoint {
   static const String AUTOCOMPLETE =
-      (isProd ? '/treninoo' : '') + '/autocomplete/';
+      (isProd ? '/treninoo' : '/treninoo') + '/autocomplete/';
   static const String FOLLOWTRAIN_STATIONS =
-      (isProd ? '/treninoo' : '') + '/followtrain';
+      (isProd ? '/treninoo' : '/treninoo') + '/followtrain';
 }
 
 /// ... + trainCode
