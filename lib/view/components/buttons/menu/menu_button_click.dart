@@ -21,6 +21,7 @@ class MenuButtonClick extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
+      margin: EdgeInsets.zero,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(

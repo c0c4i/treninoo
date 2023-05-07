@@ -1,4 +1,3 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -7,6 +6,7 @@ class SharedPrefs {
   static const String SPfavouritesTrains = 'favouritesTrains';
   static const String SPrecentsStations = 'recentsStations';
   static const String SPDarkMode = 'darkMode';
+  static const String SPFirstPage = 'first_page';
 
   init() async {
     if (_sharedPrefs == null) {
@@ -32,6 +32,12 @@ class SharedPrefs {
 
   set recentsStations(String value) {
     _sharedPrefs.setString(SPrecentsStations, value);
+  }
+
+  int get firstPage => _sharedPrefs.getInt(SPFirstPage) ?? 0;
+
+  set firstPage(int value) {
+    _sharedPrefs.setInt(SPFirstPage, value);
   }
 }
 

@@ -16,6 +16,8 @@ import 'package:treninoo/view/pages/home_page.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 
 import '../../bloc/edit_description/edit_description_bloc.dart';
+import '../../bloc/send_feedback/send_feedback.dart';
+import '../pages/send_feedback_page.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
@@ -102,6 +104,19 @@ class AppRouter {
                 context.read<TrainRepository>(),
               ),
               child: EditDescriptionPage(savedTrain: description),
+            ),
+          ),
+        );
+
+      case RoutesNames.sendFeedback:
+        return CupertinoPageRoute(
+          builder: (_) => RepositoryProvider<TrainRepository>(
+            create: (context) => trainRepository,
+            child: BlocProvider(
+              create: (context) => SendFeedbackBloc(
+                context.read<TrainRepository>(),
+              ),
+              child: SendFeedbackPage(),
             ),
           ),
         );

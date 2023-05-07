@@ -9,6 +9,7 @@ class ActionButton extends StatelessWidget {
   final Color backgroundColor;
   final Color color;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   const ActionButton({
     Key key,
@@ -18,6 +19,7 @@ class ActionButton extends StatelessWidget {
     this.backgroundColor,
     this.color,
     this.onPressed,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -26,10 +28,28 @@ class ActionButton extends StatelessWidget {
       width: width,
       height: height,
       child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        onPressed: !isLoading ? onPressed : null,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+            if (isLoading)
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+          ],
         ),
         style: TextButton.styleFrom(
           foregroundColor: color ?? Colors.white,
@@ -37,6 +57,7 @@ class ActionButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),
+          disabledForegroundColor: color ?? Colors.white,
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
@@ -18,7 +19,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex;
+  PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = sharedPrefs.firstPage;
+    pageController = PageController(
+      initialPage: _selectedIndex,
+      keepPage: true,
+    );
+  }
 
   static List<Widget> _widgetOptions = <Widget>[
     BlocProvider(
@@ -66,11 +78,6 @@ class _MyStatefulWidgetState extends State<HomePage> {
       ),
     ];
   }
-
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
 
   Widget buildPageView() {
     return PageView(

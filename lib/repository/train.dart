@@ -24,6 +24,7 @@ abstract class TrainRepository {
       DepartureStation departureStation);
   void changeDescription(SavedTrain savedTrain);
   List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
+  Future<void> sendFeedback(String feedback);
 }
 
 class APITrain extends TrainRepository {
@@ -231,6 +232,17 @@ class APITrain extends TrainRepository {
         trains.map((e) => SavedTrain.fromJson(e)).toList();
 
     return savedTrains;
+  }
+
+  @override
+  Future<void> sendFeedback(String feedback) async {
+    var uri = Uri.https(BASE_URL, Endpoint.FEEDBACK);
+    Response response = await http.post(
+      uri,
+      body: {'feedback': feedback},
+    );
+
+    if (response.statusCode != 200) throw Exception();
   }
 }
 

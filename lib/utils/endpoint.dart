@@ -4,11 +4,12 @@ const bool isProd = true;
 const String BASE_URL =
     isProd ? "cityhelper.app" : "cityhelper.wesellbrain.com";
 
+const String prefix = isProd ? '/treninoo' : '/treninoo';
+
 class Endpoint {
-  static const String AUTOCOMPLETE =
-      (isProd ? '/treninoo' : '/treninoo') + '/autocomplete/';
-  static const String FOLLOWTRAIN_STATIONS =
-      (isProd ? '/treninoo' : '/treninoo') + '/followtrain';
+  static const String AUTOCOMPLETE = '$prefix/autocomplete/';
+  static const String FOLLOWTRAIN_STATIONS = '$prefix/followtrain';
+  static const String FEEDBACK = '$prefix/feedback';
 }
 
 /// ... + trainCode

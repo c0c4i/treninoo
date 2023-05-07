@@ -8,6 +8,10 @@ import 'package:treninoo/view/components/buttons/menu/menu_button_switch.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/style/theme.dart';
 
+import '../components/buttons/menu/menu_button_click.dart';
+import '../components/dialog/select_start_page.dart';
+import '../router/routes_names.dart';
+
 enum ThemeType { Light, Dark, Auto }
 
 final List<String> themes = ['Light', 'Dark'];
@@ -54,18 +58,21 @@ class _SettingsState extends State<Settings> {
                   setState(() {});
                 },
               ),
-              SizedBox(height: 8),
-              // MenuButtonClick(
-              //   title: "Schermata iniziale",
-              //   description: "Seleziona la schermata di avvio",
-              //   onPressed: () {},
-              // )
-              // ListTile(
-              //   contentPadding: EdgeInsets.only(left: 20),
-              //   title: Text('Schermata iniziale'),
-              //   subtitle: Text('Seleziona la schermata inziale'),
-              //   onTap: () {},
-              // ),
+              SizedBox(height: kPadding),
+              MenuButtonClick(
+                title: "Schermata iniziale",
+                description: "Seleziona la schermata di avvio",
+                onPressed: () => SelectStartPageDialog.show(context: context),
+              ),
+              SizedBox(height: kPadding),
+              MenuButtonClick(
+                title: "Invia un feedback",
+                description:
+                    "Dimmi ciò che pensi di questa app, segnala problemi o funzionalità che ti piacerebbero",
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesNames.sendFeedback);
+                },
+              )
             ],
           ),
         ),
@@ -73,7 +80,6 @@ class _SettingsState extends State<Settings> {
     );
   }
 }
-
 
 // _openGmail() async {
 //   const url = 'mailto:<samuele.besoli.sb@gmail.com>';
@@ -149,7 +155,7 @@ class _SettingsState extends State<Settings> {
 // _showStartPageSelection(BuildContext context) => showDialog(
 //     context: context,
 //     builder: (context) {
-//       var _singleNotifier = Provider.of<SingleNotifier>(context);
+//       // var _singleNotifier = Provider.of<SingleNotifier>(context);
 //       // var _themeNotifier = Provider.of<ThemeNotifier>(context);
 //       return AlertDialog(
 //           title: Text("Seleziona schermata"),
@@ -159,22 +165,23 @@ class _SettingsState extends State<Settings> {
 //               child: Column(
 //                 mainAxisSize: MainAxisSize.min,
 //                 children: pages
-//                     .map((e) => RadioListTile(
-//                           title: Text(e),
-//                           value: e,
-//                           groupValue: pages[_singleNotifier.startPage],
-//                           selected:
-//                               _singleNotifier.startPage == pages.indexOf(e),
-//                           onChanged: (value) {
-//                             if (value != _singleNotifier.startPage) {
-//                               _singleNotifier.updatePage(pages.indexOf(value));
-//                               print(_singleNotifier.startPage);
-//                               SharedPreferences.getInstance().then((prefs) =>
-//                                   prefs.setInt("page", pages.indexOf(value)));
-//                               Navigator.of(context).pop();
-//                             }
-//                           },
-//                         ))
+//                     .map(
+//                       (e) => RadioListTile(
+//                         title: Text(e),
+//                         value: e,
+//                         groupValue: pages[0],
+//                         selected: 0 == pages.indexOf(e),
+//                         onChanged: (value) {
+//                           // if (value != _singleNotifier.startPage) {
+//                           //   _singleNotifier.updatePage(pages.indexOf(value));
+//                           //   print(_singleNotifier.startPage);
+//                           //   SharedPreferences.getInstance().then((prefs) =>
+//                           //       prefs.setInt("page", pages.indexOf(value)));
+//                           //   Navigator.of(context).pop();
+//                           // }
+//                         },
+//                       ),
+//                     )
 //                     .toList(),
 //               ),
 //             ),
