@@ -74,15 +74,12 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: kPadding),
                           child: Text(
-                            "Idee 💡o problemi 😢? Va bene tutto! Spara!",
+                            "Parlaci dei problemi o suggerisci nuove funzionalità che ti piacerebbe avere in futuro",
                             style:
                                 Typo.subheaderLight.copyWith(color: Grey.dark),
                           ),
                         ),
                         TextField(
-                          decoration: InputDecoration(
-                            hintText: "Mi piacerebbe avere...",
-                          ),
                           controller: _controller,
                           enabled: context.watch<SendFeedbackBloc>().state
                               is! SendFeedbackLoading,

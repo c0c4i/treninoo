@@ -30,7 +30,7 @@ class ThanksForFeedbackDialog {
                     width: double.infinity,
                   ),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(kRadius),
                     child: Image.asset(
                       "assets/happy.gif",
                       height: 160,
