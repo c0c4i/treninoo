@@ -73,7 +73,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
         label: 'Preferiti',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.settings_rounded),
+        icon: Icon(Icons.tune_outlined),
         label: 'Generali',
       ),
     ];
