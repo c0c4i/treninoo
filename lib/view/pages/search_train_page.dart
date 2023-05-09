@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
-import 'package:treninoo/bloc/recents/recents_bloc.dart';
-import 'package:treninoo/bloc/recents/recents_event.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/dialog/departure_stations_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/loading_dialog.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
-import 'package:treninoo/view/components/recents.dart';
-
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/utils/final.dart';
-import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
+
+import '../../bloc/exist/exist.dart';
+import '../../model/DepartureStation.dart';
+import '../components/recents_trains/trains_list.dart';
 
 enum ErrorType {
   zero,
@@ -78,6 +78,30 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  handleDepartureStations(List<DepartureStation> departureStations) async {
+    int trainFound = departureStations.length;
+
+    if (trainFound == 0) return showError(ErrorType.not_found);
+
+    SavedTrain savedTrain;
+    switch (trainFound) {
+      case 1:
+        savedTrain = SavedTrain.fromDepartureStation(departureStations[0]);
+        break;
+      default:
+        DepartureStation departureStation = await DepartureStationsDialog.show(
+          context,
+          departureStations: departureStations,
+        );
+        if (departureStation == null) return;
+        savedTrain = SavedTrain.fromDepartureStation(departureStation);
+    }
+
+    context.read<ExistBloc>().add(
+          ExistRequest(savedTrain: savedTrain, type: SavedTrainType.recents),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,30 +119,10 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
               listener: (context, state) {
                 if (state is DepartureStationLoading)
                   LoadingDialog.show(context);
+
                 if (state is DepartureStationSuccess) {
                   LoadingDialog.hide(context);
-                  int trainFound = state.departureStations.length;
-                  if (trainFound == 0) {
-                    showError(ErrorType.not_found);
-                    return;
-                  }
-                  showError(ErrorType.zero);
-
-                  if (trainFound > 1) {
-                    DepartureStationsDialog.show(
-                      context,
-                      departureStations: state.departureStations,
-                    );
-                  } else {
-                    SavedTrain savedTrain = SavedTrain.fromDepartureStation(
-                      state.departureStations[0],
-                    );
-                    Navigator.pushNamed(context, RoutesNames.status,
-                            arguments: savedTrain)
-                        .then((value) {
-                      context.read<RecentsBloc>().add(RecentsRequest());
-                    });
-                  }
+                  handleDepartureStations(state.departureStations);
                 }
                 if (state is DepartureStationFailed)
                   LoadingDialog.hide(context);
@@ -150,7 +154,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                       onPressed: searchButtonClick,
                     ),
                     SizedBox(height: 50),
-                    Recents(),
+                    RecentsTrains(),
                   ],
                 ),
               ),

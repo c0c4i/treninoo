@@ -23,15 +23,11 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
   Stream<ExistState> _mapExistRequest(ExistRequest event) async* {
     yield ExistLoading();
     try {
-      final exist = await _trainRepository.trainExist(event.savedTrain);
-      if (exist != null) {
-        yield ExistSuccess(savedTrain: event.savedTrain);
-      } else {
-        yield ExistFailed();
-      }
+      final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
+      yield ExistSuccess(trainInfo: trainInfo);
     } catch (e) {
-      print(e);
-      yield ExistFailed();
+      yield ExistFailed(savedTrain: event.savedTrain, type: event.type);
     }
+    yield ExistInitial();
   }
 }

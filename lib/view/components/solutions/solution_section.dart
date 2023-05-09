@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainSolution.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/solutions/solution_section_header.dart';
 import 'package:treninoo/view/components/solutions/solution_section_stations.dart';
-import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
+
+import '../../../bloc/exist/exist.dart';
 
 class SolutionSection extends StatelessWidget {
   final TrainSolution trainSolution;
@@ -18,11 +21,14 @@ class SolutionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        SavedTrain train = new SavedTrain(
+        SavedTrain savedTrain = new SavedTrain(
           trainCode: trainSolution.trainCode,
           departureStationName: trainSolution.departureStation,
         );
-        Navigator.pushNamed(context, RoutesNames.status, arguments: train);
+        context.read<ExistBloc>().add(
+              ExistRequest(
+                  savedTrain: savedTrain, type: SavedTrainType.recents),
+            );
       },
       child: Column(
         children: [

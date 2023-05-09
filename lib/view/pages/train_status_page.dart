@@ -7,14 +7,13 @@ import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_list.dart';
 import 'package:treninoo/view/components/train_status/train_status_stops_header.dart';
 import 'package:treninoo/view/style/theme.dart';
+
 
 class TrainStatusPage extends StatefulWidget {
   final SavedTrain savedTrain;
@@ -71,9 +70,6 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                   BlocConsumer<TrainStatusBloc, TrainStatusState>(
                     listener: (context, state) {
                       if (state is TrainStatusSuccess) {
-                        SavedTrain savedTrain =
-                            SavedTrain.fromTrainInfo(state.trainInfo);
-                        addTrain(savedTrain, SavedTrainType.recents);
                         setState(() {
                           trainInfo = state.trainInfo;
                         });

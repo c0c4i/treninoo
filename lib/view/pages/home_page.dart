@@ -10,6 +10,8 @@ import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
+import '../components/train_exist/train_handler.dart';
+
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -34,14 +36,21 @@ class _MyStatefulWidgetState extends State<HomePage> {
 
   static List<Widget> _widgetOptions = <Widget>[
     BlocProvider(
-      create: (context) => RecentsBloc(context.read<TrainRepository>()),
-      child: SearchTrainPage(),
+      create: (context) =>
+          RecentsBloc(context.read<TrainRepository>())..add(RecentsRequest()),
+      child: HandleExistBloc(
+        child: SearchTrainPage(),
+      ),
     ),
-    SearchSolutionsPage(),
+    HandleExistBloc(
+      child: SearchSolutionsPage(),
+    ),
     SearchStationPage(),
     BlocProvider(
       create: (context) => FavouritesBloc(context.read<TrainRepository>()),
-      child: FavouritesPage(),
+      child: HandleExistBloc(
+        child: FavouritesPage(),
+      ),
     ),
     Settings(),
   ];

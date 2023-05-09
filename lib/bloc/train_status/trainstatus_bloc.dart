@@ -25,13 +25,8 @@ class TrainStatusBloc extends Bloc<TrainStatusEvent, TrainStatusState> {
     yield TrainStatusLoading();
     try {
       final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
-      if (trainInfo != null) {
-        yield TrainStatusSuccess(trainInfo: trainInfo);
-      } else {
-        yield TrainStatusFailed();
-      }
+      yield TrainStatusSuccess(trainInfo: trainInfo);
     } catch (e) {
-      print(e);
       yield TrainStatusFailed();
     }
   }

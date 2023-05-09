@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/repository/train.dart';
 
 abstract class ExistState extends Equatable {
   @override
@@ -12,12 +14,20 @@ class ExistInitial extends ExistState {}
 class ExistLoading extends ExistState {}
 
 class ExistSuccess extends ExistState {
-  final SavedTrain savedTrain;
+  final TrainInfo trainInfo;
 
-  ExistSuccess({@required this.savedTrain});
+  ExistSuccess({@required this.trainInfo});
 
   @override
-  List<Object> get props => [savedTrain];
+  List<Object> get props => [trainInfo];
 }
 
-class ExistFailed extends ExistState {}
+class ExistFailed extends ExistState {
+  final SavedTrain savedTrain;
+  final SavedTrainType type;
+
+  ExistFailed({@required this.savedTrain, @required this.type});
+
+  @override
+  List<Object> get props => [savedTrain, type];
+}

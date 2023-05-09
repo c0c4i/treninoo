@@ -58,9 +58,11 @@ void addTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
     List<dynamic> trains = jsonDecode(raw);
     savedTrains = trains.map((e) => SavedTrain.fromJson(e)).toList();
 
-    if (!savedTrains.contains(savedTrain)) {
-      savedTrains.insert(0, savedTrain);
+    if (savedTrains.contains(savedTrain)) {
+      savedTrains.remove(savedTrain);
     }
+
+    savedTrains.insert(0, savedTrain);
   }
 
   switch (savedTrainType) {

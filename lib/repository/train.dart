@@ -50,10 +50,10 @@ class APITrain extends TrainRepository {
     String stationCode = savedTrain.departureStationCode;
     String trainCode = savedTrain.trainCode;
 
-    if (stationCode == null) {
-      stationCode = await getStationCode(savedTrain.trainCode);
-      if (stationCode == null) return null;
-    }
+    // if (stationCode == null) {
+    //   stationCode = await getStationCode(savedTrain.trainCode);
+    //   if (stationCode == null) return null;
+    // }
 
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -61,8 +61,10 @@ class APITrain extends TrainRepository {
 
     var uri =
         Uri.https(URL, "$GET_TRAIN_INFO$stationCode/$trainCode/$timestamp");
-    print(uri.host + uri.path);
+
     var response = await http.get(uri);
+
+    if (response.body.isEmpty) throw Exception("No train found");
 
     var body = jsonDecode(response.body);
 

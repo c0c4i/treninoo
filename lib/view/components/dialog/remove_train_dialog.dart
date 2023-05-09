@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
@@ -8,17 +9,18 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
+import '../../../bloc/favourites/favourites.dart';
+import '../../../bloc/recents/recents.dart';
+
 class RemoveTrainDialog extends StatelessWidget {
   final SavedTrain savedTrain;
   final SavedTrainType savedTrainType;
-  final VoidCallback onConfirm;
 
   static void show(
     BuildContext context, {
     Key key,
     SavedTrain savedTrain,
     SavedTrainType savedTrainType,
-    VoidCallback onConfirm,
   }) =>
       showDialog<void>(
         context: context,
@@ -28,15 +30,16 @@ class RemoveTrainDialog extends StatelessWidget {
           key: key,
           savedTrain: savedTrain,
           savedTrainType: savedTrainType,
-          onConfirm: onConfirm,
         ),
       ).then((_) => FocusScope.of(context).requestFocus(FocusNode()));
 
   // static void hide(BuildContext context) => Navigator.pop(context);
 
-  RemoveTrainDialog(
-      {Key key, this.savedTrain, this.savedTrainType, this.onConfirm})
-      : super(key: key);
+  RemoveTrainDialog({
+    Key key,
+    this.savedTrain,
+    this.savedTrainType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +86,16 @@ class RemoveTrainDialog extends StatelessWidget {
                         color: Primary.normal,
                         onPressed: () {
                           removeTrain(savedTrain, savedTrainType);
-                          onConfirm();
+                          switch (savedTrainType) {
+                            case SavedTrainType.recents:
+                              context.read<RecentsBloc>().add(RecentsRequest());
+                              break;
+                            case SavedTrainType.favourites:
+                              context
+                                  .read<FavouritesBloc>()
+                                  .add(FavouritesRequest());
+                              break;
+                          }
                           Navigator.pop(context);
                         },
                       ),

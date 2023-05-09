@@ -33,7 +33,7 @@ class TrainCard extends StatelessWidget {
             onPressed: () {
               context
                   .read<ExistBloc>()
-                  .add(ExistRequest(savedTrain: savedTrain));
+                  .add(ExistRequest(savedTrain: savedTrain, type: type));
             },
             onLongPress: () {
               SavedTrainPickAction.show(

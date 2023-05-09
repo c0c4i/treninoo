@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/DepartureStation.dart';
-import 'package:treninoo/model/SavedTrain.dart';
-import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -9,12 +7,12 @@ import 'package:treninoo/view/style/typography.dart';
 class DepartureStationsDialog extends StatelessWidget {
   final List<DepartureStation> departureStations;
 
-  static void show(
+  static Future<DepartureStation> show(
     BuildContext context, {
     Key key,
-    List<DepartureStation> departureStations,
-  }) =>
-      showDialog<void>(
+    @required List<DepartureStation> departureStations,
+  }) async =>
+      await showDialog<DepartureStation>(
         context: context,
         builder: (_) => DepartureStationsDialog(
           key: key,
@@ -24,7 +22,7 @@ class DepartureStationsDialog extends StatelessWidget {
 
   DepartureStationsDialog({
     Key key,
-    this.departureStations,
+    @required this.departureStations,
   }) : super(key: key);
 
   @override
@@ -53,13 +51,7 @@ class DepartureStationsDialog extends StatelessWidget {
           title: Text(
             ds.station.stationName,
           ),
-          onTap: () {
-            Navigator.popAndPushNamed(
-              context,
-              RoutesNames.status,
-              arguments: SavedTrain.fromDepartureStation(ds),
-            );
-          },
+          onTap: () => Navigator.pop(context, ds),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

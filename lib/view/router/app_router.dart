@@ -35,8 +35,9 @@ class AppRouter {
                         DepartureStationBloc(context.read<TrainRepository>()),
                   ),
                   BlocProvider(
-                    create: (context) =>
-                        ExistBloc(context.read<TrainRepository>()),
+                    create: (context) => ExistBloc(
+                      context.read<TrainRepository>(),
+                    ),
                   ),
                 ],
                 child: HomePage(),
