@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
-import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
@@ -21,25 +20,15 @@ import '../pages/send_feedback_page.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
-    TrainRepository trainRepository = APITrain();
-
     switch (settings.name) {
       case RoutesNames.home:
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-              create: (context) => trainRepository,
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) =>
-                        DepartureStationBloc(context.read<TrainRepository>()),
-                  ),
-                  BlocProvider(
-                    create: (context) => ExistBloc(
-                      context.read<TrainRepository>(),
-                    ),
-                  ),
-                ],
+              create: (context) => context.read<TrainRepository>(),
+              child: BlocProvider(
+                create: (context) => DepartureStationBloc(
+                  context.read<TrainRepository>(),
+                ),
                 child: HomePage(),
               )),
         );
@@ -48,10 +37,11 @@ class AppRouter {
         final savedTrain = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
+            create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
-              create: (context) =>
-                  TrainStatusBloc(context.read<TrainRepository>()),
+              create: (context) => TrainStatusBloc(
+                context.read<TrainRepository>(),
+              ),
               child: TrainStatusPage(savedTrain: savedTrain),
             ),
           ),
@@ -60,10 +50,11 @@ class AppRouter {
         final solutionsInfo = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
+            create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
-              create: (context) =>
-                  SolutionsBloc(context.read<TrainRepository>()),
+              create: (context) => SolutionsBloc(
+                context.read<TrainRepository>(),
+              ),
               child: SolutionsResultPage(solutionsInfo: solutionsInfo),
             ),
           ),
@@ -72,10 +63,14 @@ class AppRouter {
         final station = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
-            child: BlocProvider(
-              create: (context) =>
-                  StationStatusBloc(context.read<TrainRepository>()),
+            create: (context) => context.read<TrainRepository>(),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      StationStatusBloc(context.read<TrainRepository>()),
+                ),
+              ],
               child: StationStatusPage(station: station),
             ),
           ),
@@ -85,7 +80,7 @@ class AppRouter {
         final departureStation = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
+            create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
               create: (context) => FollowTrainStationsBloc(
                 context.read<TrainRepository>(),
@@ -99,7 +94,7 @@ class AppRouter {
         final description = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
+            create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
               create: (context) => EditDescriptionBloc(
                 context.read<TrainRepository>(),
@@ -112,7 +107,7 @@ class AppRouter {
       case RoutesNames.sendFeedback:
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => trainRepository,
+            create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
               create: (context) => SendFeedbackBloc(
                 context.read<TrainRepository>(),

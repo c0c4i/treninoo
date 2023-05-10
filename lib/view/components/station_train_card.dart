@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/StationTrain.dart';
-import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
+
+import '../../bloc/exist/exist.dart';
 
 class StationTrainCard extends StatelessWidget {
   final StationTrain stationTrain;
@@ -23,11 +25,11 @@ class StationTrainCard extends StatelessWidget {
         ),
         child: OutlinedButton(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              RoutesNames.status,
-              arguments: SavedTrain.fromStationTrain(stationTrain),
-            );
+            context.read<ExistBloc>().add(
+                  ExistRequest(
+                    savedTrain: SavedTrain.fromStationTrain(stationTrain),
+                  ),
+                );
           },
           child: Column(
             children: [

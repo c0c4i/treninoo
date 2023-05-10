@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference_methods.dart';
@@ -12,6 +12,7 @@ import 'package:treninoo/view/style/typography.dart';
 import '../../../bloc/favourites/favourites.dart';
 import '../../../bloc/recents/recents.dart';
 
+// TODO Refactor to modal bottom sheet
 class RemoveTrainDialog extends StatelessWidget {
   final SavedTrain savedTrain;
   final SavedTrainType savedTrainType;
@@ -72,35 +73,38 @@ class RemoveTrainDialog extends StatelessWidget {
                     style: Typo.subheaderLight.copyWith(color: Grey.dark),
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    children: [
-                      DialogButton(
-                        title: "Annulla",
-                        color: Grey.light,
-                        textColor: Grey.darker,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 10),
-                      DialogButton(
-                        title: "Rimuovi",
-                        color: Primary.normal,
-                        onPressed: () {
-                          removeTrain(savedTrain, savedTrainType);
-                          switch (savedTrainType) {
-                            case SavedTrainType.recents:
-                              context.read<RecentsBloc>().add(RecentsRequest());
-                              break;
-                            case SavedTrainType.favourites:
-                              context
-                                  .read<FavouritesBloc>()
-                                  .add(FavouritesRequest());
-                              break;
-                          }
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  )
+                  if (savedTrainType != null)
+                    Row(
+                      children: [
+                        DialogButton(
+                          title: "Annulla",
+                          color: Grey.light,
+                          textColor: Grey.darker,
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        SizedBox(width: 10),
+                        DialogButton(
+                          title: "Rimuovi",
+                          color: Primary.normal,
+                          onPressed: () {
+                            removeTrain(savedTrain, savedTrainType);
+                            switch (savedTrainType) {
+                              case SavedTrainType.recents:
+                                context
+                                    .read<RecentsBloc>()
+                                    .add(RecentsRequest());
+                                break;
+                              case SavedTrainType.favourites:
+                                context
+                                    .read<FavouritesBloc>()
+                                    .add(FavouritesRequest());
+                                break;
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    )
                 ],
               ),
             ),

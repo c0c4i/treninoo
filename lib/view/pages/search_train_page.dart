@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/departure_station/departurestation.dart';
-import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/dialog/departure_stations_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
@@ -16,6 +15,7 @@ import 'package:treninoo/view/style/theme.dart';
 import '../../bloc/exist/exist.dart';
 import '../../model/DepartureStation.dart';
 import '../components/recents_trains/trains_list.dart';
+import '../components/train_exist/train_handler.dart';
 
 enum ErrorType {
   zero,
@@ -98,64 +98,66 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
     }
 
     context.read<ExistBloc>().add(
-          ExistRequest(savedTrain: savedTrain, type: SavedTrainType.recents),
+          ExistRequest(savedTrain: savedTrain),
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: BlocListener<DepartureStationBloc, DepartureStationState>(
-              listener: (context, state) {
-                if (state is DepartureStationLoading)
-                  LoadingDialog.show(context);
-
-                if (state is DepartureStationSuccess) {
-                  LoadingDialog.hide(context);
-                  handleDepartureStations(state.departureStations);
+    return HandleExistBloc(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
                 }
-                if (state is DepartureStationFailed)
-                  LoadingDialog.hide(context);
               },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Header(
-                      title: "Cerca il tuo treno",
-                      description:
-                          "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
-                    ),
-                    SizedBox(height: 50),
-                    Form(
-                      key: _formKey,
-                      child: BeautifulTextField(
-                        prefixIcon: Icons.search,
-                        labelText: "Codice treno",
-                        controller: searchController,
-                        keyboardType: TextInputType.number,
-                        errorText: error,
+              child: BlocListener<DepartureStationBloc, DepartureStationState>(
+                listener: (context, state) {
+                  if (state is DepartureStationLoading)
+                    LoadingDialog.show(context);
+
+                  if (state is DepartureStationSuccess) {
+                    LoadingDialog.hide(context);
+                    handleDepartureStations(state.departureStations);
+                  }
+                  if (state is DepartureStationFailed)
+                    LoadingDialog.hide(context);
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Header(
+                        title: "Cerca il tuo treno",
+                        description:
+                            "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    ActionButton(
-                      title: "Cerca",
-                      onPressed: searchButtonClick,
-                    ),
-                    SizedBox(height: 50),
-                    RecentsTrains(),
-                  ],
+                      SizedBox(height: 50),
+                      Form(
+                        key: _formKey,
+                        child: BeautifulTextField(
+                          prefixIcon: Icons.search,
+                          labelText: "Codice treno",
+                          controller: searchController,
+                          keyboardType: TextInputType.number,
+                          errorText: error,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ActionButton(
+                        title: "Cerca",
+                        onPressed: searchButtonClick,
+                      ),
+                      SizedBox(height: 50),
+                      RecentsTrains(),
+                    ],
+                  ),
                 ),
               ),
             ),

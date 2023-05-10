@@ -26,7 +26,7 @@ class ExistFailed extends ExistState {
   final SavedTrain savedTrain;
   final SavedTrainType type;
 
-  ExistFailed({@required this.savedTrain, @required this.type});
+  ExistFailed({@required this.savedTrain, this.type});
 
   @override
   List<Object> get props => [savedTrain, type];

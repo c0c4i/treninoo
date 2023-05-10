@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
-import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
@@ -9,8 +8,6 @@ import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
-
-import '../components/train_exist/train_handler.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -35,22 +32,13 @@ class _MyStatefulWidgetState extends State<HomePage> {
   }
 
   static List<Widget> _widgetOptions = <Widget>[
-    BlocProvider(
-      create: (context) =>
-          RecentsBloc(context.read<TrainRepository>())..add(RecentsRequest()),
-      child: HandleExistBloc(
-        child: SearchTrainPage(),
-      ),
-    ),
-    HandleExistBloc(
-      child: SearchSolutionsPage(),
-    ),
+    SearchTrainPage(),
+    SearchSolutionsPage(),
     SearchStationPage(),
     BlocProvider(
-      create: (context) => FavouritesBloc(context.read<TrainRepository>()),
-      child: HandleExistBloc(
-        child: FavouritesPage(),
-      ),
+      create: (context) => FavouritesBloc(context.read<TrainRepository>())
+        ..add(FavouritesRequest()),
+      child: FavouritesPage(),
     ),
     Settings(),
   ];

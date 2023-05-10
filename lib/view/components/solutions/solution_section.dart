@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainSolution.dart';
-import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/solutions/solution_section_header.dart';
 import 'package:treninoo/view/components/solutions/solution_section_stations.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -27,7 +26,8 @@ class SolutionSection extends StatelessWidget {
         );
         context.read<ExistBloc>().add(
               ExistRequest(
-                  savedTrain: savedTrain, type: SavedTrainType.recents),
+                savedTrain: savedTrain,
+              ),
             );
       },
       child: Column(

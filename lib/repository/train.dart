@@ -50,10 +50,10 @@ class APITrain extends TrainRepository {
     String stationCode = savedTrain.departureStationCode;
     String trainCode = savedTrain.trainCode;
 
-    // if (stationCode == null) {
-    //   stationCode = await getStationCode(savedTrain.trainCode);
-    //   if (stationCode == null) return null;
-    // }
+    // If station code is null, get it from the train code
+    if (stationCode == null && savedTrain.departureStationName != null) {
+      stationCode = await _getDepartureStationCodeFromName(savedTrain);
+    }
 
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -69,6 +69,21 @@ class APITrain extends TrainRepository {
     var body = jsonDecode(response.body);
 
     return TrainInfo.fromJson(body);
+  }
+
+  _getDepartureStationCodeFromName(savedTrain) async {
+    List<DepartureStation> departureStations =
+        await getDepartureStation(savedTrain.trainCode);
+
+    if (departureStations == null) throw Exception("No station found");
+
+    for (var departureStation in departureStations) {
+      String stationName = departureStation.station.stationName.toLowerCase();
+      if (stationName == savedTrain.departureStationName.toLowerCase()) {
+        return departureStation.station.stationCode;
+      }
+    }
+    throw Exception("No station found");
   }
 
   // @override
@@ -113,17 +128,17 @@ class APITrain extends TrainRepository {
     return solutions;
   }
 
-  Future<String> getStationCode(String trainCode) async {
-    String url = GET_STATION_CODE + trainCode;
-    var uri = Uri.https(URL, url);
-    Response response = await http.get(uri);
+  // Future<String> getStationCode(String trainCode) async {
+  //   String url = GET_STATION_CODE + trainCode;
+  //   var uri = Uri.https(URL, url);
+  //   Response response = await http.get(uri);
 
-    if (response.body.isEmpty) return null;
+  //   if (response.body.isEmpty) return null;
 
-    String stationCode = response.body.split("|")[1].split("-")[1];
+  //   String stationCode = response.body.split("|")[1].split("-")[1];
 
-    return stationCode;
-  }
+  //   return stationCode;
+  // }
 
   @override
   Future<bool> trainExist(SavedTrain savedTrain) async {

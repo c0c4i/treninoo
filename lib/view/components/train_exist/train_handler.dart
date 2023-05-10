@@ -11,9 +11,14 @@ import '../dialog/remove_train_dialog.dart';
 import '../loading_dialog.dart';
 
 class HandleExistBloc extends StatelessWidget {
-  const HandleExistBloc({Key key, @required this.child}) : super(key: key);
+  const HandleExistBloc({
+    Key key,
+    @required this.child,
+    this.showRemove,
+  }) : super(key: key);
 
   final Widget child;
+  final bool showRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +28,12 @@ class HandleExistBloc extends StatelessWidget {
           LoadingDialog.hide(context);
           SavedTrain savedTrain = SavedTrain.fromTrainInfo(state.trainInfo);
           addTrain(savedTrain, SavedTrainType.recents);
+          context.read<RecentsBloc>().add(RecentsRequest());
           Navigator.pushNamed(
             context,
             RoutesNames.status,
             arguments: savedTrain,
-          ).then((value) {
-            context.read<RecentsBloc>().add(RecentsRequest());
-          });
+          );
           return;
         }
 

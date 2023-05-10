@@ -6,6 +6,7 @@ import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 
+// TODO Remove this file and convert all to API
 /// add recent train to shared preference
 // void addRecentTrain(DepartureStation departureStation) {
 //   SavedTrain train = SavedTrain(
@@ -40,70 +41,33 @@ import 'package:treninoo/utils/shared_preference.dart';
 
 /// add favourite train to shared preference
 void addTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
-  String raw;
-  switch (savedTrainType) {
-    case SavedTrainType.favourites:
-      raw = sharedPrefs.favouritesTrains;
-      break;
-    case SavedTrainType.recents:
-      raw = sharedPrefs.recentsTrains;
-      break;
+  // Get saved trains from shared preference
+  List<SavedTrain> savedTrains = getSavedTrain(savedTrainType);
+
+  // If train is in the list, remove it
+  if (savedTrains.contains(savedTrain)) {
+    savedTrains.remove(savedTrain);
   }
 
-  List<SavedTrain> savedTrains = [];
+  // Add train on top of the list
+  savedTrains.insert(0, savedTrain);
 
-  if (raw == null) {
-    savedTrains.insert(0, savedTrain);
-  } else {
-    List<dynamic> trains = jsonDecode(raw);
-    savedTrains = trains.map((e) => SavedTrain.fromJson(e)).toList();
-
-    if (savedTrains.contains(savedTrain)) {
-      savedTrains.remove(savedTrain);
-    }
-
-    savedTrains.insert(0, savedTrain);
-  }
-
-  switch (savedTrainType) {
-    case SavedTrainType.favourites:
-      sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
-      break;
-    case SavedTrainType.recents:
-      if (savedTrains.length > 3) savedTrains.removeLast();
-      sharedPrefs.recentsTrains = jsonEncode(savedTrains);
-      break;
-  }
+  // Set saved trains to shared preference
+  setSavedTrain(savedTrainType, savedTrains);
 }
 
 /// remove favourite train from shared preference
 void removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
-  String raw;
-  switch (savedTrainType) {
-    case SavedTrainType.favourites:
-      raw = sharedPrefs.favouritesTrains;
-      break;
-    case SavedTrainType.recents:
-      raw = sharedPrefs.recentsTrains;
-      break;
+  // Get saved trains from shared preference
+  List<SavedTrain> savedTrains = getSavedTrain(savedTrainType);
+
+  // If train is in the list, remove it
+  if (savedTrains.contains(savedTrain)) {
+    savedTrains.remove(savedTrain);
   }
 
-  if (raw == null) return;
-
-  List<dynamic> trains = jsonDecode(raw);
-  List<SavedTrain> savedTrains =
-      trains.map((e) => SavedTrain.fromJson(e)).toList();
-
-  if (savedTrains.contains(savedTrain)) savedTrains.remove(savedTrain);
-
-  switch (savedTrainType) {
-    case SavedTrainType.favourites:
-      sharedPrefs.favouritesTrains = jsonEncode(savedTrains);
-      break;
-    case SavedTrainType.recents:
-      sharedPrefs.recentsTrains = jsonEncode(savedTrains);
-      break;
-  }
+  // Set saved trains to shared preference
+  setSavedTrain(savedTrainType, savedTrains);
 }
 
 /// remove favourite train from shared preference
@@ -159,4 +123,36 @@ void addRecentStation(Station station) {
   }
 
   sharedPrefs.recentsStations = jsonEncode(stations);
+}
+
+List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
+  String raw;
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      raw = sharedPrefs.favouritesTrains;
+      break;
+    case SavedTrainType.recents:
+      raw = sharedPrefs.recentsTrains;
+      break;
+  }
+
+  if (raw == null) return [];
+
+  List<dynamic> trains = jsonDecode(raw);
+  List<SavedTrain> savedTrains =
+      trains.map((e) => SavedTrain.fromJson(e)).toList();
+
+  return savedTrains;
+}
+
+void setSavedTrain(SavedTrainType savedTrainType, List<SavedTrain> trains) {
+  String decodedTrains = jsonEncode(trains);
+  switch (savedTrainType) {
+    case SavedTrainType.favourites:
+      sharedPrefs.favouritesTrains = decodedTrains;
+      break;
+    case SavedTrainType.recents:
+      sharedPrefs.recentsTrains = decodedTrains;
+      break;
+  }
 }

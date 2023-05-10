@@ -13,7 +13,7 @@ class ExistRequest extends ExistEvent {
   final SavedTrain savedTrain;
   final SavedTrainType type;
 
-  ExistRequest({@required this.savedTrain, @required this.type});
+  ExistRequest({@required this.savedTrain, this.type});
 
   @override
   List<Object> get props => [savedTrain, type];
