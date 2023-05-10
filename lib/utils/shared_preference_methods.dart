@@ -146,6 +146,10 @@ List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
 }
 
 void setSavedTrain(SavedTrainType savedTrainType, List<SavedTrain> trains) {
+  // Modify list to only have 3 trains
+  if (trains.length > 3 && savedTrainType == SavedTrainType.recents)
+    trains.removeLast();
+
   String decodedTrains = jsonEncode(trains);
   switch (savedTrainType) {
     case SavedTrainType.favourites:
