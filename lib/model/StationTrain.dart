@@ -1,4 +1,4 @@
-import 'package:treninoo/utils/api.dart';
+import 'package:treninoo/utils/utils.dart';
 
 class StationTrain {
   final String trainCode;
@@ -32,12 +32,12 @@ class StationTrain {
     if (departure) {
       plannedRail = json['binarioEffettivoPartenzaDescrizione'];
       actualRail = json['binarioProgrammatoPartenzaDescrizione'];
-      time = timeStampToString(json['orarioPartenza']);
+      time = Utils.timeStampToString(json['orarioPartenza']);
       name = json['destinazione'];
     } else {
       plannedRail = json['binarioProgrammatoArrivoDescrizione'];
       actualRail = json['binarioEffettivoArrivoDescrizione'];
-      time = timeStampToString(json['orarioArrivo']);
+      time = Utils.timeStampToString(json['orarioArrivo']);
       name = json['origine'];
     }
 

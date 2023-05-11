@@ -37,6 +37,7 @@ abstract class TrainRepository {
   void changeDescription(SavedTrain savedTrain);
   List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   Future<void> sendFeedback(String feedback);
+  Future<List<Station>> searchStations(String text);
 
   // Shared Preference methods
   void saveTrain(SavedTrain savedTrain, SavedTrainType savedTrainType);
@@ -52,7 +53,7 @@ class APITrain extends TrainRepository {
 
   @override
   Future<List<DepartureStation>> getDepartureStation(String trainCode) async {
-    var uri = Uri.http(URL, GET_STATION_CODE + trainCode);
+    var uri = Uri.http(URL, "${ViaggioTreno.GET_STATION_CODE}$trainCode");
     var response = await http.get(uri);
 
     var lines = response.body.split("\n");
@@ -81,8 +82,8 @@ class APITrain extends TrainRepository {
     DateTime date = new DateTime(now.year, now.month, now.day);
     String timestamp = date.millisecondsSinceEpoch.toString();
 
-    var uri =
-        Uri.https(URL, "$GET_TRAIN_INFO$stationCode/$trainCode/$timestamp");
+    var uri = Uri.https(URL,
+        "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp");
 
     var response = await http.get(uri);
 
@@ -115,7 +116,8 @@ class APITrain extends TrainRepository {
         solutionsInfo.arrivalStation.stationCode.replaceAll("S0", "");
     String time = solutionsInfo.fromTime.toIso8601String();
 
-    String url = "$GET_SOLUTIONS$departureCode/$arrivalCode/$time";
+    String url =
+        "${ViaggioTreno.GET_SOLUTIONS}$departureCode/$arrivalCode/$time";
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
 
@@ -137,8 +139,8 @@ class APITrain extends TrainRepository {
     DateTime date = new DateTime(now.year, now.month, now.day);
     String timestamp = date.millisecondsSinceEpoch.toString();
 
-    var uri =
-        Uri.https(URL, "$GET_TRAIN_INFO$stationCode/$trainCode/$timestamp");
+    var uri = Uri.https(URL,
+        "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp");
     var response = await http.get(uri);
 
     return response.body.isNotEmpty;
@@ -146,7 +148,7 @@ class APITrain extends TrainRepository {
 
   @override
   Future<List<StationTrain>> getArrivalTrains(String stationCode) async {
-    String url = "$GET_ARRIVAL_TRAINS$stationCode/" + getDate();
+    String url = "${ViaggioTreno.GET_ARRIVAL_TRAINS}$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
@@ -164,7 +166,8 @@ class APITrain extends TrainRepository {
 
   @override
   Future<List<StationTrain>> getDepartureTrains(String stationCode) async {
-    String url = "$GET_DEPARTURE_TRAINS$stationCode/" + getDate();
+    String url =
+        "${ViaggioTreno.GET_DEPARTURE_TRAINS}$stationCode/" + getDate();
 
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
@@ -324,6 +327,21 @@ class APITrain extends TrainRepository {
     // Modify list to only have 3 trains
     if (stations.length > 3) stations.removeLast();
     sharedPrefs.recentsStations = jsonEncode(stations);
+  }
+
+  Future<List<Station>> searchStations(String text) async {
+    if (text.length == 0) return getRecentsStations();
+
+    var uri = Uri.http(BASE_URL, Endpoint.AUTOCOMPLETE + text);
+    var response = await http.get(uri);
+    var body = jsonDecode(response.body);
+
+    List<Station> stations = [];
+    for (var station in body['stations']) {
+      stations.add(Station.fromJson(station));
+    }
+
+    return stations;
   }
 }
 

@@ -19,6 +19,17 @@ class Utils {
       statusBarIconBrightness: brightness,
     ));
   }
+
+  // converte tempo unix in stringa oo:mm
+  static String timeStampToString(int timeStampMillisecond) {
+    if (timeStampMillisecond == null) return null;
+
+    var dateTime =
+        new DateTime.fromMillisecondsSinceEpoch(timeStampMillisecond);
+
+    if (dateTime.minute < 10) return "${dateTime.hour}:0${dateTime.minute}";
+    return "${dateTime.hour}:${dateTime.minute}";
+  }
 }
 
 

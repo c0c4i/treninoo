@@ -1,4 +1,4 @@
-import 'package:treninoo/utils/api.dart';
+import '../utils/utils.dart';
 
 class Stop {
   final String name;
@@ -28,14 +28,18 @@ class Stop {
   factory Stop.fromJson(Map<String, dynamic> json) {
     return Stop(
       name: json['stazione'],
-      plannedDepartureTime:
-          timeStampToString(json['partenza_teorica']), // to converter from unix
-      actualDepartureTime:
-          timeStampToString(json['partenzaReale']), // to converter from unix
-      plannedArrivalTime:
-          timeStampToString(json['arrivo_teorico']), // to converter from unix
-      actualArrivalTime:
-          timeStampToString(json['arrivoReale']), // to converter from unix
+      plannedDepartureTime: Utils.timeStampToString(
+        json['partenza_teorica'],
+      ),
+      actualDepartureTime: Utils.timeStampToString(
+        json['partenzaReale'],
+      ),
+      plannedArrivalTime: Utils.timeStampToString(
+        json['arrivo_teorico'],
+      ),
+      actualArrivalTime: Utils.timeStampToString(
+        json['arrivoReale'],
+      ),
       plannedDepartureRail: json['binarioProgrammatoPartenzaDescrizione'],
       actualDepartureRail: json['binarioEffettivoPartenzaDescrizione'],
       plannedArrivalRail: json['binarioProgrammatoArrivoDescrizione'],

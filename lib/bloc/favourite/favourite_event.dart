@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:treninoo/model/SavedTrain.dart';
-import 'package:treninoo/model/TrainInfo.dart';
 
 @immutable
 abstract class FavouriteEvent extends Equatable {

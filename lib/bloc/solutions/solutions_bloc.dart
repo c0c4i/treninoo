@@ -25,6 +25,8 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
     try {
       final solutions =
           await _trainRepository.getSolutions(event.solutionsInfo);
+      _trainRepository.addRecentStation(event.solutionsInfo.departureStation);
+      _trainRepository.addRecentStation(event.solutionsInfo.arrivalStation);
       if (solutions != null) {
         yield SolutionsSuccess(solutions: solutions);
       } else {

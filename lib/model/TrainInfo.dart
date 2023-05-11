@@ -1,5 +1,6 @@
 import 'package:treninoo/model/Stop.dart';
-import 'package:treninoo/utils/api.dart';
+
+import '../utils/utils.dart';
 
 class TrainInfo {
   final List<Stop> stops;
@@ -35,7 +36,7 @@ class TrainInfo {
     return TrainInfo(
       stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
       lastPositionRegister: json['stazioneUltimoRilevamento'],
-      lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
+      lastTimeRegister: Utils.timeStampToString(json['oraUltimoRilevamento']),
       trainType: json['categoria'],
       delay: json['ritardo'],
       trainCode: json['numeroTreno'].toString(),

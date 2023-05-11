@@ -71,9 +71,8 @@ class _SearchStationPageState extends State<SearchStationPage> {
                       label: "Stazione",
                       controller: searchController,
                       onSelect: (selected) {
-                        setState(() {
-                          station = selected;
-                        });
+                        searchController.text = selected.stationName;
+                        setState(() => station = selected);
                       },
                       errorText: validator(station),
                     ),

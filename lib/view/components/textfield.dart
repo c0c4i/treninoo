@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/Station.dart';
-import 'package:treninoo/utils/api.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/style/theme.dart';
+
+import '../../repository/train.dart';
 
 class BeautifulTextField extends StatelessWidget {
   final String labelText;
@@ -154,41 +156,19 @@ class SuggestionTextField extends StatefulWidget {
 }
 
 class _SuggestionTextFieldState extends State<SuggestionTextField> {
-  Map<String, String> map = Map<String, String>();
-
-  Future<List<String>> suggestionCreator(String text) async {
-    List<String> names = [];
-    List<Station> stations = [];
-    if (text.length > 0) {
-      stations = await getStationListStartWith(text);
-    } else {
-      // TODO: Refactor for repository
-      stations = [];
-      // stations = fetchRecentsStations();
-    }
-
-    if (stations == null) return null;
-    stations.forEach((station) {
-      // setState(() {
-      map[station.stationName] = station.stationCode;
-      // });
-      names.add(station.stationName);
-    });
-
-    return names;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return TypeAheadField(
+    return TypeAheadField<Station>(
       getImmediateSuggestions: true,
       hideOnEmpty: true,
       loadingBuilder: (context) {
         return Container(
           width: double.infinity,
-          height: 100,
+          height: 64,
           alignment: Alignment.center,
-          child: Container(
+          child: SizedBox(
+            height: 32,
+            width: 32,
             child: CircularProgressIndicator(),
           ),
         );
@@ -210,32 +190,25 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
         elevation: 16,
       ),
       textFieldConfiguration: TextFieldConfiguration(
-          keyboardType: TextInputType.text,
-          textCapitalization: TextCapitalization.characters,
-          controller: widget.controller,
-          style: TextStyle(fontSize: 18),
-          decoration: InputDecoration(
-            prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
-            labelText: widget.label,
-            errorText: widget.errorText,
-          ),
-          onChanged: (station) {
-            widget.onSelect(null);
-          }),
-      suggestionsCallback: (text) async {
-        return suggestionCreator(text);
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.characters,
+        controller: widget.controller,
+        style: TextStyle(fontSize: 18),
+        decoration: InputDecoration(
+          prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
+          labelText: widget.label,
+          errorText: widget.errorText,
+        ),
+        // onChanged: (station) {
+        //   widget.onSelect(null);
+        // },
+      ),
+      suggestionsCallback: (text) async =>
+          await context.read<TrainRepository>().searchStations(text),
+      itemBuilder: (context, station) {
+        return StationSuggestion(station: station);
       },
-      itemBuilder: (context, suggestion) {
-        return SuggestionRow(suggestion: suggestion);
-      },
-      onSuggestionSelected: (clicked) {
-        Station station = new Station(
-          stationCode: map[clicked],
-          stationName: clicked,
-        );
-        widget.onSelect(station);
-        widget.controller.text = clicked;
-      },
+      onSuggestionSelected: widget.onSelect,
     );
   }
 }

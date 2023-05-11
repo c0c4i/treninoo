@@ -113,9 +113,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 label: "Partenza",
                                 controller: departureController,
                                 onSelect: (station) {
-                                  setState(() {
-                                    departureStation = station;
-                                  });
+                                  departureController.text =
+                                      station.stationName;
+                                  setState(() => departureStation = station);
                                 },
                                 errorText: validator(departureStation),
                               ),
@@ -124,9 +124,8 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 label: "Destinazione",
                                 controller: arrivalController,
                                 onSelect: (station) {
-                                  setState(() {
-                                    arrivalStation = station;
-                                  });
+                                  arrivalController.text = station.stationName;
+                                  setState(() => arrivalStation = station);
                                 },
                                 errorText: validator(arrivalStation),
                               ),
@@ -249,10 +248,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     setState(() {
       validate = false;
     });
-
-    // TODO: Refactor to repository
-    // addRecentStation(departureStation);
-    // addRecentStation(arrivalStation);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,

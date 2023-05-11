@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-class SuggestionRow extends StatelessWidget {
-  final String suggestion;
+class StationSuggestion extends StatelessWidget {
+  final Station station;
 
-  const SuggestionRow({
+  const StationSuggestion({
     Key key,
-    this.suggestion,
+    @required this.station,
   }) : super(key: key);
 
   @override
@@ -22,7 +23,7 @@ class SuggestionRow extends StatelessWidget {
           SizedBox(width: 16),
           Expanded(
             child: Text(
-              suggestion,
+              station.stationName,
               style: Typo.subheaderHeavy,
               overflow: TextOverflow.clip,
             ),

@@ -12,24 +12,27 @@ class Endpoint {
   static const String FEEDBACK = '$prefix/feedback';
 }
 
-/// ... + trainCode
-const String GET_STATION_CODE =
-    '/infomobilita/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
+class ViaggioTreno {
+  /// ... + trainCode
+  static const String GET_STATION_CODE =
+      '/infomobilita/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
 
-// ... + stationCode/trainCode
-const String GET_TRAIN_INFO =
-    '/infomobilita/resteasy/viaggiatreno/andamentoTreno/';
+  // ... + stationCode/trainCode
+  static const String GET_TRAIN_INFO =
+      '/infomobilita/resteasy/viaggiatreno/andamentoTreno/';
 
-const String GET_STATION =
-    '/infomobilita/resteasy/viaggiatreno/autocompletaStazione/';
+  static const String GET_STATION =
+      '/infomobilita/resteasy/viaggiatreno/autocompletaStazione/';
 
-// ... + departureStationCode/arrivalStationCode/date
-const String GET_SOLUTIONS =
-    '/infomobilita/resteasy/viaggiatreno/soluzioniViaggioNew/';
+  // ... + departureStationCode/arrivalStationCode/date
+  static const String GET_SOLUTIONS =
+      '/infomobilita/resteasy/viaggiatreno/soluzioniViaggioNew/';
 
-// ... + stationCode/date
-const String GET_DEPARTURE_TRAINS =
-    '/infomobilita/resteasy/viaggiatreno/partenze/';
+  // ... + stationCode/date
+  static const String GET_DEPARTURE_TRAINS =
+      '/infomobilita/resteasy/viaggiatreno/partenze/';
 
-// ... + stationCode/date
-const String GET_ARRIVAL_TRAINS = '/infomobilita/resteasy/viaggiatreno/arrivi/';
+  // ... + stationCode/date
+  static const String GET_ARRIVAL_TRAINS =
+      '/infomobilita/resteasy/viaggiatreno/arrivi/';
+}

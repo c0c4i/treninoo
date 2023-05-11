@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/buttons/back_button.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
-import 'package:treninoo/view/style/theme.dart';
 
 import '../../../bloc/favourite/favourite.dart';
 import '../../../bloc/favourites/favourites.dart';
