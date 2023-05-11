@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/dialog_button.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
@@ -87,7 +86,8 @@ class RemoveTrainDialog extends StatelessWidget {
                           title: "Rimuovi",
                           color: Primary.normal,
                           onPressed: () {
-                            removeTrain(savedTrain, savedTrainType);
+                            // TODO: Move to repository
+                            // removeTrain(savedTrain, savedTrainType);
                             switch (savedTrainType) {
                               case SavedTrainType.recents:
                                 context

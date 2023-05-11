@@ -59,16 +59,14 @@ class TrainCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                savedTrain.trainType +
-                                    " " +
-                                    savedTrain.trainCode,
+                                "${savedTrain.trainType} ${savedTrain.trainCode}",
                                 style: Typo.subheaderHeavy.copyWith(
                                   color: Primary.normal,
                                 ),
                               ),
                             ),
                             Text(
-                              savedTrain.departureTime,
+                              savedTrain.departureTime ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -85,7 +83,7 @@ class TrainCard extends StatelessWidget {
                             ),
                             SizedBox(width: 16),
                             Text(
-                              savedTrain.departureStationName,
+                              savedTrain.departureStationName ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -112,7 +110,7 @@ class TrainCard extends StatelessWidget {
                             ),
                             SizedBox(width: 16),
                             Text(
-                              savedTrain.arrivalStationName,
+                              savedTrain.arrivalStationName ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,

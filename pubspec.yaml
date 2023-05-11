@@ -28,6 +28,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.0
+  integration_test:
+    sdk: flutter
   
 flutter_icons:
   android: false

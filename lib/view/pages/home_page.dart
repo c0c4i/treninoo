@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
@@ -24,7 +23,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = sharedPrefs.firstPage;
+    _selectedIndex = context.read<TrainRepository>().sharedPrefs.firstPage;
     pageController = PageController(
       initialPage: _selectedIndex,
       keepPage: true,

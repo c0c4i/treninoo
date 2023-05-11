@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:treninoo/repository/train.dart';
 
 import '../../../bloc/exist/exist.dart';
 import '../../../bloc/recents/recents.dart';
 import '../../../model/SavedTrain.dart';
-import '../../../utils/shared_preference_methods.dart';
 import '../../router/routes_names.dart';
 import '../dialog/remove_train_dialog.dart';
 import '../loading_dialog.dart';
@@ -27,7 +25,8 @@ class HandleExistBloc extends StatelessWidget {
         if (state is ExistSuccess) {
           LoadingDialog.hide(context);
           SavedTrain savedTrain = SavedTrain.fromTrainInfo(state.trainInfo);
-          addTrain(savedTrain, SavedTrainType.recents);
+          // TODO: Refactor to repository
+          // addTrain(savedTrain, SavedTrainType.recents);
           context.read<RecentsBloc>().add(RecentsRequest());
           Navigator.pushNamed(
             context,

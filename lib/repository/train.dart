@@ -14,6 +14,18 @@ import 'package:treninoo/utils/endpoint.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 
 abstract class TrainRepository {
+  SharedPrefs sharedPrefs;
+
+  // Define a constructor for shared preference
+  TrainRepository() {
+    sharedPrefs = SharedPrefs();
+    sharedPrefs.setup();
+  }
+
+  setup() async {
+    await sharedPrefs.setup();
+  }
+
   Future<List<DepartureStation>> getDepartureStation(String trainCode);
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
@@ -28,6 +40,9 @@ abstract class TrainRepository {
 }
 
 class APITrain extends TrainRepository {
+  // Call super constructor
+  APITrain() : super();
+
   @override
   Future<List<DepartureStation>> getDepartureStation(String trainCode) async {
     var uri = Uri.http(URL, GET_STATION_CODE + trainCode);

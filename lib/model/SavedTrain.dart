@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 
 class SavedTrain extends Equatable {
-  final String trainCode;
   final String trainType;
+  final String trainCode;
   final String departureStationCode;
   final String departureStationName;
   final String arrivalStationName;
@@ -13,12 +14,12 @@ class SavedTrain extends Equatable {
   final String description;
 
   SavedTrain({
-    this.trainCode,
     this.trainType,
+    @required this.trainCode,
     this.departureStationCode,
     this.departureStationName,
-    this.arrivalStationName,
     this.departureTime,
+    this.arrivalStationName,
     this.description,
   });
 

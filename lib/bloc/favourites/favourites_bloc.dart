@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/repository/train.dart';
 
-import '../../utils/shared_preference_methods.dart';
 
 class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
   final TrainRepository _trainRepository;
@@ -45,7 +44,8 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       DeleteFavourite event) async* {
     yield FavouritesLoading();
     try {
-      removeTrain(event.savedTrain, SavedTrainType.favourites);
+      // TODO: Refactor to repository
+      // removeTrain(event.savedTrain, SavedTrainType.favourites);
       final trains = _trainRepository.getSavedTrain(SavedTrainType.favourites);
       if (trains != null) {
         yield FavouritesSuccess(trains: trains);

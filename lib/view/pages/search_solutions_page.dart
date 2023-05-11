@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/textfield.dart';
@@ -251,8 +250,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       validate = false;
     });
 
-    addRecentStation(departureStation);
-    addRecentStation(arrivalStation);
+    // TODO: Refactor to repository
+    // addRecentStation(departureStation);
+    // addRecentStation(arrivalStation);
 
     pickedDate = pickedDate.toLocal();
     pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,

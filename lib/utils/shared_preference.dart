@@ -1,17 +1,15 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
-  static SharedPreferences _sharedPrefs;
+  SharedPreferences _sharedPrefs;
   static const String SPrecentsTrains = 'recentsTrains';
   static const String SPfavouritesTrains = 'favouritesTrains';
   static const String SPrecentsStations = 'recentsStations';
   static const String SPDarkMode = 'darkMode';
   static const String SPFirstPage = 'first_page';
 
-  init() async {
-    if (_sharedPrefs == null) {
-      _sharedPrefs = await SharedPreferences.getInstance();
-    }
+  setup() async {
+    _sharedPrefs = await SharedPreferences.getInstance();
   }
 
   String get recentsTrains => _sharedPrefs.getString(SPrecentsTrains) ?? null;
@@ -40,5 +38,3 @@ class SharedPrefs {
     _sharedPrefs.setInt(SPFirstPage, value);
   }
 }
-
-final sharedPrefs = SharedPrefs();

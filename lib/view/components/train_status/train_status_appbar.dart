@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/buttons/back_button.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 
@@ -69,17 +66,18 @@ class _TrainAppBarState extends State<TrainAppBar> {
                   IconButton(
                     iconSize: 40,
                     onPressed: () {
-                      if (isFavouriteTrain(widget.trainInfo)) {
-                        removeTrain(
-                          SavedTrain.fromTrainInfo(widget.trainInfo),
-                          SavedTrainType.favourites,
-                        );
-                      } else {
-                        addTrain(
-                          SavedTrain.fromTrainInfo(widget.trainInfo),
-                          SavedTrainType.favourites,
-                        );
-                      }
+                      // TODO: Refactor to repository
+                      // if (isFavouriteTrain(widget.trainInfo)) {
+                      //   removeTrain(
+                      //     SavedTrain.fromTrainInfo(widget.trainInfo),
+                      //     SavedTrainType.favourites,
+                      //   );
+                      // } else {
+                      //   addTrain(
+                      //     SavedTrain.fromTrainInfo(widget.trainInfo),
+                      //     SavedTrainType.favourites,
+                      //   );
+                      // }
 
                       setState(() {
                         rigthIcon = pickIcon();
@@ -99,10 +97,12 @@ class _TrainAppBarState extends State<TrainAppBar> {
   }
 
   IconData pickIcon() {
-    if (widget.trainInfo == null) return Icons.favorite_border_rounded;
-    if (isFavouriteTrain(widget.trainInfo))
-      return Icons.favorite_rounded;
-    else
-      return Icons.favorite_border_rounded;
+    return Icons.favorite_border_rounded;
+    // TODO: Refactor to repository
+    // if (widget.trainInfo == null) return Icons.favorite_border_rounded;
+    // if (isFavouriteTrain(widget.trainInfo))
+    //   return Icons.favorite_rounded;
+    // else
+    //   return Icons.favorite_border_rounded;
   }
 }

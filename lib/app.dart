@@ -12,8 +12,9 @@ import 'repository/train.dart';
 class App extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
   final AdaptiveThemeMode savedThemeMode;
+  final TrainRepository trainRepository;
 
-  App({Key key, this.savedThemeMode}) : super(key: key);
+  App({Key key, this.savedThemeMode, this.trainRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
       dark: AppTheme.dark,
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => RepositoryProvider<TrainRepository>(
-        create: (context) => APITrain(),
+        create: (context) => trainRepository,
         child: MultiBlocProvider(
           providers: [
             BlocProvider(

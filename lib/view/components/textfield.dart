@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/utils/api.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -163,7 +162,9 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
     if (text.length > 0) {
       stations = await getStationListStartWith(text);
     } else {
-      stations = fetchRecentsStations();
+      // TODO: Refactor for repository
+      stations = [];
+      // stations = fetchRecentsStations();
     }
 
     if (stations == null) return null;

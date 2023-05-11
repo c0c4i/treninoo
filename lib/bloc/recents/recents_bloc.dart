@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/utils/shared_preference_methods.dart';
 
 class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   final TrainRepository _trainRepository;
@@ -43,7 +42,8 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   Stream<RecentsState> _mapDeleteRecentRequest(DeleteRecent event) async* {
     yield RecentsLoading();
     try {
-      removeTrain(event.savedTrain, SavedTrainType.recents);
+      // TODO: Refactor to repository
+      // removeTrain(event.savedTrain, SavedTrainType.recents);
       final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
       if (trains != null) {
         yield RecentsSuccess(trains: trains);

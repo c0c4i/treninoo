@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/utils/shared_preference.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/view/style/theme.dart';
+import '../../../repository/train.dart';
 import '../../style/typography.dart';
 
 class SelectStartPageDialog {
@@ -14,7 +15,7 @@ class SelectStartPageDialog {
   static show({
     @required BuildContext context,
   }) async {
-    int selected = sharedPrefs.firstPage;
+    int selected = context.read<TrainRepository>().sharedPrefs.firstPage;
 
     showModalBottomSheet(
       context: context,
@@ -49,7 +50,8 @@ class SelectStartPageDialog {
                       selected: selected == page.key,
                       onChanged: (value) {
                         selected = value;
-                        sharedPrefs.firstPage = value;
+                        context.read<TrainRepository>().sharedPrefs.firstPage =
+                            value;
                         Navigator.pop(context);
                       },
                       shape: RoundedRectangleBorder(
