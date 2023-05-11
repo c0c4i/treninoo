@@ -42,8 +42,7 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   Stream<RecentsState> _mapDeleteRecentRequest(DeleteRecent event) async* {
     yield RecentsLoading();
     try {
-      // TODO: Refactor to repository
-      // removeTrain(event.savedTrain, SavedTrainType.recents);
+      _trainRepository.removeTrain(event.savedTrain, SavedTrainType.recents);
       final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
       if (trains != null) {
         yield RecentsSuccess(trains: trains);

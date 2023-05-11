@@ -15,6 +15,7 @@ import 'package:treninoo/view/pages/home_page.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 
 import '../../bloc/edit_description/edit_description_bloc.dart';
+import '../../bloc/favourite/favourite_bloc.dart';
 import '../../bloc/send_feedback/send_feedback.dart';
 import '../pages/send_feedback_page.dart';
 
@@ -38,10 +39,19 @@ class AppRouter {
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
-            child: BlocProvider(
-              create: (context) => TrainStatusBloc(
-                context.read<TrainRepository>(),
-              ),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => TrainStatusBloc(
+                    context.read<TrainRepository>(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (context) => FavouriteBloc(
+                    context.read<TrainRepository>(),
+                  ),
+                ),
+              ],
               child: TrainStatusPage(savedTrain: savedTrain),
             ),
           ),

@@ -84,6 +84,10 @@ class SavedTrain extends Equatable {
     );
   }
 
+  String get trainName {
+    return '$trainType $trainCode';
+  }
+
   @override
   List<Object> get props {
     return [trainCode, departureStationCode];

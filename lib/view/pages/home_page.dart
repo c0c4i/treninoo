@@ -34,11 +34,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
     SearchTrainPage(),
     SearchSolutionsPage(),
     SearchStationPage(),
-    BlocProvider(
-      create: (context) => FavouritesBloc(context.read<TrainRepository>())
-        ..add(FavouritesRequest()),
-      child: FavouritesPage(),
-    ),
+    FavouritesPage(),
     Settings(),
   ];
 

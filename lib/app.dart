@@ -6,6 +6,7 @@ import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import 'bloc/exist/exist.dart';
+import 'bloc/favourites/favourites.dart';
 import 'bloc/recents/recents.dart';
 import 'repository/train.dart';
 
@@ -35,6 +36,11 @@ class App extends StatelessWidget {
               create: (context) => ExistBloc(
                 context.read<TrainRepository>(),
               ),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  FavouritesBloc(context.read<TrainRepository>())
+                    ..add(FavouritesRequest()),
             ),
           ],
           child: MaterialApp(

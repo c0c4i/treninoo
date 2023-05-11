@@ -33,15 +33,16 @@ class TrainInfo {
       return null;
     }
     return TrainInfo(
-        stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
-        lastPositionRegister: json['stazioneUltimoRilevamento'],
-        lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
-        trainType: json['categoria'],
-        delay: json['ritardo'],
-        trainCode: json['numeroTreno'].toString(),
-        departureStationCode: json['idOrigine'],
-        departureStationName: json['origine'],
-        arrivalStationName: json['destinazione'],
-        departureTime: json['compOrarioPartenzaZero']);
+      stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
+      lastPositionRegister: json['stazioneUltimoRilevamento'],
+      lastTimeRegister: timeStampToString(json['oraUltimoRilevamento']),
+      trainType: json['categoria'],
+      delay: json['ritardo'],
+      trainCode: json['numeroTreno'].toString(),
+      departureStationCode: json['idOrigine'],
+      departureStationName: json['origine'],
+      arrivalStationName: json['destinazione'],
+      departureTime: json['compOrarioPartenzaZero'],
+    );
   }
 }

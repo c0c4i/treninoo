@@ -1,25 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/TrainInfo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/buttons/back_button.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/theme.dart';
+
+import '../../../bloc/favourite/favourite.dart';
+import '../../../bloc/favourites/favourites.dart';
 
 class TrainAppBar extends StatefulWidget {
-  final String number;
-  final TrainInfo trainInfo;
+  final SavedTrain savedTrain;
 
-  const TrainAppBar({Key key, this.number, this.trainInfo}) : super(key: key);
+  const TrainAppBar({Key key, this.savedTrain}) : super(key: key);
 
   @override
   _TrainAppBarState createState() => _TrainAppBarState();
 }
 
 class _TrainAppBarState extends State<TrainAppBar> {
-  IconData rigthIcon;
-
   @override
   void initState() {
-    rigthIcon = pickIcon();
     super.initState();
+    context.read<FavouriteBloc>().add(
+          FavouriteRequest(savedTrain: widget.savedTrain),
+        );
   }
 
   @override
@@ -30,7 +35,7 @@ class _TrainAppBarState extends State<TrainAppBar> {
         SizedBox(width: 24),
         Expanded(
           child: Text(
-            widget.number,
+            widget.savedTrain.trainName,
             style: TextStyle(
               fontSize: 26,
               color: Primary.normal,
@@ -38,71 +43,70 @@ class _TrainAppBarState extends State<TrainAppBar> {
             ),
           ),
         ),
-        widget.trainInfo != null
-            ? Row(
-                children: [
-                  // TODO: Implement notification in app
-                  // IconButton(
-                  //   iconSize: 40,
-                  //   onPressed: () {
-                  //     Navigator.pushNamed(
-                  //       context,
-                  //       RoutesNames.followTrainStations,
-                  //       arguments: DepartureStation(
-                  //         station: Station(
-                  //           stationName: widget.trainInfo.departureStationName,
-                  //           stationCode: widget.trainInfo.departureStationCode,
-                  //         ),
-                  //         trainCode: widget.trainInfo.trainCode,
-                  //       ),
-                  //     );
-                  //   },
-                  //   icon: Icon(
-                  //     Icons.notifications_none_rounded,
-                  //     size: 35,
-                  //     color: Primary.normal,
-                  //   ),
-                  // ),
-                  IconButton(
+        Row(
+          children: [
+            // TODO: Implement notification in app
+            // IconButton(
+            //   iconSize: 40,
+            //   onPressed: () {
+            //     Navigator.pushNamed(
+            //       context,
+            //       RoutesNames.followTrainStations,
+            //       arguments: DepartureStation(
+            //         station: Station(
+            //           stationName: widget.trainInfo.departureStationName,
+            //           stationCode: widget.trainInfo.departureStationCode,
+            //         ),
+            //         trainCode: widget.trainInfo.trainCode,
+            //       ),
+            //     );
+            //   },
+            //   icon: Icon(
+            //     Icons.notifications_none_rounded,
+            //     size: 35,
+            //     color: Primary.normal,
+            //   ),
+            // ),
+            BlocConsumer<FavouriteBloc, FavouriteState>(
+              listener: (context, state) {
+                if (state is FavouriteSuccess) {
+                  context.read<FavouritesBloc>().add(FavouritesRequest());
+                }
+              },
+              builder: (context, state) {
+                if (state is FavouriteInitial || state is FavouriteLoading) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 18),
+                    child: CupertinoActivityIndicator(),
+                  );
+                }
+                if (state is FavouriteSuccess) {
+                  return IconButton(
                     iconSize: 40,
                     onPressed: () {
-                      // TODO: Refactor to repository
-                      // if (isFavouriteTrain(widget.trainInfo)) {
-                      //   removeTrain(
-                      //     SavedTrain.fromTrainInfo(widget.trainInfo),
-                      //     SavedTrainType.favourites,
-                      //   );
-                      // } else {
-                      //   addTrain(
-                      //     SavedTrain.fromTrainInfo(widget.trainInfo),
-                      //     SavedTrainType.favourites,
-                      //   );
-                      // }
-
-                      setState(() {
-                        rigthIcon = pickIcon();
-                      });
+                      context.read<FavouriteBloc>().add(
+                            FavouriteToggle(
+                              savedTrain: widget.savedTrain,
+                              value: !state.isFavourite,
+                            ),
+                          );
                     },
                     icon: Icon(
-                      pickIcon(),
+                      state.isFavourite
+                          ? Icons.favorite_rounded
+                          : Icons.favorite_border_rounded,
                       size: 35,
                       color: Primary.normal,
                     ),
-                  ),
-                ],
-              )
-            : Container(),
+                  );
+                }
+
+                return SizedBox();
+              },
+            ),
+          ],
+        ),
       ],
     );
-  }
-
-  IconData pickIcon() {
-    return Icons.favorite_border_rounded;
-    // TODO: Refactor to repository
-    // if (widget.trainInfo == null) return Icons.favorite_border_rounded;
-    // if (isFavouriteTrain(widget.trainInfo))
-    //   return Icons.favorite_rounded;
-    // else
-    //   return Icons.favorite_border_rounded;
   }
 }

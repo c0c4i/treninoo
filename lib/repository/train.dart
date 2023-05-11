@@ -37,6 +37,13 @@ abstract class TrainRepository {
   void changeDescription(SavedTrain savedTrain);
   List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType);
   Future<void> sendFeedback(String feedback);
+
+  // Shared Preference methods
+  void saveTrain(SavedTrain savedTrain, SavedTrainType savedTrainType);
+  void removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType);
+  bool isFavourite(SavedTrain savedTrain);
+  List<Station> getRecentsStations();
+  void addRecentStation(Station station);
 }
 
 class APITrain extends TrainRepository {
@@ -101,28 +108,6 @@ class APITrain extends TrainRepository {
     throw Exception("No station found");
   }
 
-  // @override
-  // List<SavedTrain> getSavedTrain(SavedTrainType savedTrainType) {
-  //   SharedPreferencesUtils().
-  //   return getSavedTrain(savedTrainType);
-  // }
-
-  // @override
-  // Future<List<Station>> getStationAutocomplete(String text) async {
-  //   List<Station> stationList = [];
-
-  //   var uri = Uri.https(URL, GET_STATION_NAME + text);
-  //   var response = await http.get(uri);
-
-  //   var lines = response.body.split('\n');
-
-  //   for (var i = 0; i < lines.length - 1; i++) {
-  //     stationList.add(Station.fromBody(lines[i]));
-  //   }
-
-  //   return stationList;
-  // }
-
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
     String departureCode =
         solutionsInfo.departureStation.stationCode.replaceAll("S0", "");
@@ -142,18 +127,6 @@ class APITrain extends TrainRepository {
     solutions.fromTime = solutionsInfo.fromTime;
     return solutions;
   }
-
-  // Future<String> getStationCode(String trainCode) async {
-  //   String url = GET_STATION_CODE + trainCode;
-  //   var uri = Uri.https(URL, url);
-  //   Response response = await http.get(uri);
-
-  //   if (response.body.isEmpty) return null;
-
-  //   String stationCode = response.body.split("|")[1].split("-")[1];
-
-  //   return stationCode;
-  // }
 
   @override
   Future<bool> trainExist(SavedTrain savedTrain) async {
@@ -275,6 +248,82 @@ class APITrain extends TrainRepository {
     );
 
     if (response.statusCode != 200) throw Exception();
+  }
+
+  @override
+  List<Station> getRecentsStations() {
+    String raw = sharedPrefs.recentsStations;
+    if (raw == null) return [];
+    List<dynamic> rawStations = jsonDecode(raw);
+    return rawStations.map((e) => Station.fromJson(e)).toList();
+  }
+
+  @override
+  void saveTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+    // Get saved trains from shared preference
+    List<SavedTrain> savedTrains = getSavedTrain(savedTrainType);
+
+    // If train is in the list, remove it
+    if (savedTrains.contains(savedTrain)) {
+      savedTrains.remove(savedTrain);
+    }
+
+    // Add train on top of the list
+    savedTrains.insert(0, savedTrain);
+
+    // Set saved trains to shared preference
+    _setSavedTrain(savedTrainType, savedTrains);
+  }
+
+  @override
+  void removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+    // Get saved trains from shared preference
+    List<SavedTrain> savedTrains = getSavedTrain(savedTrainType);
+
+    // If train is in the list, remove it
+    if (savedTrains.contains(savedTrain)) {
+      savedTrains.remove(savedTrain);
+    }
+
+    // Set saved trains to shared preference
+    _setSavedTrain(savedTrainType, savedTrains);
+  }
+
+  void _setSavedTrain(SavedTrainType savedTrainType, List<SavedTrain> trains) {
+    // Modify list to only have 3 trains
+    if (trains.length > 3 && savedTrainType == SavedTrainType.recents)
+      trains.removeLast();
+
+    String decodedTrains = jsonEncode(trains);
+    switch (savedTrainType) {
+      case SavedTrainType.favourites:
+        sharedPrefs.favouritesTrains = decodedTrains;
+        break;
+      case SavedTrainType.recents:
+        sharedPrefs.recentsTrains = decodedTrains;
+        break;
+    }
+  }
+
+  @override
+  bool isFavourite(SavedTrain savedTrain) {
+    List<SavedTrain> savedTrains = getSavedTrain(SavedTrainType.favourites);
+    return savedTrains.contains(savedTrain);
+  }
+
+  void addRecentStation(Station station) {
+    // Get saved trains from shared preference
+    List<Station> stations = getRecentsStations();
+
+    // If train is in the list, remove it
+    if (stations.contains(station)) stations.remove(station);
+
+    // Add train on top of the list
+    stations.insert(0, station);
+
+    // Modify list to only have 3 trains
+    if (stations.length > 3) stations.removeLast();
+    sharedPrefs.recentsStations = jsonEncode(stations);
   }
 }
 

@@ -25,8 +25,6 @@ class HandleExistBloc extends StatelessWidget {
         if (state is ExistSuccess) {
           LoadingDialog.hide(context);
           SavedTrain savedTrain = SavedTrain.fromTrainInfo(state.trainInfo);
-          // TODO: Refactor to repository
-          // addTrain(savedTrain, SavedTrainType.recents);
           context.read<RecentsBloc>().add(RecentsRequest());
           Navigator.pushNamed(
             context,
