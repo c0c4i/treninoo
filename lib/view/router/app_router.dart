@@ -5,6 +5,7 @@ import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dar
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
+import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/edit_description_page.dart';
 import 'package:treninoo/view/pages/follow_train_page.dart';
@@ -48,7 +49,7 @@ class AppRouter {
                 ),
                 BlocProvider(
                   create: (context) => FavouriteBloc(
-                    context.read<TrainRepository>(),
+                    context.read<SavedTrainRepository>(),
                   ),
                 ),
               ],
@@ -64,6 +65,7 @@ class AppRouter {
             child: BlocProvider(
               create: (context) => SolutionsBloc(
                 context.read<TrainRepository>(),
+                context.read<SavedTrainRepository>(),
               ),
               child: SolutionsResultPage(solutionsInfo: solutionsInfo),
             ),
@@ -107,7 +109,7 @@ class AppRouter {
             create: (context) => context.read<TrainRepository>(),
             child: BlocProvider(
               create: (context) => EditDescriptionBloc(
-                context.read<TrainRepository>(),
+                context.read<SavedTrainRepository>(),
               ),
               child: EditDescriptionPage(savedTrain: description),
             ),

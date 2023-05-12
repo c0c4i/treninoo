@@ -8,7 +8,7 @@ class SharedPrefs {
   static const String SPDarkMode = 'darkMode';
   static const String SPFirstPage = 'first_page';
 
-  setup() async {
+  Future<void> setup() async {
     _sharedPrefs = await SharedPreferences.getInstance();
   }
 

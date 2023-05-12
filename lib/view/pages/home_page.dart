@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
+
+import '../../repository/saved_train.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -22,7 +23,8 @@ class _MyStatefulWidgetState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = context.read<TrainRepository>().sharedPrefs.firstPage;
+    // TODO: Convert to BloC management
+    _selectedIndex = context.read<SavedTrainRepository>().sharedPrefs.firstPage;
     pageController = PageController(
       initialPage: _selectedIndex,
       keepPage: true,

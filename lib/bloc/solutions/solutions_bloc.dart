@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
+import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/repository/train.dart';
 
 class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
   final TrainRepository _trainRepository;
+  final SavedTrainRepository _savedTrainRepository;
 
-  SolutionsBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+  SolutionsBloc(TrainRepository trainRepository,
+      SavedTrainRepository savedTrainRepository)
+      : _trainRepository = trainRepository,
+        _savedTrainRepository = savedTrainRepository,
         super(SolutionsInitial());
 
   @override
@@ -25,15 +28,16 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
     try {
       final solutions =
           await _trainRepository.getSolutions(event.solutionsInfo);
-      _trainRepository.addRecentStation(event.solutionsInfo.departureStation);
-      _trainRepository.addRecentStation(event.solutionsInfo.arrivalStation);
+      _savedTrainRepository
+          .addRecentStation(event.solutionsInfo.departureStation);
+      _savedTrainRepository
+          .addRecentStation(event.solutionsInfo.arrivalStation);
       if (solutions != null) {
         yield SolutionsSuccess(solutions: solutions);
       } else {
         yield SolutionsFailed();
       }
     } catch (e) {
-      print(e);
       yield SolutionsFailed();
     }
   }

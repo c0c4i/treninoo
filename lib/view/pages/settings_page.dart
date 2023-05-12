@@ -12,11 +12,6 @@ import '../components/buttons/menu/menu_button_click.dart';
 import '../components/dialog/select_start_page.dart';
 import '../router/routes_names.dart';
 
-enum ThemeType { Light, Dark, Auto }
-
-final List<String> themes = ['Light', 'Dark'];
-final List<String> pages = ['Stato', "Ricerca", "Stazione" "Preferiti"];
-
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
 
@@ -25,11 +20,6 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -9,12 +9,11 @@ import 'package:treninoo/view/components/textfield.dart';
 
 import 'package:treninoo/model/SavedTrain.dart';
 
-import 'package:treninoo/utils/final.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import '../../bloc/exist/exist.dart';
 import '../../model/DepartureStation.dart';
-import '../components/recents_trains/trains_list.dart';
+import '../components/recents_trains/recents_list.dart';
 import '../components/train_exist/train_handler.dart';
 
 enum ErrorType {
@@ -164,39 +163,6 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
           ),
         ),
       ),
-    );
-  }
-
-  // widget con la lista dei tipi di treno con quel codice
-  Widget widgetMultipleTrainsType(Map<String, String> type, String trainCode) {
-    List<Widget> list = [];
-
-    type.forEach((k, v) => list.add(
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                Navigator.pop(context);
-                // Navigator.push(
-                //     context,
-                //     CupertinoPageRoute(
-                //         builder: (context) => TrainStatusPage(
-                //             trainCode: trainCode,
-                //             stationCode: k))).then((value) => setState(() {
-                //       recents =
-                //           fetchSharedPreferenceWithListOf(spRecentsTrains);
-                //     }));
-              });
-            },
-            child: Text(
-              trainNames.containsKey(v) ? trainNames[v] : v,
-              textScaleFactor: 2,
-            ),
-          ),
-        ));
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: list,
     );
   }
 }

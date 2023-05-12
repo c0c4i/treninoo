@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
-import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/train_exist/train_handler.dart';
-import 'package:treninoo/view/components/trains_list.dart';
 import 'package:treninoo/view/style/theme.dart';
+
+import '../../enum/saved_train_type.dart';
+import '../components/train_card.dart';
 
 class FavouritesPage extends StatefulWidget {
   FavouritesPage({Key key}) : super(key: key);
@@ -37,9 +38,16 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   BlocBuilder<FavouritesBloc, FavouritesState>(
                     builder: (context, state) {
                       if (state is FavouritesSuccess) {
-                        return SavedTrainList(
-                          trains: state.trains,
-                          savedTrainType: SavedTrainType.favourites,
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.trains.length,
+                          itemBuilder: (context, index) {
+                            return TrainCard(
+                              savedTrain: state.trains[index],
+                              type: SavedTrainType.favourites,
+                            );
+                          },
                         );
                       }
 

@@ -8,7 +8,7 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-import '../../repository/train.dart';
+import '../../enum/saved_train_type.dart';
 
 class TrainCard extends StatelessWidget {
   final SavedTrain savedTrain;

@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:treninoo/app.dart';
+import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/utils/utils.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -22,12 +23,14 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
 
   TrainRepository trainRepository = APITrain();
-  await trainRepository.setup();
+  SavedTrainRepository savedTrainRepository = APISavedTrain();
+  await savedTrainRepository.setup();
 
   runApp(
     App(
       savedThemeMode: savedThemeMode,
       trainRepository: trainRepository,
+      savedTrainRepository: savedTrainRepository,
     ),
   );
 }

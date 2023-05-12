@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
-import 'package:treninoo/repository/train.dart';
+
+import '../../repository/saved_train.dart';
 
 class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
-  final TrainRepository _trainRepository;
+  final SavedTrainRepository _savedTrainRepository;
 
-  FavouritesBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+  FavouritesBloc(SavedTrainRepository savedTrainRepository)
+      : assert(savedTrainRepository != null),
+        _savedTrainRepository = savedTrainRepository,
         super(FavouritesInitial());
 
   @override
@@ -27,7 +28,7 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       FavouritesRequest event) async* {
     yield FavouritesLoading();
     try {
-      final trains = _trainRepository.getSavedTrain(SavedTrainType.favourites);
+      final trains = _savedTrainRepository.getFavourites();
       if (trains != null) {
         yield FavouritesSuccess(trains: trains);
       } else {
@@ -43,13 +44,9 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       DeleteFavourite event) async* {
     yield FavouritesLoading();
     try {
-      _trainRepository.removeTrain(event.savedTrain, SavedTrainType.favourites);
-      final trains = _trainRepository.getSavedTrain(SavedTrainType.favourites);
-      if (trains != null) {
-        yield FavouritesSuccess(trains: trains);
-      } else {
-        yield FavouritesFailed();
-      }
+      _savedTrainRepository.removeFavourite(event.savedTrain);
+      final trains = _savedTrainRepository.getFavourites();
+      yield FavouritesSuccess(trains: trains);
     } catch (e) {
       print(e);
       yield FavouritesFailed();

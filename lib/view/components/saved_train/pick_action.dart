@@ -6,8 +6,8 @@ import 'package:treninoo/view/components/saved_train/pick_action_row.dart';
 import '../../../bloc/favourites/favourites_bloc.dart';
 import '../../../bloc/favourites/favourites_event.dart';
 import '../../../bloc/recents/recents.dart';
+import '../../../enum/saved_train_type.dart';
 import '../../../model/SavedTrain.dart';
-import '../../../repository/train.dart';
 import '../../router/routes_names.dart';
 import '../../style/typography.dart';
 
@@ -68,7 +68,7 @@ class SavedTrainPickAction {
                         : 'Rimuovi dai preferiti',
                     onTap: () async {
                       Navigator.pop(context);
-                      await Future.delayed(Duration(seconds: 1));
+                      await Future.delayed(Duration(milliseconds: 500));
 
                       type == SavedTrainType.recents
                           ? context

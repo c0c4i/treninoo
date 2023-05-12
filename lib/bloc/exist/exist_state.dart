@@ -2,7 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/repository/train.dart';
+
+import '../../enum/saved_train_type.dart';
 
 abstract class ExistState extends Equatable {
   @override

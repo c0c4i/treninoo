@@ -6,6 +6,7 @@ import 'package:treninoo/view/components/prefixicon.dart';
 import 'package:treninoo/view/components/suggestion_row.dart';
 import 'package:treninoo/view/style/theme.dart';
 
+import '../../repository/saved_train.dart';
 import '../../repository/train.dart';
 
 class BeautifulTextField extends StatelessWidget {
@@ -156,6 +157,12 @@ class SuggestionTextField extends StatefulWidget {
 }
 
 class _SuggestionTextFieldState extends State<SuggestionTextField> {
+  Future<List<Station>> suggestionsCallback(String pattern) async {
+    return pattern.length < 3
+        ? context.read<SavedTrainRepository>().getRecentsStations()
+        : await context.read<TrainRepository>().searchStations(pattern);
+  }
+
   @override
   Widget build(BuildContext context) {
     return TypeAheadField<Station>(
@@ -203,8 +210,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
         //   widget.onSelect(null);
         // },
       ),
-      suggestionsCallback: (text) async =>
-          await context.read<TrainRepository>().searchStations(text),
+      suggestionsCallback: suggestionsCallback,
       itemBuilder: (context, station) {
         return StationSuggestion(station: station);
       },

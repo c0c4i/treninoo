@@ -4,12 +4,16 @@ import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
 
+import '../../repository/saved_train.dart';
+
 class ExistBloc extends Bloc<ExistEvent, ExistState> {
   final TrainRepository _trainRepository;
+  final SavedTrainRepository _savedTrainRepository;
 
-  ExistBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+  ExistBloc(TrainRepository trainRepository,
+      SavedTrainRepository savedTrainRepository)
+      : _trainRepository = trainRepository,
+        _savedTrainRepository = savedTrainRepository,
         super(ExistInitial());
 
   @override
@@ -25,10 +29,7 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
     yield ExistLoading();
     try {
       final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
-      _trainRepository.saveTrain(
-        SavedTrain.fromTrainInfo(trainInfo),
-        SavedTrainType.recents,
-      );
+      _savedTrainRepository.addRecent(SavedTrain.fromTrainInfo(trainInfo));
       yield ExistSuccess(trainInfo: trainInfo);
     } catch (e) {
       yield ExistFailed(savedTrain: event.savedTrain, type: event.type);

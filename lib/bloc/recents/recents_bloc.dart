@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
-import 'package:treninoo/repository/train.dart';
+
+import '../../repository/saved_train.dart';
 
 class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
-  final TrainRepository _trainRepository;
+  final SavedTrainRepository _savedTrainRepository;
 
-  RecentsBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+  RecentsBloc(SavedTrainRepository savedTrainRepository)
+      : _savedTrainRepository = savedTrainRepository,
         super(RecentsInitial());
 
   @override
@@ -27,7 +27,7 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   Stream<RecentsState> _mapRecentsRequest(RecentsRequest event) async* {
     yield RecentsLoading();
     try {
-      final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
+      final trains = _savedTrainRepository.getRecents();
       if (trains != null) {
         yield RecentsSuccess(trains: trains);
       } else {
@@ -42,15 +42,10 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
   Stream<RecentsState> _mapDeleteRecentRequest(DeleteRecent event) async* {
     yield RecentsLoading();
     try {
-      _trainRepository.removeTrain(event.savedTrain, SavedTrainType.recents);
-      final trains = _trainRepository.getSavedTrain(SavedTrainType.recents);
-      if (trains != null) {
-        yield RecentsSuccess(trains: trains);
-      } else {
-        yield RecentsFailed();
-      }
+      _savedTrainRepository.removeRecent(event.savedTrain);
+      final trains = _savedTrainRepository.getRecents();
+      yield RecentsSuccess(trains: trains);
     } catch (e) {
-      print(e);
       yield RecentsFailed();
     }
   }

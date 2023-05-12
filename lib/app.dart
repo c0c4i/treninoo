@@ -8,14 +8,21 @@ import 'package:treninoo/view/style/theme.dart';
 import 'bloc/exist/exist.dart';
 import 'bloc/favourites/favourites.dart';
 import 'bloc/recents/recents.dart';
+import 'repository/saved_train.dart';
 import 'repository/train.dart';
 
 class App extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
   final AdaptiveThemeMode savedThemeMode;
   final TrainRepository trainRepository;
+  final SavedTrainRepository savedTrainRepository;
 
-  App({Key key, this.savedThemeMode, this.trainRepository}) : super(key: key);
+  App({
+    Key key,
+    this.savedThemeMode,
+    @required this.trainRepository,
+    @required this.savedTrainRepository,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +30,31 @@ class App extends StatelessWidget {
       light: AppTheme.light,
       dark: AppTheme.dark,
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => RepositoryProvider<TrainRepository>(
-        create: (context) => trainRepository,
+      builder: (theme, darkTheme) => MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+            create: (context) => trainRepository,
+          ),
+          RepositoryProvider(
+            create: (context) => savedTrainRepository,
+          ),
+        ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
               create: (context) => RecentsBloc(
-                context.read<TrainRepository>(),
+                context.read<SavedTrainRepository>(),
               )..add(RecentsRequest()),
             ),
             BlocProvider(
               create: (context) => ExistBloc(
                 context.read<TrainRepository>(),
+                context.read<SavedTrainRepository>(),
               ),
             ),
             BlocProvider(
               create: (context) =>
-                  FavouritesBloc(context.read<TrainRepository>())
+                  FavouritesBloc(context.read<SavedTrainRepository>())
                     ..add(FavouritesRequest()),
             ),
           ],

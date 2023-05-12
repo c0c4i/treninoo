@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:treninoo/repository/train.dart';
 
+import '../../repository/saved_train.dart';
 import 'edit_description_event.dart';
 import 'edit_description_state.dart';
 
 class EditDescriptionBloc
     extends Bloc<EditDescriptionEvent, EditDescriptionState> {
-  final TrainRepository _trainRepository;
+  final SavedTrainRepository _savedSavedTrainRepository;
 
-  EditDescriptionBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+  EditDescriptionBloc(SavedTrainRepository savedSavedTrainRepository)
+      : assert(savedSavedTrainRepository != null),
+        _savedSavedTrainRepository = savedSavedTrainRepository,
         super(EditDescriptionInitial());
 
   @override
@@ -27,7 +27,7 @@ class EditDescriptionBloc
       EditDescriptionRequest event) async* {
     yield EditDescriptionLoading();
     try {
-      _trainRepository.changeDescription(event.savedTrain);
+      _savedSavedTrainRepository.changeDescription(event.savedTrain);
       yield EditDescriptionSuccess();
     } catch (e) {
       print(e);

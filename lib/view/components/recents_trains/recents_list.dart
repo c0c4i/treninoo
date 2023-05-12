@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
-import 'package:treninoo/repository/train.dart';
-import 'package:treninoo/view/components/trains_list.dart';
 import 'package:treninoo/view/style/typography.dart';
+
+import '../../../enum/saved_train_type.dart';
+import '../train_card.dart';
 
 class RecentsTrains extends StatefulWidget {
   RecentsTrains({Key key}) : super(key: key);
@@ -26,9 +27,16 @@ class _RecentsTrainsState extends State<RecentsTrains> {
                 child: Text("Recenti", style: Typo.headlineLight),
               ),
               SizedBox(height: 8),
-              SavedTrainList(
-                trains: state.trains,
-                savedTrainType: SavedTrainType.recents,
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.trains.length,
+                itemBuilder: (context, index) {
+                  return TrainCard(
+                    savedTrain: state.trains[index],
+                    type: SavedTrainType.recents,
+                  );
+                },
               ),
             ],
           );
