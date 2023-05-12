@@ -38,7 +38,7 @@ class _StationStatusPageState extends State<StationStatusPage>
     timer = Timer.periodic(
         Duration(seconds: 10),
         (Timer t) => context.read<StationStatusBloc>().add(StationStatusRequest(
-              stationCode: widget.station.stationCode,
+              station: widget.station,
             )));
     super.initState();
   }
@@ -101,13 +101,6 @@ class _StationStatusPageState extends State<StationStatusPage>
                       }
                     },
                     builder: (context, state) {
-                      if (state is StationStatusInitial) {
-                        context
-                            .read<StationStatusBloc>()
-                            .add(StationStatusRequest(
-                              stationCode: widget.station.stationCode,
-                            ));
-                      }
                       if (state is StationStatusSuccess) {
                         return Expanded(
                           child: TabBarView(

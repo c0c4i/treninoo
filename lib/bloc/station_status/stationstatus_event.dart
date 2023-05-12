@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:treninoo/model/Station.dart';
 
 @immutable
 abstract class StationStatusEvent extends Equatable {
@@ -8,10 +9,10 @@ abstract class StationStatusEvent extends Equatable {
 }
 
 class StationStatusRequest extends StationStatusEvent {
-  final String stationCode;
+  final Station station;
 
-  StationStatusRequest({@required this.stationCode});
+  StationStatusRequest({@required this.station});
 
   @override
-  List<Object> get props => [stationCode];
+  List<Object> get props => [station];
 }

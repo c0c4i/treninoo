@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
+import 'package:treninoo/view/components/favourites/no_favourites.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/train_exist/train_handler.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -28,16 +29,25 @@ class _FavouritesPageState extends State<FavouritesPage> {
               padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Header(
                     title: "I tuoi treni",
                     description:
-                        "Qui puoi trovare i treni che hai contrassegnato come preferiti",
+                        "Qui puoi trovare i treni che hai scelto come preferiti",
                   ),
                   SizedBox(height: kPadding),
                   BlocBuilder<FavouritesBloc, FavouritesState>(
                     builder: (context, state) {
                       if (state is FavouritesSuccess) {
+                        if (state.trains.isEmpty)
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            child: Center(
+                              child: NoFavourites(),
+                            ),
+                          );
+
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),

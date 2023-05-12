@@ -16,8 +16,8 @@ abstract class TrainRepository {
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
-  Future<List<StationTrain>> getArrivalTrains(String stationCode);
-  Future<List<StationTrain>> getDepartureTrains(String stationCode);
+  Future<List<StationTrain>> getArrivalTrains(Station station);
+  Future<List<StationTrain>> getDepartureTrains(Station station);
   Future<List<Station>> getFollowTrainStations(
       DepartureStation departureStation);
   Future<void> sendFeedback(String feedback);
@@ -124,8 +124,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<StationTrain>> getArrivalTrains(String stationCode) async {
-    String url = "${ViaggioTreno.GET_ARRIVAL_TRAINS}$stationCode/" + getDate();
+  Future<List<StationTrain>> getArrivalTrains(Station station) async {
+    String url =
+        "${ViaggioTreno.GET_ARRIVAL_TRAINS}${station.stationCode}/" + getDate();
 
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
@@ -142,9 +143,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<StationTrain>> getDepartureTrains(String stationCode) async {
-    String url =
-        "${ViaggioTreno.GET_DEPARTURE_TRAINS}$stationCode/" + getDate();
+  Future<List<StationTrain>> getDepartureTrains(Station station) async {
+    String url = "${ViaggioTreno.GET_DEPARTURE_TRAINS}${station.stationCode}/" +
+        getDate();
 
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);

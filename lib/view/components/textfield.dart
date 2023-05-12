@@ -158,7 +158,7 @@ class SuggestionTextField extends StatefulWidget {
 
 class _SuggestionTextFieldState extends State<SuggestionTextField> {
   Future<List<Station>> suggestionsCallback(String pattern) async {
-    return pattern.length < 3
+    return pattern.length == 0
         ? context.read<SavedTrainRepository>().getRecentsStations()
         : await context.read<TrainRepository>().searchStations(pattern);
   }

@@ -5,6 +5,7 @@ import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dar
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/edit_description_page.dart';
@@ -72,15 +73,17 @@ class AppRouter {
           ),
         );
       case RoutesNames.station:
-        final station = settings.arguments;
+        Station station = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
             child: MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) =>
-                      StationStatusBloc(context.read<TrainRepository>()),
+                  create: (context) => StationStatusBloc(
+                    context.read<TrainRepository>(),
+                    context.read<SavedTrainRepository>(),
+                  )..add(StationStatusRequest(station: station)),
                 ),
               ],
               child: StationStatusPage(station: station),
