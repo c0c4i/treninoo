@@ -9,6 +9,13 @@ import 'package:treninoo/view/components/textfield.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  checkTrainStatusPage() {
+    expect(find.textContaining('Stazione'), findsOneWidget);
+    expect(find.textContaining('Bin.'), findsOneWidget);
+    expect(find.textContaining('Arrivo'), findsOneWidget);
+    expect(find.textContaining('Partenza'), findsOneWidget);
+  }
+
   group('Search train by code', () {
     testWidgets('Search train that doesn\'t exist',
         (WidgetTester tester) async {
@@ -21,7 +28,7 @@ void main() {
       final searchButtonFinder = find.widgetWithText(ActionButton, 'Cerca');
       await tester.tap(searchButtonFinder);
       await tester.pump(Duration(seconds: 2));
-      final errorLabelFinder = find.text('Codice Treno non valido');
+      final errorLabelFinder = find.text('Treno non trovato');
       expect(errorLabelFinder, findsOneWidget);
     });
 
@@ -35,7 +42,7 @@ void main() {
       final searchButtonFinder = find.widgetWithText(ActionButton, 'Cerca');
       await tester.tap(searchButtonFinder);
       await tester.pumpAndSettle();
-      expect(find.textContaining('Ultimo Rilevamento:'), findsOneWidget);
+      checkTrainStatusPage();
     });
 
     testWidgets('Search train that share same code',
@@ -53,7 +60,7 @@ void main() {
           find.widgetWithText(ListTile, 'DOMODOSSOLA');
       await tester.tap(departureStationDialogFinder);
       await tester.pumpAndSettle();
-      expect(find.textContaining('Ultimo Rilevamento:'), findsOneWidget);
+      checkTrainStatusPage();
     });
   });
 }
