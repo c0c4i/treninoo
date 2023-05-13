@@ -1,4 +1,5 @@
 import 'package:treninoo/model/Stop.dart';
+import 'package:treninoo/utils/train_utils.dart';
 
 import '../utils/utils.dart';
 
@@ -33,11 +34,12 @@ class TrainInfo {
       // trainInfoErrorType = 0;
       return null;
     }
+
     return TrainInfo(
       stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
       lastPositionRegister: json['stazioneUltimoRilevamento'],
       lastTimeRegister: Utils.timeStampToString(json['oraUltimoRilevamento']),
-      trainType: json['categoria'],
+      trainType: TrainUtils.getCategory(json['compNumeroTreno']),
       delay: json['ritardo'],
       trainCode: json['numeroTreno'].toString(),
       departureStationCode: json['idOrigine'],

@@ -89,7 +89,7 @@ class StationTrainCard extends StatelessWidget {
         ));
   }
 
-  String getTime(time) => time != 0 ? "$time min" : "On time";
+  String getTime(time) => time != 0 ? "$time min" : "In orario";
 }
 
 class TextWithIcon extends StatelessWidget {

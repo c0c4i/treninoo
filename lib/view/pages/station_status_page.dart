@@ -11,6 +11,7 @@ import 'package:treninoo/view/components/station_train_card.dart';
 import 'package:treninoo/view/components/train_exist/train_handler.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'package:treninoo/view/style/typography.dart';
 
 class StationStatusPage extends StatefulWidget {
   final Station station;
@@ -86,8 +87,18 @@ class _StationStatusPageState extends State<StationStatusPage>
                     unselectedLabelColor:
                         Theme.of(context).colorScheme.onBackground,
                     tabs: [
-                      Tab(text: 'Partenze'),
-                      Tab(text: 'Arrivi'),
+                      Tab(
+                        child: Text(
+                          "Partenze",
+                          style: Typo.bodyHeavy,
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          "Arrivi",
+                          style: Typo.bodyHeavy,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 16),

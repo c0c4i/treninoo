@@ -7,7 +7,9 @@ import '../../../bloc/favourites/favourites.dart';
 import '../../../bloc/recents/recents.dart';
 import '../../../enum/saved_train_type.dart';
 import '../../../model/SavedTrain.dart';
+import '../../../model/Station.dart';
 import '../../router/routes_names.dart';
+import '../dialog/departure_stations_dialog.dart';
 import '../loading_dialog.dart';
 
 class HandleExistBloc extends StatelessWidget {
@@ -34,6 +36,22 @@ class HandleExistBloc extends StatelessWidget {
             arguments: savedTrain,
           );
           return;
+        }
+
+        if (state is ExistMoreThanOne) {
+          LoadingDialog.hide(context);
+          Station departureStation = await DepartureStationsDialog.show(
+            context,
+            departureStations: state.stations,
+          );
+          if (departureStation == null) return;
+          SavedTrain savedTrain = SavedTrain.fromDepartureStation(
+            state.savedTrain,
+            departureStation,
+          );
+          context.read<ExistBloc>().add(
+                ExistRequest(savedTrain: savedTrain),
+              );
         }
 
         if (state is ExistFailed) {

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:treninoo/bloc/departure_station/departurestation.dart';
 import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
@@ -26,14 +25,7 @@ class AppRouter {
     switch (settings.name) {
       case RoutesNames.home:
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-              create: (context) => context.read<TrainRepository>(),
-              child: BlocProvider(
-                create: (context) => DepartureStationBloc(
-                  context.read<TrainRepository>(),
-                ),
-                child: HomePage(),
-              )),
+          builder: (_) => HomePage(),
         );
 
       case RoutesNames.status:
@@ -92,7 +84,7 @@ class AppRouter {
         );
 
       case RoutesNames.followTrainStations:
-        final departureStation = settings.arguments;
+        final savedTrain = settings.arguments;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
@@ -100,7 +92,7 @@ class AppRouter {
               create: (context) => FollowTrainStationsBloc(
                 context.read<TrainRepository>(),
               ),
-              child: FollowTrainPage(departureStation: departureStation),
+              child: FollowTrainPage(savedTrain: savedTrain),
             ),
           ),
         );

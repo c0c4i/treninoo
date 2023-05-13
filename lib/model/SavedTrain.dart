@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+
+import 'Station.dart';
 
 class SavedTrain extends Equatable {
   final String trainType;
@@ -56,10 +57,13 @@ class SavedTrain extends Equatable {
     );
   }
 
-  factory SavedTrain.fromDepartureStation(DepartureStation departureStation) {
+  factory SavedTrain.fromDepartureStation(
+    SavedTrain savedTrain,
+    Station departureStation,
+  ) {
     return SavedTrain(
-      trainCode: departureStation.trainCode,
-      departureStationCode: departureStation.station.stationCode,
+      trainCode: savedTrain.trainCode,
+      departureStationCode: departureStation.stationCode,
     );
   }
 
@@ -85,6 +89,7 @@ class SavedTrain extends Equatable {
   }
 
   String get trainName {
+    if (trainType == null) return trainCode;
     return '$trainType $trainCode';
   }
 

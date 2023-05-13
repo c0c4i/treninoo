@@ -3,16 +3,16 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/followtrain_stations/followtrainstations.dart';
-import 'package:treninoo/model/DepartureStation.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class FollowTrainPage extends StatefulWidget {
-  final DepartureStation departureStation;
+  final SavedTrain savedTrain;
 
-  FollowTrainPage({Key key, this.departureStation}) : super(key: key);
+  FollowTrainPage({Key key, this.savedTrain}) : super(key: key);
 
   @override
   _FollowTrainPageState createState() => _FollowTrainPageState();
@@ -38,8 +38,9 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
                   builder: (context, state) {
                     if (state is FollowTrainStationsInitial)
                       context.read<FollowTrainStationsBloc>().add(
-                          FollowTrainStationsRequest(
-                              departureStation: widget.departureStation));
+                            FollowTrainStationsRequest(
+                                savedTrain: widget.savedTrain),
+                          );
                     if (state is FollowTrainStationsSuccess)
                       return Column(
                         children: [

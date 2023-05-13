@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:treninoo/model/DepartureStation.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 
 @immutable
 abstract class FollowTrainStationsEvent extends Equatable {
@@ -9,10 +9,10 @@ abstract class FollowTrainStationsEvent extends Equatable {
 }
 
 class FollowTrainStationsRequest extends FollowTrainStationsEvent {
-  final DepartureStation departureStation;
+  final SavedTrain savedTrain;
 
-  FollowTrainStationsRequest({@required this.departureStation});
+  FollowTrainStationsRequest({@required this.savedTrain});
 
   @override
-  List<Object> get props => [departureStation];
+  List<Object> get props => [savedTrain];
 }

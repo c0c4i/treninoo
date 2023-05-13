@@ -6,7 +6,7 @@ import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
-import '../../repository/saved_train.dart';
+import '../../cubit/first_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -23,8 +23,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // TODO: Convert to BloC management
-    _selectedIndex = context.read<SavedTrainRepository>().sharedPrefs.firstPage;
+    _selectedIndex = context.read<FirstPageCubit>().state;
     pageController = PageController(
       initialPage: _selectedIndex,
       keepPage: true,

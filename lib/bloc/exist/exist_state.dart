@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 
 import '../../enum/saved_train_type.dart';
@@ -21,6 +22,16 @@ class ExistSuccess extends ExistState {
 
   @override
   List<Object> get props => [trainInfo];
+}
+
+class ExistMoreThanOne extends ExistState {
+  final SavedTrain savedTrain;
+  final List<Station> stations;
+
+  ExistMoreThanOne({@required this.savedTrain, @required this.stations});
+
+  @override
+  List<Object> get props => [savedTrain, stations];
 }
 
 class ExistFailed extends ExistState {

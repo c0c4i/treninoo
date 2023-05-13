@@ -10,6 +10,7 @@ class Endpoint {
   static const String AUTOCOMPLETE = '$prefix/autocomplete/';
   static const String FOLLOWTRAIN_STATIONS = '$prefix/followtrain';
   static const String FEEDBACK = '$prefix/feedback';
+  static const String DEPARTURE_STATION = '$prefix/departurestation';
 }
 
 class ViaggioTreno {

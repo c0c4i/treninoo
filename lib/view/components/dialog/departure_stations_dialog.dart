@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-class DepartureStationsDialog extends StatelessWidget {
-  final List<DepartureStation> departureStations;
+import '../../../model/Station.dart';
 
-  static Future<DepartureStation> show(
+class DepartureStationsDialog extends StatelessWidget {
+  final List<Station> departureStations;
+
+  static Future<Station> show(
     BuildContext context, {
     Key key,
-    @required List<DepartureStation> departureStations,
+    @required List<Station> departureStations,
   }) async =>
-      await showDialog<DepartureStation>(
+      await showDialog<Station>(
         context: context,
         builder: (_) => DepartureStationsDialog(
           key: key,
@@ -46,12 +47,10 @@ class DepartureStationsDialog extends StatelessWidget {
         ],
       ),
       contentPadding: EdgeInsets.all(kPadding),
-      children: departureStations.map((ds) {
+      children: departureStations.map((station) {
         return ListTile(
-          title: Text(
-            ds.station.stationName,
-          ),
-          onTap: () => Navigator.pop(context, ds),
+          title: Text(station.stationName),
+          onTap: () => Navigator.pop(context, station),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),
           ),

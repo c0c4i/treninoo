@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/view/style/theme.dart';
-import '../../../repository/saved_train.dart';
+import '../../../cubit/first_page.dart';
 import '../../style/typography.dart';
 
 class SelectStartPageDialog {
@@ -15,9 +15,6 @@ class SelectStartPageDialog {
   static show({
     @required BuildContext context,
   }) async {
-    // TODO: Convert to BloC management
-    int selected = context.read<SavedTrainRepository>().sharedPrefs.firstPage;
-
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -47,14 +44,11 @@ class SelectStartPageDialog {
                     RadioListTile(
                       title: Text(page.value),
                       value: page.key,
-                      groupValue: selected,
-                      selected: selected == page.key,
+                      groupValue: context.read<FirstPageCubit>().state,
+                      selected:
+                          context.read<FirstPageCubit>().state == page.key,
                       onChanged: (value) {
-                        selected = value;
-                        context
-                            .read<SavedTrainRepository>()
-                            .sharedPrefs
-                            .firstPage = value;
+                        context.read<FirstPageCubit>().changePage(value);
                         Navigator.pop(context);
                       },
                       shape: RoundedRectangleBorder(

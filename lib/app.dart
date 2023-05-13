@@ -8,6 +8,7 @@ import 'package:treninoo/view/style/theme.dart';
 import 'bloc/exist/exist.dart';
 import 'bloc/favourites/favourites.dart';
 import 'bloc/recents/recents.dart';
+import 'cubit/first_page.dart';
 import 'repository/saved_train.dart';
 import 'repository/train.dart';
 
@@ -56,6 +57,9 @@ class App extends StatelessWidget {
               create: (context) =>
                   FavouritesBloc(context.read<SavedTrainRepository>())
                     ..add(FavouritesRequest()),
+            ),
+            BlocProvider(
+              create: (_) => FirstPageCubit(savedTrainRepository),
             ),
           ],
           child: MaterialApp(

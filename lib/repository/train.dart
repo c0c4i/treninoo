@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:treninoo/model/DepartureStation.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
@@ -11,15 +10,16 @@ import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/endpoint.dart';
 
+import '../exceptions/more_than_one.dart';
+
 abstract class TrainRepository {
-  Future<List<DepartureStation>> getDepartureStation(String trainCode);
+  Future<List<Station>> getDepartureStation(String trainCode);
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
   Future<List<StationTrain>> getArrivalTrains(Station station);
   Future<List<StationTrain>> getDepartureTrains(Station station);
-  Future<List<Station>> getFollowTrainStations(
-      DepartureStation departureStation);
+  Future<List<Station>> getFollowTrainStations(SavedTrain savedTrain);
   Future<void> sendFeedback(String feedback);
   Future<List<Station>> searchStations(String text);
 }
@@ -29,20 +29,19 @@ class APITrain extends TrainRepository {
   APITrain() : super();
 
   @override
-  Future<List<DepartureStation>> getDepartureStation(String trainCode) async {
-    var uri = Uri.http(URL, "${ViaggioTreno.GET_STATION_CODE}$trainCode");
+  Future<List<Station>> getDepartureStation(String trainCode) async {
+    var uri = Uri.https(BASE_URL, "${Endpoint.DEPARTURE_STATION}/$trainCode");
     var response = await http.get(uri);
 
-    var lines = response.body.split("\n");
-    List<DepartureStation> stations = [];
+    if (response.statusCode != 200) throw Exception("Something went wrong");
 
-    if (lines.length == 0) return null;
+    var body = jsonDecode(response.body);
 
-    for (int i = 0; i < lines.length - 1; i++) {
-      stations.add(DepartureStation.fromJson(lines[i]));
-    }
+    if (body["total"] == 0) return [];
 
-    return stations;
+    return (body['stations'] as List)
+        .map((station) => Station.fromJson(station))
+        .toList();
   }
 
   @override
@@ -51,8 +50,15 @@ class APITrain extends TrainRepository {
     String trainCode = savedTrain.trainCode;
 
     // If station code is null, get it from the train code
-    if (stationCode == null && savedTrain.departureStationName != null) {
-      stationCode = await _getDepartureStationCodeFromName(savedTrain);
+    if (stationCode == null) {
+      List<Station> departureStations =
+          await getDepartureStation(savedTrain.trainCode);
+
+      if (departureStations.length == 0) throw Exception("No station found");
+      if (departureStations.length > 1)
+        throw MoreThanOneException(savedTrain, departureStations);
+
+      stationCode = departureStations.first.stationCode;
     }
 
     DateTime now = new DateTime.now();
@@ -69,21 +75,6 @@ class APITrain extends TrainRepository {
     var body = jsonDecode(response.body);
 
     return TrainInfo.fromJson(body);
-  }
-
-  _getDepartureStationCodeFromName(savedTrain) async {
-    List<DepartureStation> departureStations =
-        await getDepartureStation(savedTrain.trainCode);
-
-    if (departureStations == null) throw Exception("No station found");
-
-    for (var departureStation in departureStations) {
-      String stationName = departureStation.station.stationName.toLowerCase();
-      if (stationName == savedTrain.departureStationName.toLowerCase()) {
-        return departureStation.station.stationCode;
-      }
-    }
-    throw Exception("No station found");
   }
 
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
@@ -162,10 +153,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<Station>> getFollowTrainStations(
-      DepartureStation departureStation) async {
+  Future<List<Station>> getFollowTrainStations(SavedTrain savedTrain) async {
     String url =
-        "${Endpoint.FOLLOWTRAIN_STATIONS}/${departureStation.station.stationCode}/${departureStation.trainCode}";
+        "${Endpoint.FOLLOWTRAIN_STATIONS}/${savedTrain.departureStationCode}/${savedTrain.trainCode}";
 
     print(url);
     var uri = Uri.https(BASE_URL, url);

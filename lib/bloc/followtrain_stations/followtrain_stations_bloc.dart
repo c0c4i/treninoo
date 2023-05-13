@@ -28,7 +28,7 @@ class FollowTrainStationsBloc
     yield FollowTrainStationsLoading();
     try {
       final stations =
-          await _trainRepository.getFollowTrainStations(event.departureStation);
+          await _trainRepository.getFollowTrainStations(event.savedTrain);
       if (stations != null) {
         yield FollowTrainStationsSuccess(
           stations: stations,
