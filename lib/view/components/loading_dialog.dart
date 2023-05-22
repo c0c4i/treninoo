@@ -29,7 +29,7 @@ class LoadingDialog extends StatelessWidget {
           child: CircularProgressIndicator(),
           decoration: new BoxDecoration(
             borderRadius: BorderRadius.circular(kRadius),
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
           ),
         ),
       ),
