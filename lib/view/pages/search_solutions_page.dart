@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/dialog/time_picker.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/textfield.dart';
 
@@ -14,6 +15,7 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import '../components/buttons/text_button.dart';
+import '../components/dialog/date_picker.dart';
 
 class SearchSolutionsPage extends StatefulWidget {
   SearchSolutionsPage({Key key}) : super(key: key);
@@ -47,8 +49,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       arrivalStation = null;
       departureController.text = '';
       arrivalController.text = '';
-      pickedDate = DateTime.now();
-      pickedTime = TimeOfDay.now();
       pickedDate = DateTime.now();
       pickedTime = TimeOfDay.now();
       dateController.text = formatDate(pickedDate);
@@ -195,19 +195,24 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   }
 
   _pickDate() async {
-    DateTime date = await showDatePicker(
+    // DateTime date = await showDatePicker(
+    //   context: context,
+    //   initialDate: pickedDate,
+    //   firstDate: DateTime(DateTime.now().year - 1),
+    //   lastDate: DateTime(DateTime.now().year + 1),
+    //   locale: const Locale('it'),
+    //   selectableDayPredicate: _decideWhichDayToEnable,
+    //   // builder: (context, child) {
+    //   //   return Theme(
+    //   //     data: ThemeData(primarySwatch: Colo),
+    //   //     child: child,
+    //   //   );
+    //   // },
+    // );
+
+    DateTime date = await BeautifulDatePickerDialog.show(
       context: context,
       initialDate: pickedDate,
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 1),
-      locale: const Locale('it'),
-      selectableDayPredicate: _decideWhichDayToEnable,
-      // builder: (context, child) {
-      //   return Theme(
-      //     data: ThemeData(primarySwatch: Colo),
-      //     child: child,
-      //   );
-      // },
     );
 
     if (date != null)
@@ -218,24 +223,32 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   }
 
   _pickTime() async {
-    TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: pickedTime,
+    DateTime startTime = new DateTime(
+      pickedDate.year,
+      pickedDate.month,
+      pickedDate.day,
+      pickedTime.hour,
+      pickedTime.minute,
     );
 
-    if (picked != null)
+    DateTime dateTime = await BeautifulTimePickerDialog.show(
+      context: context,
+      initialDate: startTime,
+    );
+
+    if (dateTime != null)
       setState(() {
-        pickedTime = picked;
-        timeController.text = formatTimeOfDay(picked);
+        pickedTime = TimeOfDay.fromDateTime(dateTime);
+        timeController.text = formatTimeOfDay(pickedTime);
       });
   }
 
-  bool _decideWhichDayToEnable(DateTime day) {
-    if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-      return true;
-    }
-    return false;
-  }
+  // bool _decideWhichDayToEnable(DateTime day) {
+  //   if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   _getSolutionRequest() {
     setState(() {
