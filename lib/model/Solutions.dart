@@ -2,10 +2,10 @@ import 'package:treninoo/model/Solution.dart';
 import 'package:treninoo/model/Station.dart';
 
 class Solutions {
-  List<Solution> solutions;
-  Station departureStation;
-  Station arrivalStation;
-  DateTime fromTime;
+  List<Solution>? solutions;
+  Station? departureStation;
+  Station? arrivalStation;
+  DateTime? fromTime;
 
   Solutions({
     this.solutions,

@@ -10,17 +10,17 @@ import '../../repository/saved_train.dart';
 import '../../repository/train.dart';
 
 class BeautifulTextField extends StatelessWidget {
-  final String labelText;
-  final IconData prefixIcon;
+  final String? labelText;
+  final IconData? prefixIcon;
   final TextCapitalization textCapitalization;
   final TextInputType keyboardType;
-  final TextEditingController controller;
-  final String Function(String) validator;
-  final String errorText;
+  final TextEditingController? controller;
+  final String Function(String?)? validator;
+  final String? errorText;
   final bool enabled;
 
   const BeautifulTextField({
-    Key key,
+    Key? key,
     this.labelText,
     this.prefixIcon,
     this.textCapitalization = TextCapitalization.sentences,
@@ -87,15 +87,15 @@ class BeautifulTextField extends StatelessWidget {
 // }
 
 class ClickableTextField extends StatelessWidget {
-  final VoidCallback onPressed;
-  final TextEditingController controller;
-  final IconData prefixIcon;
-  final String labelText;
-  final VoidCallback onClear;
-  final String Function(String) validator;
+  final VoidCallback? onPressed;
+  final TextEditingController? controller;
+  final IconData? prefixIcon;
+  final String? labelText;
+  final VoidCallback? onClear;
+  final String Function(String?)? validator;
 
   const ClickableTextField({
-    Key key,
+    Key? key,
     this.onPressed,
     this.controller,
     this.prefixIcon,
@@ -137,17 +137,17 @@ class ClickableTextField extends StatelessWidget {
 }
 
 class SuggestionTextField extends StatefulWidget {
-  final String label;
-  final String errorText;
-  final TextEditingController controller;
-  final Function(Station) onSelect;
-  final Function(String) validator;
+  final String? label;
+  final String? errorText;
+  final TextEditingController? controller;
+  final Function(Station?) onSelect;
+  final Function(String)? validator;
 
   SuggestionTextField(
-      {Key key,
+      {Key? key,
       this.label,
       this.controller,
-      this.onSelect,
+      required this.onSelect,
       this.validator,
       this.errorText})
       : super(key: key);
@@ -157,7 +157,7 @@ class SuggestionTextField extends StatefulWidget {
 }
 
 class _SuggestionTextFieldState extends State<SuggestionTextField> {
-  Future<List<Station>> suggestionsCallback(String pattern) async {
+  Future<List<Station?>> suggestionsCallback(String pattern) async {
     return pattern.length == 0
         ? context.read<SavedTrainRepository>().getRecentsStations()
         : await context.read<TrainRepository>().searchStations(pattern);
@@ -165,7 +165,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TypeAheadField<Station>(
+    return TypeAheadField<Station?>(
       getImmediateSuggestions: true,
       hideOnEmpty: true,
       loadingBuilder: (context) {

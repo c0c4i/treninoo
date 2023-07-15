@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class LoadingDialog extends StatelessWidget {
-  static void show(BuildContext context, {Key key}) => showDialog<void>(
+  static void show(BuildContext context, {Key? key}) => showDialog<void>(
         context: context,
         useRootNavigator: false,
         barrierDismissible: false,
@@ -15,7 +15,7 @@ class LoadingDialog extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  LoadingDialog({Key key}) : super(key: key);
+  LoadingDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

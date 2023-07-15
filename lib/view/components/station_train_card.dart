@@ -9,10 +9,10 @@ import 'package:treninoo/view/style/typography.dart';
 import '../../bloc/exist/exist.dart';
 
 class StationTrainCard extends StatelessWidget {
-  final StationTrain stationTrain;
+  final StationTrain? stationTrain;
 
   const StationTrainCard({
-    Key key,
+    Key? key,
     this.stationTrain,
   }) : super(key: key);
 
@@ -27,7 +27,7 @@ class StationTrainCard extends StatelessWidget {
           onPressed: () {
             context.read<ExistBloc>().add(
                   ExistRequest(
-                    savedTrain: SavedTrain.fromStationTrain(stationTrain),
+                    savedTrain: SavedTrain.fromStationTrain(stationTrain!),
                   ),
                 );
           },
@@ -37,14 +37,14 @@ class StationTrainCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      stationTrain.category + " " + stationTrain.trainCode,
+                      stationTrain!.category! + " " + stationTrain!.trainCode!,
                       style: Typo.subheaderHeavy.copyWith(
                         color: Primary.normal,
                       ),
                     ),
                   ),
                   Text(
-                    stationTrain.time,
+                    stationTrain!.time!,
                     style: Typo.subheaderHeavy.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -53,10 +53,10 @@ class StationTrainCard extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextWithIcon(
-                icon: stationTrain.isDeparture
+                icon: stationTrain!.isDeparture!
                     ? Icons.sports_score
                     : Icons.location_on_outlined,
-                label: stationTrain.name,
+                label: stationTrain!.name,
               ),
               SizedBox(height: 16),
               Row(
@@ -64,15 +64,15 @@ class StationTrainCard extends StatelessWidget {
                   Expanded(
                     child: TextWithIcon(
                       icon: Icons.more_time,
-                      label: getTime(stationTrain.delay),
+                      label: getTime(stationTrain!.delay),
                     ),
                   ),
                   // SizedBox(width: 32),
                   Expanded(
                     child: TextWithIcon(
                       icon: Icons.tag,
-                      label: stationTrain.actualRail ??
-                          stationTrain.plannedRail ??
+                      label: stationTrain!.actualRail ??
+                          stationTrain!.plannedRail ??
                           "-",
                     ),
                   ),
@@ -94,13 +94,13 @@ class StationTrainCard extends StatelessWidget {
 
 class TextWithIcon extends StatelessWidget {
   const TextWithIcon({
-    Key key,
-    @required this.icon,
-    @required this.label,
+    Key? key,
+    required this.icon,
+    required this.label,
   }) : super(key: key);
 
   final IconData icon;
-  final String label;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class TextWithIcon extends StatelessWidget {
         ),
         SizedBox(width: 8),
         Text(
-          label,
+          label!,
           style: Typo.subheaderHeavy.copyWith(
             color: Theme.of(context).colorScheme.onBackground,
           ),

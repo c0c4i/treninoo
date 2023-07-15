@@ -14,15 +14,15 @@ import 'repository/train.dart';
 
 class App extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
-  final AdaptiveThemeMode savedThemeMode;
+  final AdaptiveThemeMode? savedThemeMode;
   final TrainRepository trainRepository;
   final SavedTrainRepository savedTrainRepository;
 
   App({
-    Key key,
+    Key? key,
     this.savedThemeMode,
-    @required this.trainRepository,
-    @required this.savedTrainRepository,
+    required this.trainRepository,
+    required this.savedTrainRepository,
   }) : super(key: key);
 
   @override

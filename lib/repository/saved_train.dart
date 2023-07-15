@@ -7,7 +7,7 @@ import 'package:treninoo/utils/shared_preference.dart';
 import '../enum/saved_train_type.dart';
 
 abstract class SavedTrainRepository {
-  SharedPrefs sharedPrefs;
+  late SharedPrefs sharedPrefs;
 
   // Define a constructor for shared preference
   SavedTrainRepository() {
@@ -20,19 +20,19 @@ abstract class SavedTrainRepository {
 
   void changeDescription(SavedTrain savedTrain);
 
-  List<SavedTrain> getFavourites();
-  List<SavedTrain> getRecents();
+  List<SavedTrain?> getFavourites();
+  List<SavedTrain?> getRecents();
 
-  void addFavourite(SavedTrain savedTrain);
+  void addFavourite(SavedTrain? savedTrain);
   void addRecent(SavedTrain savedTrain);
 
-  void removeFavourite(SavedTrain savedTrain);
-  void removeRecent(SavedTrain savedTrain);
+  void removeFavourite(SavedTrain? savedTrain);
+  void removeRecent(SavedTrain? savedTrain);
 
-  bool isFavourite(SavedTrain savedTrain);
+  bool isFavourite(SavedTrain? savedTrain);
 
-  List<Station> getRecentsStations();
-  void addRecentStation(Station station);
+  List<Station?> getRecentsStations();
+  void addRecentStation(Station? station);
 }
 
 class APISavedTrain extends SavedTrainRepository {
@@ -40,20 +40,21 @@ class APISavedTrain extends SavedTrainRepository {
 
   @override
   void changeDescription(SavedTrain savedTrain) {
-    List<SavedTrain> trains = getFavourites();
+    List<SavedTrain?> trains = getFavourites();
     int index = trains.indexWhere((element) => element == savedTrain);
     trains[index] = savedTrain;
     sharedPrefs.favouritesTrains = jsonEncode(trains);
   }
 
   @override
-  List<SavedTrain> getFavourites() => _getSavedTrain(SavedTrainType.favourites);
+  List<SavedTrain?> getFavourites() =>
+      _getSavedTrain(SavedTrainType.favourites);
 
   @override
-  List<SavedTrain> getRecents() => _getSavedTrain(SavedTrainType.recents);
+  List<SavedTrain?> getRecents() => _getSavedTrain(SavedTrainType.recents);
 
   @override
-  void addFavourite(SavedTrain savedTrain) => _saveTrain(
+  void addFavourite(SavedTrain? savedTrain) => _saveTrain(
         savedTrain,
         SavedTrainType.favourites,
       );
@@ -65,34 +66,34 @@ class APISavedTrain extends SavedTrainRepository {
       );
 
   @override
-  void removeFavourite(SavedTrain savedTrain) => _removeTrain(
+  void removeFavourite(SavedTrain? savedTrain) => _removeTrain(
         savedTrain,
         SavedTrainType.favourites,
       );
 
   @override
-  void removeRecent(SavedTrain savedTrain) => _removeTrain(
+  void removeRecent(SavedTrain? savedTrain) => _removeTrain(
         savedTrain,
         SavedTrainType.recents,
       );
 
   @override
-  List<Station> getRecentsStations() {
-    String raw = sharedPrefs.recentsStations;
+  List<Station?> getRecentsStations() {
+    String? raw = sharedPrefs.recentsStations;
     if (raw == null) return [];
     List<dynamic> rawStations = jsonDecode(raw);
     return rawStations.map((e) => Station.fromJson(e)).toList();
   }
 
   @override
-  bool isFavourite(SavedTrain savedTrain) {
-    List<SavedTrain> savedTrains = _getSavedTrain(SavedTrainType.favourites);
+  bool isFavourite(SavedTrain? savedTrain) {
+    List<SavedTrain?> savedTrains = _getSavedTrain(SavedTrainType.favourites);
     return savedTrains.contains(savedTrain);
   }
 
-  void addRecentStation(Station station) {
+  void addRecentStation(Station? station) {
     // Get saved trains from shared preference
-    List<Station> stations = getRecentsStations();
+    List<Station?> stations = getRecentsStations();
 
     // If train is in the list, remove it
     if (stations.contains(station)) stations.remove(station);
@@ -105,8 +106,8 @@ class APISavedTrain extends SavedTrainRepository {
     sharedPrefs.recentsStations = jsonEncode(stations);
   }
 
-  List<SavedTrain> _getSavedTrain(SavedTrainType savedTrainType) {
-    String raw;
+  List<SavedTrain?> _getSavedTrain(SavedTrainType savedTrainType) {
+    String? raw;
     switch (savedTrainType) {
       case SavedTrainType.favourites:
         raw = sharedPrefs.favouritesTrains;
@@ -120,13 +121,13 @@ class APISavedTrain extends SavedTrainRepository {
 
     List<dynamic> trains = jsonDecode(raw);
 
-    List<SavedTrain> savedTrains =
+    List<SavedTrain?> savedTrains =
         trains.map((e) => SavedTrain.fromJson(e)).toList();
 
     return savedTrains;
   }
 
-  void _setSavedTrain(SavedTrainType savedTrainType, List<SavedTrain> trains) {
+  void _setSavedTrain(SavedTrainType savedTrainType, List<SavedTrain?> trains) {
     // Modify list to only have 3 trains
     if (trains.length > 3 && savedTrainType == SavedTrainType.recents)
       trains.removeLast();
@@ -142,9 +143,9 @@ class APISavedTrain extends SavedTrainRepository {
     }
   }
 
-  void _saveTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+  void _saveTrain(SavedTrain? savedTrain, SavedTrainType savedTrainType) {
     // Get saved trains from shared preference
-    List<SavedTrain> savedTrains = _getSavedTrain(savedTrainType);
+    List<SavedTrain?> savedTrains = _getSavedTrain(savedTrainType);
 
     // If train is in the list, remove it
     if (savedTrains.contains(savedTrain)) {
@@ -158,9 +159,9 @@ class APISavedTrain extends SavedTrainRepository {
     _setSavedTrain(savedTrainType, savedTrains);
   }
 
-  void _removeTrain(SavedTrain savedTrain, SavedTrainType savedTrainType) {
+  void _removeTrain(SavedTrain? savedTrain, SavedTrainType savedTrainType) {
     // Get saved trains from shared preference
-    List<SavedTrain> savedTrains = _getSavedTrain(savedTrainType);
+    List<SavedTrain?> savedTrains = _getSavedTrain(savedTrainType);
 
     // If train is in the list, remove it
     if (savedTrains.contains(savedTrain)) {

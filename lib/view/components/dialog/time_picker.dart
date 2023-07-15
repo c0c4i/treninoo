@@ -7,9 +7,9 @@ import '../../style/colors/grey.dart';
 import '../../style/typography.dart';
 
 class BeautifulTimePickerDialog {
-  static Future<DateTime> show({
-    @required BuildContext context,
-    @required DateTime initialDate,
+  static Future<DateTime?> show({
+    required BuildContext context,
+    required DateTime initialDate,
   }) async =>
       await showModalBottomSheet(
         context: context,
@@ -26,18 +26,18 @@ class BeautifulTimePickerDialog {
 
 class _TimePickerContent extends StatefulWidget {
   const _TimePickerContent({
-    Key key,
+    Key? key,
     this.initialDate,
   }) : super(key: key);
 
-  final DateTime initialDate;
+  final DateTime? initialDate;
 
   @override
   State<_TimePickerContent> createState() => _TimePickerContentState();
 }
 
 class _TimePickerContentState extends State<_TimePickerContent> {
-  DateTime _selectedDate;
+  DateTime? _selectedDate;
 
   @override
   void initState() {

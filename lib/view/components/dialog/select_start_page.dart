@@ -13,7 +13,7 @@ class SelectStartPageDialog {
   };
 
   static show({
-    @required BuildContext context,
+    required BuildContext context,
   }) async {
     showModalBottomSheet(
       context: context,
@@ -47,7 +47,7 @@ class SelectStartPageDialog {
                       groupValue: context.read<FirstPageCubit>().state,
                       selected:
                           context.read<FirstPageCubit>().state == page.key,
-                      onChanged: (value) {
+                      onChanged: (dynamic value) {
                         context.read<FirstPageCubit>().changePage(value);
                         Navigator.pop(context);
                       },

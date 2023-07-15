@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:treninoo/model/Station.dart';
 
 abstract class FollowTrainStationsState extends Equatable {
@@ -14,7 +13,7 @@ class FollowTrainStationsLoading extends FollowTrainStationsState {}
 class FollowTrainStationsSuccess extends FollowTrainStationsState {
   final List<Station> stations;
 
-  FollowTrainStationsSuccess({@required this.stations});
+  FollowTrainStationsSuccess({required this.stations});
 
   @override
   List<Object> get props => [stations];

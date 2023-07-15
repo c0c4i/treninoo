@@ -1,0 +1,1 @@
+class StatusNotAvailableException implements Exception {}

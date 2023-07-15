@@ -14,12 +14,12 @@ import '../exceptions/more_than_one.dart';
 
 abstract class TrainRepository {
   Future<List<Station>> getDepartureStation(String trainCode);
-  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
-  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
+  Future<Solutions> getSolutions(SolutionsInfo? solutionsInfo);
+  Future<TrainInfo> getTrainStatus(SavedTrain? savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
-  Future<List<StationTrain>> getArrivalTrains(Station station);
-  Future<List<StationTrain>> getDepartureTrains(Station station);
-  Future<List<Station>> getFollowTrainStations(SavedTrain savedTrain);
+  Future<List<StationTrain>> getArrivalTrains(Station? station);
+  Future<List<StationTrain>> getDepartureTrains(Station? station);
+  Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain);
   Future<void> sendFeedback(String feedback);
   Future<List<Station>> searchStations(String text);
 }
@@ -29,7 +29,7 @@ class APITrain extends TrainRepository {
   APITrain() : super();
 
   @override
-  Future<List<Station>> getDepartureStation(String trainCode) async {
+  Future<List<Station>> getDepartureStation(String? trainCode) async {
     var uri = Uri.https(BASE_URL, "${Endpoint.DEPARTURE_STATION}/$trainCode");
     var response = await http.get(uri);
 
@@ -45,9 +45,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain) async {
-    String stationCode = savedTrain.departureStationCode;
-    String trainCode = savedTrain.trainCode;
+  Future<TrainInfo> getTrainStatus(SavedTrain? savedTrain) async {
+    String? stationCode = savedTrain!.departureStationCode;
+    String? trainCode = savedTrain.trainCode;
 
     // If station code is null, get it from the train code
     if (stationCode == null) {
@@ -77,12 +77,12 @@ class APITrain extends TrainRepository {
     return TrainInfo.fromJson(body);
   }
 
-  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
+  Future<Solutions> getSolutions(SolutionsInfo? solutionsInfo) async {
     String departureCode =
-        solutionsInfo.departureStation.stationCode.replaceAll("S0", "");
+        solutionsInfo!.departureStation!.stationCode!.replaceAll("S0", "");
     String arrivalCode =
-        solutionsInfo.arrivalStation.stationCode.replaceAll("S0", "");
-    String time = solutionsInfo.fromTime.toIso8601String();
+        solutionsInfo.arrivalStation!.stationCode!.replaceAll("S0", "");
+    String time = solutionsInfo.fromTime!.toIso8601String();
 
     String url =
         "${ViaggioTreno.GET_SOLUTIONS}$departureCode/$arrivalCode/$time";
@@ -100,8 +100,8 @@ class APITrain extends TrainRepository {
 
   @override
   Future<bool> trainExist(SavedTrain savedTrain) async {
-    String stationCode = savedTrain.departureStationCode;
-    String trainCode = savedTrain.trainCode;
+    String? stationCode = savedTrain.departureStationCode;
+    String? trainCode = savedTrain.trainCode;
 
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -115,9 +115,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<StationTrain>> getArrivalTrains(Station station) async {
+  Future<List<StationTrain>> getArrivalTrains(Station? station) async {
     String url =
-        "${ViaggioTreno.GET_ARRIVAL_TRAINS}${station.stationCode}/" + getDate();
+        "${ViaggioTreno.GET_ARRIVAL_TRAINS}${station!.stationCode}/" + getDate();
 
     var uri = Uri.https(URL, url);
     var response = await http.get(uri);
@@ -134,8 +134,8 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<StationTrain>> getDepartureTrains(Station station) async {
-    String url = "${ViaggioTreno.GET_DEPARTURE_TRAINS}${station.stationCode}/" +
+  Future<List<StationTrain>> getDepartureTrains(Station? station) async {
+    String url = "${ViaggioTreno.GET_DEPARTURE_TRAINS}${station!.stationCode}/" +
         getDate();
 
     var uri = Uri.https(URL, url);
@@ -153,9 +153,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<Station>> getFollowTrainStations(SavedTrain savedTrain) async {
+  Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain) async {
     String url =
-        "${Endpoint.FOLLOWTRAIN_STATIONS}/${savedTrain.departureStationCode}/${savedTrain.trainCode}";
+        "${Endpoint.FOLLOWTRAIN_STATIONS}/${savedTrain!.departureStationCode}/${savedTrain.trainCode}";
 
     print(url);
     var uri = Uri.https(BASE_URL, url);

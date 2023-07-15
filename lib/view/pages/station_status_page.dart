@@ -14,9 +14,9 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class StationStatusPage extends StatefulWidget {
-  final Station station;
+  final Station? station;
 
-  StationStatusPage({Key key, this.station}) : super(key: key);
+  StationStatusPage({Key? key, this.station}) : super(key: key);
 
   @override
   _StationStatusPageState createState() => _StationStatusPageState();
@@ -26,12 +26,12 @@ class _StationStatusPageState extends State<StationStatusPage>
     with SingleTickerProviderStateMixin {
   _StationStatusPageState() : super();
 
-  List<StationTrain> departureTrains;
-  List<StationTrain> arrivalTrains;
+  List<StationTrain>? departureTrains;
+  List<StationTrain>? arrivalTrains;
 
-  TabController _tabController;
+  TabController? _tabController;
 
-  Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _StationStatusPageState extends State<StationStatusPage>
                       }
                     },
                     child: BeautifulAppBar(
-                      title: widget.station.stationName,
+                      title: widget.station!.stationName,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -118,23 +118,24 @@ class _StationStatusPageState extends State<StationStatusPage>
                             controller: _tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children: <Widget>[
-                              departureTrains.length > 0
+                              departureTrains!.length > 0
                                   ? ListView.builder(
-                                      itemCount: departureTrains.length,
+                                      itemCount: departureTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
                                             stationTrain:
-                                                departureTrains[index]);
+                                                departureTrains![index]);
                                       },
                                     )
                                   : Center(
                                       child: Text("Nessun treno in partenza")),
-                              arrivalTrains.length > 0
+                              arrivalTrains!.length > 0
                                   ? ListView.builder(
-                                      itemCount: arrivalTrains.length,
+                                      itemCount: arrivalTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain: arrivalTrains[index]);
+                                            stationTrain:
+                                                arrivalTrains![index]);
                                       },
                                     )
                                   : Center(
@@ -151,23 +152,24 @@ class _StationStatusPageState extends State<StationStatusPage>
                             controller: _tabController,
                             physics: NeverScrollableScrollPhysics(),
                             children: <Widget>[
-                              departureTrains.length > 0
+                              departureTrains!.length > 0
                                   ? ListView.builder(
-                                      itemCount: departureTrains.length,
+                                      itemCount: departureTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
                                             stationTrain:
-                                                departureTrains[index]);
+                                                departureTrains![index]);
                                       },
                                     )
                                   : Center(
                                       child: Text("Nessun treno in partenza")),
-                              arrivalTrains.length > 0
+                              arrivalTrains!.length > 0
                                   ? ListView.builder(
-                                      itemCount: arrivalTrains.length,
+                                      itemCount: arrivalTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain: arrivalTrains[index]);
+                                            stationTrain:
+                                                arrivalTrains![index]);
                                       },
                                     )
                                   : Center(

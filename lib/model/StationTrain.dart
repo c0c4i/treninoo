@@ -1,15 +1,15 @@
 import 'package:treninoo/utils/utils.dart';
 
 class StationTrain {
-  final String trainCode;
-  final String departureCode;
-  final String category;
-  final String name;
-  final String time;
-  final String plannedRail;
-  final String actualRail;
-  final int delay;
-  final bool isDeparture;
+  final String? trainCode;
+  final String? departureCode;
+  final String? category;
+  final String? name;
+  final String? time;
+  final String? plannedRail;
+  final String? actualRail;
+  final int? delay;
+  final bool? isDeparture;
 
   StationTrain({
     this.trainCode,
@@ -24,10 +24,10 @@ class StationTrain {
   });
 
   factory StationTrain.fromJson(Map<String, dynamic> json, bool departure) {
-    String plannedRail;
-    String actualRail;
-    String time;
-    String name;
+    String? plannedRail;
+    String? actualRail;
+    String? time;
+    String? name;
 
     if (departure) {
       plannedRail = json['binarioEffettivoPartenzaDescrizione'];

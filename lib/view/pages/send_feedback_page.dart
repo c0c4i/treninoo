@@ -12,7 +12,7 @@ import '../../bloc/send_feedback/send_feedback.dart';
 import '../components/dialog/thanks_for_feedback.dart';
 
 class SendFeedbackPage extends StatefulWidget {
-  SendFeedbackPage({Key key}) : super(key: key);
+  SendFeedbackPage({Key? key}) : super(key: key);
 
   @override
   _SendFeedbackPageState createState() => _SendFeedbackPageState();

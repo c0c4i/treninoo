@@ -11,7 +11,7 @@ abstract class EditDescriptionEvent extends Equatable {
 class EditDescriptionRequest extends EditDescriptionEvent {
   final SavedTrain savedTrain;
 
-  EditDescriptionRequest({@required this.savedTrain});
+  EditDescriptionRequest({required this.savedTrain});
 
   @override
   List<Object> get props => [savedTrain];

@@ -10,8 +10,8 @@ import '../buttons/dialog_button.dart';
 class TrainNotFoundDialog {
   static show<bool>(
     BuildContext context, {
-    @required SavedTrain savedTrain,
-    @required SavedTrainType savedTrainType,
+    required SavedTrain? savedTrain,
+    required SavedTrainType? savedTrainType,
   }) async =>
       await showModalBottomSheet<bool>(
         context: context,

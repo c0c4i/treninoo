@@ -3,7 +3,7 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class BeautifulBackButton extends StatelessWidget {
-  const BeautifulBackButton({Key key}) : super(key: key);
+  const BeautifulBackButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

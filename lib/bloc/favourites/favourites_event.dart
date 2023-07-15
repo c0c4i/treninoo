@@ -6,16 +6,16 @@ import '../../model/SavedTrain.dart';
 @immutable
 abstract class FavouritesEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FavouritesRequest extends FavouritesEvent {}
 
 class DeleteFavourite extends FavouritesEvent {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
 
   DeleteFavourite({this.savedTrain});
 
   @override
-  List<Object> get props => [savedTrain];
+  List<Object?> get props => [savedTrain];
 }

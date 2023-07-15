@@ -3,10 +3,10 @@ import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key key, this.title, this.description}) : super(key: key);
+  const Header({Key? key, this.title, this.description}) : super(key: key);
 
-  final String title;
-  final String description;
+  final String? title;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,14 @@ class Header extends StatelessWidget {
         children: [
           SizedBox(height: 8),
           Text(
-            title,
+            title!,
             style: Typo.displayHeavy,
           ),
           SizedBox(height: 4),
           Container(
             width: 300,
             child: Text(
-              description,
+              description!,
               style: Typo.subheaderLight.copyWith(color: Grey.dark),
             ),
           ),

@@ -13,7 +13,8 @@ import 'package:treninoo/view/style/theme.dart';
 class SolutionsResultPage extends StatefulWidget {
   final SolutionsInfo solutionsInfo;
 
-  SolutionsResultPage({Key key, this.solutionsInfo}) : super(key: key);
+  SolutionsResultPage({Key? key, required this.solutionsInfo})
+      : super(key: key);
 
   @override
   _SolutionsResultPageState createState() => _SolutionsResultPageState();

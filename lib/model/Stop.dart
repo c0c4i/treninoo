@@ -1,16 +1,16 @@
 import '../utils/utils.dart';
 
 class Stop {
-  final String name;
-  final String plannedDepartureTime;
-  final String actualDepartureTime;
-  final String plannedArrivalTime;
-  final String actualArrivalTime;
-  final String plannedDepartureRail;
-  final String actualDepartureRail;
-  final String plannedArrivalRail;
-  final String actualArrivalRail;
-  final int delay;
+  final String? name;
+  final String? plannedDepartureTime;
+  final String? actualDepartureTime;
+  final String? plannedArrivalTime;
+  final String? actualArrivalTime;
+  final String? plannedDepartureRail;
+  final String? actualDepartureRail;
+  final String? plannedArrivalRail;
+  final String? actualArrivalRail;
+  final int? delay;
 
   Stop({
     this.name,

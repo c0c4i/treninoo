@@ -3,7 +3,7 @@ import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class TrainInfoStopsHeader extends StatelessWidget {
-  const TrainInfoStopsHeader({Key key}) : super(key: key);
+  const TrainInfoStopsHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +35,16 @@ class TrainInfoStopsHeader extends StatelessWidget {
 
 class TrainStatusStopsHeaderCell extends StatelessWidget {
   const TrainStatusStopsHeaderCell({
-    Key key,
+    Key? key,
     this.title,
   }) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      title!,
       style: Typo.subheaderLight.copyWith(color: Grey.dark),
       textAlign: TextAlign.center,
     );

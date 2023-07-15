@@ -10,7 +10,7 @@ abstract class SendFeedbackEvent extends Equatable {
 class SendFeedbackRequest extends SendFeedbackEvent {
   final String feedback;
 
-  SendFeedbackRequest({@required this.feedback});
+  SendFeedbackRequest({required this.feedback});
 
   @override
   List<Object> get props => [feedback];

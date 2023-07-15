@@ -4,9 +4,9 @@ import 'package:treninoo/view/components/solutions/solution_section_station_row.
 import 'package:treninoo/view/style/colors/primary.dart';
 
 class SolutionSectionStations extends StatelessWidget {
-  final TrainSolution trainSolution;
+  final TrainSolution? trainSolution;
 
-  const SolutionSectionStations({Key key, this.trainSolution})
+  const SolutionSectionStations({Key? key, this.trainSolution})
       : super(key: key);
 
   @override
@@ -14,8 +14,8 @@ class SolutionSectionStations extends StatelessWidget {
     return Column(
       children: [
         SolutionSectionStationRow(
-          stationName: trainSolution.departureStation,
-          time: trainSolution.departureTime,
+          stationName: trainSolution!.departureStation,
+          time: trainSolution!.departureTime,
         ),
         SizedBox(height: 8),
         Container(
@@ -29,8 +29,8 @@ class SolutionSectionStations extends StatelessWidget {
         ),
         SizedBox(height: 8),
         SolutionSectionStationRow(
-          stationName: trainSolution.arrivalStation,
-          time: trainSolution.arrivalTime,
+          stationName: trainSolution!.arrivalStation,
+          time: trainSolution!.arrivalTime,
         ),
       ],
     );

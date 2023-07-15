@@ -1,20 +1,21 @@
+import 'package:treninoo/exceptions/status_not_available.dart';
 import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/utils/train_utils.dart';
 
 import '../utils/utils.dart';
 
 class TrainInfo {
-  final List<Stop> stops;
-  final String lastPositionRegister; // to converter from unix
-  final String lastTimeRegister;
-  final String trainType;
-  final int delay;
-  final String trainCode;
+  final List<Stop>? stops;
+  final String? lastPositionRegister; // to converter from unix
+  final String? lastTimeRegister;
+  final String? trainType;
+  final int? delay;
+  final String? trainCode;
 
-  String departureStationCode;
-  String departureStationName;
-  String arrivalStationName;
-  String departureTime;
+  String? departureStationCode;
+  String? departureStationName;
+  String? arrivalStationName;
+  String? departureTime;
 
   TrainInfo({
     this.stops,
@@ -31,8 +32,7 @@ class TrainInfo {
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
     if (json['fermate'].length == 0) {
-      // trainInfoErrorType = 0;
-      return null;
+      throw StatusNotAvailableException();
     }
 
     return TrainInfo(

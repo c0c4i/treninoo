@@ -14,21 +14,21 @@ import '../../bloc/edit_description/edit_description.dart';
 import '../components/buttons/text_button.dart';
 
 class EditDescriptionPage extends StatefulWidget {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
 
-  EditDescriptionPage({Key key, this.savedTrain}) : super(key: key);
+  EditDescriptionPage({Key? key, this.savedTrain}) : super(key: key);
 
   @override
   _EditDescriptionPageState createState() => _EditDescriptionPageState();
 }
 
 class _EditDescriptionPageState extends State<EditDescriptionPage> {
-  Station selected;
+  Station? selected;
   TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
-    _controller.text = widget.savedTrain.description;
+    _controller.text = widget.savedTrain!.description!;
     super.initState();
   }
 
@@ -36,7 +36,7 @@ class _EditDescriptionPageState extends State<EditDescriptionPage> {
     if (context.read<EditDescriptionBloc>() is EditDescriptionLoading) return;
     if (_controller.text.isEmpty) return;
 
-    SavedTrain savedTrain = widget.savedTrain.copyWith(
+    SavedTrain savedTrain = widget.savedTrain!.copyWith(
       description: _controller.text,
     );
 
@@ -47,7 +47,7 @@ class _EditDescriptionPageState extends State<EditDescriptionPage> {
 
   onRemove() {
     if (context.read<EditDescriptionBloc>() is EditDescriptionLoading) return;
-    SavedTrain savedTrain = widget.savedTrain.copyWith(
+    SavedTrain savedTrain = widget.savedTrain!.copyWith(
       description: null,
     );
 

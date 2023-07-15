@@ -17,7 +17,7 @@ class TrainUtils {
     return categories.join(" ");
   }
 
-  static String getTypeFromNumber(String number) {
+  static String getTypeFromNumber(String? number) {
     return _typeNumberTagMap[number] ?? "REG";
   }
 }

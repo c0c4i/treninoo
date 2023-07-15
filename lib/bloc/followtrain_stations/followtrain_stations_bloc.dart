@@ -10,8 +10,7 @@ class FollowTrainStationsBloc
   final TrainRepository _trainRepository;
 
   FollowTrainStationsBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+      : _trainRepository = trainRepository,
         super(FollowTrainStationsInitial());
 
   @override

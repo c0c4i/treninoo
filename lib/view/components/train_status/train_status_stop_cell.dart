@@ -4,7 +4,7 @@ import 'package:treninoo/view/style/typography.dart';
 
 class TrainStatusStopCell extends StatelessWidget {
   const TrainStatusStopCell({
-    Key key,
+    Key? key,
     this.cellType,
     this.plannedArrival,
     this.plannedDeparture,
@@ -12,11 +12,11 @@ class TrainStatusStopCell extends StatelessWidget {
     this.actualDeparture,
   }) : super(key: key);
 
-  final CellType cellType;
-  final String plannedArrival;
-  final String plannedDeparture;
-  final String actualArrival;
-  final String actualDeparture;
+  final CellType? cellType;
+  final String? plannedArrival;
+  final String? plannedDeparture;
+  final String? actualArrival;
+  final String? actualDeparture;
 
   get text {
     if (actualArrival != null) return actualArrival;
@@ -30,8 +30,9 @@ class TrainStatusStopCell extends StatelessWidget {
         return "-";
       case CellType.time:
         return "—:—";
+      default:
+        return null;
     }
-    return null;
   }
 
   get confirmed {

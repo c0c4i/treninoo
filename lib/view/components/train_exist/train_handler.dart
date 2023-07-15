@@ -14,13 +14,13 @@ import '../loading_dialog.dart';
 
 class HandleExistBloc extends StatelessWidget {
   const HandleExistBloc({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.showRemove,
   }) : super(key: key);
 
   final Widget child;
-  final bool showRemove;
+  final bool? showRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +40,13 @@ class HandleExistBloc extends StatelessWidget {
 
         if (state is ExistMoreThanOne) {
           LoadingDialog.hide(context);
-          Station departureStation = await DepartureStationsDialog.show(
+          Station? departureStation = await DepartureStationsDialog.show(
             context,
             departureStations: state.stations,
           );
           if (departureStation == null) return;
           SavedTrain savedTrain = SavedTrain.fromDepartureStation(
-            state.savedTrain,
+            state.savedTrain!,
             departureStation,
           );
           context.read<ExistBloc>().add(

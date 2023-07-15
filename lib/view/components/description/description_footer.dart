@@ -3,10 +3,10 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class DescriptionFooter extends StatelessWidget {
-  const DescriptionFooter({Key key, @required this.description})
+  const DescriptionFooter({Key? key, required this.description})
       : super(key: key);
 
-  final String description;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class DescriptionFooter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(kPadding),
           child: Text(
-            description,
+            description!,
             style: Typo.bodyHeavy.copyWith(
               color: Theme.of(context).colorScheme.onBackground,
             ),

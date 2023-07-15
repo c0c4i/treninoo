@@ -13,9 +13,9 @@ import '../../style/typography.dart';
 
 class SavedTrainPickAction {
   static show({
-    @required BuildContext context,
-    @required SavedTrain savedTrain,
-    @required SavedTrainType type,
+    required BuildContext context,
+    required SavedTrain? savedTrain,
+    required SavedTrainType type,
   }) async {
     showModalBottomSheet(
       context: context,
@@ -35,7 +35,7 @@ class SavedTrainPickAction {
                     width: double.infinity,
                   ),
                   Text(
-                    "${savedTrain.trainType} ${savedTrain.trainCode}",
+                    "${savedTrain!.trainType} ${savedTrain.trainCode}",
                     style: Typo.titleHeavy,
                   ),
                   SizedBox(

@@ -12,14 +12,14 @@ import 'package:treninoo/view/style/theme.dart';
 class FollowTrainPage extends StatefulWidget {
   final SavedTrain savedTrain;
 
-  FollowTrainPage({Key key, this.savedTrain}) : super(key: key);
+  FollowTrainPage({Key? key, required this.savedTrain}) : super(key: key);
 
   @override
   _FollowTrainPageState createState() => _FollowTrainPageState();
 }
 
 class _FollowTrainPageState extends State<FollowTrainPage> {
-  Station selected;
+  Station? selected;
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +51,11 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
                             itemBuilder: (context, index) {
                               return RadioListTile(
                                 visualDensity: VisualDensity.comfortable,
-                                title: Text(state.stations[index].stationName),
+                                title: Text(state.stations[index].stationName!),
                                 groupValue: selected,
                                 selected: selected == state.stations[index],
                                 value: state.stations[index],
-                                onChanged: (station) {
+                                onChanged: (dynamic station) {
                                   setState(() {
                                     selected = station;
                                   });

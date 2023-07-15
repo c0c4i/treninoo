@@ -8,7 +8,7 @@ class Utils {
     Brightness brightness =
         Platform.isAndroid ? Brightness.dark : Brightness.light;
 
-    if (isDark != null && isDark) {
+    if (isDark) {
       brightness = Platform.isAndroid ? Brightness.light : Brightness.dark;
     }
 
@@ -21,7 +21,7 @@ class Utils {
   }
 
   // converte tempo unix in stringa oo:mm
-  static String timeStampToString(int timeStampMillisecond) {
+  static String? timeStampToString(int? timeStampMillisecond) {
     if (timeStampMillisecond == null) return null;
 
     var dateTime =

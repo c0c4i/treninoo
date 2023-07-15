@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PrefixIcon extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   const PrefixIcon({
-    Key key,
+    Key? key,
     this.icon,
   }) : super(key: key);
   @override

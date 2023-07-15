@@ -10,7 +10,7 @@ import '../../enum/saved_train_type.dart';
 import '../components/train_card.dart';
 
 class FavouritesPage extends StatefulWidget {
-  FavouritesPage({Key key}) : super(key: key);
+  FavouritesPage({Key? key}) : super(key: key);
 
   @override
   _FavouritesPageState createState() => _FavouritesPageState();

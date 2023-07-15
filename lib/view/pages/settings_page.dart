@@ -13,7 +13,7 @@ import '../components/dialog/select_start_page.dart';
 import '../router/routes_names.dart';
 
 class Settings extends StatefulWidget {
-  Settings({Key key}) : super(key: key);
+  Settings({Key? key}) : super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();

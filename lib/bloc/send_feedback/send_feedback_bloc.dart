@@ -9,8 +9,7 @@ class SendFeedbackBloc extends Bloc<SendFeedbackEvent, SendFeedbackState> {
   final TrainRepository _trainRepository;
 
   SendFeedbackBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+      : _trainRepository = trainRepository,
         super(SendFeedbackInitial());
 
   @override

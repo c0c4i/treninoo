@@ -10,15 +10,15 @@ import '../../cubit/first_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<HomePage> {
-  int _selectedIndex;
-  PageController pageController;
+  late int _selectedIndex;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      pageController.animateToPage(index,
+      pageController!.animateToPage(index,
           duration: Duration(milliseconds: 500), curve: Curves.ease);
     });
   }

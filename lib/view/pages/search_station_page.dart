@@ -10,7 +10,7 @@ import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class SearchStationPage extends StatefulWidget {
-  SearchStationPage({Key key}) : super(key: key);
+  SearchStationPage({Key? key}) : super(key: key);
 
   @override
   _SearchStationPageState createState() => _SearchStationPageState();
@@ -20,7 +20,7 @@ class _SearchStationPageState extends State<SearchStationPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController searchController = TextEditingController();
   bool validate = false;
-  Station station;
+  Station? station;
 
   searchButtonClick() {
     setState(() {
@@ -36,7 +36,7 @@ class _SearchStationPageState extends State<SearchStationPage> {
     Navigator.pushNamed(context, RoutesNames.station, arguments: station);
   }
 
-  String validator(Station station) {
+  String? validator(Station? station) {
     if (!validate) return null;
     if (station == null) return "Selezionare una stazione";
     return null;
@@ -71,7 +71,8 @@ class _SearchStationPageState extends State<SearchStationPage> {
                       label: "Stazione",
                       controller: searchController,
                       onSelect: (selected) {
-                        searchController.text = selected.stationName;
+                        if (selected == null) return;
+                        searchController.text = selected.stationName!;
                         setState(() => station = selected);
                       },
                       errorText: validator(station),

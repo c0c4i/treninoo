@@ -4,15 +4,15 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class DialogButton extends StatelessWidget {
-  final String title;
+  final String? title;
   final double height;
-  final Color color;
+  final Color? color;
   final Color textColor;
-  final Color borderColor;
-  final VoidCallback onPressed;
+  final Color? borderColor;
+  final VoidCallback? onPressed;
 
   const DialogButton({
-    Key key,
+    Key? key,
     this.title,
     this.height = 48,
     this.color,
@@ -29,7 +29,7 @@ class DialogButton extends StatelessWidget {
         child: TextButton(
           onPressed: onPressed,
           child: Text(
-            title,
+            title!,
             style: Typo.subheaderHeavy.copyWith(color: textColor),
           ),
           style: TextButton.styleFrom(

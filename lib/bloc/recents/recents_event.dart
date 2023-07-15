@@ -6,16 +6,16 @@ import '../../model/SavedTrain.dart';
 @immutable
 abstract class RecentsEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class RecentsRequest extends RecentsEvent {}
 
 class DeleteRecent extends RecentsEvent {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
 
   DeleteRecent({this.savedTrain});
 
   @override
-  List<Object> get props => [savedTrain];
+  List<Object?> get props => [savedTrain];
 }

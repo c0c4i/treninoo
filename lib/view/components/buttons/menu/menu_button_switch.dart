@@ -7,11 +7,11 @@ import 'package:treninoo/view/style/typography.dart';
 
 class MenuButtonSwitch extends StatelessWidget {
   const MenuButtonSwitch({
-    Key key,
-    @required this.title,
-    @required this.description,
-    @required this.value,
-    @required this.onChanged,
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.value,
+    required this.onChanged,
   }) : super(key: key);
 
   final String title;

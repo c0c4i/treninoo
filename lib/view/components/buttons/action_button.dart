@@ -3,16 +3,16 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class ActionButton extends StatelessWidget {
-  final String title;
+  final String? title;
   final double width;
   final double height;
-  final Color backgroundColor;
-  final Color color;
-  final VoidCallback onPressed;
+  final Color? backgroundColor;
+  final Color? color;
+  final VoidCallback? onPressed;
   final bool isLoading;
 
   const ActionButton({
-    Key key,
+    Key? key,
     this.title,
     this.width = double.infinity,
     this.height = 54,
@@ -34,7 +34,7 @@ class ActionButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              title,
+              title!,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
             if (isLoading)

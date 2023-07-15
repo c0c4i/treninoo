@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
-  SharedPreferences _sharedPrefs;
+  late SharedPreferences _sharedPrefs;
   static const String SPrecentsTrains = 'recentsTrains';
   static const String SPfavouritesTrains = 'favouritesTrains';
   static const String SPrecentsStations = 'recentsStations';
@@ -12,24 +12,23 @@ class SharedPrefs {
     _sharedPrefs = await SharedPreferences.getInstance();
   }
 
-  String get recentsTrains => _sharedPrefs.getString(SPrecentsTrains) ?? null;
+  String? get recentsTrains => _sharedPrefs.getString(SPrecentsTrains);
 
-  set recentsTrains(String value) {
-    _sharedPrefs.setString(SPrecentsTrains, value);
+  set recentsTrains(String? value) {
+    _sharedPrefs.setString(SPrecentsTrains, value!);
   }
 
-  String get favouritesTrains =>
-      _sharedPrefs.getString(SPfavouritesTrains) ?? null;
+  String? get favouritesTrains => _sharedPrefs.getString(SPfavouritesTrains);
 
-  set favouritesTrains(String value) {
-    _sharedPrefs.setString(SPfavouritesTrains, value);
+  set favouritesTrains(String? value) {
+    _sharedPrefs.setString(SPfavouritesTrains, value!);
   }
 
-  String get recentsStations =>
+  String? get recentsStations =>
       _sharedPrefs.getString(SPrecentsStations) ?? null;
 
-  set recentsStations(String value) {
-    _sharedPrefs.setString(SPrecentsStations, value);
+  set recentsStations(String? value) {
+    _sharedPrefs.setString(SPrecentsStations, value!);
   }
 
   int get firstPage => _sharedPrefs.getInt(SPFirstPage) ?? 0;

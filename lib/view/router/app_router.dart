@@ -4,6 +4,7 @@ import 'package:treninoo/bloc/followtrain_stations/followtrain_stations_bloc.dar
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
+import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/repository/train.dart';
@@ -18,10 +19,11 @@ import 'package:treninoo/view/router/routes_names.dart';
 import '../../bloc/edit_description/edit_description_bloc.dart';
 import '../../bloc/favourite/favourite_bloc.dart';
 import '../../bloc/send_feedback/send_feedback.dart';
+import '../../model/SolutionsInfo.dart';
 import '../pages/send_feedback_page.dart';
 
 class AppRouter {
-  Route onGenerateRoute(RouteSettings settings) {
+  Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesNames.home:
         return CupertinoPageRoute(
@@ -46,12 +48,12 @@ class AppRouter {
                   ),
                 ),
               ],
-              child: TrainStatusPage(savedTrain: savedTrain),
+              child: TrainStatusPage(savedTrain: savedTrain as SavedTrain?),
             ),
           ),
         );
       case RoutesNames.solutions:
-        final solutionsInfo = settings.arguments;
+        final solutionsInfo = settings.arguments as SolutionsInfo;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
@@ -65,7 +67,7 @@ class AppRouter {
           ),
         );
       case RoutesNames.station:
-        Station station = settings.arguments;
+        Station? station = settings.arguments as Station?;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
@@ -84,7 +86,7 @@ class AppRouter {
         );
 
       case RoutesNames.followTrainStations:
-        final savedTrain = settings.arguments;
+        final savedTrain = settings.arguments as SavedTrain;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),
@@ -106,7 +108,8 @@ class AppRouter {
               create: (context) => EditDescriptionBloc(
                 context.read<SavedTrainRepository>(),
               ),
-              child: EditDescriptionPage(savedTrain: description),
+              child:
+                  EditDescriptionPage(savedTrain: description as SavedTrain?),
             ),
           ),
         );

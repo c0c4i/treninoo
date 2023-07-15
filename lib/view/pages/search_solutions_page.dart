@@ -18,24 +18,24 @@ import '../components/buttons/text_button.dart';
 import '../components/dialog/date_picker.dart';
 
 class SearchSolutionsPage extends StatefulWidget {
-  SearchSolutionsPage({Key key}) : super(key: key);
+  SearchSolutionsPage({Key? key}) : super(key: key);
 
   @override
   _SearchSolutionsPageState createState() => _SearchSolutionsPageState();
 }
 
 class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
-  DateTime pickedDate;
-  TimeOfDay pickedTime;
-  bool validate;
+  DateTime? pickedDate;
+  late TimeOfDay pickedTime;
+  late bool validate;
 
   TextEditingController departureController = TextEditingController();
   TextEditingController arrivalController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
 
-  Station departureStation;
-  Station arrivalStation;
+  Station? departureStation;
+  Station? arrivalStation;
 
   @override
   void initState() {
@@ -51,13 +51,13 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       arrivalController.text = '';
       pickedDate = DateTime.now();
       pickedTime = TimeOfDay.now();
-      dateController.text = formatDate(pickedDate);
+      dateController.text = formatDate(pickedDate!);
       timeController.text = formatTimeOfDay(pickedTime);
       validate = false;
     });
   }
 
-  String validator(Station station) {
+  String? validator(Station? station) {
     if (!validate) return null;
     if (station == null) return "Selezionare una stazione";
     return null;
@@ -65,16 +65,16 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
 
   swapStations() {
     setState(() {
-      Station temp = departureStation;
+      Station? temp = departureStation;
       departureStation = arrivalStation;
       arrivalStation = temp;
 
       departureStation != null
-          ? departureController.text = departureStation.stationName
+          ? departureController.text = departureStation!.stationName!
           : departureController.text = '';
 
       arrivalStation != null
-          ? arrivalController.text = arrivalStation.stationName
+          ? arrivalController.text = arrivalStation!.stationName!
           : arrivalController.text = '';
     });
   }
@@ -113,8 +113,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 label: "Partenza",
                                 controller: departureController,
                                 onSelect: (station) {
+                                  if (station == null) return;
                                   departureController.text =
-                                      station.stationName;
+                                      station.stationName!;
                                   setState(() => departureStation = station);
                                 },
                                 errorText: validator(departureStation),
@@ -124,7 +125,8 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 label: "Destinazione",
                                 controller: arrivalController,
                                 onSelect: (station) {
-                                  arrivalController.text = station.stationName;
+                                  if (station == null) return;
+                                  arrivalController.text = station.stationName!;
                                   setState(() => arrivalStation = station);
                                 },
                                 errorText: validator(arrivalStation),
@@ -210,7 +212,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     //   // },
     // );
 
-    DateTime date = await BeautifulDatePickerDialog.show(
+    DateTime? date = await BeautifulDatePickerDialog.show(
       context: context,
       initialDate: pickedDate,
     );
@@ -224,14 +226,14 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
 
   _pickTime() async {
     DateTime startTime = new DateTime(
-      pickedDate.year,
-      pickedDate.month,
-      pickedDate.day,
+      pickedDate!.year,
+      pickedDate!.month,
+      pickedDate!.day,
       pickedTime.hour,
       pickedTime.minute,
     );
 
-    DateTime dateTime = await BeautifulTimePickerDialog.show(
+    DateTime? dateTime = await BeautifulTimePickerDialog.show(
       context: context,
       initialDate: startTime,
     );
@@ -262,9 +264,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       validate = false;
     });
 
-    pickedDate = pickedDate.toLocal();
-    pickedDate = new DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
-        pickedTime.hour, pickedTime.minute);
+    pickedDate = pickedDate!.toLocal();
+    pickedDate = new DateTime(pickedDate!.year, pickedDate!.month,
+        pickedDate!.day, pickedTime.hour, pickedTime.minute);
 
     SolutionsInfo solutionsInfo = new SolutionsInfo(
       departureStation: departureStation,

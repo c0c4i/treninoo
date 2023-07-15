@@ -5,14 +5,14 @@ import 'package:treninoo/model/SolutionsInfo.dart';
 @immutable
 abstract class SolutionsEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class SolutionsRequest extends SolutionsEvent {
-  final SolutionsInfo solutionsInfo;
+  final SolutionsInfo? solutionsInfo;
 
-  SolutionsRequest({@required this.solutionsInfo});
+  SolutionsRequest({required this.solutionsInfo});
 
   @override
-  List<Object> get props => [solutionsInfo];
+  List<Object?> get props => [solutionsInfo];
 }

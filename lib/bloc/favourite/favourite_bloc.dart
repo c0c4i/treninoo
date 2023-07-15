@@ -9,8 +9,7 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
   final SavedTrainRepository _savedSavedTrainRepository;
 
   FavouriteBloc(SavedTrainRepository savedSavedTrainRepository)
-      : assert(savedSavedTrainRepository != null),
-        _savedSavedTrainRepository = savedSavedTrainRepository,
+      : _savedSavedTrainRepository = savedSavedTrainRepository,
         super(FavouriteInitial());
 
   @override

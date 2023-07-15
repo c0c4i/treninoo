@@ -10,8 +10,7 @@ class EditDescriptionBloc
   final SavedTrainRepository _savedSavedTrainRepository;
 
   EditDescriptionBloc(SavedTrainRepository savedSavedTrainRepository)
-      : assert(savedSavedTrainRepository != null),
-        _savedSavedTrainRepository = savedSavedTrainRepository,
+      : _savedSavedTrainRepository = savedSavedTrainRepository,
         super(EditDescriptionInitial());
 
   @override

@@ -4,10 +4,10 @@ import 'package:treninoo/view/style/typography.dart';
 
 class MenuButtonClick extends StatelessWidget {
   const MenuButtonClick({
-    Key key,
-    @required this.title,
-    @required this.description,
-    @required this.onPressed,
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.onPressed,
   }) : super(key: key);
 
   final String title;

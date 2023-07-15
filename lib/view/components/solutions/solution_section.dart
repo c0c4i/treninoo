@@ -9,11 +9,11 @@ import 'package:treninoo/view/style/theme.dart';
 import '../../../bloc/exist/exist.dart';
 
 class SolutionSection extends StatelessWidget {
-  final TrainSolution trainSolution;
-  final int position;
-  final int size;
+  final TrainSolution? trainSolution;
+  final int? position;
+  final int? size;
 
-  const SolutionSection({Key key, this.trainSolution, this.position, this.size})
+  const SolutionSection({Key? key, this.trainSolution, this.position, this.size})
       : super(key: key);
 
   @override
@@ -21,8 +21,8 @@ class SolutionSection extends StatelessWidget {
     return TextButton(
       onPressed: () {
         SavedTrain savedTrain = new SavedTrain(
-          trainCode: trainSolution.trainCode,
-          departureStationName: trainSolution.departureStation,
+          trainCode: trainSolution!.trainCode,
+          departureStationName: trainSolution!.departureStation,
         );
         context.read<ExistBloc>().add(
               ExistRequest(
@@ -33,10 +33,10 @@ class SolutionSection extends StatelessWidget {
       child: Column(
         children: [
           SolutionSectionHeader(
-            trainType: trainSolution.trainType,
-            trainCode: trainSolution.trainCode,
-            departureTime: trainSolution.departureTime,
-            arrivalTime: trainSolution.arrivalTime,
+            trainType: trainSolution!.trainType,
+            trainCode: trainSolution!.trainCode,
+            departureTime: trainSolution!.departureTime,
+            arrivalTime: trainSolution!.arrivalTime,
           ),
           SizedBox(height: 16),
           SolutionSectionStations(
@@ -58,7 +58,7 @@ class SolutionSection extends StatelessWidget {
     if (position == 0)
       return BorderRadius.vertical(
           top: Radius.circular(kRadius), bottom: Radius.zero);
-    if (position == size - 1)
+    if (position == size! - 1)
       return BorderRadius.vertical(
           bottom: Radius.circular(kRadius), top: Radius.zero);
     return BorderRadius.zero;

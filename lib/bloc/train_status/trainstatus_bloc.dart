@@ -7,8 +7,7 @@ class TrainStatusBloc extends Bloc<TrainStatusEvent, TrainStatusState> {
   final TrainRepository _trainRepository;
 
   TrainStatusBloc(TrainRepository trainRepository)
-      : assert(trainRepository != null),
-        _trainRepository = trainRepository,
+      : _trainRepository = trainRepository,
         super(TrainStatusInitial());
 
   @override

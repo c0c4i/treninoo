@@ -2,7 +2,7 @@ import 'package:treninoo/model/TrainSolution.dart';
 
 class Solution {
   // final String travelTime;
-  final List<TrainSolution> trains;
+  final List<TrainSolution>? trains;
 
   Solution({this.trains});
 

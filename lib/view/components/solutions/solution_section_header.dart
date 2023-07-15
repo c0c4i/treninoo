@@ -4,13 +4,13 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class SolutionSectionHeader extends StatelessWidget {
-  final String trainType;
-  final String trainCode;
-  final DateTime departureTime;
-  final DateTime arrivalTime;
+  final String? trainType;
+  final String? trainCode;
+  final DateTime? departureTime;
+  final DateTime? arrivalTime;
 
   const SolutionSectionHeader({
-    Key key,
+    Key? key,
     this.trainType,
     this.trainCode,
     this.departureTime,
@@ -30,7 +30,7 @@ class SolutionSectionHeader extends StatelessWidget {
           ),
         ),
         Text(
-          travelTime(departureTime, arrivalTime),
+          travelTime(departureTime!, arrivalTime!),
           style: Typo.subheaderHeavy.copyWith(
             color: Theme.of(context).colorScheme.onBackground,
           ),

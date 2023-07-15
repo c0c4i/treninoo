@@ -5,24 +5,24 @@ import 'package:treninoo/model/SavedTrain.dart';
 @immutable
 abstract class FavouriteEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FavouriteRequest extends FavouriteEvent {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
 
-  FavouriteRequest({@required this.savedTrain});
+  FavouriteRequest({required this.savedTrain});
 
   @override
-  List<Object> get props => [savedTrain];
+  List<Object?> get props => [savedTrain];
 }
 
 class FavouriteToggle extends FavouriteEvent {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
   final bool value;
 
-  FavouriteToggle({@required this.savedTrain, @required this.value});
+  FavouriteToggle({required this.savedTrain, required this.value});
 
   @override
-  List<Object> get props => [savedTrain, value];
+  List<Object?> get props => [savedTrain, value];
 }

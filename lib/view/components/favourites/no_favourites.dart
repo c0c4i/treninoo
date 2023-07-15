@@ -5,7 +5,7 @@ import '../../style/colors/grey.dart';
 import '../../style/typography.dart';
 
 class NoFavourites extends StatelessWidget {
-  const NoFavourites({Key key}) : super(key: key);
+  const NoFavourites({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

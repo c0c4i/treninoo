@@ -19,18 +19,18 @@ enum ErrorType {
 }
 
 class SearchTrainPage extends StatefulWidget {
-  SearchTrainPage({Key key}) : super(key: key);
+  SearchTrainPage({Key? key}) : super(key: key);
 
   @override
   _SearchTrainPageState createState() => _SearchTrainPageState();
 }
 
 class _SearchTrainPageState extends State<SearchTrainPage> {
-  String error;
+  String? error;
 
   TextEditingController searchController = TextEditingController();
 
-  Future<List<SavedTrain>> recents;
+  Future<List<SavedTrain>>? recents;
 
   void showError(ErrorType errorType) {
     setState(() {
@@ -38,7 +38,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
     });
   }
 
-  String getError(ErrorType errorType) {
+  String? getError(ErrorType errorType) {
     String trainCode = searchController.text;
     if (trainCode.length > 0 && errorType == ErrorType.zero) {
       return null;

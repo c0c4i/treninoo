@@ -1,12 +1,12 @@
 import 'package:treninoo/utils/train_utils.dart';
 
 class TrainSolution {
-  final String departureStation;
-  final String arrivalStation;
-  final DateTime departureTime;
-  final DateTime arrivalTime;
-  final String trainType;
-  final String trainCode;
+  final String? departureStation;
+  final String? arrivalStation;
+  final DateTime? departureTime;
+  final DateTime? arrivalTime;
+  final String? trainType;
+  final String? trainCode;
 
   TrainSolution(
       {this.departureStation,

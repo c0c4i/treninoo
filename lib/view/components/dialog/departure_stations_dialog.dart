@@ -8,10 +8,10 @@ import '../../../model/Station.dart';
 class DepartureStationsDialog extends StatelessWidget {
   final List<Station> departureStations;
 
-  static Future<Station> show(
+  static Future<Station?> show(
     BuildContext context, {
-    Key key,
-    @required List<Station> departureStations,
+    Key? key,
+    required List<Station> departureStations,
   }) async =>
       await showDialog<Station>(
         context: context,
@@ -22,8 +22,8 @@ class DepartureStationsDialog extends StatelessWidget {
       );
 
   DepartureStationsDialog({
-    Key key,
-    @required this.departureStations,
+    Key? key,
+    required this.departureStations,
   }) : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class DepartureStationsDialog extends StatelessWidget {
       contentPadding: EdgeInsets.all(kPadding),
       children: departureStations.map((station) {
         return ListTile(
-          title: Text(station.stationName),
+          title: Text(station.stationName!),
           onTap: () => Navigator.pop(context, station),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),

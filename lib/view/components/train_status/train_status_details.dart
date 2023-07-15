@@ -5,12 +5,12 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class TrainInfoDetails extends StatelessWidget {
-  final TrainInfo trainInfo;
+  final TrainInfo? trainInfo;
 
-  const TrainInfoDetails({Key key, this.trainInfo}) : super(key: key);
+  const TrainInfoDetails({Key? key, this.trainInfo}) : super(key: key);
 
   get isDeparted {
-    return trainInfo.lastPositionRegister != '--';
+    return trainInfo!.lastPositionRegister != '--';
   }
 
   @override
@@ -32,12 +32,12 @@ class TrainInfoDetails extends StatelessWidget {
                   children: isDeparted
                       ? [
                           Text(
-                            '${trainInfo.lastPositionRegister}',
+                            '${trainInfo!.lastPositionRegister}',
                             style:
                                 Typo.titleHeavy.copyWith(color: Colors.white),
                           ),
                           Text(
-                            'Ultimo Rilevamento: ${trainInfo.lastTimeRegister}',
+                            'Ultimo Rilevamento: ${trainInfo!.lastTimeRegister}',
                             style: Typo.bodyLight.copyWith(
                               color: Colors.white,
                             ),
@@ -66,7 +66,7 @@ class TrainInfoDetails extends StatelessWidget {
   }
 
   get delay {
-    String text = trainInfo.delay < 0 ? 'Anticipo' : 'Ritardo';
-    return text + " ${trainInfo.delay}\'";
+    String text = trainInfo!.delay! < 0 ? 'Anticipo' : 'Ritardo';
+    return text + " ${trainInfo!.delay}\'";
   }
 }

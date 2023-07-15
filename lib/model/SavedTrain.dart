@@ -1,22 +1,21 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 
 import 'Station.dart';
 
 class SavedTrain extends Equatable {
-  final String trainType;
-  final String trainCode;
-  final String departureStationCode;
-  final String departureStationName;
-  final String arrivalStationName;
-  final String departureTime;
-  final String description;
+  final String? trainType;
+  final String? trainCode;
+  final String? departureStationCode;
+  final String? departureStationName;
+  final String? arrivalStationName;
+  final String? departureTime;
+  final String? description;
 
   SavedTrain({
     this.trainType,
-    @required this.trainCode,
+    required this.trainCode,
     this.departureStationCode,
     this.departureStationName,
     this.departureTime,
@@ -75,7 +74,7 @@ class SavedTrain extends Equatable {
   }
 
   SavedTrain copyWith({
-    String description,
+    String? description,
   }) {
     return SavedTrain(
       trainCode: this.trainCode,
@@ -88,13 +87,13 @@ class SavedTrain extends Equatable {
     );
   }
 
-  String get trainName {
+  String? get trainName {
     if (trainType == null) return trainCode;
     return '$trainType $trainCode';
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [trainCode, departureStationCode];
   }
 }

@@ -15,9 +15,9 @@ import 'package:treninoo/view/components/train_status/train_status_stops_header.
 import 'package:treninoo/view/style/theme.dart';
 
 class TrainStatusPage extends StatefulWidget {
-  final SavedTrain savedTrain;
+  final SavedTrain? savedTrain;
 
-  TrainStatusPage({Key key, this.savedTrain}) : super(key: key);
+  TrainStatusPage({Key? key, this.savedTrain}) : super(key: key);
 
   @override
   _TrainStatusPageState createState() => _TrainStatusPageState();
@@ -26,9 +26,9 @@ class TrainStatusPage extends StatefulWidget {
 class _TrainStatusPageState extends State<TrainStatusPage> {
   _TrainStatusPageState() : super();
 
-  TrainInfo trainInfo;
+  TrainInfo? trainInfo;
 
-  Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
@@ -57,7 +57,8 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
           return context
               .read<TrainStatusBloc>()
               .stream
-              .firstWhere((e) => e is! TrainStatusLoading);
+              .firstWhere((e) => e is! TrainStatusLoading)
+              .then((value) => null);
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -140,8 +141,8 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                               TrainInfoStopsHeader(),
                               SizedBox(height: 8),
                               TrainStatusStopList(
-                                stops: trainInfo.stops,
-                                currentStop: trainInfo.lastPositionRegister,
+                                stops: trainInfo!.stops,
+                                currentStop: trainInfo!.lastPositionRegister,
                               ),
                             ],
                           );

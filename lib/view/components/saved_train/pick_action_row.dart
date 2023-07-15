@@ -6,10 +6,10 @@ import '../../style/theme.dart';
 
 class PickActionRow extends StatelessWidget {
   const PickActionRow({
-    Key key,
-    @required this.icon,
-    @required this.data,
-    @required this.onTap,
+    Key? key,
+    required this.icon,
+    required this.data,
+    required this.onTap,
   }) : super(key: key);
 
   final IconData icon;

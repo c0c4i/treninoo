@@ -4,9 +4,9 @@ import 'package:treninoo/view/components/solutions/solution_section.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class SolutionCard extends StatelessWidget {
-  final Solution solution;
+  final Solution? solution;
 
-  const SolutionCard({Key key, this.solution}) : super(key: key);
+  const SolutionCard({Key? key, this.solution}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +21,15 @@ class SolutionCard extends StatelessWidget {
         child: ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: solution.trains.length,
+          itemCount: solution!.trains!.length,
           itemBuilder: (context, index) {
             return Column(
               children: [
                 index != 0 ? Divider(thickness: 1, height: 1) : Container(),
                 SolutionSection(
-                  trainSolution: solution.trains[index],
+                  trainSolution: solution!.trains![index],
                   position: index,
-                  size: solution.trains.length,
+                  size: solution!.trains!.length,
                 ),
               ],
             );

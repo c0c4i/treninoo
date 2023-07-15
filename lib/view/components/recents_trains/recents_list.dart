@@ -7,7 +7,7 @@ import '../../../enum/saved_train_type.dart';
 import '../train_card.dart';
 
 class RecentsTrains extends StatefulWidget {
-  RecentsTrains({Key key}) : super(key: key);
+  RecentsTrains({Key? key}) : super(key: key);
 
   @override
   _RecentsTrainsState createState() => _RecentsTrainsState();
