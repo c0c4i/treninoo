@@ -36,11 +36,15 @@ class BeautifulTextField extends StatelessWidget {
     return TextFormField(
       textCapitalization: textCapitalization,
       decoration: InputDecoration(
-          labelText: labelText,
-          prefixIcon: PrefixIcon(icon: prefixIcon),
-          contentPadding: EdgeInsets.all(18),
-          errorText: errorText),
-      style: TextStyle(fontSize: 18),
+        labelText: labelText,
+        prefixIcon: PrefixIcon(icon: prefixIcon),
+        contentPadding: EdgeInsets.all(18),
+        errorText: errorText,
+      ),
+      style: TextStyle(
+        fontSize: 18,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       controller: controller,
       keyboardType: keyboardType,
       autocorrect: false,
