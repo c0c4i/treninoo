@@ -10,43 +10,35 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
 
   FavouriteBloc(SavedTrainRepository savedSavedTrainRepository)
       : _savedSavedTrainRepository = savedSavedTrainRepository,
-        super(FavouriteInitial());
-
-  @override
-  Stream<FavouriteState> mapEventToState(
-    FavouriteEvent event,
-  ) async* {
-    if (event is FavouriteRequest) {
-      yield* _mapFavouriteRequest(event);
-    }
-
-    if (event is FavouriteToggle) {
-      yield* _mapFavouriteToggle(event);
-    }
+        super(FavouriteInitial()) {
+    on<FavouriteRequest>(_mapFavouriteRequest);
+    on<FavouriteToggle>(_mapFavouriteToggle);
   }
 
-  Stream<FavouriteState> _mapFavouriteRequest(FavouriteRequest event) async* {
-    yield FavouriteLoading();
+  Future<void> _mapFavouriteRequest(
+      FavouriteRequest event, Emitter<FavouriteState> emit) async {
+    emit(FavouriteLoading());
     await Future.delayed(Duration(milliseconds: 500));
     try {
       bool isFavourite =
           _savedSavedTrainRepository.isFavourite(event.savedTrain);
-      yield FavouriteSuccess(isFavourite: isFavourite);
+      emit(FavouriteSuccess(isFavourite: isFavourite));
     } catch (e) {
-      yield FavouriteFailed();
+      emit(FavouriteFailed());
     }
   }
 
-  Stream<FavouriteState> _mapFavouriteToggle(FavouriteToggle event) async* {
-    yield FavouriteLoading();
+  Future<void> _mapFavouriteToggle(
+      FavouriteToggle event, Emitter<FavouriteState> emit) async {
+    emit(FavouriteLoading());
     await Future.delayed(Duration(milliseconds: 500));
     try {
       event.value
           ? _savedSavedTrainRepository.addFavourite(event.savedTrain)
           : _savedSavedTrainRepository.removeFavourite(event.savedTrain);
-      yield FavouriteSuccess(isFavourite: event.value);
+      emit(FavouriteSuccess(isFavourite: event.value));
     } catch (e) {
-      yield FavouriteFailed();
+      emit(FavouriteFailed());
     }
   }
 }

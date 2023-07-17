@@ -11,33 +11,19 @@ class FollowTrainStationsBloc
 
   FollowTrainStationsBloc(TrainRepository trainRepository)
       : _trainRepository = trainRepository,
-        super(FollowTrainStationsInitial());
-
-  @override
-  Stream<FollowTrainStationsState> mapEventToState(
-    FollowTrainStationsEvent event,
-  ) async* {
-    if (event is FollowTrainStationsRequest) {
-      yield* _mapFollowTrainStationsRequest(event);
-    }
+        super(FollowTrainStationsInitial()) {
+    on<FollowTrainStationsRequest>(_mapFollowTrainStationsRequest);
   }
 
-  Stream<FollowTrainStationsState> _mapFollowTrainStationsRequest(
-      FollowTrainStationsRequest event) async* {
-    yield FollowTrainStationsLoading();
+  Future<void> _mapFollowTrainStationsRequest(FollowTrainStationsRequest event,
+      Emitter<FollowTrainStationsState> emit) async {
+    emit(FollowTrainStationsLoading());
     try {
       final stations =
           await _trainRepository.getFollowTrainStations(event.savedTrain);
-      if (stations != null) {
-        yield FollowTrainStationsSuccess(
-          stations: stations,
-        );
-      } else {
-        yield FollowTrainStationsFailed();
-      }
+      emit(FollowTrainStationsSuccess(stations: stations));
     } catch (e) {
-      print(e);
-      yield FollowTrainStationsFailed();
+      emit(FollowTrainStationsFailed());
     }
   }
 }

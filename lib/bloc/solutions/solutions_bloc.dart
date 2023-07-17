@@ -12,19 +12,13 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
       SavedTrainRepository savedTrainRepository)
       : _trainRepository = trainRepository,
         _savedTrainRepository = savedTrainRepository,
-        super(SolutionsInitial());
-
-  @override
-  Stream<SolutionsState> mapEventToState(
-    SolutionsEvent event,
-  ) async* {
-    if (event is SolutionsRequest) {
-      yield* _mapSolutionsRequest(event);
-    }
+        super(SolutionsInitial()) {
+    on<SolutionsRequest>(_mapSolutionsRequest);
   }
 
-  Stream<SolutionsState> _mapSolutionsRequest(SolutionsRequest event) async* {
-    yield SolutionsLoading();
+  Future<void> _mapSolutionsRequest(
+      SolutionsRequest event, Emitter<SolutionsState> emit) async {
+    emit(SolutionsLoading());
     try {
       final solutions =
           await _trainRepository.getSolutions(event.solutionsInfo);
@@ -32,13 +26,9 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
           .addRecentStation(event.solutionsInfo!.departureStation);
       _savedTrainRepository
           .addRecentStation(event.solutionsInfo!.arrivalStation);
-      if (solutions != null) {
-        yield SolutionsSuccess(solutions: solutions);
-      } else {
-        yield SolutionsFailed();
-      }
+      emit(SolutionsSuccess(solutions: solutions));
     } catch (e) {
-      yield SolutionsFailed();
+      emit(SolutionsFailed());
     }
   }
 }

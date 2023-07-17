@@ -9,44 +9,31 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
 
   RecentsBloc(SavedTrainRepository savedTrainRepository)
       : _savedTrainRepository = savedTrainRepository,
-        super(RecentsInitial());
-
-  @override
-  Stream<RecentsState> mapEventToState(
-    RecentsEvent event,
-  ) async* {
-    if (event is RecentsRequest) {
-      yield* _mapRecentsRequest(event);
-    }
-
-    if (event is DeleteRecent) {
-      yield* _mapDeleteRecentRequest(event);
-    }
+        super(RecentsInitial()) {
+    on<RecentsRequest>(_mapRecentsRequest);
+    on<DeleteRecent>(_mapDeleteRecentRequest);
   }
 
-  Stream<RecentsState> _mapRecentsRequest(RecentsRequest event) async* {
-    yield RecentsLoading();
+  Future<void> _mapRecentsRequest(
+      RecentsRequest event, Emitter<RecentsState> emit) async {
+    emit(RecentsLoading());
     try {
       final trains = _savedTrainRepository.getRecents();
-      if (trains != null) {
-        yield RecentsSuccess(trains: trains);
-      } else {
-        yield RecentsFailed();
-      }
+      emit(RecentsSuccess(trains: trains));
     } catch (e) {
-      print(e);
-      yield RecentsFailed();
+      emit(RecentsFailed());
     }
   }
 
-  Stream<RecentsState> _mapDeleteRecentRequest(DeleteRecent event) async* {
-    yield RecentsLoading();
+  Future<void> _mapDeleteRecentRequest(
+      DeleteRecent event, Emitter<RecentsState> emit) async {
+    emit(RecentsLoading());
     try {
       _savedTrainRepository.removeRecent(event.savedTrain);
       final trains = _savedTrainRepository.getRecents();
-      yield RecentsSuccess(trains: trains);
+      emit(RecentsSuccess(trains: trains));
     } catch (e) {
-      yield RecentsFailed();
+      emit(RecentsFailed());
     }
   }
 }

@@ -10,27 +10,20 @@ class SendFeedbackBloc extends Bloc<SendFeedbackEvent, SendFeedbackState> {
 
   SendFeedbackBloc(TrainRepository trainRepository)
       : _trainRepository = trainRepository,
-        super(SendFeedbackInitial());
-
-  @override
-  Stream<SendFeedbackState> mapEventToState(
-    SendFeedbackEvent event,
-  ) async* {
-    if (event is SendFeedbackRequest) {
-      yield* _mapSendFeedbackRequest(event);
-    }
+        super(SendFeedbackInitial()) {
+    on<SendFeedbackRequest>(_mapSendFeedbackRequest);
   }
 
-  Stream<SendFeedbackState> _mapSendFeedbackRequest(
-      SendFeedbackRequest event) async* {
-    yield SendFeedbackLoading();
+  Future<void> _mapSendFeedbackRequest(
+      SendFeedbackRequest event, Emitter<SendFeedbackState> emit) async {
+    emit(SendFeedbackLoading());
     await Future.delayed(Duration(seconds: 1));
     try {
       await _trainRepository.sendFeedback(event.feedback);
-      yield SendFeedbackSuccess();
+      emit(SendFeedbackSuccess());
     } catch (e) {
-      yield SendFeedbackFailed();
+      emit(SendFeedbackFailed());
     }
-    yield SendFeedbackInitial();
+    emit(SendFeedbackInitial());
   }
 }

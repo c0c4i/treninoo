@@ -8,25 +8,18 @@ class TrainStatusBloc extends Bloc<TrainStatusEvent, TrainStatusState> {
 
   TrainStatusBloc(TrainRepository trainRepository)
       : _trainRepository = trainRepository,
-        super(TrainStatusInitial());
-
-  @override
-  Stream<TrainStatusState> mapEventToState(
-    TrainStatusEvent event,
-  ) async* {
-    if (event is TrainStatusRequest) {
-      yield* _mapTrainStatusRequest(event);
-    }
+        super(TrainStatusInitial()) {
+    on<TrainStatusRequest>(_mapTrainStatusRequest);
   }
 
-  Stream<TrainStatusState> _mapTrainStatusRequest(
-      TrainStatusRequest event) async* {
-    yield TrainStatusLoading();
+  Future<void> _mapTrainStatusRequest(
+      TrainStatusRequest event, Emitter<TrainStatusState> emit) async {
+    emit(TrainStatusLoading());
     try {
       final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
-      yield TrainStatusSuccess(trainInfo: trainInfo);
+      emit(TrainStatusSuccess(trainInfo: trainInfo));
     } catch (e) {
-      yield TrainStatusFailed();
+      emit(TrainStatusFailed());
     }
   }
 }

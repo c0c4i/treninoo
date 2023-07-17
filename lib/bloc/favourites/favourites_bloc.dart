@@ -9,46 +9,32 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
 
   FavouritesBloc(SavedTrainRepository savedTrainRepository)
       : _savedTrainRepository = savedTrainRepository,
-        super(FavouritesInitial());
-
-  @override
-  Stream<FavouritesState> mapEventToState(
-    FavouritesEvent event,
-  ) async* {
-    if (event is FavouritesRequest) {
-      yield* _mapFavouritesRequest(event);
-    }
-    if (event is DeleteFavourite) {
-      yield* _mapDeleteFavouriteRequest(event);
-    }
+        super(FavouritesInitial()) {
+    on<FavouritesRequest>(_mapFavouritesRequest);
+    on<DeleteFavourite>(_mapDeleteFavouriteRequest);
   }
 
-  Stream<FavouritesState> _mapFavouritesRequest(
-      FavouritesRequest event) async* {
-    yield FavouritesLoading();
+  Future<void> _mapFavouritesRequest(
+      FavouritesRequest event, Emitter<FavouritesState> emit) async {
+    emit(FavouritesLoading());
     try {
       final trains = _savedTrainRepository.getFavourites();
-      if (trains != null) {
-        yield FavouritesSuccess(trains: trains);
-      } else {
-        yield FavouritesFailed();
-      }
+
+      emit(FavouritesSuccess(trains: trains));
     } catch (e) {
-      print(e);
-      yield FavouritesFailed();
+      emit(FavouritesFailed());
     }
   }
 
-  Stream<FavouritesState> _mapDeleteFavouriteRequest(
-      DeleteFavourite event) async* {
-    yield FavouritesLoading();
+  Future<void> _mapDeleteFavouriteRequest(
+      DeleteFavourite event, Emitter<FavouritesState> emit) async {
+    emit(FavouritesLoading());
     try {
       _savedTrainRepository.removeFavourite(event.savedTrain);
       final trains = _savedTrainRepository.getFavourites();
-      yield FavouritesSuccess(trains: trains);
+      emit(FavouritesSuccess(trains: trains));
     } catch (e) {
-      print(e);
-      yield FavouritesFailed();
+      emit(FavouritesFailed());
     }
   }
 }

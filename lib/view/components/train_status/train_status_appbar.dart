@@ -44,7 +44,6 @@ class _TrainAppBarState extends State<TrainAppBar> {
         ),
         Row(
           children: [
-            // TODO: Implement notification in app
             // IconButton(
             //   iconSize: 40,
             //   onPressed: () {

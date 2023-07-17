@@ -15,31 +15,25 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
       SavedTrainRepository savedTrainRepository)
       : _trainRepository = trainRepository,
         _savedTrainRepository = savedTrainRepository,
-        super(ExistInitial());
-
-  @override
-  Stream<ExistState> mapEventToState(
-    ExistEvent event,
-  ) async* {
-    if (event is ExistRequest) {
-      yield* _mapExistRequest(event);
-    }
+        super(ExistInitial()) {
+    on<ExistRequest>(_mapExistRequest);
   }
 
-  Stream<ExistState> _mapExistRequest(ExistRequest event) async* {
-    yield ExistLoading();
+  Future<void> _mapExistRequest(
+      ExistRequest event, Emitter<ExistState> emit) async {
+    emit(ExistLoading());
     try {
       final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
       _savedTrainRepository.addRecent(SavedTrain.fromTrainInfo(trainInfo));
-      yield ExistSuccess(trainInfo: trainInfo);
+      emit(ExistSuccess(trainInfo: trainInfo));
     } on MoreThanOneException catch (exception) {
-      yield ExistMoreThanOne(
+      emit(ExistMoreThanOne(
         savedTrain: exception.savedTrain,
         stations: exception.stations,
-      );
+      ));
     } catch (e) {
-      yield ExistFailed(savedTrain: event.savedTrain, type: event.type);
+      emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));
     }
-    yield ExistInitial();
+    emit(ExistInitial());
   }
 }
