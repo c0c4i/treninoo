@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/app.dart';
 import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/utils/utils.dart';
@@ -26,11 +27,18 @@ void main() async {
   SavedTrainRepository savedTrainRepository = APISavedTrain();
   await savedTrainRepository.setup();
 
-  runApp(
-    App(
-      savedThemeMode: savedThemeMode,
-      trainRepository: trainRepository,
-      savedTrainRepository: savedTrainRepository,
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://b5d7e7baa42a47c68bda155d1c27539d@sentry.hyperbit.it/3';
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(
+      App(
+        savedThemeMode: savedThemeMode,
+        trainRepository: trainRepository,
+        savedTrainRepository: savedTrainRepository,
+      ),
     ),
   );
 }

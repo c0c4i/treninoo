@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
@@ -31,7 +32,11 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
         savedTrain: exception.savedTrain,
         stations: exception.stations,
       ));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));
     }
     emit(ExistInitial());

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 
 import '../../repository/saved_train.dart';
@@ -33,7 +34,11 @@ class FavouritesBloc extends Bloc<FavouritesEvent, FavouritesState> {
       _savedTrainRepository.removeFavourite(event.savedTrain);
       final trains = _savedTrainRepository.getFavourites();
       emit(FavouritesSuccess(trains: trains));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(FavouritesFailed());
     }
   }
