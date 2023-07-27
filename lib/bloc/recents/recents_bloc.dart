@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 
 import '../../repository/saved_train.dart';
@@ -32,7 +33,11 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
       _savedTrainRepository.removeRecent(event.savedTrain);
       final trains = _savedTrainRepository.getRecents();
       emit(RecentsSuccess(trains: trains));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(RecentsFailed());
     }
   }

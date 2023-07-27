@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/repository/train.dart';
 
 import 'send_feedback_event.dart';
@@ -21,7 +22,11 @@ class SendFeedbackBloc extends Bloc<SendFeedbackEvent, SendFeedbackState> {
     try {
       await _trainRepository.sendFeedback(event.feedback);
       emit(SendFeedbackSuccess());
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(SendFeedbackFailed());
     }
     emit(SendFeedbackInitial());

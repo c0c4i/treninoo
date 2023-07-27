@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
 import 'package:treninoo/repository/train.dart';
 
@@ -28,7 +29,11 @@ class StationStatusBloc extends Bloc<StationStatusEvent, StationStatusState> {
           await _trainRepository.getArrivalTrains(event.station);
       emit(StationStatusSuccess(
           departureTrains: departureTrains, arrivalTrains: arrivalTrains));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(StationStatusFailed());
     }
   }

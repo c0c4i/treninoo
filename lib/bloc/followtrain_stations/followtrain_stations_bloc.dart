@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/repository/train.dart';
 
 import 'followtrain_stations_event.dart';
@@ -22,7 +23,11 @@ class FollowTrainStationsBloc
       final stations =
           await _trainRepository.getFollowTrainStations(event.savedTrain);
       emit(FollowTrainStationsSuccess(stations: stations));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(FollowTrainStationsFailed());
     }
   }

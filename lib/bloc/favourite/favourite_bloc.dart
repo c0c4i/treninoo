@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../repository/saved_train.dart';
 import 'favourite_event.dart';
@@ -23,7 +24,11 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
       bool isFavourite =
           _savedSavedTrainRepository.isFavourite(event.savedTrain);
       emit(FavouriteSuccess(isFavourite: isFavourite));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(FavouriteFailed());
     }
   }
@@ -37,7 +42,11 @@ class FavouriteBloc extends Bloc<FavouriteEvent, FavouriteState> {
           ? _savedSavedTrainRepository.addFavourite(event.savedTrain)
           : _savedSavedTrainRepository.removeFavourite(event.savedTrain);
       emit(FavouriteSuccess(isFavourite: event.value));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
       emit(FavouriteFailed());
     }
   }
