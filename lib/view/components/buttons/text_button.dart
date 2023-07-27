@@ -3,7 +3,7 @@ import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class ActionTextButton extends StatelessWidget {
-  final String? title;
+  final String title;
   final double width;
   final double height;
   final Color? backgroundColor;
@@ -12,7 +12,7 @@ class ActionTextButton extends StatelessWidget {
 
   const ActionTextButton({
     Key? key,
-    this.title,
+    required this.title,
     this.width = double.infinity,
     this.height = 54,
     this.backgroundColor,
@@ -28,7 +28,7 @@ class ActionTextButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: Text(
-          title!,
+          title,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         style: TextButton.styleFrom(

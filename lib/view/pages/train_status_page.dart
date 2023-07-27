@@ -7,6 +7,7 @@ import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/view/components/predicted_arrival/predicted_arrival_alert.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
@@ -129,6 +130,7 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                 currentStop:
                                     state.trainInfo.lastPositionRegister,
                               ),
+                              PredictedArrivalAlert(),
                             ],
                           );
                         if (state is TrainStatusLoading && trainInfo != null) {
@@ -144,6 +146,7 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                 stops: trainInfo!.stops,
                                 currentStop: trainInfo!.lastPositionRegister,
                               ),
+                              PredictedArrivalAlert(),
                             ],
                           );
                         }

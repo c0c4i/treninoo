@@ -7,6 +7,7 @@ class SharedPrefs {
   static const String SPrecentsStations = 'recentsStations';
   static const String SPDarkMode = 'darkMode';
   static const String SPFirstPage = 'first_page';
+  static const String SPPredictedArrival = 'predicted_arrival';
 
   Future<void> setup() async {
     _sharedPrefs = await SharedPreferences.getInstance();
@@ -35,5 +36,12 @@ class SharedPrefs {
 
   set firstPage(int value) {
     _sharedPrefs.setInt(SPFirstPage, value);
+  }
+
+  bool get predictedArrival =>
+      _sharedPrefs.getBool(SPPredictedArrival) ?? false;
+
+  set predictedArrival(bool value) {
+    _sharedPrefs.setBool(SPPredictedArrival, value);
   }
 }

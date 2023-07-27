@@ -10,6 +10,7 @@ import 'package:treninoo/view/style/theme.dart';
 
 import '../components/buttons/menu/menu_button_click.dart';
 import '../components/dialog/select_start_page.dart';
+import '../components/predicted_arrival/enable_predicted_arrival.dart';
 import '../router/routes_names.dart';
 
 class Settings extends StatefulWidget {
@@ -48,6 +49,8 @@ class _SettingsState extends State<Settings> {
                   setState(() {});
                 },
               ),
+              SizedBox(height: kPadding),
+              PredictedArrival(),
               SizedBox(height: kPadding),
               MenuButtonClick(
                 title: "Schermata iniziale",
