@@ -39,7 +39,8 @@ class _TrainStatusStopCellState extends State<TrainStatusStopCell> {
     switch (widget.cellType) {
       case CellType.binary:
         return "-";
-      case CellType.time:
+      case CellType.departure:
+      case CellType.arrival:
         return "—:—";
     }
   }
@@ -91,8 +92,10 @@ class _TrainStatusStopCellState extends State<TrainStatusStopCell> {
   get style {
     Color? color;
     if (!confirmed) {
-      if (canBePredicted && context.read<PredictedArrivalCubit>().state)
-        color = Accent.light;
+      if (canBePredicted &&
+          context.read<PredictedArrivalCubit>().state &&
+          widget.cellType == CellType.arrival)
+        color = Accent.normal;
       else
         color = Grey.dark;
     }
@@ -110,4 +113,4 @@ class _TrainStatusStopCellState extends State<TrainStatusStopCell> {
   }
 }
 
-enum CellType { binary, time }
+enum CellType { binary, arrival, departure }

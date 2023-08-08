@@ -26,6 +26,7 @@ class TrainStatusStopRow extends StatelessWidget {
             flex: 4,
             child: TrainStatusStopStationCell(
               stationName: stop.name,
+              current: current,
             ),
           ),
           Expanded(
@@ -43,7 +44,7 @@ class TrainStatusStopRow extends StatelessWidget {
             child: TrainStatusStopCell(
               actualArrival: stop.actualArrivalTime,
               plannedArrival: stop.plannedArrivalTime,
-              cellType: CellType.time,
+              cellType: CellType.arrival,
               delay: delay,
             ),
           ),
@@ -52,7 +53,7 @@ class TrainStatusStopRow extends StatelessWidget {
             child: TrainStatusStopCell(
               actualDeparture: stop.actualDepartureTime,
               plannedDeparture: stop.plannedDepartureTime,
-              cellType: CellType.time,
+              cellType: CellType.departure,
               delay: delay,
             ),
           ),

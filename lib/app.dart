@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:treninoo/cubit/predicted_arrival.dart';
+import 'package:treninoo/cubit/show_feature.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -64,6 +65,9 @@ class App extends StatelessWidget {
             ),
             BlocProvider(
               create: (_) => PredictedArrivalCubit(savedTrainRepository),
+            ),
+            BlocProvider(
+              create: (_) => ShowFeatureCubit(savedTrainRepository),
             ),
           ],
           child: MaterialApp(

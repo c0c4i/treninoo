@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
-import 'package:treninoo/cubit/predicted_arrival.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/view/components/predicted_arrival/predicted_arrival_alert.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
@@ -102,16 +100,16 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                 currentStop: trainInfo?.lastPositionRegister,
                                 delay: trainInfo!.delay!,
                               ),
-                              PredictedArrivalAlert(
-                                onActivate: () {
-                                  context
-                                      .read<PredictedArrivalCubit>()
-                                      .setValue(true);
-                                  setState(
-                                    () {},
-                                  );
-                                },
-                              ),
+                              // PredictedArrivalAlert(
+                              //   onActivate: () {
+                              //     context
+                              //         .read<PredictedArrivalCubit>()
+                              //         .setValue(true);
+                              //     setState(
+                              //       () {},
+                              //     );
+                              //   },
+                              // ),
                             ],
                           );
 

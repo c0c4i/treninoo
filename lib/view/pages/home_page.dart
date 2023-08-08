@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/cubit/show_feature.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
 import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
@@ -7,6 +8,8 @@ import 'package:treninoo/view/pages/search_station_page.dart';
 import 'package:treninoo/view/pages/search_train_page.dart';
 
 import '../../cubit/first_page.dart';
+import '../../cubit/predicted_arrival.dart';
+import '../components/dialog/new_feature.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -28,6 +31,16 @@ class _MyStatefulWidgetState extends State<HomePage> {
       initialPage: _selectedIndex,
       keepPage: true,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 600));
+      bool showFeature = context.read<ShowFeatureCubit>().state;
+      bool predictedArrival = context.read<PredictedArrivalCubit>().state;
+      if (showFeature && !predictedArrival) {
+        context.read<ShowFeatureCubit>().update(false);
+        BeautifulNewFeatureDialog.show(context: context);
+      }
+    });
   }
 
   static List<Widget> _widgetOptions = <Widget>[
