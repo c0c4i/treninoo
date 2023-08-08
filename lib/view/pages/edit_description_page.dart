@@ -28,7 +28,7 @@ class _EditDescriptionPageState extends State<EditDescriptionPage> {
 
   @override
   void initState() {
-    _controller.text = widget.savedTrain!.description!;
+    _controller.text = widget.savedTrain!.description ?? '';
     super.initState();
   }
 

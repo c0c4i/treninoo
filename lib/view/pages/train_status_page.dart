@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
+import 'package:treninoo/cubit/predicted_arrival.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
@@ -77,37 +78,6 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                 child: Column(
                   children: <Widget>[
                     TrainAppBar(savedTrain: widget.savedTrain),
-                    // BlocConsumer<TrainStatusBloc, TrainStatusState>(
-                    //   listener: (context, state) {
-                    //     if (state is TrainStatusSuccess) {
-                    //       setState(() {
-                    //         trainInfo = state.trainInfo;
-                    //       });
-                    //     }
-                    //   },
-                    //   builder: (context, state) {
-                    //     if (state is TrainStatusSuccess) {
-                    //       String trainType = state.trainInfo.trainType;
-                    //       String trainCode = state.trainInfo.trainCode;
-                    //       return TrainAppBar(
-                    //         number: "$trainType $trainCode",
-                    //         savedTrain: state.trainInfo,
-                    //       );
-                    //     }
-                    //     if (state is TrainStatusLoading && trainInfo != null) {
-                    //       String trainType = trainInfo.trainType;
-                    //       String trainCode = trainInfo.trainCode;
-                    //       return TrainAppBar(
-                    //         number: "$trainType $trainCode",
-                    //         savedTrain: trainInfo,
-                    //       );
-                    //     }
-                    //     return TrainAppBar(
-                    //       number: widget.savedTrain.trainCode,
-                    //       savedTrain: null,
-                    //     );
-                    //   },
-                    // ),
                     SizedBox(height: 8),
                     BlocBuilder<TrainStatusBloc, TrainStatusState>(
                       builder: (context, state) {
@@ -116,24 +86,9 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                               TrainStatusRequest(
                                   savedTrain: widget.savedTrain));
                         }
-                        if (state is TrainStatusSuccess)
-                          return Column(
-                            children: [
-                              TrainInfoDetails(
-                                trainInfo: state.trainInfo,
-                              ),
-                              SizedBox(height: 24),
-                              TrainInfoStopsHeader(),
-                              SizedBox(height: 8),
-                              TrainStatusStopList(
-                                stops: state.trainInfo.stops,
-                                currentStop:
-                                    state.trainInfo.lastPositionRegister,
-                              ),
-                              PredictedArrivalAlert(),
-                            ],
-                          );
-                        if (state is TrainStatusLoading && trainInfo != null) {
+                        if ((state is TrainStatusSuccess ||
+                                state is TrainStatusLoading) &&
+                            trainInfo != null)
                           return Column(
                             children: [
                               TrainInfoDetails(
@@ -143,13 +98,23 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                               TrainInfoStopsHeader(),
                               SizedBox(height: 8),
                               TrainStatusStopList(
-                                stops: trainInfo!.stops,
-                                currentStop: trainInfo!.lastPositionRegister,
+                                stops: trainInfo?.stops,
+                                currentStop: trainInfo?.lastPositionRegister,
+                                delay: trainInfo!.delay!,
                               ),
-                              PredictedArrivalAlert(),
+                              PredictedArrivalAlert(
+                                onActivate: () {
+                                  context
+                                      .read<PredictedArrivalCubit>()
+                                      .setValue(true);
+                                  setState(
+                                    () {},
+                                  );
+                                },
+                              ),
                             ],
                           );
-                        }
+
                         if (state is TrainStatusLoading)
                           return Container(
                             height: MediaQuery.of(context).size.height * 0.7,

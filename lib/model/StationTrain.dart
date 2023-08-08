@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:treninoo/utils/utils.dart';
 
 class StationTrain {
@@ -5,7 +6,7 @@ class StationTrain {
   final String? departureCode;
   final String? category;
   final String? name;
-  final String? time;
+  final TimeOfDay? time;
   final String? plannedRail;
   final String? actualRail;
   final int? delay;
@@ -26,18 +27,18 @@ class StationTrain {
   factory StationTrain.fromJson(Map<String, dynamic> json, bool departure) {
     String? plannedRail;
     String? actualRail;
-    String? time;
+    TimeOfDay? time;
     String? name;
 
     if (departure) {
       plannedRail = json['binarioEffettivoPartenzaDescrizione'];
       actualRail = json['binarioProgrammatoPartenzaDescrizione'];
-      time = Utils.timeStampToString(json['orarioPartenza']);
+      time = Utils.timestampToTimeOfDay(json['orarioPartenza']);
       name = json['destinazione'];
     } else {
       plannedRail = json['binarioProgrammatoArrivoDescrizione'];
       actualRail = json['binarioEffettivoArrivoDescrizione'];
-      time = Utils.timeStampToString(json['orarioArrivo']);
+      time = Utils.timestampToTimeOfDay(json['orarioArrivo']);
       name = json['origine'];
     }
 

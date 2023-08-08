@@ -4,11 +4,16 @@ import 'package:treninoo/view/components/train_status/train_status_stop_cell.dar
 import 'package:treninoo/view/components/train_status/train_status_stop_station_cell.dart';
 
 class TrainStatusStopRow extends StatelessWidget {
-  const TrainStatusStopRow({Key? key, this.stop, this.current})
-      : super(key: key);
+  const TrainStatusStopRow({
+    Key? key,
+    required this.stop,
+    required this.current,
+    required this.delay,
+  }) : super(key: key);
 
-  final Stop? stop;
-  final bool? current;
+  final Stop stop;
+  final bool current;
+  final int delay;
 
   @override
   Widget build(BuildContext context) {
@@ -20,33 +25,35 @@ class TrainStatusStopRow extends StatelessWidget {
           Expanded(
             flex: 4,
             child: TrainStatusStopStationCell(
-              stationName: stop!.name,
+              stationName: stop.name,
             ),
           ),
           Expanded(
             flex: 1,
             child: TrainStatusStopCell(
-              actualArrival: stop!.actualArrivalRail,
-              actualDeparture: stop!.actualDepartureRail,
-              plannedArrival: stop!.plannedArrivalRail,
-              plannedDeparture: stop!.plannedDepartureRail,
+              actualArrival: stop.actualArrivalRail,
+              actualDeparture: stop.actualDepartureRail,
+              plannedArrival: stop.plannedArrivalRail,
+              plannedDeparture: stop.plannedDepartureRail,
               cellType: CellType.binary,
             ),
           ),
           Expanded(
             flex: 2,
             child: TrainStatusStopCell(
-              actualArrival: stop!.actualArrivalTime,
-              plannedArrival: stop!.plannedArrivalTime,
+              actualArrival: stop.actualArrivalTime,
+              plannedArrival: stop.plannedArrivalTime,
               cellType: CellType.time,
+              delay: delay,
             ),
           ),
           Expanded(
             flex: 2,
             child: TrainStatusStopCell(
-              actualDeparture: stop!.actualDepartureTime,
-              plannedDeparture: stop!.plannedDepartureTime,
+              actualDeparture: stop.actualDepartureTime,
+              plannedDeparture: stop.plannedDepartureTime,
               cellType: CellType.time,
+              delay: delay,
             ),
           ),
         ],

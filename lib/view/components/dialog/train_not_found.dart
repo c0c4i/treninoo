@@ -79,5 +79,6 @@ class TrainNotFoundDialog {
             ),
           );
         },
-      );
+      ) ??
+      false;
 }

@@ -37,7 +37,7 @@ class TrainInfoDetails extends StatelessWidget {
                                 Typo.titleHeavy.copyWith(color: Colors.white),
                           ),
                           Text(
-                            'Ultimo Rilevamento: ${trainInfo!.lastTimeRegister}',
+                            'Ultimo Rilevamento: ${trainInfo!.lastTimeRegister!.format(context)}',
                             style: Typo.bodyLight.copyWith(
                               color: Colors.white,
                             ),

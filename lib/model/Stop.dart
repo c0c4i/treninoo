@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
+
 import '../utils/utils.dart';
 
 class Stop {
   final String? name;
-  final String? plannedDepartureTime;
-  final String? actualDepartureTime;
-  final String? plannedArrivalTime;
-  final String? actualArrivalTime;
+  final TimeOfDay? plannedDepartureTime;
+  final TimeOfDay? actualDepartureTime;
+  final TimeOfDay? plannedArrivalTime;
+  final TimeOfDay? actualArrivalTime;
   final String? plannedDepartureRail;
   final String? actualDepartureRail;
   final String? plannedArrivalRail;
@@ -28,16 +30,16 @@ class Stop {
   factory Stop.fromJson(Map<String, dynamic> json) {
     return Stop(
       name: json['stazione'],
-      plannedDepartureTime: Utils.timeStampToString(
+      plannedDepartureTime: Utils.timestampToTimeOfDay(
         json['partenza_teorica'],
       ),
-      actualDepartureTime: Utils.timeStampToString(
+      actualDepartureTime: Utils.timestampToTimeOfDay(
         json['partenzaReale'],
       ),
-      plannedArrivalTime: Utils.timeStampToString(
+      plannedArrivalTime: Utils.timestampToTimeOfDay(
         json['arrivo_teorico'],
       ),
-      actualArrivalTime: Utils.timeStampToString(
+      actualArrivalTime: Utils.timestampToTimeOfDay(
         json['arrivoReale'],
       ),
       plannedDepartureRail: json['binarioProgrammatoPartenzaDescrizione'],
