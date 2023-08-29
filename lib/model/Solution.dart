@@ -14,4 +14,12 @@ class Solution {
           .toList(),
     );
   }
+
+  factory Solution.fromJsonLeFrecce(Map<String, dynamic> json) {
+    return Solution(
+      trains: (json['trains'] as List)
+          .map((f) => TrainSolution.fromJsonLeFrecce(f))
+          .toList(),
+    );
+  }
 }

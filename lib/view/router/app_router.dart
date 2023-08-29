@@ -67,7 +67,7 @@ class AppRouter {
           ),
         );
       case RoutesNames.station:
-        Station? station = settings.arguments as Station?;
+        Station station = settings.arguments as Station;
         return CupertinoPageRoute(
           builder: (_) => RepositoryProvider<TrainRepository>(
             create: (context) => context.read<TrainRepository>(),

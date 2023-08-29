@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/repository/train.dart';
 
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/header.dart';
@@ -72,10 +73,11 @@ class _SearchStationPageState extends State<SearchStationPage> {
                       controller: searchController,
                       onSelect: (selected) {
                         if (selected == null) return;
-                        searchController.text = selected.stationName!;
+                        searchController.text = selected.stationName;
                         setState(() => station = selected);
                       },
                       errorText: validator(station),
+                      type: SearchStationType.LEFRECCE,
                     ),
                   ),
                   SizedBox(height: 20),

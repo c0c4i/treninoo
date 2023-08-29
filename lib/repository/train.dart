@@ -14,14 +14,14 @@ import '../exceptions/more_than_one.dart';
 
 abstract class TrainRepository {
   Future<List<Station>> getDepartureStation(String trainCode);
-  Future<Solutions> getSolutions(SolutionsInfo? solutionsInfo);
+  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain? savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
-  Future<List<StationTrain>> getArrivalTrains(Station? station);
-  Future<List<StationTrain>> getDepartureTrains(Station? station);
+  Future<List<StationTrain>> getStationDetails(
+      Station station, StationDetailsType type);
   Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain);
   Future<void> sendFeedback(String feedback);
-  Future<List<Station>> searchStations(String text);
+  Future<List<Station>> searchStations(String text, SearchStationType type);
 }
 
 class APITrain extends TrainRepository {
@@ -77,21 +77,25 @@ class APITrain extends TrainRepository {
     return TrainInfo.fromJson(body);
   }
 
-  Future<Solutions> getSolutions(SolutionsInfo? solutionsInfo) async {
-    String departureCode =
-        solutionsInfo!.departureStation!.stationCode!.replaceAll("S0", "");
-    String arrivalCode =
-        solutionsInfo.arrivalStation!.stationCode!.replaceAll("S0", "");
-    String time = solutionsInfo.fromTime!.toIso8601String();
+  Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
+    String time = DateFormat('yyyy-MM-dd HH:mm').format(
+      solutionsInfo.fromTime!,
+    );
 
-    String url =
-        "${ViaggioTreno.GET_SOLUTIONS}$departureCode/$arrivalCode/$time";
-    var uri = Uri.https(URL, url);
+    var uri = Uri.https(
+      BASE_URL,
+      Endpoint.SOLUTIONS_LEFRECCE,
+      {
+        'departureStation': solutionsInfo.departureStation!.stationCode,
+        'arrivalStation': solutionsInfo.arrivalStation!.stationCode,
+        'date': time,
+      },
+    );
     var response = await http.get(uri);
 
     var body = jsonDecode(response.body);
 
-    Solutions solutions = Solutions.fromJson(body);
+    Solutions solutions = Solutions.fromJsonLeFrecce(body);
     solutions.departureStation = solutionsInfo.departureStation;
     solutions.arrivalStation = solutionsInfo.arrivalStation;
     solutions.fromTime = solutionsInfo.fromTime;
@@ -115,39 +119,23 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<List<StationTrain>> getArrivalTrains(Station? station) async {
+  Future<List<StationTrain>> getStationDetails(
+      Station station, StationDetailsType type) async {
+    // Get last 5 letter of station code (es. 830002998 -> 02998)
+    String stationCode =
+        station.stationCode.substring(station.stationCode.length - 5);
+
     String url =
-        "${ViaggioTreno.GET_ARRIVAL_TRAINS}${station!.stationCode}/" + getDate();
+        "${Endpoint.STATION_DETAILS_VIAGGIOTRENO}/S$stationCode/${type.endpoint}";
 
-    var uri = Uri.https(URL, url);
+    var uri = Uri.http(BASE_URL, url);
+    print(uri);
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
 
-    // fake response for testing at 12 PM
-    // var response = await readJson("arrivi_milano");
-    // var body = jsonDecode(response);
-
-    List<StationTrain> trains =
-        (body as List).map((f) => StationTrain.fromJson(f, false)).toList();
-
-    return trains;
-  }
-
-  @override
-  Future<List<StationTrain>> getDepartureTrains(Station? station) async {
-    String url = "${ViaggioTreno.GET_DEPARTURE_TRAINS}${station!.stationCode}/" +
-        getDate();
-
-    var uri = Uri.https(URL, url);
-    var response = await http.get(uri);
-    var body = jsonDecode(response.body);
-
-    // fake response for testing at 12 PM
-    // var response = await readJson("partenze_milano");
-    // var body = jsonDecode(response);
-
-    List<StationTrain> trains =
-        (body as List).map((f) => StationTrain.fromJson(f, true)).toList();
+    List<StationTrain> trains = (body['trains'] as List)
+        .map((f) => StationTrain.fromTreninooAPI(f))
+        .toList();
 
     return trains;
   }
@@ -187,8 +175,11 @@ class APITrain extends TrainRepository {
     if (response.statusCode != 200) throw Exception();
   }
 
-  Future<List<Station>> searchStations(String text) async {
-    var uri = Uri.http(BASE_URL, Endpoint.AUTOCOMPLETE + text);
+  Future<List<Station>> searchStations(
+    String text,
+    SearchStationType type,
+  ) async {
+    var uri = Uri.http(BASE_URL, type.endpoint + text);
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
 
@@ -198,5 +189,33 @@ class APITrain extends TrainRepository {
     }
 
     return stations;
+  }
+}
+
+enum SearchStationType {
+  VIAGGIO_TRENO,
+  LEFRECCE;
+
+  String get endpoint {
+    switch (this) {
+      case VIAGGIO_TRENO:
+        return Endpoint.AUTOCOMPLETE_VIAGGIOTRENO;
+      case LEFRECCE:
+        return Endpoint.AUTOCOMPLETE_LEFRECCE;
+    }
+  }
+}
+
+enum StationDetailsType {
+  departure,
+  arrival;
+
+  String get endpoint {
+    switch (this) {
+      case departure:
+        return 'departure';
+      case arrival:
+        return 'arrival';
+    }
   }
 }

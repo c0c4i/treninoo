@@ -26,4 +26,15 @@ class TrainSolution {
       trainCode: json['numeroTreno'],
     );
   }
+
+  factory TrainSolution.fromJsonLeFrecce(Map<String, dynamic> json) {
+    return TrainSolution(
+      departureStation: json['origin'],
+      arrivalStation: json['destination'],
+      departureTime: DateTime.parse(json['departureTime']),
+      arrivalTime: DateTime.parse(json['arrivalTime']),
+      trainType: TrainUtils.getTypeFromNumber(json['category']),
+      trainCode: json['trainCode'],
+    );
+  }
 }

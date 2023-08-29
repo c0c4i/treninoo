@@ -9,11 +9,13 @@ import 'package:treninoo/view/style/typography.dart';
 import '../../bloc/exist/exist.dart';
 
 class StationTrainCard extends StatelessWidget {
-  final StationTrain? stationTrain;
+  final StationTrain stationTrain;
+  final bool isDeparture;
 
   const StationTrainCard({
     Key? key,
-    this.stationTrain,
+    required this.stationTrain,
+    required this.isDeparture,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class StationTrainCard extends StatelessWidget {
           onPressed: () {
             context.read<ExistBloc>().add(
                   ExistRequest(
-                    savedTrain: SavedTrain.fromStationTrain(stationTrain!),
+                    savedTrain: SavedTrain.fromStationTrain(stationTrain),
                   ),
                 );
           },
@@ -37,14 +39,14 @@ class StationTrainCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      stationTrain!.category! + " " + stationTrain!.trainCode!,
+                      stationTrain.category! + " " + stationTrain.trainCode!,
                       style: Typo.subheaderHeavy.copyWith(
                         color: Primary.normal,
                       ),
                     ),
                   ),
                   Text(
-                    stationTrain!.time!.format(context),
+                    stationTrain.time!.format(context),
                     style: Typo.subheaderHeavy.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -53,10 +55,10 @@ class StationTrainCard extends StatelessWidget {
               ),
               SizedBox(height: 16),
               TextWithIcon(
-                icon: stationTrain!.isDeparture!
+                icon: isDeparture
                     ? Icons.sports_score
                     : Icons.location_on_outlined,
-                label: stationTrain!.name,
+                label: stationTrain.name,
               ),
               SizedBox(height: 16),
               Row(
@@ -64,15 +66,15 @@ class StationTrainCard extends StatelessWidget {
                   Expanded(
                     child: TextWithIcon(
                       icon: Icons.more_time,
-                      label: getTime(stationTrain!.delay),
+                      label: getTime(stationTrain.delay),
                     ),
                   ),
                   // SizedBox(width: 32),
                   Expanded(
                     child: TextWithIcon(
                       icon: Icons.tag,
-                      label: stationTrain!.actualRail ??
-                          stationTrain!.plannedRail ??
+                      label: stationTrain.actualRail ??
+                          stationTrain.plannedRail ??
                           "-",
                     ),
                   ),
@@ -89,7 +91,7 @@ class StationTrainCard extends StatelessWidget {
         ));
   }
 
-  String getTime(time) => time != 0 ? "$time min" : "In orario";
+  String getTime(time) => time != 0 && time != null ? "$time min" : "In orario";
 }
 
 class TextWithIcon extends StatelessWidget {

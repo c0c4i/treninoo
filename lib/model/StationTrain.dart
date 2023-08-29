@@ -10,7 +10,6 @@ class StationTrain {
   final String? plannedRail;
   final String? actualRail;
   final int? delay;
-  final bool? isDeparture;
 
   StationTrain({
     this.trainCode,
@@ -21,8 +20,20 @@ class StationTrain {
     this.plannedRail,
     this.actualRail,
     this.delay,
-    this.isDeparture,
   });
+
+  factory StationTrain.fromTreninooAPI(Map<String, dynamic> json) {
+    return StationTrain(
+      trainCode: json['trainCode'],
+      departureCode: json['departureCode'],
+      category: json['category'],
+      name: json['stationName'],
+      time: Utils.timestampToTimeOfDay(json['time']),
+      plannedRail: json['plannedPlatform'],
+      actualRail: json['actualPlatform'],
+      delay: json['ritardo'],
+    );
+  }
 
   factory StationTrain.fromJson(Map<String, dynamic> json, bool departure) {
     String? plannedRail;
@@ -51,7 +62,6 @@ class StationTrain {
       plannedRail: plannedRail,
       actualRail: actualRail,
       delay: json['ritardo'],
-      isDeparture: departure,
     );
   }
 }

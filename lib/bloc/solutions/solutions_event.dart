@@ -9,7 +9,7 @@ abstract class SolutionsEvent extends Equatable {
 }
 
 class SolutionsRequest extends SolutionsEvent {
-  final SolutionsInfo? solutionsInfo;
+  final SolutionsInfo solutionsInfo;
 
   SolutionsRequest({required this.solutionsInfo});
 

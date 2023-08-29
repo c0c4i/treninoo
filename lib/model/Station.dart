@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class Station extends Equatable {
-  final String? stationName;
-  final String? stationCode;
+  final String stationName;
+  final String stationCode;
 
   Station({
-    this.stationName,
-    this.stationCode,
+    required this.stationName,
+    required this.stationCode,
   });
 
   Map<String, dynamic> toJson() => {
@@ -17,7 +17,7 @@ class Station extends Equatable {
   factory Station.fromJson(Map<String, dynamic> json) {
     return Station(
       stationName: json['stationName'],
-      stationCode: json['stationCode'],
+      stationCode: json['stationCode'].toString(),
     );
   }
 

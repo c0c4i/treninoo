@@ -14,6 +14,7 @@ class BeautifulNewFeatureDialog {
     required BuildContext context,
   }) async =>
       await showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

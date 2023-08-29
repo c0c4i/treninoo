@@ -26,4 +26,11 @@ class Solutions {
       // fromTime: time,
     );
   }
+
+  factory Solutions.fromJsonLeFrecce(Map<String, dynamic> json) {
+    List<Solution> solutions = (json['solutions'] as List)
+        .map((f) => Solution.fromJsonLeFrecce(f))
+        .toList();
+    return Solutions(solutions: solutions);
+  }
 }

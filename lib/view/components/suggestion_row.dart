@@ -3,7 +3,7 @@ import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class StationSuggestion extends StatelessWidget {
-  final Station? station;
+  final Station station;
 
   const StationSuggestion({
     Key? key,
@@ -23,7 +23,7 @@ class StationSuggestion extends StatelessWidget {
           SizedBox(width: 16),
           Expanded(
             child: Text(
-              station!.stationName!,
+              station.stationName,
               style: Typo.subheaderHeavy,
               overflow: TextOverflow.clip,
             ),

@@ -51,7 +51,7 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
                             itemBuilder: (context, index) {
                               return RadioListTile(
                                 visualDensity: VisualDensity.comfortable,
-                                title: Text(state.stations[index].stationName!),
+                                title: Text(state.stations[index].stationName),
                                 groupValue: selected,
                                 selected: selected == state.stations[index],
                                 value: state.stations[index],

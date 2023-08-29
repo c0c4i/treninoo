@@ -14,9 +14,9 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class StationStatusPage extends StatefulWidget {
-  final Station? station;
+  final Station station;
 
-  StationStatusPage({Key? key, this.station}) : super(key: key);
+  StationStatusPage({Key? key, required this.station}) : super(key: key);
 
   @override
   _StationStatusPageState createState() => _StationStatusPageState();
@@ -29,7 +29,7 @@ class _StationStatusPageState extends State<StationStatusPage>
   List<StationTrain>? departureTrains;
   List<StationTrain>? arrivalTrains;
 
-  TabController? _tabController;
+  late TabController _tabController;
 
   Timer? timer;
 
@@ -71,7 +71,7 @@ class _StationStatusPageState extends State<StationStatusPage>
                       }
                     },
                     child: BeautifulAppBar(
-                      title: widget.station!.stationName,
+                      title: widget.station.stationName,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -123,8 +123,10 @@ class _StationStatusPageState extends State<StationStatusPage>
                                       itemCount: departureTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain:
-                                                departureTrains![index]);
+                                          stationTrain: departureTrains![index],
+                                          isDeparture:
+                                              _tabController.index == 0,
+                                        );
                                       },
                                     )
                                   : Center(
@@ -134,8 +136,10 @@ class _StationStatusPageState extends State<StationStatusPage>
                                       itemCount: arrivalTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain:
-                                                arrivalTrains![index]);
+                                          stationTrain: arrivalTrains![index],
+                                          isDeparture:
+                                              _tabController.index == 0,
+                                        );
                                       },
                                     )
                                   : Center(
@@ -157,8 +161,10 @@ class _StationStatusPageState extends State<StationStatusPage>
                                       itemCount: departureTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain:
-                                                departureTrains![index]);
+                                          stationTrain: departureTrains![index],
+                                          isDeparture:
+                                              _tabController.index == 0,
+                                        );
                                       },
                                     )
                                   : Center(
@@ -168,8 +174,10 @@ class _StationStatusPageState extends State<StationStatusPage>
                                       itemCount: arrivalTrains!.length,
                                       itemBuilder: (context, index) {
                                         return StationTrainCard(
-                                            stationTrain:
-                                                arrivalTrains![index]);
+                                          stationTrain: arrivalTrains![index],
+                                          isDeparture:
+                                              _tabController.index == 0,
+                                        );
                                       },
                                     )
                                   : Center(

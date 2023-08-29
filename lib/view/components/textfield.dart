@@ -146,15 +146,17 @@ class SuggestionTextField extends StatefulWidget {
   final TextEditingController? controller;
   final Function(Station?) onSelect;
   final Function(String)? validator;
+  final SearchStationType type;
 
-  SuggestionTextField(
-      {Key? key,
-      this.label,
-      this.controller,
-      required this.onSelect,
-      this.validator,
-      this.errorText})
-      : super(key: key);
+  SuggestionTextField({
+    Key? key,
+    this.label,
+    this.controller,
+    required this.onSelect,
+    this.validator,
+    this.errorText,
+    required this.type,
+  }) : super(key: key);
 
   @override
   _SuggestionTextFieldState createState() => _SuggestionTextFieldState();
@@ -164,7 +166,9 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
   Future<List<Station?>> suggestionsCallback(String pattern) async {
     return pattern.length == 0
         ? context.read<SavedTrainRepository>().getRecentsStations()
-        : await context.read<TrainRepository>().searchStations(pattern);
+        : await context
+            .read<TrainRepository>()
+            .searchStations(pattern, widget.type);
   }
 
   @override
@@ -216,7 +220,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
       ),
       suggestionsCallback: suggestionsCallback,
       itemBuilder: (context, station) {
-        return StationSuggestion(station: station);
+        return StationSuggestion(station: station!);
       },
       onSuggestionSelected: widget.onSelect,
     );

@@ -49,7 +49,7 @@ class DepartureStationsDialog extends StatelessWidget {
       contentPadding: EdgeInsets.all(kPadding),
       children: departureStations.map((station) {
         return ListTile(
-          title: Text(station.stationName!),
+          title: Text(station.stationName),
           onTap: () => Navigator.pop(context, station),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),

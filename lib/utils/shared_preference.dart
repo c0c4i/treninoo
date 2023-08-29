@@ -4,7 +4,7 @@ class SharedPrefs {
   late SharedPreferences _sharedPrefs;
   static const String SPrecentsTrains = 'recentsTrains';
   static const String SPfavouritesTrains = 'favouritesTrains';
-  static const String SPrecentsStations = 'recentsStations';
+  static const String SPrecentsStations = 'lefrecce-recents-stations';
   static const String SPDarkMode = 'darkMode';
   static const String SPFirstPage = 'first_page';
   static const String SPPredictedArrival = 'predicted_arrival';

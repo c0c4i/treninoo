@@ -9,7 +9,7 @@ abstract class StationStatusEvent extends Equatable {
 }
 
 class StationStatusRequest extends StationStatusEvent {
-  final Station? station;
+  final Station station;
 
   StationStatusRequest({required this.station});
 

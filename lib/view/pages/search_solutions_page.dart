@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/dialog/time_picker.dart';
 import 'package:treninoo/view/components/header.dart';
@@ -70,11 +71,11 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       arrivalStation = temp;
 
       departureStation != null
-          ? departureController.text = departureStation!.stationName!
+          ? departureController.text = departureStation!.stationName
           : departureController.text = '';
 
       arrivalStation != null
-          ? arrivalController.text = arrivalStation!.stationName!
+          ? arrivalController.text = arrivalStation!.stationName
           : arrivalController.text = '';
     });
   }
@@ -115,10 +116,11 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 onSelect: (station) {
                                   if (station == null) return;
                                   departureController.text =
-                                      station.stationName!;
+                                      station.stationName;
                                   setState(() => departureStation = station);
                                 },
                                 errorText: validator(departureStation),
+                                type: SearchStationType.LEFRECCE,
                               ),
                               SizedBox(height: 20),
                               SuggestionTextField(
@@ -126,10 +128,11 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 controller: arrivalController,
                                 onSelect: (station) {
                                   if (station == null) return;
-                                  arrivalController.text = station.stationName!;
+                                  arrivalController.text = station.stationName;
                                   setState(() => arrivalStation = station);
                                 },
                                 errorText: validator(arrivalStation),
+                                type: SearchStationType.LEFRECCE,
                               ),
                             ],
                           ),
