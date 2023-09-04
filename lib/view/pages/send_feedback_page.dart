@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/textfield.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -19,6 +20,7 @@ class SendFeedbackPage extends StatefulWidget {
 }
 
 class _SendFeedbackPageState extends State<SendFeedbackPage> {
+  final TextEditingController _emailController = TextEditingController();
   TextEditingController _controller = TextEditingController();
 
   onSave() {
@@ -26,7 +28,10 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
     if (_controller.text.isEmpty) return;
     hideKeyboard();
     context.read<SendFeedbackBloc>().add(
-          SendFeedbackRequest(feedback: _controller.text),
+          SendFeedbackRequest(
+            feedback: _controller.text,
+            email: _emailController.text,
+          ),
         );
   }
 
@@ -88,7 +93,18 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                           keyboardType: TextInputType.text,
                           autocorrect: false,
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: kPadding),
+                        Text(
+                          "Inserisci la tua email (opzionale), se vuoi essere ricontattato",
+                          style: Typo.bodyLight.copyWith(color: Grey.dark),
+                        ),
+                        SizedBox(height: kPadding / 2),
+                        BeautifulTextField(
+                          labelText: "Email",
+                          textCapitalization: TextCapitalization.none,
+                          controller: _emailController,
+                        ),
+                        SizedBox(height: kPadding),
                         ActionButton(
                           title: "Invia",
                           onPressed: onSave,

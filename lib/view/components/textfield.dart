@@ -37,7 +37,7 @@ class BeautifulTextField extends StatelessWidget {
       textCapitalization: textCapitalization,
       decoration: InputDecoration(
         labelText: labelText,
-        prefixIcon: PrefixIcon(icon: prefixIcon),
+        prefixIcon: prefixIcon != null ? PrefixIcon(icon: prefixIcon) : null,
         contentPadding: EdgeInsets.all(18),
         errorText: errorText,
       ),

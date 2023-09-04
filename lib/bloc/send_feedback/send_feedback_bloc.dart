@@ -20,7 +20,7 @@ class SendFeedbackBloc extends Bloc<SendFeedbackEvent, SendFeedbackState> {
     emit(SendFeedbackLoading());
     await Future.delayed(Duration(seconds: 1));
     try {
-      await _trainRepository.sendFeedback(event.feedback);
+      await _trainRepository.sendFeedback(event.feedback, event.email);
       emit(SendFeedbackSuccess());
     } catch (exception, stackTrace) {
       await Sentry.captureException(

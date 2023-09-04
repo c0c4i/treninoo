@@ -20,7 +20,7 @@ abstract class TrainRepository {
   Future<List<StationTrain>> getStationDetails(
       Station station, StationDetailsType type);
   Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain);
-  Future<void> sendFeedback(String feedback);
+  Future<void> sendFeedback(String feedback, String? email);
   Future<List<Station>> searchStations(String text, SearchStationType type);
 }
 
@@ -165,11 +165,14 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<void> sendFeedback(String feedback) async {
-    var uri = Uri.https(BASE_URL, Endpoint.FEEDBACK);
+  Future<void> sendFeedback(String feedback, String? email) async {
+    var uri = Uri.http(BASE_URL, Endpoint.FEEDBACK);
     http.Response response = await http.post(
       uri,
-      body: {'feedback': feedback},
+      body: {
+        'feedback': feedback,
+        'email': email,
+      },
     );
 
     if (response.statusCode != 200) throw Exception();
