@@ -30,10 +30,13 @@ class SolutionSectionStationRow extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          stationName!.toUpperCase(),
-          style: Typo.subheaderHeavy.copyWith(
-            color: Theme.of(context).colorScheme.onBackground,
+        Expanded(
+          child: Text(
+            stationName!.toUpperCase(),
+            style: Typo.subheaderHeavy.copyWith(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         )
       ],

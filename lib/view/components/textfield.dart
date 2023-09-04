@@ -206,7 +206,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
       ),
       textFieldConfiguration: TextFieldConfiguration(
         keyboardType: TextInputType.text,
-        textCapitalization: TextCapitalization.characters,
+        textCapitalization: TextCapitalization.words,
         controller: widget.controller,
         style: TextStyle(fontSize: 18),
         decoration: InputDecoration(
