@@ -70,7 +70,8 @@ class TrainNotFoundDialog {
                                 onPressed: () => Navigator.pop(context, true),
                               ),
                             ],
-                          )
+                          ),
+                          SizedBox(height: kPadding),
                         ],
                       ),
                   ],

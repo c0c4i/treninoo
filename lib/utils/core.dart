@@ -19,10 +19,16 @@ String formatTimeOfDay(TimeOfDay time) {
 }
 
 String travelTime(DateTime departure, DateTime arrival) {
-  Duration time = arrival.difference(departure);
-  String twoDigits(int n) => n.toString().padLeft(2, "0");
-  String twoDigitMinutes = twoDigits(time.inMinutes.remainder(60));
-  return "${twoDigits(time.inHours)}h $twoDigitMinutes\m";
+  Duration travelTime = arrival.difference(departure);
+  int hours = travelTime.inHours;
+  int minutes = travelTime.inMinutes.remainder(60);
+
+  // Ignore hours if 0
+  String hoursString = hours > 0 ? "${hours}h " : "";
+  String minutesString = "${addZeroToNumberLowerThan10(minutes.toString())}m";
+
+  // Return string like hhh mmm
+  return "$hoursString$minutesString";
 }
 
 // ThemeData getThemeFromString(String value) {
