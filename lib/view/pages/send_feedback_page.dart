@@ -95,7 +95,7 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                         ),
                         SizedBox(height: kPadding),
                         Text(
-                          "Inserisci la tua email (opzionale), se vuoi essere ricontattato",
+                          "Inserisci la tua email (opzionale) se vuoi essere ricontattato",
                           style: Typo.bodyLight.copyWith(color: Grey.dark),
                         ),
                         SizedBox(height: kPadding / 2),
