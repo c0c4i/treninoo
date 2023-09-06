@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/view/components/solutions/solution_section_station_row.dart';
-import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class SolutionSectionStations extends StatelessWidget {
   final TrainSolution? trainSolution;
@@ -17,17 +17,17 @@ class SolutionSectionStations extends StatelessWidget {
           stationName: trainSolution!.departureStation,
           time: trainSolution!.departureTime,
         ),
-        SizedBox(height: 8),
-        Container(
-          padding: EdgeInsets.only(left: 11),
-          alignment: Alignment.centerLeft,
-          child: Container(
-            color: Primary.normal,
-            width: 1,
-            height: 8,
-          ),
-        ),
-        SizedBox(height: 8),
+        // SizedBox(height: 8),
+        // Container(
+        //   padding: EdgeInsets.only(left: 11),
+        //   alignment: Alignment.centerLeft,
+        //   child: Container(
+        //     color: Primary.normal,
+        //     width: 1,
+        //     height: 8,
+        //   ),
+        // ),
+        SizedBox(height: kPadding),
         SolutionSectionStationRow(
           stationName: trainSolution!.arrivalStation,
           time: trainSolution!.arrivalTime,

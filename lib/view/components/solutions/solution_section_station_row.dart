@@ -16,13 +16,13 @@ class SolutionSectionStationRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.location_on_outlined,
-          color: Theme.of(context).iconTheme.color,
-        ),
-        SizedBox(width: 16),
+        // Icon(
+        //   Icons.location_on_outlined,
+        //   color: Theme.of(context).iconTheme.color,
+        // ),
+        // SizedBox(width: kPadding),
         Container(
-          width: 70,
+          width: 60,
           child: Text(
             formatTime(time!),
             style: Typo.subheaderHeavy.copyWith(
