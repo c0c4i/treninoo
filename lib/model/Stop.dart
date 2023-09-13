@@ -20,6 +20,7 @@ class Stop extends Equatable {
   final String? plannedArrivalRail;
   final String? actualArrivalRail;
 
+  final bool confirmed;
   final bool currentStation;
   final int? delay;
 
@@ -35,6 +36,7 @@ class Stop extends Equatable {
     this.actualDepartureRail,
     this.plannedArrivalRail,
     this.actualArrivalRail,
+    this.confirmed = false,
     this.currentStation = false,
     this.delay,
   });
@@ -64,6 +66,7 @@ class Stop extends Equatable {
       actualDepartureRail: json['actualDepartureRail'],
       plannedArrivalRail: json['plannedArrivalRail'],
       actualArrivalRail: json['actualArrivalRail'],
+      confirmed: json['confirmed'],
       currentStation: json['currentStation'],
       delay: json['delay'],
     );

@@ -1,5 +1,3 @@
-const String URL = "www.viaggiatreno.it";
-
 const bool isProd = false;
 const String BASE_URL = isProd ? "api.treninoo.it" : "api.treninoo.it";
 
@@ -14,29 +12,4 @@ class Endpoint {
   static const String SOLUTIONS_LEFRECCE = '$prefix/lefrecce/solutions';
   static const String STATION_DETAILS_VIAGGIOTRENO = '$prefix/stations';
   static const String TRAIN_INFO_VIAGGIOTRENO = '$prefix/details';
-}
-
-class ViaggioTreno {
-  /// ... + trainCode
-  static const String GET_STATION_CODE =
-      '/infomobilita/resteasy/viaggiatreno/cercaNumeroTrenoTrenoAutocomplete/';
-
-  // ... + stationCode/trainCode
-  static const String GET_TRAIN_INFO =
-      '/infomobilita/resteasy/viaggiatreno/andamentoTreno/';
-
-  static const String GET_STATION =
-      '/infomobilita/resteasy/viaggiatreno/autocompletaStazione/';
-
-  // ... + departureStationCode/arrivalStationCode/date
-  static const String GET_SOLUTIONS =
-      '/infomobilita/resteasy/viaggiatreno/soluzioniViaggioNew/';
-
-  // ... + stationCode/date
-  static const String GET_DEPARTURE_TRAINS =
-      '/infomobilita/resteasy/viaggiatreno/partenze/';
-
-  // ... + stationCode/date
-  static const String GET_ARRIVAL_TRAINS =
-      '/infomobilita/resteasy/viaggiatreno/arrivi/';
 }

@@ -16,7 +16,6 @@ abstract class TrainRepository {
   Future<List<Station>> getDepartureStation(String trainCode);
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
-  Future<bool> trainExist(SavedTrain savedTrain);
   Future<List<StationTrain>> getStationDetails(
       Station station, StationDetailsType type);
   Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain);
@@ -94,24 +93,6 @@ class APITrain extends TrainRepository {
     solutions.arrivalStation = solutionsInfo.arrivalStation;
     solutions.fromTime = solutionsInfo.fromTime;
     return solutions;
-  }
-
-  @override
-  Future<bool> trainExist(SavedTrain savedTrain) async {
-    String? stationCode = savedTrain.departureStationCode;
-    String? trainCode = savedTrain.trainCode;
-
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
-    String timestamp = date.millisecondsSinceEpoch.toString();
-
-    var uri = Uri.https(
-      URL,
-      "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp",
-    );
-    var response = await http.get(uri);
-
-    return response.body.isNotEmpty;
   }
 
   @override
