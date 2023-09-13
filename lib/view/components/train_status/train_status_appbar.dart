@@ -9,9 +9,9 @@ import '../../../bloc/favourite/favourite.dart';
 import '../../../bloc/favourites/favourites.dart';
 
 class TrainAppBar extends StatefulWidget {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
-  const TrainAppBar({Key? key, this.savedTrain}) : super(key: key);
+  const TrainAppBar({Key? key, required this.savedTrain}) : super(key: key);
 
   @override
   _TrainAppBarState createState() => _TrainAppBarState();
@@ -34,7 +34,7 @@ class _TrainAppBarState extends State<TrainAppBar> {
         SizedBox(width: 24),
         Expanded(
           child: Text(
-            widget.savedTrain!.trainName!,
+            widget.savedTrain.trainName!,
             style: TextStyle(
               fontSize: 26,
               color: Primary.normal,

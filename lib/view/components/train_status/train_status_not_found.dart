@@ -7,9 +7,10 @@ import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class TrainStatusNotFound extends StatelessWidget {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
-  const TrainStatusNotFound({Key? key, this.savedTrain}) : super(key: key);
+  const TrainStatusNotFound({Key? key, required this.savedTrain})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

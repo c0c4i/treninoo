@@ -46,7 +46,7 @@ class HandleExistBloc extends StatelessWidget {
           );
           if (departureStation == null) return;
           SavedTrain savedTrain = SavedTrain.fromDepartureStation(
-            state.savedTrain!,
+            state.savedTrain,
             departureStation,
           );
           context.read<ExistBloc>().add(
