@@ -125,7 +125,6 @@ class APITrain extends TrainRepository {
         "${Endpoint.STATION_DETAILS_VIAGGIOTRENO}/S$stationCode/${type.endpoint}";
 
     var uri = Uri.https(BASE_URL, url);
-    print(uri);
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
 
@@ -140,7 +139,6 @@ class APITrain extends TrainRepository {
     String url =
         "${Endpoint.FOLLOWTRAIN_STATIONS}/${savedTrain!.departureStationCode}/${savedTrain.trainCode}";
 
-    print(url);
     var uri = Uri.https(BASE_URL, url);
     var response = await http.get(uri);
     var body = jsonDecode(response.body)['stations'];
