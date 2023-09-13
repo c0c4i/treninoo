@@ -11,7 +11,7 @@ abstract class ExistEvent extends Equatable {
 }
 
 class ExistRequest extends ExistEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
   final SavedTrainType? type;
 
   ExistRequest({required this.savedTrain, this.type});

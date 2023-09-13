@@ -9,12 +9,12 @@ import 'package:treninoo/view/style/theme.dart';
 import '../../../bloc/exist/exist.dart';
 
 class SolutionSection extends StatelessWidget {
-  final TrainSolution? trainSolution;
+  final TrainSolution trainSolution;
   final int? position;
   final int? size;
 
   const SolutionSection(
-      {Key? key, this.trainSolution, this.position, this.size})
+      {Key? key, required this.trainSolution, this.position, this.size})
       : super(key: key);
 
   @override
@@ -22,8 +22,8 @@ class SolutionSection extends StatelessWidget {
     return TextButton(
       onPressed: () {
         SavedTrain savedTrain = new SavedTrain(
-          trainCode: trainSolution!.trainCode,
-          departureStationName: trainSolution!.departureStation,
+          trainCode: trainSolution.trainCode,
+          departureStationName: trainSolution.departureStation,
         );
         context.read<ExistBloc>().add(
               ExistRequest(
@@ -34,10 +34,10 @@ class SolutionSection extends StatelessWidget {
       child: Column(
         children: [
           SolutionSectionHeader(
-            trainType: trainSolution!.trainType,
-            trainCode: trainSolution!.trainCode,
-            departureTime: trainSolution!.departureTime,
-            arrivalTime: trainSolution!.arrivalTime,
+            trainType: trainSolution.trainType,
+            trainCode: trainSolution.trainCode,
+            departureTime: trainSolution.departureTime,
+            arrivalTime: trainSolution.arrivalTime,
           ),
           SizedBox(height: kPadding / 2),
           SolutionSectionStations(

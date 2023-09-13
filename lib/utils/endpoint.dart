@@ -13,6 +13,7 @@ class Endpoint {
   static const String DEPARTURE_STATION = '$prefix/departurestation';
   static const String SOLUTIONS_LEFRECCE = '$prefix/lefrecce/solutions';
   static const String STATION_DETAILS_VIAGGIOTRENO = '$prefix/stations';
+  static const String TRAIN_INFO_VIAGGIOTRENO = '$prefix/details';
 }
 
 class ViaggioTreno {

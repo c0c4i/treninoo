@@ -9,7 +9,7 @@ abstract class FavouriteEvent extends Equatable {
 }
 
 class FavouriteRequest extends FavouriteEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
   FavouriteRequest({required this.savedTrain});
 
@@ -18,7 +18,7 @@ class FavouriteRequest extends FavouriteEvent {
 }
 
 class FavouriteToggle extends FavouriteEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
   final bool value;
 
   FavouriteToggle({required this.savedTrain, required this.value});

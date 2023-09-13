@@ -12,9 +12,9 @@ abstract class FavouritesEvent extends Equatable {
 class FavouritesRequest extends FavouritesEvent {}
 
 class DeleteFavourite extends FavouritesEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
-  DeleteFavourite({this.savedTrain});
+  DeleteFavourite({required this.savedTrain});
 
   @override
   List<Object?> get props => [savedTrain];

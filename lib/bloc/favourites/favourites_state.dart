@@ -11,7 +11,7 @@ class FavouritesInitial extends FavouritesState {}
 class FavouritesLoading extends FavouritesState {}
 
 class FavouritesSuccess extends FavouritesState {
-  final List<SavedTrain?> trains;
+  final List<SavedTrain> trains;
 
   FavouritesSuccess({required this.trains});
 

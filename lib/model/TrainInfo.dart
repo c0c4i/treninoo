@@ -1,53 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/exceptions/status_not_available.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/Stop.dart';
-import 'package:treninoo/utils/train_utils.dart';
 
 import '../utils/utils.dart';
 
 class TrainInfo {
-  final List<Stop>? stops;
-  final String? lastPositionRegister; // to converter from unix
+  final String trainType;
+  final String trainCode;
   final TimeOfDay? lastTimeRegister;
-  final String? trainType;
+  final String? lastPositionRegister;
+  final Station departureStation;
+  final String arrivalStationName;
+  final String departureTime;
   final int? delay;
-  final String? trainCode;
-
-  String? departureStationCode;
-  String? departureStationName;
-  String? arrivalStationName;
-  String? departureTime;
+  final List<Stop>? stops;
 
   TrainInfo({
-    this.stops,
-    this.lastPositionRegister,
+    required this.trainType,
+    required this.trainCode,
     this.lastTimeRegister,
-    this.trainType,
+    this.lastPositionRegister,
+    required this.departureStation,
+    required this.arrivalStationName,
+    required this.departureTime,
     this.delay,
-    this.trainCode,
-    this.departureStationCode,
-    this.departureStationName,
-    this.arrivalStationName,
-    this.departureTime,
+    this.stops,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
-    if (json['fermate'].length == 0) {
-      throw StatusNotAvailableException();
-    }
-
+    json = json['status'];
     return TrainInfo(
-      stops: (json['fermate'] as List).map((f) => Stop.fromJson(f)).toList(),
-      lastPositionRegister: json['stazioneUltimoRilevamento'],
-      lastTimeRegister:
-          Utils.timestampToTimeOfDay(json['oraUltimoRilevamento']),
-      trainType: TrainUtils.getCategory(json['compNumeroTreno']),
-      delay: json['ritardo'],
-      trainCode: json['numeroTreno'].toString(),
-      departureStationCode: json['idOrigine'],
-      departureStationName: json['origine'],
-      arrivalStationName: json['destinazione'],
-      departureTime: json['compOrarioPartenzaZero'],
+      trainType: json['trainType'],
+      trainCode: json['trainCode'].toString(),
+      lastTimeRegister: Utils.timestampToTimeOfDay(json['lastDetectionTime']),
+      lastPositionRegister: json['lastDetectionStation'],
+      departureStation: Station.fromJson(json['departureStation']),
+      arrivalStationName: json['arrivalStationName'],
+      departureTime: json['firstDepartureTime'],
+      delay: json['delay'],
+      stops: (json['stops'] as List).map((f) => Stop.fromJson(f)).toList(),
     );
   }
 }

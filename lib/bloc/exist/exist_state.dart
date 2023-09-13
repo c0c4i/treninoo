@@ -24,7 +24,7 @@ class ExistSuccess extends ExistState {
 }
 
 class ExistMoreThanOne extends ExistState {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
   final List<Station> stations;
 
   ExistMoreThanOne({required this.savedTrain, required this.stations});
@@ -34,7 +34,7 @@ class ExistMoreThanOne extends ExistState {
 }
 
 class ExistFailed extends ExistState {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
   final SavedTrainType? type;
 
   ExistFailed({required this.savedTrain, this.type});

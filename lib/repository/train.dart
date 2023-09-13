@@ -15,7 +15,7 @@ import '../exceptions/more_than_one.dart';
 abstract class TrainRepository {
   Future<List<Station>> getDepartureStation(String trainCode);
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
-  Future<TrainInfo> getTrainStatus(SavedTrain? savedTrain);
+  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
   Future<bool> trainExist(SavedTrain savedTrain);
   Future<List<StationTrain>> getStationDetails(
       Station station, StationDetailsType type);
@@ -45,9 +45,9 @@ class APITrain extends TrainRepository {
   }
 
   @override
-  Future<TrainInfo> getTrainStatus(SavedTrain? savedTrain) async {
-    String? stationCode = savedTrain!.departureStationCode;
-    String? trainCode = savedTrain.trainCode;
+  Future<TrainInfo> getTrainStatus(SavedTrain savedTrain) async {
+    String? stationCode = savedTrain.departureStationCode;
+    String trainCode = savedTrain.trainCode;
 
     // If station code is null, get it from the train code
     if (stationCode == null) {
@@ -61,19 +61,13 @@ class APITrain extends TrainRepository {
       stationCode = departureStations.first.stationCode;
     }
 
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
-    String timestamp = date.millisecondsSinceEpoch.toString();
-
-    var uri = Uri.https(URL,
-        "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp");
+    var uri = Uri.https(
+      BASE_URL,
+      "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode",
+    );
 
     var response = await http.get(uri);
-
-    if (response.body.isEmpty) throw Exception("No train found");
-
     var body = jsonDecode(response.body);
-
     return TrainInfo.fromJson(body);
   }
 
@@ -95,7 +89,7 @@ class APITrain extends TrainRepository {
 
     var body = jsonDecode(response.body);
 
-    Solutions solutions = Solutions.fromJsonLeFrecce(body);
+    Solutions solutions = Solutions.fromJson(body);
     solutions.departureStation = solutionsInfo.departureStation;
     solutions.arrivalStation = solutionsInfo.arrivalStation;
     solutions.fromTime = solutionsInfo.fromTime;
@@ -111,8 +105,10 @@ class APITrain extends TrainRepository {
     DateTime date = new DateTime(now.year, now.month, now.day);
     String timestamp = date.millisecondsSinceEpoch.toString();
 
-    var uri = Uri.https(URL,
-        "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp");
+    var uri = Uri.https(
+      URL,
+      "${ViaggioTreno.GET_TRAIN_INFO}$stationCode/$trainCode/$timestamp",
+    );
     var response = await http.get(uri);
 
     return response.body.isNotEmpty;
@@ -128,14 +124,13 @@ class APITrain extends TrainRepository {
     String url =
         "${Endpoint.STATION_DETAILS_VIAGGIOTRENO}/S$stationCode/${type.endpoint}";
 
-    var uri = Uri.http(BASE_URL, url);
+    var uri = Uri.https(BASE_URL, url);
     print(uri);
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
 
-    List<StationTrain> trains = (body['trains'] as List)
-        .map((f) => StationTrain.fromTreninooAPI(f))
-        .toList();
+    List<StationTrain> trains =
+        (body['trains'] as List).map((f) => StationTrain.fromJson(f)).toList();
 
     return trains;
   }
@@ -166,7 +161,7 @@ class APITrain extends TrainRepository {
 
   @override
   Future<void> sendFeedback(String feedback, String? email) async {
-    var uri = Uri.http(BASE_URL, Endpoint.FEEDBACK);
+    var uri = Uri.https(BASE_URL, Endpoint.FEEDBACK);
     http.Response response = await http.post(
       uri,
       body: {
@@ -182,7 +177,7 @@ class APITrain extends TrainRepository {
     String text,
     SearchStationType type,
   ) async {
-    var uri = Uri.http(BASE_URL, type.endpoint + text);
+    var uri = Uri.https(BASE_URL, type.endpoint + text);
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
 

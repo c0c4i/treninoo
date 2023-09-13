@@ -1,39 +1,27 @@
-import 'package:treninoo/utils/train_utils.dart';
-
 class TrainSolution {
-  final String? departureStation;
+  final String departureStation;
   final String? arrivalStation;
   final DateTime? departureTime;
   final DateTime? arrivalTime;
   final String? trainType;
-  final String? trainCode;
+  final String trainCode;
 
-  TrainSolution(
-      {this.departureStation,
-      this.arrivalStation,
-      this.departureTime,
-      this.arrivalTime,
-      this.trainType,
-      this.trainCode});
+  TrainSolution({
+    required this.trainCode,
+    required this.departureStation,
+    this.arrivalStation,
+    this.departureTime,
+    this.arrivalTime,
+    this.trainType,
+  });
 
   factory TrainSolution.fromJson(Map<String, dynamic> json) {
-    return TrainSolution(
-      departureStation: json['origine'],
-      arrivalStation: json['destinazione'],
-      departureTime: DateTime.parse(json['orarioPartenza']),
-      arrivalTime: DateTime.parse(json['orarioArrivo']),
-      trainType: TrainUtils.getTypeFromNumber(json['categoria']),
-      trainCode: json['numeroTreno'],
-    );
-  }
-
-  factory TrainSolution.fromJsonLeFrecce(Map<String, dynamic> json) {
     return TrainSolution(
       departureStation: json['origin'],
       arrivalStation: json['destination'],
       departureTime: DateTime.parse(json['departureTime']),
       arrivalTime: DateTime.parse(json['arrivalTime']),
-      trainType: TrainUtils.getTypeFromNumber(json['category']),
+      trainType: json['category'],
       trainCode: json['trainCode'],
     );
   }

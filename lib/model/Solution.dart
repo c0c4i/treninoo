@@ -8,17 +8,8 @@ class Solution {
 
   factory Solution.fromJson(Map<String, dynamic> json) {
     return Solution(
-      // travelTime: json['durata'],
-      trains: (json['vehicles'] as List)
-          .map((f) => TrainSolution.fromJson(f))
-          .toList(),
-    );
-  }
-
-  factory Solution.fromJsonLeFrecce(Map<String, dynamic> json) {
-    return Solution(
       trains: (json['trains'] as List)
-          .map((f) => TrainSolution.fromJsonLeFrecce(f))
+          .map((f) => TrainSolution.fromJson(f))
           .toList(),
     );
   }

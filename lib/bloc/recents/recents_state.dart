@@ -11,7 +11,7 @@ class RecentsInitial extends RecentsState {}
 class RecentsLoading extends RecentsState {}
 
 class RecentsSuccess extends RecentsState {
-  final List<SavedTrain?> trains;
+  final List<SavedTrain> trains;
 
   RecentsSuccess({required this.trains});
 

@@ -11,7 +11,7 @@ import 'package:treninoo/view/style/typography.dart';
 import '../../enum/saved_train_type.dart';
 
 class TrainCard extends StatelessWidget {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
   final SavedTrainType type;
 
   const TrainCard({
@@ -51,7 +51,7 @@ class TrainCard extends StatelessWidget {
                       left: kPadding,
                       right: kPadding,
                       bottom:
-                          savedTrain!.description != null ? kPadding : kPadding,
+                          savedTrain.description != null ? kPadding : kPadding,
                     ),
                     child: Column(
                       children: [
@@ -59,14 +59,14 @@ class TrainCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                "${savedTrain!.trainType} ${savedTrain!.trainCode}",
+                                "${savedTrain.trainType} ${savedTrain.trainCode}",
                                 style: Typo.subheaderHeavy.copyWith(
                                   color: Primary.normal,
                                 ),
                               ),
                             ),
                             Text(
-                              savedTrain!.departureTime ?? '',
+                              savedTrain.departureTime ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -83,7 +83,7 @@ class TrainCard extends StatelessWidget {
                             ),
                             SizedBox(width: 16),
                             Text(
-                              savedTrain!.departureStationName ?? '',
+                              savedTrain.departureStationName ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -110,7 +110,7 @@ class TrainCard extends StatelessWidget {
                             ),
                             SizedBox(width: 16),
                             Text(
-                              savedTrain!.arrivalStationName ?? '',
+                              savedTrain.arrivalStationName ?? '',
                               style: Typo.subheaderHeavy.copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -121,8 +121,8 @@ class TrainCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (savedTrain!.description != null)
-                    DescriptionFooter(description: savedTrain!.description)
+                  if (savedTrain.description != null)
+                    DescriptionFooter(description: savedTrain.description)
                 ],
               ),
             ),

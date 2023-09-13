@@ -39,7 +39,7 @@ class StationTrainCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      stationTrain.category! + " " + stationTrain.trainCode!,
+                      stationTrain.category! + " " + stationTrain.trainCode,
                       style: Typo.subheaderHeavy.copyWith(
                         color: Primary.normal,
                       ),

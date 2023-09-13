@@ -48,7 +48,7 @@ class AppRouter {
                   ),
                 ),
               ],
-              child: TrainStatusPage(savedTrain: savedTrain as SavedTrain?),
+              child: TrainStatusPage(savedTrain: savedTrain as SavedTrain),
             ),
           ),
         );

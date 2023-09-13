@@ -9,7 +9,7 @@ abstract class TrainStatusEvent extends Equatable {
 }
 
 class TrainStatusRequest extends TrainStatusEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
   TrainStatusRequest({required this.savedTrain});
 

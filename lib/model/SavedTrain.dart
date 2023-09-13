@@ -6,7 +6,7 @@ import 'Station.dart';
 
 class SavedTrain extends Equatable {
   final String? trainType;
-  final String? trainCode;
+  final String trainCode;
   final String? departureStationCode;
   final String? departureStationName;
   final String? arrivalStationName;
@@ -49,8 +49,8 @@ class SavedTrain extends Equatable {
     return SavedTrain(
       trainCode: trainInfo.trainCode,
       trainType: trainInfo.trainType,
-      departureStationCode: trainInfo.departureStationCode,
-      departureStationName: trainInfo.departureStationName,
+      departureStationCode: trainInfo.departureStation.stationCode,
+      departureStationName: trainInfo.departureStation.stationName,
       arrivalStationName: trainInfo.arrivalStationName,
       departureTime: trainInfo.departureTime,
     );

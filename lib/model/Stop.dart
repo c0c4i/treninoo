@@ -1,52 +1,74 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/Station.dart';
 
 import '../utils/utils.dart';
 
-class Stop {
-  final String? name;
+class Stop extends Equatable {
+  final Station station;
+
   final TimeOfDay? plannedDepartureTime;
+  final TimeOfDay? predictedDepartureTime;
   final TimeOfDay? actualDepartureTime;
+
   final TimeOfDay? plannedArrivalTime;
+  final TimeOfDay? predictedArrivalTime;
   final TimeOfDay? actualArrivalTime;
+
   final String? plannedDepartureRail;
   final String? actualDepartureRail;
   final String? plannedArrivalRail;
   final String? actualArrivalRail;
+
+  final bool currentStation;
   final int? delay;
 
   Stop({
-    this.name,
+    required this.station,
     this.plannedDepartureTime,
+    this.predictedDepartureTime,
     this.actualDepartureTime,
     this.plannedArrivalTime,
+    this.predictedArrivalTime,
     this.actualArrivalTime,
     this.plannedDepartureRail,
     this.actualDepartureRail,
     this.plannedArrivalRail,
     this.actualArrivalRail,
+    this.currentStation = false,
     this.delay,
   });
 
   factory Stop.fromJson(Map<String, dynamic> json) {
     return Stop(
-      name: json['stazione'],
+      station: Station.fromJson(json['station']),
       plannedDepartureTime: Utils.timestampToTimeOfDay(
-        json['partenza_teorica'],
+        json['plannedDepartureTime'],
+      ),
+      predictedDepartureTime: Utils.timestampToTimeOfDay(
+        json['predictedDepartureTime'],
       ),
       actualDepartureTime: Utils.timestampToTimeOfDay(
-        json['partenzaReale'],
+        json['actualDepartureTime'],
       ),
       plannedArrivalTime: Utils.timestampToTimeOfDay(
-        json['arrivo_teorico'],
+        json['plannedArrivalTime'],
+      ),
+      predictedArrivalTime: Utils.timestampToTimeOfDay(
+        json['predictedArrivalTime'],
       ),
       actualArrivalTime: Utils.timestampToTimeOfDay(
-        json['arrivoReale'],
+        json['actualArrivalTime'],
       ),
-      plannedDepartureRail: json['binarioProgrammatoPartenzaDescrizione'],
-      actualDepartureRail: json['binarioEffettivoPartenzaDescrizione'],
-      plannedArrivalRail: json['binarioProgrammatoArrivoDescrizione'],
-      actualArrivalRail: json['binarioEffettivoArrivoDescrizione'],
-      delay: json['ritardo'],
+      plannedDepartureRail: json['plannedDepartureRail'],
+      actualDepartureRail: json['actualDepartureRail'],
+      plannedArrivalRail: json['plannedArrivalRail'],
+      actualArrivalRail: json['actualArrivalRail'],
+      currentStation: json['currentStation'],
+      delay: json['delay'],
     );
   }
+
+  @override
+  List<Object?> get props => [station];
 }

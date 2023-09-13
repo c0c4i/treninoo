@@ -16,21 +16,7 @@ class Solutions {
 
   factory Solutions.fromJson(Map<String, dynamic> json) {
     List<Solution> solutions =
-        (json['soluzioni'] as List).map((f) => Solution.fromJson(f)).toList();
-    return Solutions(
-      solutions: solutions,
-      // departureStation: json['origine'],
-      // departureStationCode: departureCode,
-      // arrivalStation: json['destinazione'],
-      // arrivalStationCode: arrivalCode,
-      // fromTime: time,
-    );
-  }
-
-  factory Solutions.fromJsonLeFrecce(Map<String, dynamic> json) {
-    List<Solution> solutions = (json['solutions'] as List)
-        .map((f) => Solution.fromJsonLeFrecce(f))
-        .toList();
+        (json['solutions'] as List).map((f) => Solution.fromJson(f)).toList();
     return Solutions(solutions: solutions);
   }
 }

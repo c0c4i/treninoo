@@ -15,9 +15,9 @@ import 'package:treninoo/view/components/train_status/train_status_stops_header.
 import 'package:treninoo/view/style/theme.dart';
 
 class TrainStatusPage extends StatefulWidget {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
-  TrainStatusPage({Key? key, this.savedTrain}) : super(key: key);
+  TrainStatusPage({Key? key, required this.savedTrain}) : super(key: key);
 
   @override
   _TrainStatusPageState createState() => _TrainStatusPageState();

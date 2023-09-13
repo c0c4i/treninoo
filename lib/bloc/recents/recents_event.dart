@@ -12,9 +12,9 @@ abstract class RecentsEvent extends Equatable {
 class RecentsRequest extends RecentsEvent {}
 
 class DeleteRecent extends RecentsEvent {
-  final SavedTrain? savedTrain;
+  final SavedTrain savedTrain;
 
-  DeleteRecent({this.savedTrain});
+  DeleteRecent({required this.savedTrain});
 
   @override
   List<Object?> get props => [savedTrain];
