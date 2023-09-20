@@ -72,6 +72,38 @@ class Stop extends Equatable {
     );
   }
 
+  get binary {
+    if (actualArrivalRail != null) return actualArrivalRail;
+    if (plannedArrivalRail != null) return plannedArrivalRail;
+
+    if (actualDepartureRail != null) return actualDepartureRail;
+    if (plannedDepartureRail != null) return plannedDepartureRail;
+
+    return "-";
+  }
+
+  get confirmedBinary {
+    return actualArrivalRail != null ||
+        actualDepartureRail != null ||
+        confirmed;
+  }
+
+  String selectTime(context, actual, planned, predicted, isPredicted) {
+    if (actual != null) {
+      return actual.format(context);
+    }
+
+    if (isPredicted && predicted != null) {
+      return predicted.format(context);
+    }
+
+    if (planned != null) {
+      return planned.format(context);
+    }
+
+    return "—:—";
+  }
+
   @override
   List<Object?> get props => [station];
 }
