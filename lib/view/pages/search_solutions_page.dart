@@ -60,7 +60,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
 
   String? validator(Station? station) {
     if (!validate) return null;
-    if (station == null) return "Selezionare una stazione";
+    if (station == null) return "";
     return null;
   }
 

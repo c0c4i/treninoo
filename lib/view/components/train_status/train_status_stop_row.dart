@@ -55,7 +55,7 @@ class TrainStatusStopRow extends StatelessWidget {
                 predicted,
               ),
               style: Typo.subheaderLight.copyWith(
-                color: !stop.confirmed
+                color: !stop.confirmed && !stop.currentStation
                     ? (predicted ? Accent.normal : Grey.dark)
                     : null,
               ),

@@ -213,6 +213,7 @@ class _SuggestionTextFieldState extends State<SuggestionTextField> {
           prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
           labelText: widget.label,
           errorText: widget.errorText,
+          errorStyle: TextStyle(height: 0),
         ),
         // onChanged: (station) {
         //   widget.onSelect(null);

@@ -1,4 +1,4 @@
-const bool isProd = false;
+const bool isProd = true;
 const String BASE_URL = isProd ? "api.treninoo.it" : "api.treninoo.it";
 
 const String prefix = isProd ? '/v1' : '/test';
