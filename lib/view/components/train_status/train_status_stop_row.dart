@@ -20,6 +20,29 @@ class TrainStatusStopRow extends StatelessWidget {
   final int delay;
   final bool predicted;
 
+  get arrivalColor {
+    if (stop.confirmed || stop.currentStation) return null;
+
+    if (stop.actualArrivalTime == null &&
+        stop.plannedArrivalTime == null &&
+        stop.predictedArrivalTime == null) return null;
+
+    if (predicted) return Accent.normal;
+
+    return Grey.dark;
+  }
+
+  get departureColor {
+    if (stop.confirmed) return null;
+
+    if (stop.actualDepartureTime == null &&
+        stop.plannedDepartureTime == null &&
+        stop.predictedDepartureTime == null) return null;
+
+    if (predicted) return Accent.normal;
+    return Grey.dark;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -55,9 +78,7 @@ class TrainStatusStopRow extends StatelessWidget {
                 predicted,
               ),
               style: Typo.subheaderLight.copyWith(
-                color: !stop.confirmed && !stop.currentStation
-                    ? (predicted ? Accent.normal : Grey.dark)
-                    : null,
+                color: arrivalColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -73,9 +94,7 @@ class TrainStatusStopRow extends StatelessWidget {
                 predicted,
               ),
               style: Typo.subheaderLight.copyWith(
-                color: !stop.confirmed
-                    ? (predicted ? Accent.normal : Grey.dark)
-                    : null,
+                color: departureColor,
               ),
               textAlign: TextAlign.center,
             ),
