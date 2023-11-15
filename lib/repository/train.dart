@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
@@ -13,6 +11,12 @@ import 'package:treninoo/utils/endpoint.dart';
 import '../exceptions/more_than_one.dart';
 
 abstract class TrainRepository {
+  final dio = Dio();
+
+  TrainRepository() {
+    dio.options.baseUrl = BASE_URL;
+  }
+
   Future<List<Station>> getDepartureStation(String trainCode);
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo);
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain);
@@ -29,16 +33,14 @@ class APITrain extends TrainRepository {
 
   @override
   Future<List<Station>> getDepartureStation(String? trainCode) async {
-    var uri = Uri.https(BASE_URL, "${Endpoint.DEPARTURE_STATION}/$trainCode");
-    var response = await http.get(uri);
+    String url = "${Endpoint.DEPARTURE_STATION}/$trainCode";
+    Response response = await dio.get(url);
 
     if (response.statusCode != 200) throw Exception("Something went wrong");
 
-    var body = jsonDecode(response.body);
+    if (response.data["total"] == 0) return [];
 
-    if (body["total"] == 0) return [];
-
-    return (body['stations'] as List)
+    return (response.data['stations'] as List)
         .map((station) => Station.fromJson(station))
         .toList();
   }
@@ -60,14 +62,10 @@ class APITrain extends TrainRepository {
       stationCode = departureStations.first.stationCode;
     }
 
-    var uri = Uri.https(
-      BASE_URL,
-      "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode",
-    );
+    String url = "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode";
+    Response response = await dio.get(url);
 
-    var response = await http.get(uri);
-    var body = jsonDecode(response.body);
-    return TrainInfo.fromJson(body);
+    return TrainInfo.fromJson(response.data);
   }
 
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
@@ -75,20 +73,16 @@ class APITrain extends TrainRepository {
       solutionsInfo.fromTime!,
     );
 
-    var uri = Uri.https(
-      BASE_URL,
+    Response response = await dio.get(
       Endpoint.SOLUTIONS_LEFRECCE,
-      {
+      queryParameters: {
         'departureStation': solutionsInfo.departureStation!.stationCode,
         'arrivalStation': solutionsInfo.arrivalStation!.stationCode,
         'date': time,
       },
     );
-    var response = await http.get(uri);
 
-    var body = jsonDecode(response.body);
-
-    Solutions solutions = Solutions.fromJson(body);
+    Solutions solutions = Solutions.fromJson(response.data);
     solutions.departureStation = solutionsInfo.departureStation;
     solutions.arrivalStation = solutionsInfo.arrivalStation;
     solutions.fromTime = solutionsInfo.fromTime;
@@ -105,12 +99,11 @@ class APITrain extends TrainRepository {
     String url =
         "${Endpoint.STATION_DETAILS_VIAGGIOTRENO}/S$stationCode/${type.endpoint}";
 
-    var uri = Uri.https(BASE_URL, url);
-    var response = await http.get(uri);
-    var body = jsonDecode(response.body);
+    Response response = await dio.get(url);
 
-    List<StationTrain> trains =
-        (body['trains'] as List).map((f) => StationTrain.fromJson(f)).toList();
+    List<StationTrain> trains = (response.data['trains'] as List)
+        .map((f) => StationTrain.fromJson(f))
+        .toList();
 
     return trains;
   }
@@ -120,12 +113,11 @@ class APITrain extends TrainRepository {
     String url =
         "${Endpoint.FOLLOWTRAIN_STATIONS}/${savedTrain!.departureStationCode}/${savedTrain.trainCode}";
 
-    var uri = Uri.https(BASE_URL, url);
-    var response = await http.get(uri);
-    var body = jsonDecode(response.body)['stations'];
+    Response response = await dio.get(url);
 
-    List<Station> stations =
-        (body as List).map((station) => Station.fromJson(station)).toList();
+    List<Station> stations = (response.data['stations'] as List)
+        .map((station) => Station.fromJson(station))
+        .toList();
 
     return stations;
   }
@@ -140,10 +132,9 @@ class APITrain extends TrainRepository {
 
   @override
   Future<void> sendFeedback(String feedback, String? email) async {
-    var uri = Uri.https(BASE_URL, Endpoint.FEEDBACK);
-    http.Response response = await http.post(
-      uri,
-      body: {
+    Response response = await dio.post(
+      Endpoint.FEEDBACK,
+      data: {
         'feedback': feedback,
         'email': email,
       },
@@ -156,12 +147,10 @@ class APITrain extends TrainRepository {
     String text,
     SearchStationType type,
   ) async {
-    var uri = Uri.https(BASE_URL, type.endpoint + text);
-    var response = await http.get(uri);
-    var body = jsonDecode(response.body);
+    Response response = await dio.get(type.endpoint + text);
 
     List<Station> stations = [];
-    for (var station in body['stations']) {
+    for (var station in response.data['stations']) {
       stations.add(Station.fromJson(station));
     }
 

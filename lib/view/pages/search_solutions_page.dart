@@ -163,22 +163,30 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  ClickableTextField(
-                    prefixIcon: Icons.date_range_rounded,
-                    labelText: "Data",
-                    controller: dateController,
-                    onPressed: () {
-                      _pickDate();
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  ClickableTextField(
-                    prefixIcon: Icons.access_time_rounded,
-                    labelText: "Ora",
-                    controller: timeController,
-                    onPressed: () {
-                      _pickTime();
-                    },
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.48,
+                        child: ClickableTextField(
+                          prefixIcon: Icons.date_range_rounded,
+                          controller: dateController,
+                          onPressed: () {
+                            _pickDate();
+                          },
+                        ),
+                      ),
+                      SizedBox(width: kPadding),
+                      Expanded(
+                        child: ClickableTextField(
+                          prefixIcon: Icons.access_time_rounded,
+                          // labelText: "Ora",
+                          controller: timeController,
+                          onPressed: () {
+                            _pickTime();
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   ActionButton(

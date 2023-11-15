@@ -12,7 +12,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  http: ^1.1.0
   shared_preferences: ^2.0.11
   flutter_typeahead: ^4.0.0
   cupertino_icons: ^1.0.5
@@ -25,6 +24,7 @@ dependencies:
   adaptive_theme: ^3.1.0
   table_calendar: ^3.0.8
   sentry_flutter: ^7.8.0
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:
