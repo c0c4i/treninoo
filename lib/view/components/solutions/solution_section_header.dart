@@ -17,13 +17,18 @@ class SolutionSectionHeader extends StatelessWidget {
     this.arrivalTime,
   }) : super(key: key);
 
+  get title {
+    if (trainType == "UB") return "Bus";
+    return "$trainType" + (trainCode != null ? " $trainCode" : "");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: Text(
-            "$trainType $trainCode",
+            title,
             style: Typo.subheaderHeavy.copyWith(
               color: Primary.normal,
             ),

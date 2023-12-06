@@ -1,4 +1,6 @@
 PODS:
+  - cupertino_http (0.0.1):
+    - Flutter
   - Firebase/CoreOnly (10.12.0):
     - FirebaseCore (= 10.12.0)
   - firebase_core (2.15.0):
@@ -37,6 +39,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - cupertino_http (from `.symlinks/plugins/cupertino_http/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
@@ -57,6 +60,8 @@ SPEC REPOS:
     - SentryPrivate
 
 EXTERNAL SOURCES:
+  cupertino_http:
+    :path: ".symlinks/plugins/cupertino_http/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
@@ -75,6 +80,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  cupertino_http: 5f8b1161107fe6c8d94a0c618735a033d93fa7db
   Firebase: 07150e75d142fb9399f6777fa56a187b17f833a0
   firebase_core: e477125798fc37cd4ab43ca6a8536bf7e0929c00
   FirebaseCore: f86a1394906b97ac445ae49c92552a9425831bed

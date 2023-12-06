@@ -20,17 +20,19 @@ class SolutionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        SavedTrain savedTrain = new SavedTrain(
-          trainCode: trainSolution.trainCode,
-          departureStationName: trainSolution.departureStation,
-        );
-        context.read<ExistBloc>().add(
-              ExistRequest(
-                savedTrain: savedTrain,
-              ),
-            );
-      },
+      onPressed: trainSolution.trainCode != null
+          ? () {
+              SavedTrain savedTrain = new SavedTrain(
+                trainCode: trainSolution.trainCode!,
+                departureStationName: trainSolution.departureStation,
+              );
+              context.read<ExistBloc>().add(
+                    ExistRequest(
+                      savedTrain: savedTrain,
+                    ),
+                  );
+            }
+          : null,
       child: Column(
         children: [
           SolutionSectionHeader(

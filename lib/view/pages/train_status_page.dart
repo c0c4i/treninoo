@@ -90,7 +90,7 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                           return Column(
                             children: [
                               TrainInfoDetails(
-                                trainInfo: trainInfo,
+                                trainInfo: trainInfo!,
                               ),
                               SizedBox(height: 24),
                               TrainInfoStopsHeader(),

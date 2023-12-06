@@ -6,6 +6,7 @@ import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
 
 import '../../exceptions/more_than_one.dart';
+import '../../exceptions/no_station.dart';
 import '../../repository/saved_train.dart';
 
 class ExistBloc extends Bloc<ExistEvent, ExistState> {
@@ -32,6 +33,8 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
         savedTrain: exception.savedTrain,
         stations: exception.stations,
       ));
+    } on NoStationsException catch (_) {
+      emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));
     } catch (exception, stackTrace) {
       await Sentry.captureException(
         exception,

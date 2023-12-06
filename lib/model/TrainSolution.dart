@@ -4,10 +4,10 @@ class TrainSolution {
   final DateTime? departureTime;
   final DateTime? arrivalTime;
   final String? trainType;
-  final String trainCode;
+  final String? trainCode;
 
   TrainSolution({
-    required this.trainCode,
+    this.trainCode,
     required this.departureStation,
     this.arrivalStation,
     this.departureTime,

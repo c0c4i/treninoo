@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
@@ -9,12 +10,14 @@ import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/endpoint.dart';
 
 import '../exceptions/more_than_one.dart';
+import '../exceptions/no_station.dart';
 
 abstract class TrainRepository {
   final dio = Dio();
 
   TrainRepository() {
     dio.options.baseUrl = BASE_URL;
+    dio.httpClientAdapter = NativeAdapter();
   }
 
   Future<List<Station>> getDepartureStation(String trainCode);
@@ -55,7 +58,8 @@ class APITrain extends TrainRepository {
       List<Station> departureStations =
           await getDepartureStation(savedTrain.trainCode);
 
-      if (departureStations.length == 0) throw Exception("No station found");
+      if (departureStations.length == 0) throw NoStationsException();
+
       if (departureStations.length > 1)
         throw MoreThanOneException(savedTrain, departureStations);
 

@@ -1,0 +1,1 @@
+class NoStationsException implements Exception {}
