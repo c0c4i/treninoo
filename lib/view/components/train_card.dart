@@ -13,11 +13,13 @@ import '../../enum/saved_train_type.dart';
 class TrainCard extends StatelessWidget {
   final SavedTrain savedTrain;
   final SavedTrainType type;
+  final bool enabled;
 
   const TrainCard({
     Key? key,
     required this.savedTrain,
     required this.type,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -30,18 +32,22 @@ class TrainCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(kRadius),
           ),
           child: OutlinedButton(
-            onPressed: () {
-              context
-                  .read<ExistBloc>()
-                  .add(ExistRequest(savedTrain: savedTrain, type: type));
-            },
-            onLongPress: () {
-              SavedTrainPickAction.show(
-                context: context,
-                savedTrain: savedTrain,
-                type: type,
-              );
-            },
+            onPressed: enabled
+                ? () {
+                    context
+                        .read<ExistBloc>()
+                        .add(ExistRequest(savedTrain: savedTrain, type: type));
+                  }
+                : null,
+            onLongPress: enabled
+                ? () {
+                    SavedTrainPickAction.show(
+                      context: context,
+                      savedTrain: savedTrain,
+                      type: type,
+                    );
+                  }
+                : null,
             child: IntrinsicHeight(
               child: Column(
                 children: [

@@ -19,3 +19,13 @@ class DeleteFavourite extends FavouritesEvent {
   @override
   List<Object?> get props => [savedTrain];
 }
+
+class ReorderFavourites extends FavouritesEvent {
+  final int oldIndex;
+  final int newIndex;
+
+  ReorderFavourites({required this.oldIndex, required this.newIndex});
+
+  @override
+  List<Object?> get props => [oldIndex, newIndex];
+}

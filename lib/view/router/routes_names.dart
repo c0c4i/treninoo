@@ -6,4 +6,5 @@ class RoutesNames {
   static const String followTrainStations = "/followtrain_stations";
   static const String editDescription = "/description";
   static const String sendFeedback = "/feedback";
+  static const String reorderFavourites = "/reorder_favourites";
 }

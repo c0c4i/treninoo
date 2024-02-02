@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:treninoo/bloc/favourites/favourites.dart';
 import 'package:treninoo/view/components/favourites/no_favourites.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/train_exist/train_handler.dart';
+import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import '../../enum/saved_train_type.dart';
@@ -17,7 +19,11 @@ class FavouritesPage extends StatefulWidget {
 }
 
 class _FavouritesPageState extends State<FavouritesPage> {
-  _FavouritesPageState();
+  bool get haveFavourites =>
+      context.watch<FavouritesBloc>().state is FavouritesSuccess &&
+      (context.watch<FavouritesBloc>().state as FavouritesSuccess)
+          .trains
+          .isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
                     title: "I tuoi treni",
                     description:
                         "Qui puoi trovare i treni che hai scelto come preferiti",
+                    icon: haveFavourites ? Boxicons.bx_edit_alt : null,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesNames.reorderFavourites,
+                      );
+                    },
                   ),
                   SizedBox(height: kPadding),
                   BlocBuilder<FavouritesBloc, FavouritesState>(

@@ -33,6 +33,8 @@ abstract class SavedTrainRepository {
 
   List<Station?> getRecentsStations();
   void addRecentStation(Station? station);
+
+  Future<void> reorderFavourites(int oldIndex, int newIndex);
 }
 
 class APISavedTrain extends SavedTrainRepository {
@@ -169,5 +171,15 @@ class APISavedTrain extends SavedTrainRepository {
 
     // Set saved trains to shared preference
     _setSavedTrain(savedTrainType, savedTrains);
+  }
+
+  Future<void> reorderFavourites(int oldIndex, int newIndex) async {
+    List<SavedTrain> trains = _getSavedTrain(SavedTrainType.favourites);
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    SavedTrain train = trains.removeAt(oldIndex);
+    trains.insert(newIndex, train);
+    _setSavedTrain(SavedTrainType.favourites, trains);
   }
 }

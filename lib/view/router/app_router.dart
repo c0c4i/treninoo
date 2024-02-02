@@ -10,6 +10,7 @@ import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/pages/edit_description_page.dart';
 import 'package:treninoo/view/pages/follow_train_page.dart';
+import 'package:treninoo/view/pages/reorder_favourites_page.dart';
 import 'package:treninoo/view/pages/solutions_result_page.dart';
 import 'package:treninoo/view/pages/station_status_page.dart';
 import 'package:treninoo/view/pages/train_status_page.dart';
@@ -124,6 +125,14 @@ class AppRouter {
               ),
               child: SendFeedbackPage(),
             ),
+          ),
+        );
+
+      case RoutesNames.reorderFavourites:
+        return CupertinoPageRoute(
+          builder: (_) => RepositoryProvider<SavedTrainRepository>(
+            create: (context) => context.read<SavedTrainRepository>(),
+            child: ReorderFavouritesPage(),
           ),
         );
 
