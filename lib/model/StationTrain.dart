@@ -23,12 +23,22 @@ class StationTrain {
   });
 
   factory StationTrain.fromJson(Map<String, dynamic> json) {
+    // Resolve a possible weird time in API
+    TimeOfDay? time;
+    if (json['time'] != null) {
+      try {
+        time = Utils.timestampToTimeOfDay(json['time']);
+      } catch (e) {
+        time = null;
+      }
+    }
+
     return StationTrain(
       trainCode: json['trainCode'],
       departureCode: json['departureCode'],
       category: json['category'],
       name: json['stationName'],
-      time: Utils.timestampToTimeOfDay(json['time']),
+      time: time,
       plannedRail: json['plannedPlatform'],
       actualRail: json['actualPlatform'],
       delay: json['ritardo'],
