@@ -105,5 +105,5 @@ class Stop extends Equatable {
   }
 
   @override
-  List<Object?> get props => [station];
+  List<Object?> get props => [station, delay, confirmed, currentStation];
 }

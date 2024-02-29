@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/Stop.dart';
 
 import '../utils/utils.dart';
 
-class TrainInfo {
+class TrainInfo extends Equatable {
   final String trainType;
   final String trainCode;
   final TimeOfDay? lastTimeRegister;
@@ -41,4 +42,17 @@ class TrainInfo {
       stops: (json['stops'] as List).map((f) => Stop.fromJson(f)).toList(),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        trainType,
+        trainCode,
+        lastTimeRegister,
+        lastPositionRegister,
+        departureStation,
+        arrivalStationName,
+        departureTime,
+        delay,
+        stops,
+      ];
 }
