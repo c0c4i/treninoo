@@ -26,37 +26,47 @@ class TrainInfoDetails extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: isDeparted
-                      ? [
-                          Text(
-                            '${trainInfo.lastPositionRegister}',
-                            style:
-                                Typo.titleHeavy.copyWith(color: Colors.white),
-                          ),
-                          Text(
-                            'Ultimo Rilevamento: ${trainInfo.lastTimeRegister!.format(context)}',
-                            style: Typo.bodyLight.copyWith(
-                              color: Colors.white,
+              flex: 2,
+              child: isDeparted
+                  ? Semantics(
+                      label:
+                          "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)}",
+                      excludeSemantics: true,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${trainInfo.lastPositionRegister}',
+                              style:
+                                  Typo.titleHeavy.copyWith(color: Colors.white),
                             ),
-                          ),
-                        ]
-                      : [
-                          Text(
-                            'Non ancora partito',
-                            style:
-                                Typo.titleHeavy.copyWith(color: Colors.white),
-                          ),
-                        ],
-                )),
+                            Text(
+                              'Ultimo Rilevamento: ${trainInfo.lastTimeRegister!.format(context)}',
+                              style: Typo.bodyLight.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ]),
+                    )
+                  : Semantics(
+                      label: "Treno non ancora partito",
+                      excludeSemantics: true,
+                      child: Text(
+                        'Non ancora partito',
+                        style: Typo.titleHeavy.copyWith(color: Colors.white),
+                      ),
+                    ),
+            ),
             Expanded(
               flex: 1,
-              child: Text(
-                delay,
-                textAlign: TextAlign.right,
-                style: Typo.subheaderLight.copyWith(color: Colors.white),
+              child: Semantics(
+                label: "$delay minuti",
+                excludeSemantics: true,
+                child: Text(
+                  delay,
+                  textAlign: TextAlign.right,
+                  style: Typo.subheaderLight.copyWith(color: Colors.white),
+                ),
               ),
             ),
           ],

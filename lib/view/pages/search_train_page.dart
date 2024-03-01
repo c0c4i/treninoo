@@ -80,43 +80,47 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
   Widget build(BuildContext context) {
     return HandleExistBloc(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus) {
-                  currentFocus.unfocus();
-                }
-              },
+        body: Semantics(
+          label: " ",
+          container: true,
+          child: SingleChildScrollView(
+            child: SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Header(
-                      title: "Cerca il tuo treno",
-                      description:
-                          "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () => FocusScope.of(context).unfocus(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 50),
+                            child: Header(
+                              title: "Cerca il tuo treno",
+                              description:
+                                  "Se conosci il numero del tuo treno inseriscilo qui per conoscere il suo stato",
+                            ),
+                          ),
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: BeautifulTextField(
+                            prefixIcon: Icons.search,
+                            labelText: "Codice treno",
+                            controller: searchController,
+                            keyboardType: TextInputType.number,
+                            errorText: error,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ActionButton(
+                          title: "Cerca",
+                          onPressed: searchButtonClick,
+                        ),
+                        SizedBox(height: 50),
+                      ],
                     ),
-                    SizedBox(height: 50),
-                    Form(
-                      key: _formKey,
-                      child: BeautifulTextField(
-                        prefixIcon: Icons.search,
-                        labelText: "Codice treno",
-                        controller: searchController,
-                        keyboardType: TextInputType.number,
-                        errorText: error,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    ActionButton(
-                      title: "Cerca",
-                      onPressed: searchButtonClick,
-                    ),
-                    SizedBox(height: 50),
                     RecentsTrains(),
                   ],
                 ),

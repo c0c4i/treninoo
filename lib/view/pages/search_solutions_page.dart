@@ -143,9 +143,12 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                           width: 48,
                           child: TextButton(
                             onPressed: swapStations,
-                            child: Icon(
-                              Icons.swap_vert_rounded,
-                              color: Primary.normal,
+                            child: Semantics(
+                              label: "Scambia stazioni",
+                              child: Icon(
+                                Icons.swap_vert_rounded,
+                                color: Primary.normal,
+                              ),
                             ),
                             style: TextButton.styleFrom(
                               backgroundColor: Grey.lightest1,
@@ -167,23 +170,32 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.48,
-                        child: ClickableTextField(
-                          prefixIcon: Icons.date_range_rounded,
-                          controller: dateController,
-                          onPressed: () {
-                            _pickDate();
-                          },
+                        child: Semantics(
+                          label: "Data di partenza, " + formatDate(pickedDate!),
+                          button: true,
+                          child: ClickableTextField(
+                            prefixIcon: Icons.date_range_rounded,
+                            controller: dateController,
+                            onPressed: () {
+                              _pickDate();
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(width: kPadding),
                       Expanded(
-                        child: ClickableTextField(
-                          prefixIcon: Icons.access_time_rounded,
-                          // labelText: "Ora",
-                          controller: timeController,
-                          onPressed: () {
-                            _pickTime();
-                          },
+                        child: Semantics(
+                          label:
+                              "Ora di partenza, " + formatTimeOfDay(pickedTime),
+                          button: true,
+                          child: ClickableTextField(
+                            prefixIcon: Icons.access_time_rounded,
+                            // labelText: "Ora",
+                            controller: timeController,
+                            onPressed: () {
+                              _pickTime();
+                            },
+                          ),
                         ),
                       ),
                     ],

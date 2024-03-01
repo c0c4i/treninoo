@@ -21,10 +21,11 @@ class _RecentsTrainsState extends State<RecentsTrains> {
         if (state is RecentsSuccess && state.trains.length > 0) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text("Recenti", style: Typo.headlineLight),
+              Text(
+                "Recenti",
+                style: Typo.headlineLight,
               ),
               SizedBox(height: 8),
               ListView.builder(
