@@ -11,12 +11,14 @@ class Header extends StatelessWidget {
     this.description,
     this.icon,
     this.onPressed,
+    this.iconSemanticsLabel,
   }) : super(key: key);
 
   final String? title;
   final String? description;
   final IconData? icon;
   final VoidCallback? onPressed;
+  final String? iconSemanticsLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +45,22 @@ class Header extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       padding: EdgeInsets.all(4),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: Icon(
-                          icon,
-                          size: 18,
-                          color: Primary.normal,
+                      child: Semantics(
+                        label: iconSemanticsLabel,
+                        excludeSemantics: true,
+                        button: true,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(
+                            icon,
+                            size: 18,
+                            color: Primary.normal,
+                          ),
+                          constraints: BoxConstraints(),
+                          onPressed: onPressed,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                         ),
-                        constraints: BoxConstraints(),
-                        onPressed: onPressed,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
                       ),
                     ),
                   ],

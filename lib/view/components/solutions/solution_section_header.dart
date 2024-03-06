@@ -34,10 +34,15 @@ class SolutionSectionHeader extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          travelTime(departureTime!, arrivalTime!),
-          style: Typo.subheaderHeavy.copyWith(
-            color: Theme.of(context).colorScheme.onBackground,
+        Semantics(
+          label:
+              ", durata viaggio ${travelTimeSemantics(departureTime!, arrivalTime!)}.",
+          excludeSemantics: true,
+          child: Text(
+            travelTime(departureTime!, arrivalTime!),
+            style: Typo.subheaderHeavy.copyWith(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
           ),
         ),
       ],

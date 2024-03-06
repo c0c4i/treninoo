@@ -37,17 +37,20 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Header(
-                    title: "I tuoi treni",
-                    description:
-                        "Qui puoi trovare i treni che hai scelto come preferiti",
-                    icon: haveFavourites ? Boxicons.bx_edit_alt : null,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RoutesNames.reorderFavourites,
-                      );
-                    },
+                  Semantics(
+                    child: Header(
+                      title: "I tuoi treni",
+                      description:
+                          "Qui puoi trovare i treni che hai scelto come preferiti",
+                      icon: haveFavourites ? Boxicons.bx_edit_alt : null,
+                      iconSemanticsLabel: "Ordina treni preferiti",
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          RoutesNames.reorderFavourites,
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(height: kPadding),
                   BlocBuilder<FavouritesBloc, FavouritesState>(

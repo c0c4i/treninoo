@@ -93,7 +93,10 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                 trainInfo: trainInfo!,
                               ),
                               SizedBox(height: 24),
-                              TrainInfoStopsHeader(),
+                              Semantics(
+                                excludeSemantics: true,
+                                child: TrainInfoStopsHeader(),
+                              ),
                               SizedBox(height: 8),
                               TrainStatusStopList(
                                 stops: trainInfo?.stops,

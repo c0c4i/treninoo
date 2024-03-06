@@ -31,6 +31,20 @@ String travelTime(DateTime departure, DateTime arrival) {
   return "$hoursString$minutesString";
 }
 
+String travelTimeSemantics(DateTime departure, DateTime arrival) {
+  Duration travelTime = arrival.difference(departure);
+  int hours = travelTime.inHours;
+  int minutes = travelTime.inMinutes.remainder(60);
+
+  // Ignore hours if 0
+  String hoursString = hours > 0 ? "${hours} ore " : "";
+  String minutesString =
+      "${addZeroToNumberLowerThan10(minutes.toString())} minuti";
+
+  // Return string like hhh mmm
+  return "$hoursString$minutesString";
+}
+
 // ThemeData getThemeFromString(String value) {
 //   int n = themes.indexOf(value);
 //   switch (n) {

@@ -79,22 +79,29 @@ class _TrainAppBarState extends State<TrainAppBar> {
                   );
                 }
                 if (state is FavouriteSuccess) {
-                  return IconButton(
-                    iconSize: 40,
-                    onPressed: () {
-                      context.read<FavouriteBloc>().add(
-                            FavouriteToggle(
-                              savedTrain: widget.savedTrain,
-                              value: !state.isFavourite,
-                            ),
-                          );
-                    },
-                    icon: Icon(
-                      state.isFavourite
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_border_rounded,
-                      size: 35,
-                      color: Primary.normal,
+                  return Semantics(
+                    label: state.isFavourite
+                        ? "Rimuovi dai preferiti"
+                        : "Aggiungi ai preferiti",
+                    excludeSemantics: true,
+                    button: true,
+                    child: IconButton(
+                      iconSize: 40,
+                      onPressed: () {
+                        context.read<FavouriteBloc>().add(
+                              FavouriteToggle(
+                                savedTrain: widget.savedTrain,
+                                value: !state.isFavourite,
+                              ),
+                            );
+                      },
+                      icon: Icon(
+                        state.isFavourite
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_border_rounded,
+                        size: 35,
+                        color: Primary.normal,
+                      ),
                     ),
                   );
                 }

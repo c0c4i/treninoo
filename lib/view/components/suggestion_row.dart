@@ -12,23 +12,28 @@ class StationSuggestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      child: Row(
-        children: [
-          Icon(
-            Icons.location_on_outlined,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              station.stationName,
-              style: Typo.subheaderHeavy,
-              overflow: TextOverflow.clip,
+    return Semantics(
+      button: true,
+      label: station.stationName,
+      excludeSemantics: true,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        child: Row(
+          children: [
+            Icon(
+              Icons.location_on_outlined,
+              color: Theme.of(context).iconTheme.color,
             ),
-          ),
-        ],
+            SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                station.stationName,
+                style: Typo.subheaderHeavy,
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

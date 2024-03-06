@@ -10,17 +10,22 @@ class BeautifulBackButton extends StatelessWidget {
     return SizedBox(
       width: 60,
       height: 60,
-      child: TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: Center(
-            child: Icon(
-          Icons.arrow_back_ios_rounded,
-          color: Primary.normal,
-        )),
-        style: TextButton.styleFrom(
-          backgroundColor: Primary.lightest2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kRadius),
+      child: Semantics(
+        label: "Indietro",
+        excludeSemantics: true,
+        button: true,
+        child: TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Center(
+              child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Primary.normal,
+          )),
+          style: TextButton.styleFrom(
+            backgroundColor: Primary.lightest2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius),
+            ),
           ),
         ),
       ),

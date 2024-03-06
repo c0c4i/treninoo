@@ -52,51 +52,70 @@ class TrainStatusStopRow extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 4,
-            child: TrainStatusStopStationCell(
-              stationName: stop.station.stationName,
-              current: current,
+            child: Semantics(
+              excludeSemantics: true,
+              label: "Stazione: ${stop.station.stationName}.",
+              child: TrainStatusStopStationCell(
+                stationName: stop.station.stationName,
+                current: current,
+              ),
             ),
           ),
           Expanded(
             flex: 1,
-            child: Text(
-              stop.binary,
-              style: Typo.subheaderLight.copyWith(
-                color: !stop.confirmedBinary ? Colors.grey : null,
+            child: Semantics(
+              excludeSemantics: true,
+              label:
+                  "Binario ${stop.confirmedBinary ? "effettivo" : "previsto"} ${stop.binary}.",
+              child: Text(
+                stop.binary,
+                style: Typo.subheaderLight.copyWith(
+                  color: !stop.confirmedBinary ? Colors.grey : null,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              stop.selectTime(
-                context,
-                stop.actualArrivalTime,
-                stop.plannedArrivalTime,
-                stop.predictedArrivalTime,
-                predicted,
+            child: Semantics(
+              label:
+                  "Arrivo ${stop.actualArrivalTime != null ? 'effettivo' : 'previsto'} ${stop.selectTime(context, stop.actualArrivalTime, stop.plannedArrivalTime, stop.predictedArrivalTime, predicted)}.",
+              excludeSemantics: true,
+              child: Text(
+                stop.selectTime(
+                  context,
+                  stop.actualArrivalTime,
+                  stop.plannedArrivalTime,
+                  stop.predictedArrivalTime,
+                  predicted,
+                ),
+                style: Typo.subheaderLight.copyWith(
+                  color: arrivalColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              style: Typo.subheaderLight.copyWith(
-                color: arrivalColor,
-              ),
-              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              stop.selectTime(
-                context,
-                stop.actualDepartureTime,
-                stop.plannedDepartureTime,
-                stop.predictedDepartureTime,
-                predicted,
+            child: Semantics(
+              label:
+                  "Partenza ${stop.actualDepartureTime != null ? 'effettiva' : 'prevista'} ${stop.selectTime(context, stop.actualDepartureTime, stop.plannedDepartureTime, stop.predictedDepartureTime, predicted)}.",
+              excludeSemantics: true,
+              child: Text(
+                stop.selectTime(
+                  context,
+                  stop.actualDepartureTime,
+                  stop.plannedDepartureTime,
+                  stop.predictedDepartureTime,
+                  predicted,
+                ),
+                style: Typo.subheaderLight.copyWith(
+                  color: departureColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              style: Typo.subheaderLight.copyWith(
-                color: departureColor,
-              ),
-              textAlign: TextAlign.center,
             ),
           ),
         ],
