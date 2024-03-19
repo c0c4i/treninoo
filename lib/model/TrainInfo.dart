@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/Stop.dart';
@@ -43,6 +44,27 @@ class TrainInfo extends Equatable {
     );
   }
 
+  List<TrainInfoDifference> compareWith(TrainInfo other) {
+    List<TrainInfoDifference> differences = [];
+
+    if (lastTimeRegister != other.lastTimeRegister) {
+      differences.add(TrainInfoDifference.lastTimeRegister);
+    }
+
+    if (lastPositionRegister != other.lastPositionRegister) {
+      differences.add(TrainInfoDifference.lastPositionRegister);
+    }
+
+    if (delay != other.delay) {
+      differences.add(TrainInfoDifference.delay);
+    }
+    if (!listEquals(stops, other.stops)) {
+      differences.add(TrainInfoDifference.stops);
+    }
+
+    return differences;
+  }
+
   @override
   List<Object?> get props => [
         trainType,
@@ -55,4 +77,11 @@ class TrainInfo extends Equatable {
         delay,
         stops,
       ];
+}
+
+enum TrainInfoDifference {
+  lastTimeRegister,
+  lastPositionRegister,
+  delay,
+  stops,
 }

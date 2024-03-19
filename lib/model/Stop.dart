@@ -104,6 +104,55 @@ class Stop extends Equatable {
     return "—:—";
   }
 
+  List<StopDifference> compareWith(Stop other) {
+    List<StopDifference> differences = [];
+
+    if (plannedDepartureTime != other.plannedDepartureTime) {
+      differences.add(StopDifference.plannedDepartureTime);
+    }
+
+    if (actualDepartureTime != other.actualDepartureTime) {
+      differences.add(StopDifference.actualDepartureTime);
+    }
+
+    if (plannedArrivalTime != other.plannedArrivalTime) {
+      differences.add(StopDifference.plannedArrivalTime);
+    }
+
+    if (actualArrivalTime != other.actualArrivalTime) {
+      differences.add(StopDifference.actualArrivalTime);
+    }
+
+    if (plannedDepartureRail != other.plannedDepartureRail) {
+      differences.add(StopDifference.plannedDepartureRail);
+    }
+
+    if (actualDepartureRail != other.actualDepartureRail) {
+      differences.add(StopDifference.actualDepartureRail);
+    }
+
+    if (plannedArrivalRail != other.plannedArrivalRail) {
+      differences.add(StopDifference.plannedArrivalRail);
+    }
+
+    if (actualArrivalRail != other.actualArrivalRail) {
+      differences.add(StopDifference.actualArrivalRail);
+    }
+
+    return differences;
+  }
+
   @override
   List<Object?> get props => [station, delay, confirmed, currentStation];
+}
+
+enum StopDifference {
+  plannedDepartureTime,
+  actualDepartureTime,
+  plannedArrivalTime,
+  actualArrivalTime,
+  plannedDepartureRail,
+  actualDepartureRail,
+  plannedArrivalRail,
+  actualArrivalRail,
 }

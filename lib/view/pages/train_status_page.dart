@@ -7,6 +7,7 @@ import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/utils/accessibility/changes_announcer.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
@@ -67,6 +68,17 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
               listener: (context, state) {
                 if (state is TrainStatusSuccess) {
                   setState(() {
+                    if (trainInfo == null) {
+                      trainInfo = state.trainInfo;
+                      return;
+                    }
+
+                    AccessibilityChangesAnnouncer.announceChanges(
+                      context,
+                      trainInfo!,
+                      state.trainInfo,
+                    );
+
                     trainInfo = state.trainInfo;
                   });
                 }
