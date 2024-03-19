@@ -16,10 +16,11 @@ class TrainInfoDetails extends StatelessWidget {
   semanticLabel(context) {
     if (!isDeparted) return "Treno non ancora partito";
 
-    if (trainInfo.delay == 0)
-      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} in orario";
+    if (trainInfo.delay != null && trainInfo.delay! > 0) {
+      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un ritardo di ${trainInfo.delay} minuti";
+    }
 
-    return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un ritardo di ${trainInfo.delay} minuti";
+    return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)}, treno in orario.";
   }
 
   @override

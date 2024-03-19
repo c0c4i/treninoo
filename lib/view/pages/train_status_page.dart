@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
@@ -50,102 +52,104 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          context.read<TrainStatusBloc>().add(
-                TrainStatusRequest(savedTrain: widget.savedTrain),
-              );
-          return context
-              .read<TrainStatusBloc>()
-              .stream
-              .firstWhere((e) => e is! TrainStatusLoading)
-              .then((value) => null);
-        },
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: SafeArea(
-            child: BlocListener<TrainStatusBloc, TrainStatusState>(
-              listener: (context, state) {
-                if (state is TrainStatusSuccess) {
-                  setState(() {
-                    if (trainInfo == null) {
-                      trainInfo = state.trainInfo;
-                      return;
-                    }
-
-                    AccessibilityChangesAnnouncer.announceChanges(
-                      context,
-                      trainInfo!,
-                      state.trainInfo,
-                    );
-
-                    trainInfo = state.trainInfo;
-                  });
+      body: SafeArea(
+        child: BlocListener<TrainStatusBloc, TrainStatusState>(
+          listener: (context, state) {
+            if (state is TrainStatusSuccess) {
+              setState(() {
+                if (trainInfo == null) {
+                  trainInfo = state.trainInfo;
+                  return;
                 }
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                child: Column(
-                  children: <Widget>[
-                    TrainAppBar(savedTrain: widget.savedTrain),
-                    SizedBox(height: 8),
-                    BlocBuilder<TrainStatusBloc, TrainStatusState>(
-                      builder: (context, state) {
-                        if (state is TrainStatusInitial) {
-                          context.read<TrainStatusBloc>().add(
-                              TrainStatusRequest(
-                                  savedTrain: widget.savedTrain));
-                        }
-                        if ((state is TrainStatusSuccess ||
-                                state is TrainStatusLoading) &&
-                            trainInfo != null)
-                          return Column(
-                            children: [
-                              TrainInfoDetails(
-                                trainInfo: trainInfo!,
-                              ),
-                              SizedBox(height: 24),
-                              Semantics(
-                                excludeSemantics: true,
-                                child: TrainInfoStopsHeader(),
-                              ),
-                              SizedBox(height: 8),
-                              TrainStatusStopList(
-                                stops: trainInfo?.stops,
-                                currentStop: trainInfo?.lastPositionRegister,
-                                delay: trainInfo!.delay!,
-                              ),
-                              // PredictedArrivalAlert(
-                              //   onActivate: () {
-                              //     context
-                              //         .read<PredictedArrivalCubit>()
-                              //         .setValue(true);
-                              //     setState(
-                              //       () {},
-                              //     );
-                              //   },
-                              // ),
-                            ],
-                          );
 
-                        if (state is TrainStatusLoading)
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            child: Center(
-                              child: CircularProgressIndicator(),
+                AccessibilityChangesAnnouncer.announceChanges(
+                  context,
+                  trainInfo!,
+                  state.trainInfo,
+                );
+
+                trainInfo = state.trainInfo;
+              });
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kPadding),
+            child: Column(
+              children: <Widget>[
+                TrainAppBar(savedTrain: widget.savedTrain),
+                SizedBox(height: 8),
+                Expanded(
+                  child: BlocBuilder<TrainStatusBloc, TrainStatusState>(
+                    builder: (context, state) {
+                      if (state is TrainStatusInitial) {
+                        context.read<TrainStatusBloc>().add(
+                            TrainStatusRequest(savedTrain: widget.savedTrain));
+                      }
+                      if ((state is TrainStatusSuccess ||
+                              state is TrainStatusLoading) &&
+                          trainInfo != null)
+                        return Column(
+                          children: [
+                            TrainInfoDetails(
+                              trainInfo: trainInfo!,
                             ),
-                          );
+                            SizedBox(height: 24),
+                            Semantics(
+                              excludeSemantics: true,
+                              child: TrainInfoStopsHeader(),
+                            ),
+                            SizedBox(height: 8),
+                            Expanded(
+                              child: RefreshIndicator(
+                                onRefresh: () async {
+                                  context.read<TrainStatusBloc>().add(
+                                        TrainStatusRequest(
+                                            savedTrain: widget.savedTrain),
+                                      );
+                                  return context
+                                      .read<TrainStatusBloc>()
+                                      .stream
+                                      .firstWhere(
+                                          (e) => e is! TrainStatusLoading)
+                                      .then((value) => null);
+                                },
+                                child: TrainStatusStopList(
+                                  stops: trainInfo?.stops,
+                                  currentStop: trainInfo?.lastPositionRegister,
+                                  delay: trainInfo!.delay!,
+                                ),
+                              ),
+                            ),
+                            // PredictedArrivalAlert(
+                            //   onActivate: () {
+                            //     context
+                            //         .read<PredictedArrivalCubit>()
+                            //         .setValue(true);
+                            //     setState(
+                            //       () {},
+                            //     );
+                            //   },
+                            // ),
+                          ],
+                        );
 
-                        if (state is TrainStatusFailed)
-                          return TrainStatusNotFound(
-                            savedTrain: widget.savedTrain,
-                          );
-                        return Container();
-                      },
-                    ),
-                  ],
+                      if (state is TrainStatusLoading)
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+
+                      if (state is TrainStatusFailed)
+                        return TrainStatusNotFound(
+                          savedTrain: widget.savedTrain,
+                        );
+                      return Container();
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

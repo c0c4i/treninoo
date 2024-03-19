@@ -9,35 +9,20 @@ class AccessibilityChangesAnnouncer {
     List<TrainInfoDifference> differences =
         oldTrainInfo.compareWith(newTrainInfo);
 
+    List<String> announcements = [];
+
     // Announce information
     for (TrainInfoDifference difference in differences) {
       switch (difference) {
-        case TrainInfoDifference.lastTimeRegister:
-          debugPrint(
-              "Il treno ${newTrainInfo.trainCode} è stato rilevato alle ore ${newTrainInfo.lastTimeRegister!.format(context)}");
-          SemanticsService.announce(
-            "Il treno ${newTrainInfo.trainCode} è stato rilevato alle ore ${newTrainInfo.lastTimeRegister!.format(context)}",
-            TextDirection.ltr,
-          );
-          break;
-        case TrainInfoDifference.lastPositionRegister:
-          debugPrint(
-              "Il treno ${newTrainInfo.trainCode} è in stazione ${newTrainInfo.lastPositionRegister}");
-          SemanticsService.announce(
-            "Il treno ${newTrainInfo.trainCode} è in stazione ${newTrainInfo.lastPositionRegister}",
-            TextDirection.ltr,
-          );
-          break;
-        case TrainInfoDifference.delay:
-          String announcement = "";
-          if (newTrainInfo.delay! > 0)
-            announcement =
-                "Il treno ${newTrainInfo.trainCode} ha un ritardo di ${newTrainInfo.delay} minuti";
-          else
-            announcement = "Il treno ${newTrainInfo.trainCode} è in orario";
+        case TrainInfoDifference.status:
+          String announcement =
+              "Il treno ${newTrainInfo.trainCode} è stato rilevato alle ore ${newTrainInfo.lastTimeRegister!.format(context)} a ${newTrainInfo.lastPositionRegister}";
 
-          debugPrint(announcement);
-          SemanticsService.announce(announcement, TextDirection.ltr);
+          String delay = (newTrainInfo.delay! > 0)
+              ? " con un ritardo di ${newTrainInfo.delay} minuti"
+              : " in orario";
+
+          announcements.add(announcement + delay);
           break;
         case TrainInfoDifference.stops:
           // Retrieve which stop has changed
@@ -46,50 +31,51 @@ class AccessibilityChangesAnnouncer {
                 oldTrainInfo.stops![i].compareWith(newTrainInfo.stops![i]);
             if (stopDifferences.isNotEmpty) {
               for (StopDifference stopDifference in stopDifferences) {
-                String announcement = "Il treno ${newTrainInfo.trainCode} ";
                 switch (stopDifference) {
                   // Announce planned changes
                   case StopDifference.plannedDepartureTime:
-                    announcement =
-                        "ha cambiato l'orario di partenza provvisoria da ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].plannedDepartureTime!.format(context)}";
+                    announcements.add(
+                      "L'orario di partenza provvisoria da ${newTrainInfo.stops![i].station.stationName} è alle ore ${newTrainInfo.stops![i].plannedDepartureTime!.format(context)}",
+                    );
                     break;
                   case StopDifference.plannedArrivalTime:
-                    debugPrint(
-                        "ha cambiato l'orario di arrivo provvisorio a ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].plannedArrivalTime!.format(context)}");
+                    announcements.add(
+                      "L'orario di arrivo provvisorio a ${newTrainInfo.stops![i].station.stationName} è alle ore ${newTrainInfo.stops![i].plannedArrivalTime!.format(context)}",
+                    );
                     break;
                   case StopDifference.plannedDepartureRail:
-                    announcement =
-                        "partirà da ${newTrainInfo.stops![i].station.stationName} al binario provvisorio ${newTrainInfo.stops![i].plannedDepartureRail}";
+                    announcements.add(
+                      "Il binario provvisorio di partenza da ${newTrainInfo.stops![i].station.stationName} è ${newTrainInfo.stops![i].plannedDepartureRail}",
+                    );
                     break;
                   case StopDifference.plannedArrivalRail:
-                    announcement =
-                        "arriverà a ${newTrainInfo.stops![i].station.stationName} al binario provvisorio ${newTrainInfo.stops![i].plannedArrivalRail}";
+                    announcements.add(
+                      "Il binario provvisorio di arrivo a ${newTrainInfo.stops![i].station.stationName} è ${newTrainInfo.stops![i].plannedArrivalRail}",
+                    );
                     break;
 
                   // Announce actual changes
                   case StopDifference.actualDepartureTime:
-                    announcement =
-                        "è partito da ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].actualDepartureTime!.format(context)}";
+                    announcements.add(
+                      "Il treno ${newTrainInfo.trainCode} è partito da ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].actualDepartureTime!.format(context)}",
+                    );
                     break;
                   case StopDifference.actualArrivalTime:
-                    announcement =
-                        "è arrivato a ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].actualArrivalTime!.format(context)}";
+                    announcements.add(
+                      "Il treno ${newTrainInfo.trainCode} è arrivato a ${newTrainInfo.stops![i].station.stationName} alle ore ${newTrainInfo.stops![i].actualArrivalTime!.format(context)}",
+                    );
                     break;
                   case StopDifference.actualDepartureRail:
-                    announcement =
-                        "partirà da ${newTrainInfo.stops![i].station.stationName} dal binario effettivo ${newTrainInfo.stops![i].actualDepartureRail}";
+                    announcements.add(
+                      "Il treno ${newTrainInfo.trainCode} partirà da ${newTrainInfo.stops![i].station.stationName} dal binario effettivo ${newTrainInfo.stops![i].actualDepartureRail}",
+                    );
                     break;
                   case StopDifference.actualArrivalRail:
-                    announcement =
-                        "arriverà a ${newTrainInfo.stops![i].station.stationName} al binario effettivo ${newTrainInfo.stops![i].actualArrivalRail}";
+                    announcements.add(
+                      "Il treno ${newTrainInfo.trainCode} arriverà a ${newTrainInfo.stops![i].station.stationName} al binario effettivo ${newTrainInfo.stops![i].actualArrivalRail}",
+                    );
                     break;
                 }
-
-                // Announce the change
-                SemanticsService.announce(
-                  announcement,
-                  TextDirection.ltr,
-                );
               }
             }
           }
@@ -97,5 +83,12 @@ class AccessibilityChangesAnnouncer {
           break;
       }
     }
+
+    if (announcements.isEmpty) return;
+
+    // Compose the announcement and announce it
+    String announcement = announcements.join(".\n");
+    debugPrint(announcement);
+    SemanticsService.announce(announcement, TextDirection.ltr);
   }
 }

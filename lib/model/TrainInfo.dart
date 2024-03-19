@@ -47,17 +47,12 @@ class TrainInfo extends Equatable {
   List<TrainInfoDifference> compareWith(TrainInfo other) {
     List<TrainInfoDifference> differences = [];
 
-    if (lastTimeRegister != other.lastTimeRegister) {
-      differences.add(TrainInfoDifference.lastTimeRegister);
+    if (lastTimeRegister != other.lastTimeRegister ||
+        lastPositionRegister != other.lastPositionRegister ||
+        delay != other.delay) {
+      differences.add(TrainInfoDifference.status);
     }
 
-    if (lastPositionRegister != other.lastPositionRegister) {
-      differences.add(TrainInfoDifference.lastPositionRegister);
-    }
-
-    if (delay != other.delay) {
-      differences.add(TrainInfoDifference.delay);
-    }
     if (!listEquals(stops, other.stops)) {
       differences.add(TrainInfoDifference.stops);
     }
@@ -80,8 +75,6 @@ class TrainInfo extends Equatable {
 }
 
 enum TrainInfoDifference {
-  lastTimeRegister,
-  lastPositionRegister,
-  delay,
+  status,
   stops,
 }
