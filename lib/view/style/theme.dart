@@ -19,6 +19,7 @@ const double kButtonPadding = 16.0;
 
 class AppTheme {
   static ThemeData light = ThemeData(
+    useMaterial3: false,
     colorScheme: ColorScheme(
       primary: kPrimaryColor,
       secondary: kPrimaryColor,
@@ -60,6 +61,7 @@ class AppTheme {
   );
 
   static ThemeData dark = ThemeData(
+    useMaterial3: false,
     colorScheme: const ColorScheme.dark().copyWith(
       primary: kPrimaryColor,
       secondary: kPrimaryColor,

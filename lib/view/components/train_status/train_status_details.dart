@@ -13,6 +13,15 @@ class TrainInfoDetails extends StatelessWidget {
     return trainInfo.lastPositionRegister != '--';
   }
 
+  semanticLabel(context) {
+    if (!isDeparted) return "Treno non ancora partito";
+
+    if (trainInfo.delay == 0)
+      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} in orario";
+
+    return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un ritardo di ${trainInfo.delay} minuti";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,18 +32,17 @@ class TrainInfoDetails extends StatelessWidget {
           color: Primary.normal,
           borderRadius: BorderRadius.circular(kRadius),
         ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: isDeparted
-                  ? Semantics(
-                      label:
-                          "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)}",
-                      excludeSemantics: true,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+        child: Semantics(
+          label: semanticLabel(context),
+          excludeSemantics: true,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: isDeparted
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                             Text(
                               '${trainInfo.lastPositionRegister}',
                               style:
@@ -46,30 +54,30 @@ class TrainInfoDetails extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                          ]),
-                    )
-                  : Semantics(
-                      label: "Treno non ancora partito",
-                      excludeSemantics: true,
-                      child: Text(
-                        'Non ancora partito',
-                        style: Typo.titleHeavy.copyWith(color: Colors.white),
+                          ])
+                    : Semantics(
+                        label: "Treno non ancora partito",
+                        excludeSemantics: true,
+                        child: Text(
+                          'Non ancora partito',
+                          style: Typo.titleHeavy.copyWith(color: Colors.white),
+                        ),
                       ),
-                    ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Semantics(
-                label: "$delay minuti",
-                excludeSemantics: true,
-                child: Text(
-                  delay,
-                  textAlign: TextAlign.right,
-                  style: Typo.subheaderLight.copyWith(color: Colors.white),
+              ),
+              Expanded(
+                flex: 1,
+                child: Semantics(
+                  label: "$delay minuti",
+                  excludeSemantics: true,
+                  child: Text(
+                    delay,
+                    textAlign: TextAlign.right,
+                    style: Typo.subheaderLight.copyWith(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

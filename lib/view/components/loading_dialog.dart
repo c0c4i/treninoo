@@ -19,8 +19,8 @@ class LoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      onPopInvoked: (bool value) => false,
       child: Center(
         child: Container(
           width: 80,
