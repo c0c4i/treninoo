@@ -22,7 +22,7 @@ class SolutionsDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            "${solutionsInfo!.departureStation!.stationName} - ${solutionsInfo!.arrivalStation!.stationName}",
+            "${solutionsInfo!.departureStation.stationName} - ${solutionsInfo!.arrivalStation.stationName}",
             style: Typo.subheaderHeavy.copyWith(color: Colors.white),
             textAlign: TextAlign.center,
           ),
@@ -31,11 +31,11 @@ class SolutionsDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                formatDate(solutionsInfo!.fromTime!),
+                formatDate(solutionsInfo!.fromTime),
                 style: Typo.subheaderLight.copyWith(color: Colors.white),
               ),
               Text(
-                formatTime(solutionsInfo!.fromTime!),
+                formatTime(solutionsInfo!.fromTime),
                 style: Typo.subheaderLight.copyWith(color: Colors.white),
               ),
             ],

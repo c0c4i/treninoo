@@ -24,9 +24,9 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
       final solutions =
           await _trainRepository.getSolutions(event.solutionsInfo);
       _savedTrainRepository
-          .addRecentStation(event.solutionsInfo.departureStation);
+          .addRecentOrFavoruiteStation(event.solutionsInfo.departureStation);
       _savedTrainRepository
-          .addRecentStation(event.solutionsInfo.arrivalStation);
+          .addRecentOrFavoruiteStation(event.solutionsInfo.arrivalStation);
       emit(SolutionsSuccess(solutions: solutions));
     } catch (exception, stackTrace) {
       await Sentry.captureException(

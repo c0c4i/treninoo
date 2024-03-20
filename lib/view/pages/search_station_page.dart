@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/Station.dart';
-import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/components/beautiful_card.dart';
 
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/buttons/station_picker_button.dart';
+import 'package:treninoo/view/components/dialog/station_picker.dart';
 import 'package:treninoo/view/components/header.dart';
 
-import 'package:treninoo/view/components/textfield.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -18,7 +19,7 @@ class SearchStationPage extends StatefulWidget {
 }
 
 class _SearchStationPageState extends State<SearchStationPage> {
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   final TextEditingController searchController = TextEditingController();
   bool validate = false;
   Station? station;
@@ -66,21 +67,31 @@ class _SearchStationPageState extends State<SearchStationPage> {
                         "Ricerca la tua stazione per vedere tutti gli arrivi e le partenze",
                   ),
                   SizedBox(height: 50),
-                  Form(
-                    key: _formKey,
-                    child: SuggestionTextField(
-                      label: "Stazione",
-                      controller: searchController,
-                      onSelect: (selected) {
-                        if (selected == null) return;
-                        searchController.text = selected.stationName;
-                        setState(() => station = selected);
+                  // Form(
+                  //   key: _formKey,
+                  //   child: SuggestionTextField(
+                  //     label: "Stazione",
+                  //     controller: searchController,
+                  //     onSelect: (selected) {
+                  //       if (selected == null) return;
+                  //       searchController.text = selected.stationName;
+                  //       setState(() => station = selected);
+                  //     },
+                  //     errorText: validator(station),
+                  //     type: SearchStationType.LEFRECCE,
+                  //   ),
+                  // ),
+                  BeautifulCard(
+                    child: StationPickerButton(
+                      title: "Stazione",
+                      onPressed: () {
+                        StationPickerDialog.show(
+                          context: context,
+                        );
                       },
-                      errorText: validator(station),
-                      type: SearchStationType.LEFRECCE,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: kPadding),
                   ActionButton(
                     title: "Cerca",
                     onPressed: searchButtonClick,

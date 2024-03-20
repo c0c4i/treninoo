@@ -22,7 +22,7 @@ class StationStatusBloc extends Bloc<StationStatusEvent, StationStatusState> {
       StationStatusRequest event, Emitter<StationStatusState> emit) async {
     emit(StationStatusLoading());
     try {
-      _savedTrainRepository.addRecentStation(event.station);
+      _savedTrainRepository.addRecentOrFavoruiteStation(event.station);
       final departureTrains = await _trainRepository.getStationDetails(
           event.station, StationDetailsType.departure);
       final arrivalTrains = await _trainRepository.getStationDetails(

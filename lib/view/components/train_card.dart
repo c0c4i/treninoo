@@ -26,119 +26,117 @@ class TrainCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Card(
-          elevation: 0,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kRadius),
-          ),
-          child: OutlinedButton(
-            onPressed: enabled
-                ? () {
-                    context
-                        .read<ExistBloc>()
-                        .add(ExistRequest(savedTrain: savedTrain, type: type));
-                  }
-                : null,
-            onLongPress: enabled
-                ? () {
-                    SavedTrainPickAction.show(
-                      context: context,
-                      savedTrain: savedTrain,
-                      type: type,
-                    );
-                  }
-                : null,
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: kPadding,
-                      left: kPadding,
-                      right: kPadding,
-                      bottom:
-                          savedTrain.description != null ? kPadding : kPadding,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "${savedTrain.trainType} ${savedTrain.trainCode}",
-                                style: Typo.subheaderHeavy.copyWith(
-                                  color: Primary.normal,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              savedTrain.departureTime ?? '',
-                              style: Typo.subheaderHeavy.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            SizedBox(width: 16),
-                            Text(
-                              savedTrain.departureStationName ?? '',
-                              style: Typo.subheaderHeavy.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Container(
-                          padding: EdgeInsets.only(left: 11),
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            color: Primary.normal,
-                            width: 1,
-                            height: 8,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            SizedBox(width: 16),
-                            Text(
-                              savedTrain.arrivalStationName ?? '',
-                              style: Typo.subheaderHeavy.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadius),
+        ),
+        child: OutlinedButton(
+          onPressed: enabled
+              ? () {
+                  context
+                      .read<ExistBloc>()
+                      .add(ExistRequest(savedTrain: savedTrain, type: type));
+                }
+              : null,
+          onLongPress: enabled
+              ? () {
+                  SavedTrainPickAction.show(
+                    context: context,
+                    savedTrain: savedTrain,
+                    type: type,
+                  );
+                }
+              : null,
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: kPadding,
+                    left: kPadding,
+                    right: kPadding,
+                    bottom:
+                        savedTrain.description != null ? kPadding : kPadding,
                   ),
-                  if (savedTrain.description != null)
-                    DescriptionFooter(description: savedTrain.description)
-                ],
-              ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "${savedTrain.trainType} ${savedTrain.trainCode}",
+                              style: Typo.subheaderHeavy.copyWith(
+                                color: Primary.normal,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            savedTrain.departureTime ?? '',
+                            style: Typo.subheaderHeavy.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Theme.of(context).iconTheme.color,
+                          ),
+                          SizedBox(width: 16),
+                          Text(
+                            savedTrain.departureStationName ?? '',
+                            style: Typo.subheaderHeavy.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        padding: EdgeInsets.only(left: 11),
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          color: Primary.normal,
+                          width: 1,
+                          height: 8,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Theme.of(context).iconTheme.color,
+                          ),
+                          SizedBox(width: 16),
+                          Text(
+                            savedTrain.arrivalStationName ?? '',
+                            style: Typo.subheaderHeavy.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                if (savedTrain.description != null)
+                  DescriptionFooter(description: savedTrain.description)
+              ],
             ),
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(kRadius),
-              ),
-              padding: EdgeInsets.zero,
+          ),
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(kRadius),
             ),
-          )),
+            padding: EdgeInsets.zero,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
-import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/dialog/station_picker.dart';
 import 'package:treninoo/view/components/dialog/time_picker.dart';
 import 'package:treninoo/view/components/header.dart';
-import 'package:treninoo/view/components/textfield.dart';
+import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 
 import 'package:treninoo/model/Station.dart';
 
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/router/routes_names.dart';
-import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -110,30 +110,51 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                         Expanded(
                           child: Column(
                             children: [
-                              SuggestionTextField(
-                                label: "Partenza",
-                                controller: departureController,
-                                onSelect: (station) {
-                                  if (station == null) return;
-                                  departureController.text =
-                                      station.stationName;
-                                  setState(() => departureStation = station);
-                                },
-                                errorText: validator(departureStation),
-                                type: SearchStationType.LEFRECCE,
+                              BeautifulCard(
+                                child: StationPickerButton(
+                                  title: "Stazione di partenza",
+                                  onPressed: () {
+                                    StationPickerDialog.show(
+                                      context: context,
+                                    );
+                                  },
+                                ),
                               ),
-                              SizedBox(height: 20),
-                              SuggestionTextField(
-                                label: "Destinazione",
-                                controller: arrivalController,
-                                onSelect: (station) {
-                                  if (station == null) return;
-                                  arrivalController.text = station.stationName;
-                                  setState(() => arrivalStation = station);
-                                },
-                                errorText: validator(arrivalStation),
-                                type: SearchStationType.LEFRECCE,
+                              SizedBox(height: kPadding),
+                              BeautifulCard(
+                                child: StationPickerButton(
+                                  title: "Stazione di arrivo",
+                                  onPressed: () {
+                                    StationPickerDialog.show(
+                                      context: context,
+                                    );
+                                  },
+                                ),
                               ),
+                              // SuggestionTextField(
+                              //   label: "Partenza",
+                              //   controller: departureController,
+                              //   onSelect: (station) {
+                              //     if (station == null) return;
+                              //     departureController.text =
+                              //         station.stationName;
+                              //     setState(() => departureStation = station);
+                              //   },
+                              //   errorText: validator(departureStation),
+                              //   type: SearchStationType.LEFRECCE,
+                              // ),
+                              // SizedBox(height: 20),
+                              // SuggestionTextField(
+                              //   label: "Destinazione",
+                              //   controller: arrivalController,
+                              //   onSelect: (station) {
+                              //     if (station == null) return;
+                              //     arrivalController.text = station.stationName;
+                              //     setState(() => arrivalStation = station);
+                              //   },
+                              //   errorText: validator(arrivalStation),
+                              //   type: SearchStationType.LEFRECCE,
+                              // ),
                             ],
                           ),
                         ),
@@ -141,7 +162,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                         SizedBox(
                           height: double.infinity,
                           width: 48,
-                          child: TextButton(
+                          child: OutlinedButton(
                             onPressed: swapStations,
                             child: Semantics(
                               label: "Scambia stazioni",
@@ -150,57 +171,75 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                 color: Primary.normal,
                               ),
                             ),
-                            style: TextButton.styleFrom(
-                              backgroundColor: Grey.lightest1,
-                              side: BorderSide(
-                                color: Grey.light,
-                                width: 1,
-                              ),
+                            style: OutlinedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(kRadius),
                               ),
+                              backgroundColor: Theme.of(context).cardColor,
+                              foregroundColor:
+                                  Theme.of(context).iconTheme.color,
+                              padding: EdgeInsets.zero,
                             ),
                           ),
                         )
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.48,
-                        child: Semantics(
-                          label: "Data di partenza, " + formatDate(pickedDate!),
-                          button: true,
-                          child: ClickableTextField(
-                            prefixIcon: Icons.date_range_rounded,
-                            controller: dateController,
-                            onPressed: () {
-                              _pickDate();
-                            },
-                          ),
+                  SizedBox(height: kPadding),
+                  BeautifulCard(
+                    child: Column(
+                      children: [
+                        StationPickerButton(
+                          title: "Data e ora",
+                          content: formatDate(pickedDate!) +
+                              " - " +
+                              formatTimeOfDay(pickedTime),
+                          onPressed: () => _pickDate(),
                         ),
-                      ),
-                      SizedBox(width: kPadding),
-                      Expanded(
-                        child: Semantics(
-                          label:
-                              "Ora di partenza, " + formatTimeOfDay(pickedTime),
-                          button: true,
-                          child: ClickableTextField(
-                            prefixIcon: Icons.access_time_rounded,
-                            // labelText: "Ora",
-                            controller: timeController,
-                            onPressed: () {
-                              _pickTime();
-                            },
-                          ),
+                        Divider(thickness: 1, height: 1),
+                        StationPickerButton(
+                          title: "Tipo di treno",
+                          onPressed: () => _pickTime(),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20),
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       width: MediaQuery.of(context).size.width * 0.48,
+                  //       child: Semantics(
+                  //         label: "Data di partenza, " + formatDate(pickedDate!),
+                  //         button: true,
+                  //         child: ClickableTextField(
+                  //           prefixIcon: Icons.date_range_rounded,
+                  //           controller: dateController,
+                  //           onPressed: () {
+                  //             _pickDate();
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     SizedBox(width: kPadding),
+                  //     Expanded(
+                  //       child: Semantics(
+                  //         label:
+                  //             "Ora di partenza, " + formatTimeOfDay(pickedTime),
+                  //         button: true,
+                  //         child: ClickableTextField(
+                  //           prefixIcon: Icons.access_time_rounded,
+                  //           // labelText: "Ora",
+                  //           controller: timeController,
+                  //           onPressed: () {
+                  //             _pickTime();
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 20),
+                  SizedBox(height: kPadding),
                   ActionButton(
                     title: "Trova soluzioni",
                     onPressed: _getSolutionRequest,
@@ -220,21 +259,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   }
 
   _pickDate() async {
-    // DateTime date = await showDatePicker(
-    //   context: context,
-    //   initialDate: pickedDate,
-    //   firstDate: DateTime(DateTime.now().year - 1),
-    //   lastDate: DateTime(DateTime.now().year + 1),
-    //   locale: const Locale('it'),
-    //   selectableDayPredicate: _decideWhichDayToEnable,
-    //   // builder: (context, child) {
-    //   //   return Theme(
-    //   //     data: ThemeData(primarySwatch: Colo),
-    //   //     child: child,
-    //   //   );
-    //   // },
-    // );
-
     DateTime? date = await BeautifulDatePickerDialog.show(
       context: context,
       initialDate: pickedDate,
@@ -268,13 +292,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       });
   }
 
-  // bool _decideWhichDayToEnable(DateTime day) {
-  //   if (day.isAfter(DateTime.now().subtract(Duration(days: 1)))) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   _getSolutionRequest() {
     setState(() {
       validate = true;
@@ -292,9 +309,9 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
         pickedDate!.day, pickedTime.hour, pickedTime.minute);
 
     SolutionsInfo solutionsInfo = new SolutionsInfo(
-      departureStation: departureStation,
-      arrivalStation: arrivalStation,
-      fromTime: pickedDate,
+      departureStation: departureStation!,
+      arrivalStation: arrivalStation!,
+      fromTime: pickedDate!,
     );
 
     Navigator.pushNamed(

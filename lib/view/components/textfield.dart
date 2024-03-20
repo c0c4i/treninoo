@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
-import 'package:treninoo/view/components/suggestion_row.dart';
-import 'package:treninoo/view/style/theme.dart';
 
-import '../../repository/saved_train.dart';
-import '../../repository/train.dart';
 
 class BeautifulTextField extends StatelessWidget {
   final String? labelText;
@@ -18,6 +11,7 @@ class BeautifulTextField extends StatelessWidget {
   final String Function(String?)? validator;
   final String? errorText;
   final bool enabled;
+  final FocusNode? focusNode;
 
   const BeautifulTextField({
     Key? key,
@@ -29,6 +23,7 @@ class BeautifulTextField extends StatelessWidget {
     this.validator,
     this.errorText,
     this.enabled = true,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -38,8 +33,9 @@ class BeautifulTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon != null ? PrefixIcon(icon: prefixIcon) : null,
-        contentPadding: EdgeInsets.all(18),
+        contentPadding: EdgeInsets.all(16),
         errorText: errorText,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
       style: TextStyle(
         fontSize: 18,
@@ -50,6 +46,7 @@ class BeautifulTextField extends StatelessWidget {
       autocorrect: false,
       validator: validator,
       enabled: enabled,
+      focusNode: focusNode,
     );
   }
 }
@@ -140,90 +137,90 @@ class ClickableTextField extends StatelessWidget {
   }
 }
 
-class SuggestionTextField extends StatefulWidget {
-  final String? label;
-  final String? errorText;
-  final TextEditingController? controller;
-  final Function(Station?) onSelect;
-  final Function(String)? validator;
-  final SearchStationType type;
+// class SuggestionTextField extends StatefulWidget {
+//   final String? label;
+//   final String? errorText;
+//   final TextEditingController? controller;
+//   final Function(Station?) onSelect;
+//   final Function(String)? validator;
+//   final SearchStationType type;
 
-  SuggestionTextField({
-    Key? key,
-    this.label,
-    this.controller,
-    required this.onSelect,
-    this.validator,
-    this.errorText,
-    required this.type,
-  }) : super(key: key);
+//   SuggestionTextField({
+//     Key? key,
+//     this.label,
+//     this.controller,
+//     required this.onSelect,
+//     this.validator,
+//     this.errorText,
+//     required this.type,
+//   }) : super(key: key);
 
-  @override
-  _SuggestionTextFieldState createState() => _SuggestionTextFieldState();
-}
+//   @override
+//   _SuggestionTextFieldState createState() => _SuggestionTextFieldState();
+// }
 
-class _SuggestionTextFieldState extends State<SuggestionTextField> {
-  Future<List<Station?>> suggestionsCallback(String pattern) async {
-    return pattern.length == 0
-        ? context.read<SavedTrainRepository>().getRecentsStations()
-        : await context
-            .read<TrainRepository>()
-            .searchStations(pattern, widget.type);
-  }
+// class _SuggestionTextFieldState extends State<SuggestionTextField> {
+//   Future<List<Station?>> suggestionsCallback(String pattern) async {
+//     return pattern.length == 0
+//         ? context.read<SavedTrainRepository>().getRecentsAndFavouritesStations()
+//         : await context
+//             .read<TrainRepository>()
+//             .searchStations(pattern, widget.type);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return TypeAheadField<Station?>(
-      getImmediateSuggestions: true,
-      hideOnEmpty: true,
-      loadingBuilder: (context) {
-        return Container(
-          width: double.infinity,
-          height: 64,
-          alignment: Alignment.center,
-          child: SizedBox(
-            height: 32,
-            width: 32,
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-      noItemsFoundBuilder: (context) {
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          child: Text(
-            "Stazione non trovata",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        );
-      },
-      suggestionsBoxDecoration: SuggestionsBoxDecoration(
-        borderRadius: BorderRadius.circular(kRadius),
-        elevation: 16,
-      ),
-      textFieldConfiguration: TextFieldConfiguration(
-        keyboardType: TextInputType.text,
-        textCapitalization: TextCapitalization.words,
-        controller: widget.controller,
-        style: TextStyle(fontSize: 18),
-        decoration: InputDecoration(
-          prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
-          labelText: widget.label,
-          errorText: widget.errorText,
-          errorStyle: TextStyle(height: 0),
-        ),
-        // onChanged: (station) {
-        //   widget.onSelect(null);
-        // },
-      ),
-      suggestionsCallback: suggestionsCallback,
-      itemBuilder: (context, station) {
-        return StationSuggestion(station: station!);
-      },
-      onSuggestionSelected: widget.onSelect,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return TypeAheadField<Station?>(
+//       getImmediateSuggestions: true,
+//       hideOnEmpty: true,
+//       loadingBuilder: (context) {
+//         return Container(
+//           width: double.infinity,
+//           height: 64,
+//           alignment: Alignment.center,
+//           child: SizedBox(
+//             height: 32,
+//             width: 32,
+//             child: CircularProgressIndicator(),
+//           ),
+//         );
+//       },
+//       noItemsFoundBuilder: (context) {
+//         return Padding(
+//           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+//           child: Text(
+//             "Stazione non trovata",
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w500,
+//             ),
+//           ),
+//         );
+//       },
+//       suggestionsBoxDecoration: SuggestionsBoxDecoration(
+//         borderRadius: BorderRadius.circular(kRadius),
+//         elevation: 16,
+//       ),
+//       textFieldConfiguration: TextFieldConfiguration(
+//         keyboardType: TextInputType.text,
+//         textCapitalization: TextCapitalization.words,
+//         controller: widget.controller,
+//         style: TextStyle(fontSize: 18),
+//         decoration: InputDecoration(
+//           prefixIcon: PrefixIcon(icon: Icons.gps_fixed_rounded),
+//           labelText: widget.label,
+//           errorText: widget.errorText,
+//           errorStyle: TextStyle(height: 0),
+//         ),
+//         // onChanged: (station) {
+//         //   widget.onSelect(null);
+//         // },
+//       ),
+//       suggestionsCallback: suggestionsCallback,
+//       itemBuilder: (context, station) {
+//         return StationSuggestion(station: station!);
+//       },
+//       onSuggestionSelected: widget.onSelect,
+//     );
+//   }
+// }
