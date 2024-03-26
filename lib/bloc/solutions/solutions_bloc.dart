@@ -2,17 +2,17 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
-import 'package:treninoo/repository/saved_train.dart';
+import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/train.dart';
 
 class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
   final TrainRepository _trainRepository;
-  final SavedTrainRepository _savedTrainRepository;
+  final SavedStationsRepository _savedStationsRepository;
 
   SolutionsBloc(TrainRepository trainRepository,
-      SavedTrainRepository savedTrainRepository)
+      SavedStationsRepository savedStationsRepository)
       : _trainRepository = trainRepository,
-        _savedTrainRepository = savedTrainRepository,
+        _savedStationsRepository = savedStationsRepository,
         super(SolutionsInitial()) {
     on<SolutionsRequest>(_mapSolutionsRequest);
   }
@@ -23,9 +23,9 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
     try {
       final solutions =
           await _trainRepository.getSolutions(event.solutionsInfo);
-      _savedTrainRepository
+      _savedStationsRepository
           .addRecentOrFavoruiteStation(event.solutionsInfo.departureStation);
-      _savedTrainRepository
+      _savedStationsRepository
           .addRecentOrFavoruiteStation(event.solutionsInfo.arrivalStation);
       emit(SolutionsSuccess(solutions: solutions));
     } catch (exception, stackTrace) {

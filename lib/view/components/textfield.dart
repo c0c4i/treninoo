@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
 
-
 class BeautifulTextField extends StatelessWidget {
   final String? labelText;
   final IconData? prefixIcon;
@@ -12,6 +11,7 @@ class BeautifulTextField extends StatelessWidget {
   final String? errorText;
   final bool enabled;
   final FocusNode? focusNode;
+  final Function(String)? onChanged;
 
   const BeautifulTextField({
     Key? key,
@@ -24,6 +24,7 @@ class BeautifulTextField extends StatelessWidget {
     this.errorText,
     this.enabled = true,
     this.focusNode,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -47,6 +48,7 @@ class BeautifulTextField extends StatelessWidget {
       validator: validator,
       enabled: enabled,
       focusNode: focusNode,
+      onChanged: onChanged,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/model/SavedTrain.dart';
@@ -36,10 +37,16 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
     } on NoStationsException catch (_) {
       emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      if (exception is DioException &&
+          exception.message != null &&
+          exception.type != DioExceptionType.unknown &&
+          exception.response?.statusCode != 404) {
+        await Sentry.captureException(
+          exception,
+          stackTrace: stackTrace,
+        );
+      }
+
       emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));
     }
     emit(ExistInitial());

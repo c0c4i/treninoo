@@ -14,6 +14,7 @@ class BeautifulCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(kRadius),

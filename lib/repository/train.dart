@@ -189,3 +189,23 @@ enum StationDetailsType {
     }
   }
 }
+
+enum TrainType {
+  all,
+  regional,
+  highSpeed,
+  intercity;
+
+  String get label {
+    switch (this) {
+      case all:
+        return "Tutti i treni";
+      case regional:
+        return "Regionali";
+      case highSpeed:
+        return "Frecce";
+      case intercity:
+        return "Intercity";
+    }
+  }
+}

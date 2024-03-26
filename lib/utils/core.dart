@@ -6,7 +6,7 @@ String addZeroToNumberLowerThan10(String n) {
 }
 
 String formatDate(DateTime date) {
-  return DateFormat("dd/MM/yyyy").format(date);
+  return DateFormat("dd/MM/yyyy - HH:mm").format(date);
 }
 
 String formatTime(DateTime date) {

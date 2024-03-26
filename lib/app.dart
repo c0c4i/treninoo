@@ -2,8 +2,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:treninoo/bloc/stations/stations.dart';
+import 'package:treninoo/bloc/stations/stations_bloc.dart';
 import 'package:treninoo/cubit/predicted_arrival.dart';
 import 'package:treninoo/cubit/show_feature.dart';
+import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -19,12 +22,14 @@ class App extends StatelessWidget {
   final AdaptiveThemeMode? savedThemeMode;
   final TrainRepository trainRepository;
   final SavedTrainRepository savedTrainRepository;
+  final SavedStationsRepository savedStationsRepository;
 
   App({
     Key? key,
     this.savedThemeMode,
     required this.trainRepository,
     required this.savedTrainRepository,
+    required this.savedStationsRepository,
   }) : super(key: key);
 
   @override
@@ -50,6 +55,11 @@ class App extends StatelessWidget {
               )..add(RecentsRequest()),
             ),
             BlocProvider(
+              create: (context) => StationsBloc(
+                context.read<SavedStationsRepository>(),
+              )..add(GetStations()),
+            ),
+            BlocProvider(
               create: (context) => ExistBloc(
                 context.read<TrainRepository>(),
                 context.read<SavedTrainRepository>(),
@@ -68,6 +78,9 @@ class App extends StatelessWidget {
             ),
             BlocProvider(
               create: (_) => ShowFeatureCubit(savedTrainRepository),
+            ),
+            BlocProvider(
+              create: (_) => StationsBloc(savedStationsRepository),
             ),
           ],
           child: MaterialApp(

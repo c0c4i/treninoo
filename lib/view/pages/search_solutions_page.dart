@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/dialog/date_time_picker.dart';
 import 'package:treninoo/view/components/dialog/station_picker.dart';
-import 'package:treninoo/view/components/dialog/time_picker.dart';
+import 'package:treninoo/view/components/dialog/train_type_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 
@@ -16,7 +18,6 @@ import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import '../components/buttons/text_button.dart';
-import '../components/dialog/date_picker.dart';
 
 class SearchSolutionsPage extends StatefulWidget {
   SearchSolutionsPage({Key? key}) : super(key: key);
@@ -26,17 +27,13 @@ class SearchSolutionsPage extends StatefulWidget {
 }
 
 class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
-  DateTime? pickedDate;
-  late TimeOfDay pickedTime;
+  late DateTime pickedDate;
   late bool validate;
-
-  TextEditingController departureController = TextEditingController();
-  TextEditingController arrivalController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  TextEditingController timeController = TextEditingController();
 
   Station? departureStation;
   Station? arrivalStation;
+
+  TrainType trainType = TrainType.all;
 
   @override
   void initState() {
@@ -48,12 +45,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     setState(() {
       departureStation = null;
       arrivalStation = null;
-      departureController.text = '';
-      arrivalController.text = '';
       pickedDate = DateTime.now();
-      pickedTime = TimeOfDay.now();
-      dateController.text = formatDate(pickedDate!);
-      timeController.text = formatTimeOfDay(pickedTime);
       validate = false;
     });
   }
@@ -69,14 +61,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       Station? temp = departureStation;
       departureStation = arrivalStation;
       arrivalStation = temp;
-
-      departureStation != null
-          ? departureController.text = departureStation!.stationName
-          : departureController.text = '';
-
-      arrivalStation != null
-          ? arrivalController.text = arrivalStation!.stationName
-          : arrivalController.text = '';
     });
   }
 
@@ -113,10 +97,15 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                               BeautifulCard(
                                 child: StationPickerButton(
                                   title: "Stazione di partenza",
-                                  onPressed: () {
-                                    StationPickerDialog.show(
+                                  content: departureStation?.stationName,
+                                  onPressed: () async {
+                                    Station? station =
+                                        await StationPickerDialog.show(
                                       context: context,
                                     );
+
+                                    if (station == null) return;
+                                    setState(() => departureStation = station);
                                   },
                                 ),
                               ),
@@ -124,37 +113,18 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                               BeautifulCard(
                                 child: StationPickerButton(
                                   title: "Stazione di arrivo",
-                                  onPressed: () {
-                                    StationPickerDialog.show(
+                                  content: arrivalStation?.stationName,
+                                  onPressed: () async {
+                                    Station? station =
+                                        await StationPickerDialog.show(
                                       context: context,
                                     );
+
+                                    if (station == null) return;
+                                    setState(() => arrivalStation = station);
                                   },
                                 ),
                               ),
-                              // SuggestionTextField(
-                              //   label: "Partenza",
-                              //   controller: departureController,
-                              //   onSelect: (station) {
-                              //     if (station == null) return;
-                              //     departureController.text =
-                              //         station.stationName;
-                              //     setState(() => departureStation = station);
-                              //   },
-                              //   errorText: validator(departureStation),
-                              //   type: SearchStationType.LEFRECCE,
-                              // ),
-                              // SizedBox(height: 20),
-                              // SuggestionTextField(
-                              //   label: "Destinazione",
-                              //   controller: arrivalController,
-                              //   onSelect: (station) {
-                              //     if (station == null) return;
-                              //     arrivalController.text = station.stationName;
-                              //     setState(() => arrivalStation = station);
-                              //   },
-                              //   errorText: validator(arrivalStation),
-                              //   type: SearchStationType.LEFRECCE,
-                              // ),
                             ],
                           ),
                         ),
@@ -191,15 +161,22 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                       children: [
                         StationPickerButton(
                           title: "Data e ora",
-                          content: formatDate(pickedDate!) +
-                              " - " +
-                              formatTimeOfDay(pickedTime),
-                          onPressed: () => _pickDate(),
+                          content: formatDate(pickedDate),
+                          onPressed: () => _pickDateTime(),
                         ),
                         Divider(thickness: 1, height: 1),
                         StationPickerButton(
                           title: "Tipo di treno",
-                          onPressed: () => _pickTime(),
+                          content: trainType.label,
+                          onPressed: () {
+                            TrainTypeDialog.show(
+                              context: context,
+                              initialType: trainType,
+                            ).then((value) {
+                              if (value != null)
+                                setState(() => trainType = value);
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -258,37 +235,15 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     );
   }
 
-  _pickDate() async {
-    DateTime? date = await BeautifulDatePickerDialog.show(
+  _pickDateTime() async {
+    DateTime? dateTime = await BeautifulDateTimePickerDialog.show(
       context: context,
       initialDate: pickedDate,
     );
 
-    if (date != null)
-      setState(() {
-        pickedDate = date;
-        dateController.text = formatDate(date);
-      });
-  }
-
-  _pickTime() async {
-    DateTime startTime = new DateTime(
-      pickedDate!.year,
-      pickedDate!.month,
-      pickedDate!.day,
-      pickedTime.hour,
-      pickedTime.minute,
-    );
-
-    DateTime? dateTime = await BeautifulTimePickerDialog.show(
-      context: context,
-      initialDate: startTime,
-    );
-
     if (dateTime != null)
       setState(() {
-        pickedTime = TimeOfDay.fromDateTime(dateTime);
-        timeController.text = formatTimeOfDay(pickedTime);
+        pickedDate = dateTime;
       });
   }
 
@@ -304,14 +259,12 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       validate = false;
     });
 
-    pickedDate = pickedDate!.toLocal();
-    pickedDate = new DateTime(pickedDate!.year, pickedDate!.month,
-        pickedDate!.day, pickedTime.hour, pickedTime.minute);
+    pickedDate = pickedDate.toLocal();
 
     SolutionsInfo solutionsInfo = new SolutionsInfo(
       departureStation: departureStation!,
       arrivalStation: arrivalStation!,
-      fromTime: pickedDate!,
+      fromTime: pickedDate,
     );
 
     Navigator.pushNamed(

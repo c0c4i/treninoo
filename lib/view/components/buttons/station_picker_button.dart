@@ -11,7 +11,7 @@ class StationPickerButton extends StatelessWidget {
   const StationPickerButton({
     Key? key,
     required this.title,
-    this.content = "-",
+    this.content,
     required this.onPressed,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class StationPickerButton extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                content!,
+                content ?? "-",
                 style: Typo.subheaderHeavy.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),

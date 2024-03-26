@@ -2,18 +2,17 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/station_status/stationstatus.dart';
+import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/train.dart';
-
-import '../../repository/saved_train.dart';
 
 class StationStatusBloc extends Bloc<StationStatusEvent, StationStatusState> {
   final TrainRepository _trainRepository;
-  final SavedTrainRepository _savedTrainRepository;
+  final SavedStationsRepository _savedStationsRepository;
 
   StationStatusBloc(TrainRepository trainRepository,
-      SavedTrainRepository savedTrainRepository)
+      SavedStationsRepository savedStationsRepository)
       : _trainRepository = trainRepository,
-        _savedTrainRepository = savedTrainRepository,
+        _savedStationsRepository = savedStationsRepository,
         super(StationStatusInitial()) {
     on<StationStatusRequest>(_mapStationStatusRequest);
   }
@@ -22,7 +21,7 @@ class StationStatusBloc extends Bloc<StationStatusEvent, StationStatusState> {
       StationStatusRequest event, Emitter<StationStatusState> emit) async {
     emit(StationStatusLoading());
     try {
-      _savedTrainRepository.addRecentOrFavoruiteStation(event.station);
+      _savedStationsRepository.addRecentOrFavoruiteStation(event.station);
       final departureTrains = await _trainRepository.getStationDetails(
           event.station, StationDetailsType.departure);
       final arrivalTrains = await _trainRepository.getStationDetails(
