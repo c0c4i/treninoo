@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/stations/stations.dart';
+import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/stations/station_card.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class SavedStationsList extends StatefulWidget {
-  SavedStationsList({Key? key}) : super(key: key);
+  SavedStationsList({Key? key, required this.onSelected}) : super(key: key);
+
+  final Function(Station) onSelected;
 
   @override
   _SavedStationsListState createState() => _SavedStationsListState();
@@ -19,7 +22,7 @@ class _SavedStationsListState extends State<SavedStationsList> {
     return BlocBuilder<StationsBloc, StationsState>(
       builder: (context, state) {
         if (state is StationsSuccess && state.stations.length > 0) {
-          return BeautifulCard(
+          return Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -31,15 +34,25 @@ class _SavedStationsListState extends State<SavedStationsList> {
                   ),
                 ),
                 SizedBox(height: 8),
-                ListView.builder(
-                  itemCount: state.stations.length,
-                  itemBuilder: (context, index) {
-                    return StationCard(
-                      station: state.stations[index].station,
-                      isFavourite: state.stations[index].isFavourite,
-                      onPressed: () {},
-                    );
-                  },
+                Flexible(
+                  child: BeautifulCard(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: state.stations.length,
+                      physics: ClampingScrollPhysics(),
+                      separatorBuilder: (context, index) =>
+                          Divider(thickness: 1, height: 1),
+                      itemBuilder: (context, index) {
+                        return StationCard(
+                          station: state.stations[index].station,
+                          isFavourite: state.stations[index].isFavourite,
+                          onPressed: () {
+                            widget.onSelected(state.stations[index].station);
+                          },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/stations/stations.dart';
 import 'package:treninoo/bloc/stations_autocomplete/stations_autocomplete.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/repository/train.dart';
@@ -51,6 +52,11 @@ class _StationPickerContentState extends State<StationPickerContent> {
     super.initState();
     // TODO: Uncomment when ready to use
     // searchFocus.requestFocus();
+    context.read<StationsBloc>().add(GetStations());
+  }
+
+  void selectStation(Station station) {
+    Navigator.pop(context, station);
   }
 
   @override
@@ -98,29 +104,17 @@ class _StationPickerContentState extends State<StationPickerContent> {
                 controller: searchController,
                 keyboardType: TextInputType.number,
                 onChanged: (text) {
+                  setState(() {});
                   context.read<StationsAutocompleteBloc>().add(
                         GetStationsAutocomplete(text: text),
                       );
                 },
               ),
               SizedBox(height: kPadding),
-              Expanded(
-                child: BlocBuilder<StationsAutocompleteBloc,
-                    StationsAutocompleteState>(
-                  builder: (context, state) {
-                    if (state is StationsAutocompleteSuccess) {
-                      return StationsList(
-                        stations: state.stations,
-                        onSelected: (station) {
-                          Navigator.pop(context, station);
-                        },
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ),
-              if (searchController.text.isEmpty) SavedStationsList(),
+              if (searchController.text.isNotEmpty)
+                StationsList(onSelected: selectStation),
+              if (searchController.text.isEmpty)
+                SavedStationsList(onSelected: selectStation),
             ],
           ),
         ),
