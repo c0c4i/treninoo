@@ -6,16 +6,10 @@ import 'package:treninoo/utils/shared_preference.dart';
 import '../enum/saved_train_type.dart';
 
 abstract class SavedTrainRepository {
-  late SharedPrefs sharedPrefs;
+  SharedPrefs sharedPrefs;
 
   // Define a constructor for shared preference
-  SavedTrainRepository() {
-    sharedPrefs = SharedPrefs();
-  }
-
-  setup() async {
-    await sharedPrefs.setup();
-  }
+  SavedTrainRepository(SharedPrefs sharedPrefs) : sharedPrefs = sharedPrefs;
 
   void changeDescription(SavedTrain savedTrain);
 
@@ -34,7 +28,7 @@ abstract class SavedTrainRepository {
 }
 
 class APISavedTrain extends SavedTrainRepository {
-  APISavedTrain() : super();
+  APISavedTrain(super.sharedPrefs);
 
   @override
   void changeDescription(SavedTrain savedTrain) {

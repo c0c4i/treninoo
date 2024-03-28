@@ -1,10 +1,12 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/app.dart';
 import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/saved_train.dart';
+import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/utils/utils.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -24,15 +26,18 @@ void main() async {
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
 
+  SharedPrefs sharedPrefs = SharedPrefs();
+  await sharedPrefs.setup();
+
   TrainRepository trainRepository = APITrain();
-  SavedTrainRepository savedTrainRepository = APISavedTrain();
-  SavedStationsRepository savedStationRepository = APISavedStation();
-  await savedTrainRepository.setup();
+  SavedTrainRepository savedTrainRepository = APISavedTrain(sharedPrefs);
+  SavedStationsRepository savedStationRepository = APISavedStation(sharedPrefs);
 
   await SentryFlutter.init(
     (options) {
-      options.dsn =
-          'https://c2d5e0ab99c7a5e0b91699645bc5bbb2@o4506203971846144.ingest.sentry.io/4506203973615616';
+      options.dsn = kDebugMode
+          ? ''
+          : 'https://c2d5e0ab99c7a5e0b91699645bc5bbb2@o4506203971846144.ingest.sentry.io/4506203973615616';
       options.tracesSampleRate = 1.0;
     },
     appRunner: () => runApp(

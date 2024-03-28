@@ -46,29 +46,25 @@ class App extends StatelessWidget {
           RepositoryProvider(
             create: (context) => savedTrainRepository,
           ),
+          RepositoryProvider(
+            create: (context) => savedStationsRepository,
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => RecentsBloc(
-                context.read<SavedTrainRepository>(),
-              )..add(RecentsRequest()),
-            ),
-            BlocProvider(
-              create: (context) => StationsBloc(
-                context.read<SavedStationsRepository>(),
-              )..add(GetStations()),
+              create: (context) =>
+                  RecentsBloc(savedTrainRepository)..add(RecentsRequest()),
             ),
             BlocProvider(
               create: (context) => ExistBloc(
-                context.read<TrainRepository>(),
-                context.read<SavedTrainRepository>(),
+                trainRepository,
+                savedTrainRepository,
               ),
             ),
             BlocProvider(
-              create: (context) =>
-                  FavouritesBloc(context.read<SavedTrainRepository>())
-                    ..add(FavouritesRequest()),
+              create: (context) => FavouritesBloc(savedTrainRepository)
+                ..add(FavouritesRequest()),
             ),
             BlocProvider(
               create: (_) => FirstPageCubit(savedTrainRepository),
@@ -80,7 +76,8 @@ class App extends StatelessWidget {
               create: (_) => ShowFeatureCubit(savedTrainRepository),
             ),
             BlocProvider(
-              create: (_) => StationsBloc(savedStationsRepository),
+              create: (_) =>
+                  StationsBloc(savedStationsRepository)..add(GetStations()),
             ),
           ],
           child: MaterialApp(

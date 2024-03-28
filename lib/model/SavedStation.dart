@@ -12,8 +12,8 @@ class SavedStation extends Equatable {
         isFavourite = false;
 
   Map<String, dynamic> toJson() => {
-        'station': station,
-        'last_selected': lastSelected,
+        'station': station.toJson(),
+        'last_selected': lastSelected.toString(),
         'is_favourite': isFavourite,
       };
 

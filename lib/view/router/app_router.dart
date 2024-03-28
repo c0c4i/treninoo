@@ -35,106 +35,84 @@ class AppRouter {
       case RoutesNames.status:
         final savedTrain = settings.arguments;
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => TrainStatusBloc(
-                    context.read<TrainRepository>(),
-                  ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => TrainStatusBloc(
+                  context.read<TrainRepository>(),
                 ),
-                BlocProvider(
-                  create: (context) => FavouriteBloc(
-                    context.read<SavedTrainRepository>(),
-                  ),
+              ),
+              BlocProvider(
+                create: (context) => FavouriteBloc(
+                  context.read<SavedTrainRepository>(),
                 ),
-              ],
-              child: TrainStatusPage(savedTrain: savedTrain as SavedTrain),
-            ),
+              ),
+            ],
+            child: TrainStatusPage(savedTrain: savedTrain as SavedTrain),
           ),
         );
       case RoutesNames.solutions:
         final solutionsInfo = settings.arguments as SolutionsInfo;
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: BlocProvider(
-              create: (context) => SolutionsBloc(
-                context.read<TrainRepository>(),
-                context.read<SavedStationsRepository>(),
-              ),
-              child: SolutionsResultPage(solutionsInfo: solutionsInfo),
+          builder: (_) => BlocProvider(
+            create: (context) => SolutionsBloc(
+              context.read<TrainRepository>(),
+              context.read<SavedStationsRepository>(),
             ),
+            child: SolutionsResultPage(solutionsInfo: solutionsInfo),
           ),
         );
       case RoutesNames.station:
         Station station = settings.arguments as Station;
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => StationStatusBloc(
-                    context.read<TrainRepository>(),
-                    context.read<SavedStationsRepository>(),
-                  )..add(StationStatusRequest(station: station)),
-                ),
-              ],
-              child: StationStatusPage(station: station),
-            ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => StationStatusBloc(
+                  context.read<TrainRepository>(),
+                  context.read<SavedStationsRepository>(),
+                )..add(StationStatusRequest(station: station)),
+              ),
+            ],
+            child: StationStatusPage(station: station),
           ),
         );
 
       case RoutesNames.followTrainStations:
         final savedTrain = settings.arguments as SavedTrain;
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: BlocProvider(
-              create: (context) => FollowTrainStationsBloc(
-                context.read<TrainRepository>(),
-              ),
-              child: FollowTrainPage(savedTrain: savedTrain),
+          builder: (_) => BlocProvider(
+            create: (context) => FollowTrainStationsBloc(
+              context.read<TrainRepository>(),
             ),
+            child: FollowTrainPage(savedTrain: savedTrain),
           ),
         );
 
       case RoutesNames.editDescription:
         final description = settings.arguments;
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: BlocProvider(
-              create: (context) => EditDescriptionBloc(
-                context.read<SavedTrainRepository>(),
-              ),
-              child:
-                  EditDescriptionPage(savedTrain: description as SavedTrain?),
+          builder: (_) => BlocProvider(
+            create: (context) => EditDescriptionBloc(
+              context.read<SavedTrainRepository>(),
             ),
+            child: EditDescriptionPage(savedTrain: description as SavedTrain?),
           ),
         );
 
       case RoutesNames.sendFeedback:
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<TrainRepository>(
-            create: (context) => context.read<TrainRepository>(),
-            child: BlocProvider(
-              create: (context) => SendFeedbackBloc(
-                context.read<TrainRepository>(),
-              ),
-              child: SendFeedbackPage(),
+          builder: (_) => BlocProvider(
+            create: (context) => SendFeedbackBloc(
+              context.read<TrainRepository>(),
             ),
+            child: SendFeedbackPage(),
           ),
         );
 
       case RoutesNames.reorderFavourites:
         return CupertinoPageRoute(
-          builder: (_) => RepositoryProvider<SavedTrainRepository>(
-            create: (context) => context.read<SavedTrainRepository>(),
-            child: ReorderFavouritesPage(),
-          ),
+          builder: (_) => ReorderFavouritesPage(),
         );
 
       default:

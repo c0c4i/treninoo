@@ -6,7 +6,8 @@ import 'package:treninoo/utils/shared_preference.dart';
 
 abstract class SavedStationsRepository {
   SharedPrefs sharedPrefs;
-  SavedStationsRepository() : sharedPrefs = SharedPrefs();
+
+  SavedStationsRepository(SharedPrefs sharedPrefs) : sharedPrefs = sharedPrefs;
 
   List<SavedStation> getRecentsAndFavouritesStations();
   void removeFavoruiteStation(SavedStation station);
@@ -14,7 +15,7 @@ abstract class SavedStationsRepository {
 }
 
 class APISavedStation extends SavedStationsRepository {
-  APISavedStation() : super();
+  APISavedStation(super.sharedPrefs);
 
   @override
   List<SavedStation> getRecentsAndFavouritesStations() {
