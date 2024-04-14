@@ -50,7 +50,11 @@ class _SavedStationsListState extends State<SavedStationsList> {
                             widget.onSelected(state.stations[index].station);
                           },
                           onFavorite: () {
-                            // TODO Implement remove favourite
+                            context.read<StationsBloc>().add(
+                                  UpdateFavorite(
+                                    savedStation: state.stations[index],
+                                  ),
+                                );
                           },
                         );
                       },

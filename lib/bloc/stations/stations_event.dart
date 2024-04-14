@@ -10,11 +10,11 @@ abstract class StationsEvent extends Equatable {
 
 class GetStations extends StationsEvent {}
 
-class RemoveStation extends StationsEvent {
-  final SavedStation station;
+class UpdateFavorite extends StationsEvent {
+  final SavedStation savedStation;
 
-  RemoveStation({required this.station});
+  UpdateFavorite({required this.savedStation});
 
   @override
-  List<Object?> get props => [station];
+  List<Object?> get props => [savedStation];
 }

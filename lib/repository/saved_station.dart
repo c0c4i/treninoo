@@ -10,7 +10,7 @@ abstract class SavedStationsRepository {
   SavedStationsRepository(SharedPrefs sharedPrefs) : sharedPrefs = sharedPrefs;
 
   List<SavedStation> getRecentsAndFavouritesStations();
-  void removeFavoruiteStation(SavedStation station);
+  void removeFavoriteStation(SavedStation station);
   void addRecentOrFavoruiteStation(Station station, {bool isFavourite = false});
 }
 
@@ -26,9 +26,23 @@ class APISavedStation extends SavedStationsRepository {
   }
 
   // Used when user click on the heart icon to remove favourite station
-  void removeFavoruiteStation(SavedStation station) {
+  void removeFavoriteStation(SavedStation savedStation) {
     List<SavedStation> stations = getRecentsAndFavouritesStations();
-    stations.removeWhere((element) => element.station == station);
+
+    // Get index of station in the list
+    int? index = stations
+        .indexWhere((element) => element.station == savedStation.station);
+
+    // Remove station from the list
+    if (index != -1) stations.removeAt(index);
+
+    // Check if can stay as recent station (less then 3 recent stations)
+    int recentStations = stations.where((e) => !e.isFavourite).length;
+    if (recentStations < 3) {
+      // If true add the station as recent station
+      stations.insert(index, savedStation.copyWith(isFavourite: false));
+    }
+
     sharedPrefs.recentsAndFavouritesStations = jsonEncode(stations);
   }
 
@@ -40,9 +54,12 @@ class APISavedStation extends SavedStationsRepository {
 
     // Handle when user add a station to favourite
     if (isFavourite) {
-      // Add station on top of the list
-      stations.insert(0, SavedStation(station, isFavourite: true));
-      return;
+      // Update value of isFavourite of station on the list
+      int? index = stations.indexWhere((element) => element.station == station);
+      if (index != -1) {
+        SavedStation savedStation = stations[index].copyWith(isFavourite: true);
+        stations[index] = savedStation;
+      }
     } else {
       // Handle when user make a new search
 
@@ -55,7 +72,8 @@ class APISavedStation extends SavedStationsRepository {
         stations.insert(0, SavedStation(station));
 
         // Modify list to only have 3 recents trains, remove the oldest one based on lastSelected
-        if (stations.map((e) => !e.isFavourite).length > 3) {
+        int recentStations = stations.where((e) => !e.isFavourite).length;
+        if (recentStations > 3) {
           // Find the oldest recent station
           SavedStation oldestRecent = stations
               .where((element) => !element.isFavourite)

@@ -13,7 +13,7 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
       : _savedStationsRepository = savedStationsRepository,
         super(StationsInitial()) {
     on<GetStations>(_mapStationsRequest);
-    on<RemoveStation>(_mapDeleteStationRequest);
+    on<UpdateFavorite>(_mapUpdateFavoriteRequest);
   }
 
   Future<void> _mapStationsRequest(
@@ -28,11 +28,22 @@ class StationsBloc extends Bloc<StationsEvent, StationsState> {
     }
   }
 
-  Future<void> _mapDeleteStationRequest(
-      RemoveStation event, Emitter<StationsState> emit) async {
+  Future<void> _mapUpdateFavoriteRequest(
+      UpdateFavorite event, Emitter<StationsState> emit) async {
     emit(StationsLoading());
+
+    bool isFavorite = event.savedStation.isFavourite;
+
     try {
-      _savedStationsRepository.removeFavoruiteStation(event.station);
+      if (isFavorite) {
+        _savedStationsRepository.removeFavoriteStation(event.savedStation);
+      } else {
+        _savedStationsRepository.addRecentOrFavoruiteStation(
+          event.savedStation.station,
+          isFavourite: true,
+        );
+      }
+
       List<SavedStation> stations =
           _savedStationsRepository.getRecentsAndFavouritesStations();
       emit(StationsSuccess(stations: stations));

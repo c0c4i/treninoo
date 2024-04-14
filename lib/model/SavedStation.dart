@@ -9,7 +9,7 @@ class SavedStation extends Equatable {
 
   SavedStation(this.station, {lastSelected, isFavourite})
       : lastSelected = lastSelected ?? DateTime.now(),
-        isFavourite = false;
+        isFavourite = isFavourite ?? false;
 
   Map<String, dynamic> toJson() => {
         'station': station.toJson(),
