@@ -49,6 +49,9 @@ class _SavedStationsListState extends State<SavedStationsList> {
                           onPressed: () {
                             widget.onSelected(state.stations[index].station);
                           },
+                          onFavorite: () {
+                            // TODO Implement remove favourite
+                          },
                         );
                       },
                     ),

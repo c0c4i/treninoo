@@ -8,14 +8,14 @@ class StationCard extends StatelessWidget {
   final Station station;
   final bool isFavourite;
   final VoidCallback? onPressed;
-  final bool showFavorite;
+  final VoidCallback? onFavorite;
 
   const StationCard({
     Key? key,
     required this.station,
     this.isFavourite = false,
     this.onPressed,
-    this.showFavorite = false,
+    this.onFavorite,
   }) : super(key: key);
 
   @override
@@ -26,15 +26,21 @@ class StationCard extends StatelessWidget {
         padding: EdgeInsets.all(kPadding),
         child: Row(
           children: [
-            Text(
-              station.stationName,
-              style: Typo.subheaderHeavy.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+            Expanded(
+              child: Text(
+                station.stationName,
+                style: Typo.subheaderHeavy.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
               ),
             ),
-            if (showFavorite)
+            if (onFavorite != null)
               IconButton(
-                onPressed: onPressed,
+                onPressed: onFavorite,
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 icon: Icon(
                   isFavourite
                       ? Icons.favorite_rounded
