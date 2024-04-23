@@ -6,7 +6,6 @@ import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/dialog/date_time_picker.dart';
 import 'package:treninoo/view/components/dialog/station_picker.dart';
-import 'package:treninoo/view/components/dialog/train_type_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 
@@ -28,7 +27,6 @@ class SearchSolutionsPage extends StatefulWidget {
 
 class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   late DateTime pickedDate;
-  late bool validate;
 
   Station? departureStation;
   Station? arrivalStation;
@@ -38,7 +36,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   @override
   void initState() {
     super.initState();
-    initFields();
+    pickedDate = DateTime.now();
   }
 
   initFields() {
@@ -46,14 +44,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       departureStation = null;
       arrivalStation = null;
       pickedDate = DateTime.now();
-      validate = false;
     });
-  }
-
-  String? validator(Station? station) {
-    if (!validate) return null;
-    if (station == null) return "";
-    return null;
   }
 
   swapStations() {
@@ -62,6 +53,37 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       departureStation = arrivalStation;
       arrivalStation = temp;
     });
+  }
+
+  _pickDateTime() async {
+    DateTime? dateTime = await BeautifulDateTimePickerDialog.show(
+      context: context,
+      initialDate: pickedDate,
+    );
+
+    if (dateTime != null)
+      setState(() {
+        pickedDate = dateTime;
+      });
+  }
+
+  _getSolutionRequest() {
+    if (departureStation == null) return;
+    if (arrivalStation == null) return;
+
+    pickedDate = pickedDate.toLocal();
+
+    SolutionsInfo solutionsInfo = new SolutionsInfo(
+      departureStation: departureStation!,
+      arrivalStation: arrivalStation!,
+      fromTime: pickedDate,
+    );
+
+    Navigator.pushNamed(
+      context,
+      RoutesNames.solutions,
+      arguments: solutionsInfo,
+    );
   }
 
   @override
@@ -164,58 +186,24 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                           content: formatDate(pickedDate),
                           onPressed: () => _pickDateTime(),
                         ),
-                        Divider(thickness: 1, height: 1),
-                        StationPickerButton(
-                          title: "Tipo di treno",
-                          content: trainType.label,
-                          onPressed: () {
-                            TrainTypeDialog.show(
-                              context: context,
-                              initialType: trainType,
-                            ).then((value) {
-                              if (value != null)
-                                setState(() => trainType = value);
-                            });
-                          },
-                        ),
+                        // TODO Uncomment when train type will be implemented in the backend
+                        // Divider(thickness: 1, height: 1),
+                        // StationPickerButton(
+                        //   title: "Tipo di treno",
+                        //   content: trainType.label,
+                        //   onPressed: () {
+                        //     TrainTypeDialog.show(
+                        //       context: context,
+                        //       initialType: trainType,
+                        //     ).then((value) {
+                        //       if (value != null)
+                        //         setState(() => trainType = value);
+                        //     });
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
-                  // Row(
-                  //   children: [
-                  //     SizedBox(
-                  //       width: MediaQuery.of(context).size.width * 0.48,
-                  //       child: Semantics(
-                  //         label: "Data di partenza, " + formatDate(pickedDate!),
-                  //         button: true,
-                  //         child: ClickableTextField(
-                  //           prefixIcon: Icons.date_range_rounded,
-                  //           controller: dateController,
-                  //           onPressed: () {
-                  //             _pickDate();
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     SizedBox(width: kPadding),
-                  //     Expanded(
-                  //       child: Semantics(
-                  //         label:
-                  //             "Ora di partenza, " + formatTimeOfDay(pickedTime),
-                  //         button: true,
-                  //         child: ClickableTextField(
-                  //           prefixIcon: Icons.access_time_rounded,
-                  //           // labelText: "Ora",
-                  //           controller: timeController,
-                  //           onPressed: () {
-                  //             _pickTime();
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 20),
                   SizedBox(height: kPadding),
                   ActionButton(
                     title: "Trova soluzioni",
@@ -232,45 +220,6 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
           ),
         ),
       ),
-    );
-  }
-
-  _pickDateTime() async {
-    DateTime? dateTime = await BeautifulDateTimePickerDialog.show(
-      context: context,
-      initialDate: pickedDate,
-    );
-
-    if (dateTime != null)
-      setState(() {
-        pickedDate = dateTime;
-      });
-  }
-
-  _getSolutionRequest() {
-    setState(() {
-      validate = true;
-    });
-
-    if (departureStation == null) return;
-    if (arrivalStation == null) return;
-
-    setState(() {
-      validate = false;
-    });
-
-    pickedDate = pickedDate.toLocal();
-
-    SolutionsInfo solutionsInfo = new SolutionsInfo(
-      departureStation: departureStation!,
-      arrivalStation: arrivalStation!,
-      fromTime: pickedDate,
-    );
-
-    Navigator.pushNamed(
-      context,
-      RoutesNames.solutions,
-      arguments: solutionsInfo,
     );
   }
 }

@@ -31,8 +31,8 @@ class SavedStation extends Equatable {
   }) {
     return SavedStation(
       station,
-      lastSelected: lastSelected,
-      isFavourite: isFavourite,
+      lastSelected: lastSelected ?? this.lastSelected,
+      isFavourite: isFavourite ?? this.isFavourite,
     );
   }
 

@@ -18,36 +18,53 @@ class StationCard extends StatelessWidget {
     this.onFavorite,
   }) : super(key: key);
 
+  bool get toggleFavourite => onFavorite != null;
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
       child: Padding(
-        padding: EdgeInsets.all(kPadding),
+        padding: EdgeInsets.symmetric(
+          horizontal: kPadding,
+          vertical: toggleFavourite ? kPadding : kPadding * 1.2,
+        ),
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                station.stationName,
-                style: Typo.subheaderHeavy.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+              child: Semantics(
+                label: station.stationName,
+                excludeSemantics: true,
+                button: true,
+                child: Text(
+                  station.stationName,
+                  style: Typo.subheaderHeavy.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
             ),
-            if (onFavorite != null)
-              IconButton(
-                onPressed: onFavorite,
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                icon: Icon(
-                  isFavourite
-                      ? Icons.favorite_rounded
-                      : Icons.favorite_border_rounded,
-                  color: isFavourite
-                      ? Primary.normal
-                      : Theme.of(context).iconTheme.color,
+            if (toggleFavourite)
+              Semantics(
+                label: isFavourite
+                    ? "Rimuovi ${station.stationName} dai preferiti"
+                    : "Aggiungi ${station.stationName} ai preferiti",
+                excludeSemantics: true,
+                button: true,
+                child: IconButton(
+                  onPressed: onFavorite,
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  icon: Icon(
+                    isFavourite
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
+                    color: isFavourite
+                        ? Primary.normal
+                        : Theme.of(context).iconTheme.color,
+                  ),
                 ),
               ),
           ],

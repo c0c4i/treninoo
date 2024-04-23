@@ -18,6 +18,17 @@ class StationsList extends StatefulWidget {
 }
 
 class _StationsListState extends State<StationsList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // On scroll hide keyboard
+    _scrollController.addListener(() {
+      FocusScope.of(context).unfocus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StationsAutocompleteBloc, StationsAutocompleteState>(
@@ -27,6 +38,7 @@ class _StationsListState extends State<StationsList> {
             flex: 1,
             child: BeautifulCard(
               child: ListView.separated(
+                controller: _scrollController,
                 itemCount: state.stations.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

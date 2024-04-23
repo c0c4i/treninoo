@@ -1,45 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/stations/stations.dart';
+import 'package:treninoo/model/SavedStation.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/stations/station_card.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-class SavedStationsList extends StatefulWidget {
-  SavedStationsList({Key? key, required this.onSelected}) : super(key: key);
+class FavouritesStationsList extends StatefulWidget {
+  FavouritesStationsList({
+    Key? key,
+    required this.onSelected,
+  }) : super(key: key);
 
   final Function(Station) onSelected;
 
   @override
-  _SavedStationsListState createState() => _SavedStationsListState();
+  _FavouritesStationsListState createState() => _FavouritesStationsListState();
 }
 
-class _SavedStationsListState extends State<SavedStationsList> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    // On scroll hide keyboard
-    _scrollController.addListener(() {
-      FocusScope.of(context).unfocus();
-    });
-  }
-
+class _FavouritesStationsListState extends State<FavouritesStationsList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<StationsBloc, StationsState>(
       builder: (context, state) {
         if (state is StationsSuccess && state.stations.length > 0) {
+          List<SavedStation> favouriteStations =
+              state.stations.where((element) => element.isFavourite).toList();
+
           return Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Stazioni preferite e recenti",
+                  "Stazioni preferite",
                   style: Typo.bodyHeavy.copyWith(
                     color: Grey.dark,
                   ),
@@ -48,25 +44,17 @@ class _SavedStationsListState extends State<SavedStationsList> {
                 Flexible(
                   child: BeautifulCard(
                     child: ListView.separated(
-                      controller: _scrollController,
                       shrinkWrap: true,
-                      itemCount: state.stations.length,
+                      itemCount: favouriteStations.length,
                       physics: ClampingScrollPhysics(),
                       separatorBuilder: (context, index) =>
                           Divider(thickness: 1, height: 1),
                       itemBuilder: (context, index) {
                         return StationCard(
-                          station: state.stations[index].station,
-                          isFavourite: state.stations[index].isFavourite,
+                          station: favouriteStations[index].station,
+                          isFavourite: favouriteStations[index].isFavourite,
                           onPressed: () {
-                            widget.onSelected(state.stations[index].station);
-                          },
-                          onFavorite: () {
-                            context.read<StationsBloc>().add(
-                                  UpdateFavorite(
-                                    savedStation: state.stations[index],
-                                  ),
-                                );
+                            widget.onSelected(favouriteStations[index].station);
                           },
                         );
                       },

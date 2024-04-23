@@ -7,6 +7,7 @@ import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 import 'package:treninoo/view/components/dialog/station_picker.dart';
 import 'package:treninoo/view/components/header.dart';
+import 'package:treninoo/view/components/stations/favourites_stations_list.dart';
 
 import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -19,86 +20,59 @@ class SearchStationPage extends StatefulWidget {
 }
 
 class _SearchStationPageState extends State<SearchStationPage> {
-  // final _formKey = GlobalKey<FormState>();
   final TextEditingController searchController = TextEditingController();
-  bool validate = false;
   Station? station;
 
   searchButtonClick() {
-    setState(() {
-      validate = true;
-    });
-
     if (station == null) return;
-
-    setState(() {
-      validate = false;
-    });
-
     Navigator.pushNamed(context, RoutesNames.station, arguments: station);
-  }
-
-  String? validator(Station? station) {
-    if (!validate) return null;
-    if (station == null) return "";
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
-              child: Column(
-                children: <Widget>[
-                  Header(
-                    title: "Cerca la tua stazione",
-                    description:
-                        "Ricerca la tua stazione per vedere tutti gli arrivi e le partenze",
-                  ),
-                  SizedBox(height: 50),
-                  // Form(
-                  //   key: _formKey,
-                  //   child: SuggestionTextField(
-                  //     label: "Stazione",
-                  //     controller: searchController,
-                  //     onSelect: (selected) {
-                  //       if (selected == null) return;
-                  //       searchController.text = selected.stationName;
-                  //       setState(() => station = selected);
-                  //     },
-                  //     errorText: validator(station),
-                  //     type: SearchStationType.LEFRECCE,
-                  //   ),
-                  // ),
-                  BeautifulCard(
-                    child: StationPickerButton(
-                      title: "Stazione",
-                      onPressed: () {
-                        StationPickerDialog.show(
-                          context: context,
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: kPadding),
-                  ActionButton(
-                    title: "Cerca",
-                    onPressed: searchButtonClick,
-                  ),
-                ],
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
+          child: Column(
+            children: <Widget>[
+              Header(
+                title: "Cerca la tua stazione",
+                description:
+                    "Ricerca la tua stazione per vedere tutti gli arrivi e le partenze",
               ),
-            ),
+              SizedBox(height: 50),
+              BeautifulCard(
+                child: StationPickerButton(
+                  title: "Stazione",
+                  content: station?.stationName,
+                  onPressed: () async {
+                    Station? station = await StationPickerDialog.show(
+                      context: context,
+                    );
+
+                    if (station == null) return;
+                    setState(() => this.station = station);
+                  },
+                ),
+              ),
+              SizedBox(height: kPadding),
+              ActionButton(
+                title: "Cerca",
+                onPressed: searchButtonClick,
+              ),
+              SizedBox(height: kPadding * 2),
+              FavouritesStationsList(
+                onSelected: (station) {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesNames.station,
+                    arguments: station,
+                  );
+                },
+              ),
+              SizedBox(height: kPadding * 2),
+            ],
           ),
         ),
       ),

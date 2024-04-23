@@ -22,36 +22,35 @@ class SolutionsResultPage extends StatefulWidget {
 
 class _SolutionsResultPageState extends State<SolutionsResultPage> {
   @override
+  void initState() {
+    super.initState();
+    context
+        .read<SolutionsBloc>()
+        .add(SolutionsRequest(solutionsInfo: widget.solutionsInfo));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return HandleExistBloc(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: kPadding),
-              child: Column(
-                children: <Widget>[
-                  BeautifulAppBar(
-                    title: "Soluzioni",
-                  ),
-                  SizedBox(height: kPadding),
-                  BlocBuilder<SolutionsBloc, SolutionsState>(
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: kPadding),
+            child: Column(
+              children: <Widget>[
+                BeautifulAppBar(
+                  title: "Soluzioni",
+                ),
+                SizedBox(height: kPadding),
+                SolutionsDetails(
+                  solutionsInfo: widget.solutionsInfo,
+                ),
+                SizedBox(height: 8),
+                Expanded(
+                  child: BlocBuilder<SolutionsBloc, SolutionsState>(
                     builder: (context, state) {
-                      if (state is SolutionsInitial)
-                        context.read<SolutionsBloc>().add(SolutionsRequest(
-                            solutionsInfo: widget.solutionsInfo));
                       if (state is SolutionsSuccess)
-                        return Column(
-                          children: [
-                            SolutionsDetails(
-                              solutionsInfo: widget.solutionsInfo,
-                            ),
-                            SizedBox(height: 8),
-                            SolutionsList(
-                              solutions: state.solutions,
-                            )
-                          ],
-                        );
+                        return SolutionsList(solutions: state.solutions);
                       if (state is SolutionsLoading)
                         return Container(
                           height: MediaQuery.of(context).size.height * 0.7,
@@ -59,11 +58,11 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
                             child: CircularProgressIndicator(),
                           ),
                         );
-                      return Container();
+                      return const SizedBox();
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

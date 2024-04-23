@@ -50,8 +50,7 @@ class _StationPickerContentState extends State<StationPickerContent> {
   @override
   void initState() {
     super.initState();
-    // TODO: Uncomment when ready to use
-    // searchFocus.requestFocus();
+    searchFocus.requestFocus();
     context.read<StationsBloc>().add(GetStations());
   }
 
@@ -62,60 +61,65 @@ class _StationPickerContentState extends State<StationPickerContent> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: kPadding * 1.2, horizontal: kPadding * 1.2),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.86,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Seleziona stazione",
-                    style: Typo.titleHeavy,
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Grey.lighter,
-                    radius: 18,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
-                        Icons.close_rounded,
-                        size: 22,
-                        color: Black.normal,
-                      ),
-                      constraints: BoxConstraints(),
-                      onPressed: () => Navigator.pop(context),
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      color: Grey.darker,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.translucent,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: kPadding * 1.2, horizontal: kPadding * 1.2),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.86,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Seleziona stazione",
+                      style: Typo.titleHeavy,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8, width: double.infinity),
-              BeautifulTextField(
-                labelText: "Ricerca",
-                focusNode: searchFocus,
-                controller: searchController,
-                keyboardType: TextInputType.number,
-                onChanged: (text) {
-                  setState(() {});
-                  context.read<StationsAutocompleteBloc>().add(
-                        GetStationsAutocomplete(text: text),
-                      );
-                },
-              ),
-              SizedBox(height: kPadding),
-              if (searchController.text.isNotEmpty)
-                StationsList(onSelected: selectStation),
-              if (searchController.text.isEmpty)
-                SavedStationsList(onSelected: selectStation),
-            ],
+                    CircleAvatar(
+                      backgroundColor: Grey.lighter,
+                      radius: 18,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          Icons.close_rounded,
+                          size: 22,
+                          color: Black.normal,
+                        ),
+                        constraints: BoxConstraints(),
+                        onPressed: () => Navigator.pop(context),
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        color: Grey.darker,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8, width: double.infinity),
+                BeautifulTextField(
+                  labelText: "Ricerca",
+                  focusNode: searchFocus,
+                  textCapitalization: TextCapitalization.words,
+                  controller: searchController,
+                  keyboardType: TextInputType.text,
+                  onChanged: (text) {
+                    setState(() {});
+                    context.read<StationsAutocompleteBloc>().add(
+                          GetStationsAutocomplete(text: text),
+                        );
+                  },
+                ),
+                SizedBox(height: kPadding),
+                if (searchController.text.isNotEmpty)
+                  StationsList(onSelected: selectStation),
+                if (searchController.text.isEmpty)
+                  SavedStationsList(onSelected: selectStation),
+              ],
+            ),
           ),
         ),
       ),

@@ -22,7 +22,14 @@ class APISavedStation extends SavedStationsRepository {
     String? raw = sharedPrefs.recentsAndFavouritesStations;
     if (raw == null) return [];
     List<dynamic> rawStations = jsonDecode(raw);
-    return rawStations.map((e) => SavedStation.fromJson(e)).toList();
+
+    List<SavedStation> stations =
+        rawStations.map((e) => SavedStation.fromJson(e)).toList();
+
+    // Sort stations by lastSelected
+    stations.sort((a, b) => a.lastSelected.isAfter(b.lastSelected) ? -1 : 1);
+
+    return stations;
   }
 
   // Used when user click on the heart icon to remove favourite station
@@ -56,10 +63,13 @@ class APISavedStation extends SavedStationsRepository {
     if (isFavourite) {
       // Update value of isFavourite of station on the list
       int? index = stations.indexWhere((element) => element.station == station);
-      if (index != -1) {
-        SavedStation savedStation = stations[index].copyWith(isFavourite: true);
-        stations[index] = savedStation;
-      }
+
+      // If station is not in the list, ignore it (should not happen but just in case)
+      if (index == -1) return;
+
+      // Update value of isFavourite
+      SavedStation savedStation = stations[index].copyWith(isFavourite: true);
+      stations[index] = savedStation;
     } else {
       // Handle when user make a new search
 
