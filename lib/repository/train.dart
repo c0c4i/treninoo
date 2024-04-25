@@ -41,7 +41,11 @@ class APITrain extends TrainRepository {
 
     if (response.statusCode != 200) throw Exception("Something went wrong");
 
-    if (response.data["total"] == 0) return [];
+    bool isItalo = response.data['is_italo'];
+
+    if (response.data["total"] == 0 && !isItalo) return [];
+
+    if (isItalo) return [Station.fakeItaloStation()];
 
     return (response.data['stations'] as List)
         .map((station) => Station.fromJson(station))
