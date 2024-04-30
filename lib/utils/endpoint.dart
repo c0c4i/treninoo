@@ -1,8 +1,11 @@
 const bool isProd = true;
-const String BASE_URL =
-    isProd ? "https://api.treninoo.it" : "https://api.treninoo.it";
+// const String BASE_URL =
+//     isProd ? "https://api.treninoo.it" : "https://api.treninoo.it";
 
-const String prefix = isProd ? '/v1' : '/test';
+const String BASE_URL = 'http://localhost:3333';
+
+// const String prefix = isProd ? '/v1' : '/test';
+const String prefix = '';
 
 class Endpoint {
   static const String AUTOCOMPLETE_VIAGGIOTRENO = '$prefix/autocomplete/';

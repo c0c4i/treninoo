@@ -124,6 +124,8 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                     Station? station =
                                         await StationPickerDialog.show(
                                       context: context,
+                                      type: SearchStationType
+                                          .LEFRECCE_WITH_MULTISTATION,
                                     );
 
                                     if (station == null) return;
@@ -140,6 +142,8 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                                     Station? station =
                                         await StationPickerDialog.show(
                                       context: context,
+                                      type: SearchStationType
+                                          .LEFRECCE_WITH_MULTISTATION,
                                     );
 
                                     if (station == null) return;
