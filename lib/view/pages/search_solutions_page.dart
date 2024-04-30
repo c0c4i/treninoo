@@ -6,6 +6,7 @@ import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/components/dialog/date_time_picker.dart';
 import 'package:treninoo/view/components/dialog/station_picker.dart';
+import 'package:treninoo/view/components/dialog/train_type_dialog.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 
@@ -44,6 +45,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       departureStation = null;
       arrivalStation = null;
       pickedDate = DateTime.now();
+      trainType = TrainType.all;
     });
   }
 
@@ -77,6 +79,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       departureStation: departureStation!,
       arrivalStation: arrivalStation!,
       fromTime: pickedDate,
+      trainType: trainType,
     );
 
     Navigator.pushNamed(
@@ -186,21 +189,20 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                           content: formatDate(pickedDate),
                           onPressed: () => _pickDateTime(),
                         ),
-                        // TODO Uncomment when train type will be implemented in the backend
-                        // Divider(thickness: 1, height: 1),
-                        // StationPickerButton(
-                        //   title: "Tipo di treno",
-                        //   content: trainType.label,
-                        //   onPressed: () {
-                        //     TrainTypeDialog.show(
-                        //       context: context,
-                        //       initialType: trainType,
-                        //     ).then((value) {
-                        //       if (value != null)
-                        //         setState(() => trainType = value);
-                        //     });
-                        //   },
-                        // ),
+                        Divider(thickness: 1, height: 1),
+                        StationPickerButton(
+                          title: "Tipo di treno",
+                          content: trainType.label,
+                          onPressed: () {
+                            TrainTypeDialog.show(
+                              context: context,
+                              initialType: trainType,
+                            ).then((value) {
+                              if (value != null)
+                                setState(() => trainType = value);
+                            });
+                          },
+                        ),
                       ],
                     ),
                   ),
