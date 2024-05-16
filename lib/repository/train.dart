@@ -143,7 +143,10 @@ class APITrain extends TrainRepository {
     String text,
     SearchStationType type,
   ) async {
-    Response response = await dio.get(type.endpoint + text);
+    Response response = await dio.get(
+      type.endpoint + text,
+      queryParameters: type.params,
+    );
 
     List<Station> stations = [];
     for (var station in response.data['stations']) {
@@ -156,6 +159,7 @@ class APITrain extends TrainRepository {
 
 enum SearchStationType {
   VIAGGIO_TRENO,
+  LEFRECCE_WITH_MULTISTATION,
   LEFRECCE;
 
   String get endpoint {
@@ -163,7 +167,19 @@ enum SearchStationType {
       case VIAGGIO_TRENO:
         return Endpoint.AUTOCOMPLETE_VIAGGIOTRENO;
       case LEFRECCE:
+      case LEFRECCE_WITH_MULTISTATION:
         return Endpoint.AUTOCOMPLETE_LEFRECCE;
+    }
+  }
+
+  // Return multitation = true if the type is LEFRECCE_WITH_MULTISTATION
+  Map<String, dynamic> get params {
+    switch (this) {
+      case VIAGGIO_TRENO:
+      case LEFRECCE:
+        return {};
+      case LEFRECCE_WITH_MULTISTATION:
+        return {'multistation': true};
     }
   }
 }
