@@ -73,17 +73,9 @@ class APITrain extends TrainRepository {
   }
 
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
-    String time = DateFormat('yyyy-MM-dd HH:mm').format(
-      solutionsInfo.fromTime,
-    );
-
     Response response = await dio.get(
       Endpoint.SOLUTIONS_LEFRECCE,
-      queryParameters: {
-        'departureStation': solutionsInfo.departureStation.stationCode,
-        'arrivalStation': solutionsInfo.arrivalStation.stationCode,
-        'date': time,
-      },
+      queryParameters: solutionsInfo.toJson(),
     );
 
     Solutions solutions = Solutions.fromJson(response.data);
@@ -207,5 +199,13 @@ enum TrainType {
       case intercity:
         return "Intercity";
     }
+  }
+
+  Map<String, bool> toJson() {
+    return {
+      'onlyFrecce': this == highSpeed,
+      'onlyIntercity': this == intercity,
+      'onlyRegional': this == regional,
+    };
   }
 }
