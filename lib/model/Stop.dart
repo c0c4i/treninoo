@@ -107,28 +107,12 @@ class Stop extends Equatable {
   List<StopDifference> compareWith(Stop other) {
     List<StopDifference> differences = [];
 
-    if (plannedDepartureTime != other.plannedDepartureTime) {
-      differences.add(StopDifference.plannedDepartureTime);
-    }
-
-    if (actualDepartureTime != other.actualDepartureTime) {
-      differences.add(StopDifference.actualDepartureTime);
-    }
-
-    if (plannedArrivalTime != other.plannedArrivalTime) {
-      differences.add(StopDifference.plannedArrivalTime);
-    }
-
     if (actualArrivalTime != other.actualArrivalTime) {
       differences.add(StopDifference.actualArrivalTime);
     }
 
-    if (plannedDepartureRail != other.plannedDepartureRail) {
-      differences.add(StopDifference.plannedDepartureRail);
-    }
-
-    if (actualDepartureRail != other.actualDepartureRail) {
-      differences.add(StopDifference.actualDepartureRail);
+    if (actualDepartureTime != other.actualDepartureTime) {
+      differences.add(StopDifference.actualDepartureTime);
     }
 
     if (plannedArrivalRail != other.plannedArrivalRail) {
@@ -139,6 +123,14 @@ class Stop extends Equatable {
       differences.add(StopDifference.actualArrivalRail);
     }
 
+    if (plannedDepartureRail != other.plannedDepartureRail) {
+      differences.add(StopDifference.plannedDepartureRail);
+    }
+
+    if (actualDepartureRail != other.actualDepartureRail) {
+      differences.add(StopDifference.actualDepartureRail);
+    }
+
     return differences;
   }
 
@@ -147,9 +139,7 @@ class Stop extends Equatable {
 }
 
 enum StopDifference {
-  plannedDepartureTime,
   actualDepartureTime,
-  plannedArrivalTime,
   actualArrivalTime,
   plannedDepartureRail,
   actualDepartureRail,
