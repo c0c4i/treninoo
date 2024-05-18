@@ -25,7 +25,7 @@ class StationsAutocompleteBloc
 
       final stations = await _trainRepository.searchStations(
         event.text,
-        SearchStationType.LEFRECCE,
+        event.type,
       );
 
       emit(StationsAutocompleteSuccess(stations: stations));

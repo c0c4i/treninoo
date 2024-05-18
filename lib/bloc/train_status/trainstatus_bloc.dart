@@ -24,7 +24,8 @@ class TrainStatusBloc extends Bloc<TrainStatusEvent, TrainStatusState> {
       if (exception is DioException &&
           exception.message != null &&
           exception.type != DioExceptionType.unknown &&
-          exception.response?.statusCode != 404) {
+          exception.response?.statusCode != 404 &&
+          exception.type != DioExceptionType.connectionTimeout) {
         await Sentry.captureException(
           exception,
           stackTrace: stackTrace,

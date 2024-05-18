@@ -16,6 +16,7 @@ import '../../style/typography.dart';
 class StationPickerDialog {
   static Future<Station?> show({
     required BuildContext context,
+    required SearchStationType type,
   }) async {
     return await showModalBottomSheet(
       isScrollControlled: true,
@@ -30,14 +31,16 @@ class StationPickerDialog {
         create: (context) => StationsAutocompleteBloc(
           context.read<TrainRepository>(),
         ),
-        child: StationPickerContent(),
+        child: StationPickerContent(type: type),
       ),
     );
   }
 }
 
 class StationPickerContent extends StatefulWidget {
-  const StationPickerContent({super.key});
+  const StationPickerContent({super.key, required this.type});
+
+  final SearchStationType type;
 
   @override
   State<StationPickerContent> createState() => _StationPickerContentState();
@@ -109,7 +112,10 @@ class _StationPickerContentState extends State<StationPickerContent> {
                   onChanged: (text) {
                     setState(() {});
                     context.read<StationsAutocompleteBloc>().add(
-                          GetStationsAutocomplete(text: text),
+                          GetStationsAutocomplete(
+                            text: text,
+                            type: widget.type,
+                          ),
                         );
                   },
                 ),

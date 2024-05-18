@@ -54,7 +54,7 @@ class TrainTypeDialog {
                                 ),
                                 trailing: type == initialType
                                     ? Icon(
-                                        Icons.check,
+                                        Icons.check_rounded,
                                         color: Primary.normal,
                                       )
                                     : null,
