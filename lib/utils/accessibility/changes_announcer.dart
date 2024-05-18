@@ -16,7 +16,7 @@ class AccessibilityChangesAnnouncer {
       switch (difference) {
         case TrainInfoDifference.status:
           String announcement =
-              "Il treno ${newTrainInfo.trainCode} è stato rilevato alle ore ${newTrainInfo.lastTimeRegister!.format(context)} a ${newTrainInfo.lastPositionRegister}";
+              "Il treno ${newTrainInfo.trainCode} è stato rilevato alle ore ${newTrainInfo.lastTimeRegister?.format(context)} a ${newTrainInfo.lastPositionRegister}";
 
           String delay = (newTrainInfo.delay! > 0)
               ? " con un ritardo di ${newTrainInfo.delay} minuti"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:treninoo/model/Station.dart';
+import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 
 import 'package:treninoo/view/components/buttons/action_button.dart';
@@ -49,6 +50,7 @@ class _SearchStationPageState extends State<SearchStationPage> {
                   onPressed: () async {
                     Station? station = await StationPickerDialog.show(
                       context: context,
+                      type: SearchStationType.LEFRECCE,
                     );
 
                     if (station == null) return;
