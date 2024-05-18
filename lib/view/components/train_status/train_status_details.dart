@@ -44,11 +44,13 @@ class TrainInfoDetails extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                            Text(
-                              '${trainInfo.lastPositionRegister}',
-                              style:
-                                  Typo.titleHeavy.copyWith(color: Colors.white),
-                            ),
+                            if (trainInfo.lastPositionRegister != null)
+                              Text(
+                                trainInfo.lastPositionRegister!,
+                                style: Typo.titleHeavy.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
                             Text(
                               'Ultimo Rilevamento: ${trainInfo.lastTimeRegister!.format(context)}',
                               style: Typo.bodyLight.copyWith(

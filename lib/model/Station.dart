@@ -25,6 +25,13 @@ class Station extends Equatable {
     return (stationCode.toString() == this.stationCode) ? this : null;
   }
 
+  static Station fakeItaloStation() {
+    return Station(
+      stationName: "Italo",
+      stationCode: "italo",
+    );
+  }
+
   @override
   List<Object?> get props {
     return [stationCode];
