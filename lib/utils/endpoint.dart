@@ -13,4 +13,5 @@ class Endpoint {
   static const String SOLUTIONS_LEFRECCE = '$prefix/lefrecce/solutions';
   static const String STATION_DETAILS_VIAGGIOTRENO = '$prefix/stations';
   static const String TRAIN_INFO_VIAGGIOTRENO = '$prefix/details';
+  static const String TRAIN_STATUS_ITALO = '$prefix/italo';
 }

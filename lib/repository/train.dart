@@ -70,6 +70,14 @@ class APITrain extends TrainRepository {
       stationCode = departureStations.first.stationCode;
     }
 
+    // If train is Italo, call the Italo endpoint
+    if (stationCode == 'italo') {
+      String url = "${Endpoint.TRAIN_STATUS_ITALO}/$trainCode";
+      Response response = await dio.get(url);
+
+      return TrainInfo.fromJson(response.data);
+    }
+
     String url = "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode";
     Response response = await dio.get(url);
 
