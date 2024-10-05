@@ -1,13 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class Station extends Equatable {
   final String stationName;
   final String stationCode;
+  final DateTime departureDate;
 
   Station({
     required this.stationName,
     required this.stationCode,
-  });
+    DateTime? departureDate,
+  }) : departureDate = departureDate ?? DateTime.now();
 
   Map<String, dynamic> toJson() => {
         'stationName': stationName,
@@ -18,6 +21,9 @@ class Station extends Equatable {
     return Station(
       stationName: json['stationName'],
       stationCode: json['stationCode'].toString(),
+      departureDate: json['departureDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(json['departureDate'])
+          : null,
     );
   }
 
@@ -30,6 +36,10 @@ class Station extends Equatable {
       stationName: "Italo",
       stationCode: "italo",
     );
+  }
+
+  String get departureDateFormatted {
+    return DateFormat('dd/MM/yyyy').format(departureDate);
   }
 
   @override
