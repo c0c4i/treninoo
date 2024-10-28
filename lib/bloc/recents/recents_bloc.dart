@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/bloc/recents/recents.dart';
 
 import '../../repository/saved_train.dart';
@@ -34,10 +34,7 @@ class RecentsBloc extends Bloc<RecentsEvent, RecentsState> {
       final trains = _savedTrainRepository.getRecents();
       emit(RecentsSuccess(trains: trains));
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(RecentsFailed());
     }
   }

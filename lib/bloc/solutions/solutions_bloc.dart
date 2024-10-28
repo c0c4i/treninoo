@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/train.dart';
@@ -29,10 +29,7 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
           .addRecentOrFavoruiteStation(event.solutionsInfo.arrivalStation);
       emit(SolutionsSuccess(solutions: solutions));
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(SolutionsFailed());
     }
   }

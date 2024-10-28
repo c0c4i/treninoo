@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/repository/train.dart';
 
 import 'send_feedback_event.dart';
@@ -23,10 +23,7 @@ class SendFeedbackBloc extends Bloc<SendFeedbackEvent, SendFeedbackState> {
       await _trainRepository.sendFeedback(event.feedback, event.email);
       emit(SendFeedbackSuccess());
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(SendFeedbackFailed());
     }
     emit(SendFeedbackInitial());

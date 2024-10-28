@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/repository/train.dart';
 
@@ -26,10 +26,7 @@ class TrainStatusBloc extends Bloc<TrainStatusEvent, TrainStatusState> {
           exception.type != DioExceptionType.unknown &&
           exception.response?.statusCode != 404 &&
           exception.type != DioExceptionType.connectionTimeout) {
-        await Sentry.captureException(
-          exception,
-          stackTrace: stackTrace,
-        );
+        FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       }
 
       emit(TrainStatusFailed());

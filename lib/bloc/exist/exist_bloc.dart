@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/repository/train.dart';
@@ -41,10 +41,7 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
           exception.message != null &&
           exception.type != DioExceptionType.unknown &&
           exception.response?.statusCode != 404) {
-        await Sentry.captureException(
-          exception,
-          stackTrace: stackTrace,
-        );
+        FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       }
 
       emit(ExistFailed(savedTrain: event.savedTrain, type: event.type));

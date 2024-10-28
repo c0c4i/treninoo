@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/repository/train.dart';
 
 import 'followtrain_stations_event.dart';
@@ -24,10 +24,7 @@ class FollowTrainStationsBloc
           await _trainRepository.getFollowTrainStations(event.savedTrain);
       emit(FollowTrainStationsSuccess(stations: stations));
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(FollowTrainStationsFailed());
     }
   }
