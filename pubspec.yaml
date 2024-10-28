@@ -28,6 +28,7 @@ dependencies:
   flutter_boxicons: ^3.0.0
   firebase_crashlytics: ^3.5.7
   firebase_analytics: ^10.10.7
+  timelines: ^0.1.0
 
 dev_dependencies:
   flutter_test:
