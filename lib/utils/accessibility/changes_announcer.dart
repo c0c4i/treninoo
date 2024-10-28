@@ -32,6 +32,8 @@ class AccessibilityChangesAnnouncer {
         case TrainInfoDifference.stops:
           // Retrieve which stop has changed
           for (var i = 0; i < newTrainInfo.stops!.length; i++) {
+            if (oldTrainInfo.stops == null) return;
+
             List<StopDifference> stopDifferences =
                 oldTrainInfo.stops![i].compareWith(newTrainInfo.stops![i]);
             if (stopDifferences.isNotEmpty) {
