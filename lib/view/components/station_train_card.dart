@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/StationTrain.dart';
+import 'package:treninoo/view/components/rail_chip.dart';
+import 'package:treninoo/view/components/solutions/delay_chip.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -45,6 +47,8 @@ class StationTrainCard extends StatelessWidget {
   get haveRail =>
       stationTrain.actualRail != null || stationTrain.plannedRail != null;
 
+  String get title => stationTrain.category! + " " + stationTrain.trainCode;
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -69,11 +73,16 @@ class StationTrainCard extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        stationTrain.category! + " " + stationTrain.trainCode,
-                        style: Typo.subheaderHeavy.copyWith(
-                          color: Primary.normal,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            title,
+                            style: Typo.subheaderHeavy.copyWith(
+                              color: Primary.normal,
+                            ),
+                          ),
+                          DelayChip(delay: stationTrain.delay),
+                        ],
                       ),
                     ),
                     Text(
@@ -84,30 +93,20 @@ class StationTrainCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
-                TextWithIcon(
-                  icon: isDeparture
-                      ? Icons.sports_score
-                      : Icons.location_on_outlined,
-                  label: stationTrain.name,
-                ),
-                SizedBox(height: 16),
+                SizedBox(height: kPadding),
                 Row(
                   children: [
                     Expanded(
                       child: TextWithIcon(
-                        icon: Icons.more_time,
-                        label: getTime(stationTrain.delay),
+                        icon: isDeparture
+                            ? Icons.sports_score
+                            : Icons.location_on_outlined,
+                        label: stationTrain.name,
                       ),
                     ),
-                    // SizedBox(width: 32),
-                    Expanded(
-                      child: TextWithIcon(
-                        icon: Icons.tag,
-                        label: stationTrain.actualRail ??
-                            stationTrain.plannedRail ??
-                            "-",
-                      ),
+                    RailChip(
+                      rail: stationTrain.actualRail ?? stationTrain.plannedRail,
+                      confirmed: stationTrain.actualRail != null,
                     ),
                   ],
                 ),
@@ -122,8 +121,6 @@ class StationTrainCard extends StatelessWidget {
           )),
     );
   }
-
-  String getTime(time) => haveDelay ? "$time min" : "In orario";
 }
 
 class TextWithIcon extends StatelessWidget {
