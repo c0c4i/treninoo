@@ -77,6 +77,8 @@ class TrainInfo extends Equatable {
     );
   }
 
+  bool get isDeparted => lastPositionRegister != '--';
+
   bool get completed => lastPositionRegister == arrivalStationName;
 
   @override

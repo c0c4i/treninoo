@@ -10,9 +10,7 @@ class TrainInfoDetails extends StatelessWidget {
 
   const TrainInfoDetails({Key? key, required this.trainInfo}) : super(key: key);
 
-  get isDeparted {
-    return trainInfo.lastPositionRegister != '--';
-  }
+  get isDeparted => trainInfo.isDeparted;
 
   semanticLabel(context) {
     if (!isDeparted) return "Treno non ancora partito";
