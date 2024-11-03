@@ -1,22 +1,26 @@
+import 'package:equatable/equatable.dart';
 import 'package:treninoo/model/Solution.dart';
 import 'package:treninoo/model/Station.dart';
 
-class Solutions {
-  List<Solution>? solutions;
-  Station? departureStation;
-  Station? arrivalStation;
-  DateTime? fromTime;
+class Solutions extends Equatable {
+  final List<Solution> solutions;
+  final Station departureStation;
+  final Station arrivalStation;
+  final DateTime fromTime;
 
   Solutions({
-    this.solutions,
-    this.departureStation,
-    this.arrivalStation,
-    this.fromTime,
+    required this.solutions,
+    required this.departureStation,
+    required this.arrivalStation,
+    required this.fromTime,
   });
 
-  factory Solutions.fromJson(Map<String, dynamic> json) {
-    List<Solution> solutions =
-        (json['solutions'] as List).map((f) => Solution.fromJson(f)).toList();
-    return Solutions(solutions: solutions);
+  static List<Solution> getSolutionsFromJson(Map<String, dynamic> json) {
+    return (json['solutions'] as List)
+        .map((f) => Solution.fromJson(f))
+        .toList();
   }
+
+  @override
+  List<Object?> get props => [solutions];
 }

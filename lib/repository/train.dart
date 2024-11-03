@@ -106,11 +106,12 @@ class APITrain extends TrainRepository {
       queryParameters: solutionsInfo.toJson(),
     );
 
-    Solutions solutions = Solutions.fromJson(response.data);
-    solutions.departureStation = solutionsInfo.departureStation;
-    solutions.arrivalStation = solutionsInfo.arrivalStation;
-    solutions.fromTime = solutionsInfo.fromTime;
-    return solutions;
+    return Solutions(
+      solutions: Solutions.getSolutionsFromJson(response.data),
+      departureStation: solutionsInfo.departureStation,
+      arrivalStation: solutionsInfo.arrivalStation,
+      fromTime: solutionsInfo.fromTime,
+    );
   }
 
   @override

@@ -12,10 +12,15 @@ class SolutionSection extends StatelessWidget {
   final TrainSolution trainSolution;
   final int? position;
   final int? size;
+  final int? delay;
 
-  const SolutionSection(
-      {Key? key, required this.trainSolution, this.position, this.size})
-      : super(key: key);
+  const SolutionSection({
+    Key? key,
+    required this.trainSolution,
+    this.position,
+    this.size,
+    this.delay,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +45,7 @@ class SolutionSection extends StatelessWidget {
             trainCode: trainSolution.trainCode,
             departureTime: trainSolution.departureTime,
             arrivalTime: trainSolution.arrivalTime,
+            delay: delay,
           ),
           SizedBox(height: kPadding / 2),
           SolutionSectionStations(

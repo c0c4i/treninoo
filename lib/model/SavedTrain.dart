@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/model/TrainSolution.dart';
 
 import 'Station.dart';
 
@@ -74,6 +75,13 @@ class SavedTrain extends Equatable {
     return SavedTrain(
       trainCode: stationTrain.trainCode,
       departureStationCode: stationTrain.departureCode,
+    );
+  }
+
+  factory SavedTrain.fromSolution(TrainSolution trainSolution) {
+    return SavedTrain(
+      trainCode: trainSolution.trainCode!,
+      departureStationName: trainSolution.departureStation,
     );
   }
 

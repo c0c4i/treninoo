@@ -77,6 +77,8 @@ class TrainInfo extends Equatable {
     );
   }
 
+  bool get completed => lastPositionRegister == arrivalStationName;
+
   @override
   List<Object?> get props => [
         trainType,

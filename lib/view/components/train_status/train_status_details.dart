@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/view/style/colors/ErrorColor.dart';
+import 'package:treninoo/utils/delay.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
-import 'package:treninoo/view/style/colors/success.dart';
-import 'package:treninoo/view/style/colors/warning.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
@@ -33,24 +31,9 @@ class TrainInfoDetails extends StatelessWidget {
     return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)}, treno in orario.";
   }
 
-  get delayDescription {
-    if (trainInfo.delay == 0) return 'In orario';
-    return trainInfo.delay! < 0 ? 'Anticipo' : 'Ritardo';
-  }
-
-  get delayTextColor {
-    if (trainInfo.delay == null) return Success.darker;
-    if (trainInfo.delay! <= 0) return Success.darker;
-    if (trainInfo.delay! <= 15) return Warning.darker;
-    return ErrorColor.darker;
-  }
-
-  get delayColor {
-    if (trainInfo.delay == null) return Success.lighter;
-    if (trainInfo.delay! <= 0) return Success.lighter;
-    if (trainInfo.delay! <= 15) return Warning.lighter;
-    return ErrorColor.lighter;
-  }
+  get delayDescription => DelayUtils.description(trainInfo.delay);
+  get delayTextColor => DelayUtils.textColor(trainInfo.delay);
+  get delayColor => DelayUtils.color(trainInfo.delay);
 
   @override
   Widget build(BuildContext context) {

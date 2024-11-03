@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/view/components/solutions/delay_chip.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/typography.dart';
 
@@ -8,6 +9,7 @@ class SolutionSectionHeader extends StatelessWidget {
   final String? trainCode;
   final DateTime? departureTime;
   final DateTime? arrivalTime;
+  final int? delay;
 
   const SolutionSectionHeader({
     Key? key,
@@ -15,6 +17,7 @@ class SolutionSectionHeader extends StatelessWidget {
     this.trainCode,
     this.departureTime,
     this.arrivalTime,
+    this.delay,
   }) : super(key: key);
 
   get title {
@@ -27,11 +30,16 @@ class SolutionSectionHeader extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            title,
-            style: Typo.subheaderHeavy.copyWith(
-              color: Primary.normal,
-            ),
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: Typo.subheaderHeavy.copyWith(
+                  color: Primary.normal,
+                ),
+              ),
+              if (delay != null) DelayChip(delay: delay),
+            ],
           ),
         ),
         Semantics(

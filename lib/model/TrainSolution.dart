@@ -1,4 +1,6 @@
-class TrainSolution {
+import 'package:equatable/equatable.dart';
+
+class TrainSolution extends Equatable {
   final String departureStation;
   final String? arrivalStation;
   final DateTime? departureTime;
@@ -25,4 +27,7 @@ class TrainSolution {
       trainCode: json['trainCode'],
     );
   }
+
+  @override
+  List<Object?> get props => [trainCode, departureStation];
 }
