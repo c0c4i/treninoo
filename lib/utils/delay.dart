@@ -26,6 +26,13 @@ class DelayUtils {
     return 'In orario';
   }
 
+  static String delay(int? delay) {
+    if (delay == null) return '0';
+    if (delay > 0) return '+$delay';
+    if (delay < 0) return '$delay';
+    return '0';
+  }
+
   static String description(int? delay) {
     if (delay == 0) return 'In orario';
     return delay! < 0 ? 'Anticipo' : 'Ritardo';

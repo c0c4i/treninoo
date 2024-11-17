@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_station_cell.dart';
+import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 import '../../style/colors/accent.dart';
@@ -46,7 +47,7 @@ class TrainStatusStopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
+      padding: const EdgeInsets.symmetric(vertical: kPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -82,18 +83,30 @@ class TrainStatusStopRow extends StatelessWidget {
               label:
                   "Arrivo ${stop.actualArrivalTime != null ? 'effettivo' : 'previsto'} ${stop.selectTime(context, stop.actualArrivalTime, stop.plannedArrivalTime, stop.predictedArrivalTime, predicted)}.",
               excludeSemantics: true,
-              child: Text(
-                stop.selectTime(
-                  context,
-                  stop.actualArrivalTime,
-                  stop.plannedArrivalTime,
-                  stop.predictedArrivalTime,
-                  predicted,
-                ),
-                style: Typo.subheaderLight.copyWith(
-                  color: arrivalColor,
-                ),
-                textAlign: TextAlign.center,
+              child: Column(
+                children: [
+                  Text(
+                    stop.plannedArrivalTime?.format(context) ?? Stop.emptyTime,
+                    style: Typo.subheaderLight.copyWith(
+                      color: Grey.dark,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (stop.confirmed || predicted)
+                    Text(
+                      stop.selectTime(
+                        context,
+                        stop.actualArrivalTime,
+                        stop.plannedArrivalTime,
+                        stop.predictedArrivalTime,
+                        predicted,
+                      ),
+                      style: Typo.subheaderLight.copyWith(
+                        color: arrivalColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                ],
               ),
             ),
           ),
@@ -103,18 +116,32 @@ class TrainStatusStopRow extends StatelessWidget {
               label:
                   "Partenza ${stop.actualDepartureTime != null ? 'effettiva' : 'prevista'} ${stop.selectTime(context, stop.actualDepartureTime, stop.plannedDepartureTime, stop.predictedDepartureTime, predicted)}.",
               excludeSemantics: true,
-              child: Text(
-                stop.selectTime(
-                  context,
-                  stop.actualDepartureTime,
-                  stop.plannedDepartureTime,
-                  stop.predictedDepartureTime,
-                  predicted,
-                ),
-                style: Typo.subheaderLight.copyWith(
-                  color: departureColor,
-                ),
-                textAlign: TextAlign.center,
+              child: Column(
+                children: [
+                  Text(
+                    stop.plannedDepartureTime?.format(context) ??
+                        Stop.emptyTime,
+                    style: Typo.subheaderLight.copyWith(
+                      color: Grey.dark,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  // Confirmed or predicted enabled
+                  if (stop.confirmed || predicted)
+                    Text(
+                      stop.selectTime(
+                        context,
+                        stop.actualDepartureTime,
+                        stop.plannedDepartureTime,
+                        stop.predictedDepartureTime,
+                        predicted,
+                      ),
+                      style: Typo.subheaderLight.copyWith(
+                        color: departureColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                ],
               ),
             ),
           ),

@@ -37,7 +37,7 @@ class _TrainStatusStopListState extends State<TrainStatusStopList> {
       ),
       builder: TimelineTileBuilder.connected(
         indicatorBuilder: (context, index) {
-          bool confirmed = widget.stops![index].confirmed;
+          bool confirmed = widget.stops![index].isAtLeastArrived;
           return DotIndicator(
             size: 14,
             color: confirmed ? Colors.white : Grey.darker,
@@ -54,7 +54,7 @@ class _TrainStatusStopListState extends State<TrainStatusStopList> {
             return SolidLineConnector(color: color);
           }
 
-          bool confirmed = widget.stops![index + 1].confirmed;
+          bool confirmed = widget.stops![index + 1].isAtLeastArrived;
           color = confirmed ? Primary.normal : Grey.normal;
 
           return SolidLineConnector(

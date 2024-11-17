@@ -93,7 +93,7 @@ class TrainInfoDetails extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          trainInfo.delay!.abs().toString(),
+                          DelayUtils.delay(trainInfo.delay),
                           style: Typo.headlineHeavy.copyWith(
                             color: delayTextColor,
                           ),

@@ -24,6 +24,10 @@ class Stop extends Equatable {
   final bool currentStation;
   final int? delay;
 
+  bool get isAtLeastArrived {
+    return confirmed || currentStation || actualArrivalTime != null;
+  }
+
   Stop({
     required this.station,
     this.plannedDepartureTime,
@@ -103,6 +107,8 @@ class Stop extends Equatable {
 
     return "—:—";
   }
+
+  static String get emptyTime => "—:—";
 
   List<StopDifference> compareWith(Stop other) {
     List<StopDifference> differences = [];
