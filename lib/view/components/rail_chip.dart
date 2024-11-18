@@ -3,15 +3,37 @@ import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-class RailChip extends StatelessWidget {
+class RailChip extends StatefulWidget {
   const RailChip({super.key, this.rail, this.confirmed = false});
 
   final String? rail;
   final bool confirmed;
 
-  get railTitle => confirmed ? rail : "provvisorio";
-  get railTextColor => confirmed ? Colors.blue : Grey.darker;
-  get railColor => confirmed ? Colors.blue.withOpacity(0.1) : Grey.lighter;
+  @override
+  State<RailChip> createState() => _RailChipState();
+}
+
+class _RailChipState extends State<RailChip> {
+  get railTitle => widget.confirmed ? widget.rail : "provvisorio";
+
+  get railTextColor {
+    if (widget.confirmed) return Colors.blue;
+    return AppTheme.isDarkMode(context)
+        ? Color.lerp(Grey.normal, Colors.white, 0.1)
+        : Grey.darker;
+  }
+
+  get railColor {
+    bool isDarkMode = AppTheme.isDarkMode(context);
+
+    if (widget.confirmed) {
+      return Colors.blue.withOpacity(
+        isDarkMode ? 0.2 : 0.1,
+      );
+    }
+
+    return isDarkMode ? Grey.lighter : Grey.lighter;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +57,7 @@ class RailChip extends StatelessWidget {
             ),
             SizedBox(width: kPadding / 2),
             Text(
-              rail ?? "-",
+              widget.rail ?? "-",
               style: Typo.subheaderHeavy.copyWith(
                 color: railTextColor,
               ),

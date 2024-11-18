@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/utils/delay.dart';
+import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class DelayChip extends StatelessWidget {
@@ -8,7 +9,6 @@ class DelayChip extends StatelessWidget {
   final int? delay;
 
   get delayTitle => DelayUtils.title(delay);
-  get delayTextColor => DelayUtils.textColor(delay);
   get delayColor => DelayUtils.color(delay);
 
   @override
@@ -27,7 +27,10 @@ class DelayChip extends StatelessWidget {
         child: Text(
           delayTitle!,
           style: Typo.captionLight.copyWith(
-            color: delayTextColor,
+            color: DelayUtils.textColor(
+              delay,
+              AppTheme.isDarkMode(context),
+            ),
           ),
         ),
       ),

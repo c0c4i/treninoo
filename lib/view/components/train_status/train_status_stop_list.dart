@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timelines/timelines.dart';
 import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_row.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
-
-import '../../../cubit/predicted_arrival.dart';
 
 class TrainStatusStopList extends StatefulWidget {
   const TrainStatusStopList({
@@ -51,11 +48,11 @@ class _TrainStatusStopListState extends State<TrainStatusStopList> {
           Color color = Grey.normal;
 
           if (index > widget.stops!.length - 1) {
-            return SolidLineConnector(color: color);
+            return SolidLineConnector(color: Grey.normal);
           }
 
           bool confirmed = widget.stops![index + 1].isAtLeastArrived;
-          color = confirmed ? Primary.normal : Grey.normal;
+          if (confirmed) color = Primary.normal;
 
           return SolidLineConnector(
             color: color,
@@ -67,7 +64,8 @@ class _TrainStatusStopListState extends State<TrainStatusStopList> {
             current:
                 widget.stops![index].station.stationName == widget.currentStop,
             delay: widget.delay,
-            predicted: context.watch<PredictedArrivalCubit>().state,
+            // predicted: context.watch<PredictedArrivalCubit>().state,
+            predicted: true,
           );
         },
         itemCount: widget.stops!.length,

@@ -50,8 +50,6 @@ class _SettingsState extends State<Settings> {
                 },
               ),
               SizedBox(height: kPadding),
-              PredictedArrival(),
-              SizedBox(height: kPadding),
               MenuButtonClick(
                 title: "Schermata iniziale",
                 description: "Seleziona la schermata di avvio",

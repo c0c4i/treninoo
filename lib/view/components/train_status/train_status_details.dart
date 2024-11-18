@@ -30,7 +30,6 @@ class TrainInfoDetails extends StatelessWidget {
   }
 
   get delayDescription => DelayUtils.description(trainInfo.delay);
-  get delayTextColor => DelayUtils.textColor(trainInfo.delay);
   get delayColor => DelayUtils.color(trainInfo.delay);
 
   @override
@@ -40,10 +39,10 @@ class TrainInfoDetails extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(kRadius),
           border: Border.all(
-            color: Grey.light,
+            color: Theme.of(context).dividerColor,
             width: 1,
           ),
         ),
@@ -61,7 +60,7 @@ class TrainInfoDetails extends StatelessWidget {
                               Text(
                                 trainInfo.lastPositionRegister!,
                                 style: Typo.titleHeavy.copyWith(
-                                  color: Colors.black,
+                                  color: Theme.of(context).cardTheme.color,
                                 ),
                               ),
                             Text(
@@ -95,13 +94,19 @@ class TrainInfoDetails extends StatelessWidget {
                         Text(
                           DelayUtils.delay(trainInfo.delay),
                           style: Typo.headlineHeavy.copyWith(
-                            color: delayTextColor,
+                            color: DelayUtils.textColor(
+                              trainInfo.delay,
+                              AppTheme.isDarkMode(context),
+                            ),
                           ),
                         ),
                         Text(
                           delayDescription,
                           style: Typo.subheaderLight.copyWith(
-                            color: delayTextColor,
+                            color: DelayUtils.textColor(
+                              trainInfo.delay,
+                              AppTheme.isDarkMode(context),
+                            ),
                           ),
                         ),
                       ],

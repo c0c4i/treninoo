@@ -37,8 +37,9 @@ class _MyStatefulWidgetState extends State<HomePage> {
       bool showFeature = context.read<ShowFeatureCubit>().state;
       bool predictedArrival = context.read<PredictedArrivalCubit>().state;
       if (showFeature && !predictedArrival) {
-        context.read<ShowFeatureCubit>().update(false);
-        BeautifulNewFeatureDialog.show(context: context);
+        // Disable the feature dialog
+        // context.read<ShowFeatureCubit>().update(false);
+        // BeautifulNewFeatureDialog.show(context: context);
       }
     });
   }

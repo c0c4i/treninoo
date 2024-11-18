@@ -18,6 +18,10 @@ const double kPagePadding = 24.0;
 const double kButtonPadding = 16.0;
 
 class AppTheme {
+  static isDarkMode(BuildContext context) {
+    return Theme.of(context).colorScheme.brightness == Brightness.dark;
+  }
+
   static ThemeData light = ThemeData(
     useMaterial3: false,
     colorScheme: ColorScheme(
