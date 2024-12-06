@@ -11,6 +11,7 @@ class SharedPrefs {
   static const String SPShowFeature = 'show_feature_1';
   static const String SPRecentsAndFavouritesStations =
       'recents-and-favourites-stations';
+  static const String SPrecentsSolutions = 'recents-solutions';
 
   Future<void> setup() async {
     _sharedPrefs = await SharedPreferences.getInstance();
@@ -59,5 +60,11 @@ class SharedPrefs {
 
   set recentsAndFavouritesStations(String? value) {
     _sharedPrefs.setString(SPRecentsAndFavouritesStations, value!);
+  }
+
+  String? get recentsSolutions => _sharedPrefs.getString(SPrecentsSolutions);
+
+  set recentsSolutions(String? value) {
+    _sharedPrefs.setString(SPrecentsSolutions, value!);
   }
 }

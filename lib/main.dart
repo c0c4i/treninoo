@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/app.dart';
+import 'package:treninoo/repository/saved_solution.dart';
 import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/saved_train.dart';
 import 'package:treninoo/utils/shared_preference.dart';
@@ -32,6 +33,8 @@ void main() async {
   TrainRepository trainRepository = APITrain();
   SavedTrainRepository savedTrainRepository = APISavedTrain(sharedPrefs);
   SavedStationsRepository savedStationRepository = APISavedStation(sharedPrefs);
+  SavedSolutionInfoRepository savedSolutionInfoRepository =
+      APISavedSolution(sharedPrefs);
 
   await SentryFlutter.init(
     (options) {
@@ -46,6 +49,7 @@ void main() async {
         trainRepository: trainRepository,
         savedTrainRepository: savedTrainRepository,
         savedStationsRepository: savedStationRepository,
+        savedSolutionInfoRepository: savedSolutionInfoRepository,
       ),
     ),
   );
