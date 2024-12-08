@@ -9,7 +9,6 @@ import 'package:treninoo/view/pages/search_train_page.dart';
 
 import '../../cubit/first_page.dart';
 import '../../cubit/predicted_arrival.dart';
-import '../components/dialog/new_feature.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class HomePage extends StatefulWidget {
@@ -37,8 +36,9 @@ class _MyStatefulWidgetState extends State<HomePage> {
       bool showFeature = context.read<ShowFeatureCubit>().state;
       bool predictedArrival = context.read<PredictedArrivalCubit>().state;
       if (showFeature && !predictedArrival) {
-        context.read<ShowFeatureCubit>().update(false);
-        BeautifulNewFeatureDialog.show(context: context);
+        // Disable the feature dialog
+        // context.read<ShowFeatureCubit>().update(false);
+        // BeautifulNewFeatureDialog.show(context: context);
       }
     });
   }

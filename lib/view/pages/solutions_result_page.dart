@@ -54,7 +54,10 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
                   child: BlocBuilder<SolutionsBloc, SolutionsState>(
                     builder: (context, state) {
                       if (state is SolutionsSuccess)
-                        return SolutionsList(solutions: state.solutions);
+                        return SolutionsList(
+                          solutions: state.solutions,
+                          delays: state.delays,
+                        );
                       if (state is SolutionsLoading)
                         return Container(
                           height: MediaQuery.of(context).size.height * 0.7,

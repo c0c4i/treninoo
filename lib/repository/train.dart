@@ -45,30 +45,19 @@ class APITrain extends TrainRepository {
 
     if (response.data["total"] == 0 && !isItalo) return [];
 
-    if (isItalo) return [Station.fakeItaloStation()];
-
-    return (response.data['stations'] as List)
+    List<Station> stations = (response.data['stations'] as List)
         .map((station) => Station.fromJson(station))
         .toList();
+
+    if (isItalo) stations.add(Station.fakeItaloStation());
+
+    return stations;
   }
 
   @override
   Future<TrainInfo> getTrainStatus(SavedTrain savedTrain) async {
     String? stationCode = savedTrain.departureStationCode;
     String trainCode = savedTrain.trainCode;
-
-    // If station code is null, get it from the train code
-    if (stationCode == null) {
-      List<Station> departureStations =
-          await getDepartureStation(savedTrain.trainCode);
-
-      if (departureStations.length == 0) throw NoStationsException();
-
-      if (departureStations.length > 1)
-        throw MoreThanOneException(savedTrain, departureStations);
-
-      stationCode = departureStations.first.stationCode;
-    }
 
     // If train is Italo, call the Italo endpoint
     if (stationCode == 'italo') {
@@ -78,10 +67,39 @@ class APITrain extends TrainRepository {
       return TrainInfo.fromJson(response.data);
     }
 
-    String url = "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode";
+    // If station code is null, get it from the train code
+    // Get departure stations to see if there is 2 days tain
+    if (savedTrain.departureDate == null) {
+      List<Station> departureStations =
+          await getDepartureStation(savedTrain.trainCode);
+
+      // If station code is not null, remove other stations
+      if (stationCode != null) {
+        departureStations.removeWhere(
+          (station) => station.stationCode != stationCode,
+        );
+      }
+
+      if (departureStations.length == 0) throw NoStationsException();
+
+      if (departureStations.length > 1)
+        throw MoreThanOneException(savedTrain, departureStations);
+
+      stationCode = departureStations.first.stationCode;
+      savedTrain = savedTrain.copyWith(
+        departureDate: departureStations.first.departureDate,
+      );
+    }
+
+    int departureDate = savedTrain.departureDate!.millisecondsSinceEpoch;
+
+    String url =
+        "${Endpoint.TRAIN_INFO_VIAGGIOTRENO}/$stationCode/$trainCode/${departureDate}";
     Response response = await dio.get(url);
 
-    return TrainInfo.fromJson(response.data);
+    return TrainInfo.fromJson(response.data).addDepartureDate(
+      savedTrain.departureDate!,
+    );
   }
 
   Future<Solutions> getSolutions(SolutionsInfo solutionsInfo) async {
@@ -90,11 +108,12 @@ class APITrain extends TrainRepository {
       queryParameters: solutionsInfo.toJson(),
     );
 
-    Solutions solutions = Solutions.fromJson(response.data);
-    solutions.departureStation = solutionsInfo.departureStation;
-    solutions.arrivalStation = solutionsInfo.arrivalStation;
-    solutions.fromTime = solutionsInfo.fromTime;
-    return solutions;
+    return Solutions(
+      solutions: Solutions.getSolutionsFromJson(response.data),
+      departureStation: solutionsInfo.departureStation,
+      arrivalStation: solutionsInfo.arrivalStation,
+      fromTime: solutionsInfo.fromTime,
+    );
   }
 
   @override

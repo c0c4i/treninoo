@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../../repository/saved_train.dart';
 import 'edit_description_event.dart';
@@ -23,10 +23,7 @@ class EditDescriptionBloc
       _savedSavedTrainRepository.changeDescription(event.savedTrain);
       emit(EditDescriptionSuccess());
     } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(EditDescriptionFailed());
     }
     emit(EditDescriptionInitial());

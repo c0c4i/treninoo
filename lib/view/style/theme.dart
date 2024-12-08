@@ -6,7 +6,7 @@ Color kPrimaryColor = const Color(0xFFC4152B);
 Color kAccentColor = const Color(0xFF006400);
 Color kErrorColor = const Color(0xFFF03738);
 
-Color kSuccessColor = const Color(0xFF3CC13B);
+Color kSuccessColor = const Color(0xFF4BB543);
 Color kWarningColor = const Color(0xFFF3BB1C);
 Color kGreyColor = const Color(0xFFC2C9D1);
 Color kBlackColor = Colors.black;
@@ -18,6 +18,10 @@ const double kPagePadding = 24.0;
 const double kButtonPadding = 16.0;
 
 class AppTheme {
+  static isDarkMode(BuildContext context) {
+    return Theme.of(context).colorScheme.brightness == Brightness.dark;
+  }
+
   static ThemeData light = ThemeData(
     useMaterial3: false,
     colorScheme: ColorScheme(

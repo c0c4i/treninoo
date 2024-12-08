@@ -11,6 +11,7 @@ class TrainInfoStopsHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
+          SizedBox(width: 14),
           Expanded(
             flex: 4,
             child: TrainStatusStopsHeaderCell(title: "Stazione"),

@@ -48,7 +48,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
       case ErrorType.empty:
         return 'E\' necessario inserire il codice';
       case ErrorType.not_found:
-        return 'Codice Treno non valido';
+        return 'Numero treno non valido';
       default:
         return null;
     }
@@ -107,7 +107,7 @@ class _SearchTrainPageState extends State<SearchTrainPage> {
                           key: _formKey,
                           child: BeautifulTextField(
                             prefixIcon: Icons.search,
-                            labelText: "Codice treno",
+                            labelText: "Numero treno",
                             controller: searchController,
                             keyboardType: TextInputType.number,
                             errorText: error,

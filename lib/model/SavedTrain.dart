@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/model/TrainSolution.dart';
 
 import 'Station.dart';
 
@@ -12,6 +13,7 @@ class SavedTrain extends Equatable {
   final String? arrivalStationName;
   final String? departureTime;
   final String? description;
+  final DateTime? departureDate;
 
   SavedTrain({
     this.trainType,
@@ -21,6 +23,7 @@ class SavedTrain extends Equatable {
     this.departureTime,
     this.arrivalStationName,
     this.description,
+    this.departureDate,
   });
 
   Map<String, dynamic> toJson() => {
@@ -53,6 +56,7 @@ class SavedTrain extends Equatable {
       departureStationName: trainInfo.departureStation.stationName,
       arrivalStationName: trainInfo.arrivalStationName,
       departureTime: trainInfo.departureTime,
+      departureDate: trainInfo.departureDate,
     );
   }
 
@@ -63,6 +67,7 @@ class SavedTrain extends Equatable {
     return SavedTrain(
       trainCode: savedTrain.trainCode,
       departureStationCode: departureStation.stationCode,
+      departureDate: departureStation.departureDate,
     );
   }
 
@@ -73,8 +78,16 @@ class SavedTrain extends Equatable {
     );
   }
 
+  factory SavedTrain.fromSolution(TrainSolution trainSolution) {
+    return SavedTrain(
+      trainCode: trainSolution.trainCode!,
+      departureStationName: trainSolution.departureStation,
+    );
+  }
+
   SavedTrain copyWith({
     String? description,
+    DateTime? departureDate,
   }) {
     return SavedTrain(
       trainCode: this.trainCode,
@@ -83,7 +96,8 @@ class SavedTrain extends Equatable {
       departureStationName: this.departureStationName,
       arrivalStationName: this.arrivalStationName,
       departureTime: this.departureTime,
-      description: description,
+      description: description ?? this.description,
+      departureDate: departureDate ?? this.departureDate,
     );
   }
 

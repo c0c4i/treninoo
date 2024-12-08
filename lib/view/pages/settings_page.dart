@@ -1,16 +1,10 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:url_launcher/url_launcher.dart';
-
-import 'package:treninoo/utils/utils.dart';
-import 'package:treninoo/view/components/buttons/menu/menu_button_switch.dart';
+import 'package:treninoo/view/components/buttons/menu/theme_picker.dart';
 import 'package:treninoo/view/components/header.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 import '../components/buttons/menu/menu_button_click.dart';
 import '../components/dialog/select_start_page.dart';
-import '../components/predicted_arrival/enable_predicted_arrival.dart';
 import '../router/routes_names.dart';
 
 class Settings extends StatefulWidget {
@@ -36,21 +30,7 @@ class _SettingsState extends State<Settings> {
                     "Qui puoi modificare l'app a tuo piacimento per renderla più comoda",
               ),
               SizedBox(height: 16),
-              MenuButtonSwitch(
-                title: "Dark Mode",
-                description: "Attiva il tema scuro",
-                value: AdaptiveTheme.of(context).mode.isDark,
-                onChanged: (isDark) {
-                  isDark
-                      ? AdaptiveTheme.of(context).setDark()
-                      : AdaptiveTheme.of(context).setLight();
-
-                  Utils.setAppBarBrightness(isDark);
-                  setState(() {});
-                },
-              ),
-              SizedBox(height: kPadding),
-              PredictedArrival(),
+              ThemePicker(),
               SizedBox(height: kPadding),
               MenuButtonClick(
                 title: "Schermata iniziale",

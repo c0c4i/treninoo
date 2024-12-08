@@ -41,7 +41,7 @@ class DepartureStationsDialog extends StatelessWidget {
           ),
           SizedBox(height: 4),
           Text(
-            "Qual è la stazione di partenza del tuo treno?",
+            "Qual è la data e la stazione di partenza del tuo treno?",
             style: Typo.subheaderLight.copyWith(color: Grey.dark),
           ),
         ],
@@ -50,6 +50,7 @@ class DepartureStationsDialog extends StatelessWidget {
       children: departureStations.map((station) {
         return ListTile(
           title: Text(station.stationName),
+          subtitle: Text(station.departureDateFormatted),
           onTap: () => Navigator.pop(context, station),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(kRadius),

@@ -1,8 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/app.dart';
 import 'package:treninoo/repository/saved_solution.dart';
 import 'package:treninoo/repository/saved_station.dart';
@@ -20,6 +20,16 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   // Make status bar and navigation look beautiful
@@ -36,21 +46,13 @@ void main() async {
   SavedSolutionInfoRepository savedSolutionInfoRepository =
       APISavedSolution(sharedPrefs);
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = kDebugMode
-          ? ''
-          : 'https://c2d5e0ab99c7a5e0b91699645bc5bbb2@o4506203971846144.ingest.sentry.io/4506203973615616';
-      options.tracesSampleRate = 1.0;
-    },
-    appRunner: () => runApp(
-      App(
-        savedThemeMode: savedThemeMode,
-        trainRepository: trainRepository,
-        savedTrainRepository: savedTrainRepository,
-        savedStationsRepository: savedStationRepository,
-        savedSolutionInfoRepository: savedSolutionInfoRepository,
-      ),
+  runApp(
+    App(
+      savedThemeMode: savedThemeMode,
+      trainRepository: trainRepository,
+      savedTrainRepository: savedTrainRepository,
+      savedStationsRepository: savedStationRepository,
+      savedSolutionInfoRepository: savedSolutionInfoRepository,
     ),
   );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/TrainInfo.dart';
-import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/utils/delay.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
@@ -9,29 +10,41 @@ class TrainInfoDetails extends StatelessWidget {
 
   const TrainInfoDetails({Key? key, required this.trainInfo}) : super(key: key);
 
-  get isDeparted {
-    return trainInfo.lastPositionRegister != '--';
-  }
+  get isDeparted => trainInfo.isDeparted;
 
   semanticLabel(context) {
     if (!isDeparted) return "Treno non ancora partito";
 
     if (trainInfo.delay != null && trainInfo.delay! > 0) {
+      if (trainInfo.lastTimeRegister == null) {
+        return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} con un ritardo di ${trainInfo.delay} minuti";
+      }
       return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un ritardo di ${trainInfo.delay} minuti";
+    }
+
+    if (trainInfo.lastTimeRegister == null) {
+      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister}, treno in orario.";
     }
 
     return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)}, treno in orario.";
   }
+
+  get delayDescription => DelayUtils.description(trainInfo.delay);
+  get delayColor => DelayUtils.color(trainInfo.delay);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Container(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Primary.normal,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(kRadius),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: 1,
+          ),
         ),
         child: Semantics(
           label: semanticLabel(context),
@@ -39,7 +52,6 @@ class TrainInfoDetails extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Expanded(
-                flex: 2,
                 child: isDeparted
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,13 +60,13 @@ class TrainInfoDetails extends StatelessWidget {
                               Text(
                                 trainInfo.lastPositionRegister!,
                                 style: Typo.titleHeavy.copyWith(
-                                  color: Colors.white,
+                                  color: Theme.of(context).cardTheme.color,
                                 ),
                               ),
                             Text(
                               'Ultimo Rilevamento: ${trainInfo.lastTimeRegister!.format(context)}',
                               style: Typo.bodyLight.copyWith(
-                                color: Colors.white,
+                                color: Grey.dark,
                               ),
                             ),
                           ])
@@ -63,31 +75,48 @@ class TrainInfoDetails extends StatelessWidget {
                         excludeSemantics: true,
                         child: Text(
                           'Non ancora partito',
-                          style: Typo.titleHeavy.copyWith(color: Colors.white),
+                          style: Typo.titleHeavy.copyWith(color: Colors.black),
                         ),
                       ),
               ),
-              Expanded(
-                flex: 1,
-                child: Semantics(
-                  label: "$delay minuti",
+              if (isDeparted)
+                Semantics(
+                  label: "${delayDescription}: ${trainInfo.delay} minuti",
                   excludeSemantics: true,
-                  child: Text(
-                    delay,
-                    textAlign: TextAlign.right,
-                    style: Typo.subheaderLight.copyWith(color: Colors.white),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: delayColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: Column(
+                      children: [
+                        Text(
+                          DelayUtils.delay(trainInfo.delay),
+                          style: Typo.headlineHeavy.copyWith(
+                            color: DelayUtils.textColor(
+                              trainInfo.delay,
+                              AppTheme.isDarkMode(context),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          delayDescription,
+                          style: Typo.subheaderLight.copyWith(
+                            color: DelayUtils.textColor(
+                              trainInfo.delay,
+                              AppTheme.isDarkMode(context),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  get delay {
-    String text = trainInfo.delay! < 0 ? 'Anticipo' : 'Ritardo';
-    return text + " ${trainInfo.delay}\'";
   }
 }

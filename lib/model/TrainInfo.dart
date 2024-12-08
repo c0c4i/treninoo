@@ -16,6 +16,7 @@ class TrainInfo extends Equatable {
   final String departureTime;
   final int? delay;
   final List<Stop>? stops;
+  final DateTime? departureDate;
 
   TrainInfo({
     required this.trainType,
@@ -27,6 +28,7 @@ class TrainInfo extends Equatable {
     required this.departureTime,
     this.delay,
     this.stops,
+    this.departureDate,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,25 @@ class TrainInfo extends Equatable {
 
     return differences;
   }
+
+  TrainInfo addDepartureDate(DateTime departureDate) {
+    return TrainInfo(
+      trainType: trainType,
+      trainCode: trainCode,
+      lastTimeRegister: lastTimeRegister,
+      lastPositionRegister: lastPositionRegister,
+      departureStation: departureStation,
+      arrivalStationName: arrivalStationName,
+      departureTime: departureTime,
+      delay: delay,
+      stops: stops,
+      departureDate: departureDate,
+    );
+  }
+
+  bool get isDeparted => lastPositionRegister != '--';
+
+  bool get completed => lastPositionRegister == arrivalStationName;
 
   @override
   List<Object?> get props => [
