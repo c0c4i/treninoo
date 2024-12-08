@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/SavedSolutionsInfo.dart';
 
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/repository/train.dart';
@@ -13,6 +14,7 @@ import 'package:treninoo/view/components/buttons/station_picker_button.dart';
 import 'package:treninoo/model/Station.dart';
 
 import 'package:treninoo/utils/core.dart';
+import 'package:treninoo/view/components/recent_solutions/recent_solutions_list.dart';
 import 'package:treninoo/view/router/routes_names.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -89,142 +91,165 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
     );
   }
 
+  _onSearchRecentSolution(SavedSolutionsInfo savedSolution) {
+    departureStation = savedSolution.departureStation;
+    arrivalStation = savedSolution.arrivalStation;
+    pickedDate = DateTime.now();
+
+    _getSolutionRequest();
+  }
+
+  _onPressesRecentSolution(SavedSolutionsInfo savedSolution) {
+    setState(() {
+      arrivalStation = savedSolution.arrivalStation;
+      departureStation = savedSolution.departureStation;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Header(
-                    title: "Trova il treno ideale",
-                    description:
-                        "Inserisci da dove vuoi partire e dove vuoi arrivare per trovare le soluzioni",
-                  ),
-                  SizedBox(height: 50),
-                  IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              BeautifulCard(
-                                child: StationPickerButton(
-                                  title: "Stazione di partenza",
-                                  content: departureStation?.stationName,
-                                  onPressed: () async {
-                                    Station? station =
-                                        await StationPickerDialog.show(
-                                      context: context,
-                                      type: SearchStationType
-                                          .LEFRECCE_WITH_MULTISTATION,
-                                    );
+      body: Column(
+        children: [
+          SafeArea(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: kPadding * 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Header(
+                      title: "Trova il treno ideale",
+                      description:
+                          "Inserisci da dove vuoi partire e dove vuoi arrivare per trovare le soluzioni",
+                    ),
+                    SizedBox(height: 10),
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                BeautifulCard(
+                                  child: StationPickerButton(
+                                    title: "Stazione di partenza",
+                                    content: departureStation?.stationName,
+                                    onPressed: () async {
+                                      Station? station =
+                                          await StationPickerDialog.show(
+                                        context: context,
+                                        type: SearchStationType
+                                            .LEFRECCE_WITH_MULTISTATION,
+                                      );
 
-                                    if (station == null) return;
-                                    setState(() => departureStation = station);
-                                  },
+                                      if (station == null) return;
+                                      setState(
+                                          () => departureStation = station);
+                                    },
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: kPadding),
-                              BeautifulCard(
-                                child: StationPickerButton(
-                                  title: "Stazione di arrivo",
-                                  content: arrivalStation?.stationName,
-                                  onPressed: () async {
-                                    Station? station =
-                                        await StationPickerDialog.show(
-                                      context: context,
-                                      type: SearchStationType
-                                          .LEFRECCE_WITH_MULTISTATION,
-                                    );
+                                SizedBox(height: kPadding),
+                                BeautifulCard(
+                                  child: StationPickerButton(
+                                    title: "Stazione di arrivo",
+                                    content: arrivalStation?.stationName,
+                                    onPressed: () async {
+                                      Station? station =
+                                          await StationPickerDialog.show(
+                                        context: context,
+                                        type: SearchStationType
+                                            .LEFRECCE_WITH_MULTISTATION,
+                                      );
 
-                                    if (station == null) return;
-                                    setState(() => arrivalStation = station);
-                                  },
+                                      if (station == null) return;
+                                      setState(() => arrivalStation = station);
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: kPadding),
-                        SizedBox(
-                          height: double.infinity,
-                          width: 48,
-                          child: OutlinedButton(
-                            onPressed: swapStations,
-                            child: Semantics(
-                              label: "Scambia stazioni",
-                              child: Icon(
-                                Icons.swap_vert_rounded,
-                                color: Primary.normal,
-                              ),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(kRadius),
-                              ),
-                              backgroundColor: Theme.of(context).cardColor,
-                              foregroundColor:
-                                  Theme.of(context).iconTheme.color,
-                              padding: EdgeInsets.zero,
+                              ],
                             ),
                           ),
-                        )
-                      ],
+                          SizedBox(width: kPadding),
+                          SizedBox(
+                            height: double.infinity,
+                            width: 48,
+                            child: OutlinedButton(
+                              onPressed: swapStations,
+                              child: Semantics(
+                                label: "Scambia stazioni",
+                                child: Icon(
+                                  Icons.swap_vert_rounded,
+                                  color: Primary.normal,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(kRadius),
+                                ),
+                                backgroundColor: Theme.of(context).cardColor,
+                                foregroundColor:
+                                    Theme.of(context).iconTheme.color,
+                                padding: EdgeInsets.zero,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: kPadding),
-                  BeautifulCard(
-                    child: Column(
-                      children: [
-                        StationPickerButton(
-                          title: "Data e ora",
-                          content: formatDate(pickedDate),
-                          onPressed: () => _pickDateTime(),
-                        ),
-                        Divider(thickness: 1, height: 1),
-                        StationPickerButton(
-                          title: "Tipo di treno",
-                          content: trainType.label,
-                          onPressed: () {
-                            TrainTypeDialog.show(
-                              context: context,
-                              initialType: trainType,
-                            ).then((value) {
-                              if (value != null)
-                                setState(() => trainType = value);
-                            });
-                          },
-                        ),
-                      ],
+                    SizedBox(height: kPadding),
+                    BeautifulCard(
+                      child: Column(
+                        children: [
+                          StationPickerButton(
+                            title: "Data e ora",
+                            content: formatDate(pickedDate),
+                            onPressed: () => _pickDateTime(),
+                          ),
+                          Divider(thickness: 1, height: 1),
+                          StationPickerButton(
+                            title: "Tipo di treno",
+                            content: trainType.label,
+                            onPressed: () {
+                              TrainTypeDialog.show(
+                                context: context,
+                                initialType: trainType,
+                              ).then((value) {
+                                if (value != null)
+                                  setState(() => trainType = value);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: kPadding),
-                  ActionButton(
-                    title: "Trova soluzioni",
-                    onPressed: _getSolutionRequest,
-                  ),
-                  SizedBox(height: kPadding),
-                  ActionTextButton(
-                    title: "Pulisci ricerca",
-                    onPressed: initFields,
-                  ),
-                ],
+                    SizedBox(height: kPadding),
+                    ActionButton(
+                      title: "Trova soluzioni",
+                      onPressed: _getSolutionRequest,
+                    ),
+                    SizedBox(height: kPadding),
+                    ActionTextButton(
+                      title: "Pulisci ricerca",
+                      onPressed: initFields,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+          Expanded(
+            child: RecentSolutionsList(
+                onSearch: _onSearchRecentSolution,
+                onPressed: _onPressesRecentSolution),
+          )
+        ],
       ),
     );
   }

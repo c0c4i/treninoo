@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/recent_solutions/recent_solutions.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/view/components/appbar.dart';
@@ -27,6 +28,9 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
     context
         .read<SolutionsBloc>()
         .add(SolutionsRequest(solutionsInfo: widget.solutionsInfo));
+    context
+        .read<RecentSolutionsBloc>()
+        .add(AddRecentSolution(solutionsInfo: widget.solutionsInfo));
   }
 
   @override

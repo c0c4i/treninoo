@@ -2,9 +2,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:treninoo/bloc/recent_solutions/recent_solutions.dart';
 import 'package:treninoo/bloc/stations/stations.dart';
 import 'package:treninoo/cubit/predicted_arrival.dart';
 import 'package:treninoo/cubit/show_feature.dart';
+import 'package:treninoo/repository/saved_solution.dart';
 import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/view/router/app_router.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -22,6 +24,7 @@ class App extends StatelessWidget {
   final TrainRepository trainRepository;
   final SavedTrainRepository savedTrainRepository;
   final SavedStationsRepository savedStationsRepository;
+  final SavedSolutionInfoRepository savedSolutionInfoRepository;
 
   App({
     Key? key,
@@ -29,6 +32,7 @@ class App extends StatelessWidget {
     required this.trainRepository,
     required this.savedTrainRepository,
     required this.savedStationsRepository,
+    required this.savedSolutionInfoRepository,
   }) : super(key: key);
 
   @override
@@ -48,6 +52,7 @@ class App extends StatelessWidget {
           RepositoryProvider(
             create: (context) => savedStationsRepository,
           ),
+          RepositoryProvider(create: (context) => savedSolutionInfoRepository)
         ],
         child: MultiBlocProvider(
           providers: [
@@ -64,6 +69,11 @@ class App extends StatelessWidget {
             BlocProvider(
               create: (context) => FavouritesBloc(savedTrainRepository)
                 ..add(FavouritesRequest()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  RecentSolutionsBloc(savedSolutionInfoRepository)
+                    ..add(RecentSolutionsRequest()),
             ),
             BlocProvider(
               create: (_) => FirstPageCubit(savedTrainRepository),
