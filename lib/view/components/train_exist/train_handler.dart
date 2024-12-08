@@ -74,7 +74,11 @@ class HandleExistBloc extends StatelessWidget {
           }
         }
 
-        if (state is ExistLoading) LoadingDialog.show(context);
+        if (state is ExistLoading) {
+          // If is not in foreground, don't show the loading dialog
+          if (ModalRoute.of(context)?.isCurrent == false) return;
+          LoadingDialog.show(context);
+        }
       },
       child: child,
     );

@@ -69,7 +69,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
               excludeSemantics: true,
               label: "Stazione: ${widget.stop.station.stationName}.",
               child: TrainStatusStopStationCell(
-                stationName: widget.stop.station.stationName,
+                station: widget.stop.station,
                 current: widget.current,
               ),
             ),
