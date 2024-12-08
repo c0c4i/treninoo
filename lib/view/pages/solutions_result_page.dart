@@ -56,7 +56,7 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
                       if (state is SolutionsSuccess)
                         return SolutionsList(
                           solutions: state.solutions,
-                          delays: state.delays,
+                          trainInfos: state.trainInfos,
                         );
                       if (state is SolutionsLoading)
                         return Container(

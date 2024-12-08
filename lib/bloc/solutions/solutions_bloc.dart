@@ -34,7 +34,7 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
       emit(SolutionsSuccess(solutions: solutions));
 
       // For train in every solution, get train status and update the solution
-      Map<TrainSolution, int> trainDelays = {};
+      Map<TrainSolution, TrainInfo> trainInfos = {};
       for (Solution solution in solutions.solutions) {
         for (TrainSolution train in solution.trains) {
           try {
@@ -47,11 +47,16 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
 
             if (trainInfo.delay == null) continue;
 
-            trainDelays[train] = trainInfo.delay!;
-            Map<TrainSolution, int> newDelays = Map.from(trainDelays);
+            trainInfos[train] = trainInfo;
+            Map<TrainSolution, TrainInfo> newTrainInfos = Map.from(trainInfos);
 
             // Update the solution
-            emit(SolutionsSuccess(solutions: solutions, delays: newDelays));
+            emit(
+              SolutionsSuccess(
+                solutions: solutions,
+                trainInfos: newTrainInfos,
+              ),
+            );
           } catch (e) {}
         }
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/view/components/solutions/solution_section_header.dart';
 import 'package:treninoo/view/components/solutions/solution_section_stations.dart';
@@ -12,14 +13,14 @@ class SolutionSection extends StatelessWidget {
   final TrainSolution trainSolution;
   final int? position;
   final int? size;
-  final int? delay;
+  final TrainInfo? trainInfo;
 
   const SolutionSection({
     Key? key,
     required this.trainSolution,
     this.position,
     this.size,
-    this.delay,
+    this.trainInfo,
   }) : super(key: key);
 
   @override
@@ -45,7 +46,7 @@ class SolutionSection extends StatelessWidget {
             trainCode: trainSolution.trainCode,
             departureTime: trainSolution.departureTime,
             arrivalTime: trainSolution.arrivalTime,
-            delay: delay,
+            trainInfo: trainInfo,
           ),
           SizedBox(height: kPadding / 2),
           SolutionSectionStations(

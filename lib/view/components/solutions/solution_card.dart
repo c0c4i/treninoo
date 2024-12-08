@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/model/Solution.dart';
+import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/view/components/solutions/solution_section.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class SolutionCard extends StatelessWidget {
   final Solution solution;
-  final Map<TrainSolution, int> delays;
+  final Map<TrainSolution, TrainInfo> trainInfos;
 
   const SolutionCard({
     Key? key,
     required this.solution,
-    required this.delays,
+    required this.trainInfos,
   }) : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class SolutionCard extends StatelessWidget {
                   trainSolution: solution.trains[index],
                   position: index,
                   size: solution.trains.length,
-                  delay: delays[solution.trains[index]],
+                  trainInfo: trainInfos[solution.trains[index]],
                 ),
               ],
             );
