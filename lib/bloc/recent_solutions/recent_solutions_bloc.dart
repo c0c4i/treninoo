@@ -1,5 +1,5 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:treninoo/bloc/recent_solutions/recent_solutions.dart';
 import 'package:treninoo/model/SavedSolutionsInfo.dart';
 import 'package:treninoo/repository/saved_solution.dart';
@@ -21,8 +21,8 @@ class RecentSolutionsBloc
       List<SavedSolutionsInfo> solutions =
           _savedSolutionInfoRepository.getRecentsSolutionsInfo();
       emit(RecentSolutionsSuccess(savedSolutionsInfo: solutions));
-    } catch (e, stackTrace) {
-      await Sentry.captureException(e, stackTrace: stackTrace);
+    } catch (exception, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(RecentSolutionsFailed());
     }
   }
@@ -36,8 +36,8 @@ class RecentSolutionsBloc
       final List<SavedSolutionsInfo> solutions =
           _savedSolutionInfoRepository.getRecentsSolutionsInfo();
       emit(RecentSolutionsSuccess(savedSolutionsInfo: solutions));
-    } catch (e, stackTrace) {
-      await Sentry.captureException(e, stackTrace: stackTrace);
+    } catch (exception, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(exception, stackTrace);
       emit(RecentSolutionsFailed());
     }
   }
