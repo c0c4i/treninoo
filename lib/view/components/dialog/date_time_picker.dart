@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
 import 'package:treninoo/view/style/theme.dart';
+import 'dart:math';
 
 import '../../style/colors/grey.dart';
 import '../../style/typography.dart';
@@ -56,9 +57,30 @@ class _TimePickerContentState extends State<_TimePickerContent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: kPadding, width: double.infinity),
-              Text(
-                "Seleziona data e ora",
-                style: Typo.titleHeavy,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Seleziona data e ora",
+                      style: Typo.titleHeavy,
+                    ),
+                  ),
+                  Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(pi),
+                    child: IconButton(
+                      icon: Icon(Icons.refresh_rounded),
+                      onPressed: () {
+                        Navigator.pop(context, DateTime.now());
+                      },
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                    ),
+                  ),
+                  SizedBox(width: kPadding),
+                ],
               ),
               SizedBox(height: 8, width: double.infinity),
               SizedBox(

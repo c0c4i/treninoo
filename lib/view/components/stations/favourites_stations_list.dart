@@ -8,24 +8,19 @@ import 'package:treninoo/view/components/stations/station_card.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
 
-class FavouritesStationsList extends StatefulWidget {
+class FavouritesStationsList extends StatelessWidget {
   FavouritesStationsList({
-    Key? key,
+    super.key,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   final Function(Station) onSelected;
 
   @override
-  _FavouritesStationsListState createState() => _FavouritesStationsListState();
-}
-
-class _FavouritesStationsListState extends State<FavouritesStationsList> {
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<StationsBloc, StationsState>(
       builder: (context, state) {
-        if (state is StationsSuccess && state.stations.length > 0) {
+        if (state is StationsSuccess && state.stations.isNotEmpty) {
           List<SavedStation> favouriteStations =
               state.stations.where((element) => element.isFavourite).toList();
 
@@ -33,7 +28,7 @@ class _FavouritesStationsListState extends State<FavouritesStationsList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Text(
                   "Stazioni preferite",
                   style: Typo.bodyHeavy.copyWith(
@@ -54,7 +49,7 @@ class _FavouritesStationsListState extends State<FavouritesStationsList> {
                           station: favouriteStations[index].station,
                           isFavourite: favouriteStations[index].isFavourite,
                           onPressed: () {
-                            widget.onSelected(favouriteStations[index].station);
+                            onSelected(favouriteStations[index].station);
                           },
                         );
                       },

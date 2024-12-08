@@ -16,14 +16,19 @@ class SavedSolutionsInfo extends Equatable {
       };
 
   factory SavedSolutionsInfo.fromJson(Map<String, dynamic> json) {
-    return SavedSolutionsInfo(Station.fromJson(json["departure_station"]),
-        Station.fromJson(json["arrival_station"]),
-        lastSelected: DateTime.parse(json["last_selected"]));
+    return SavedSolutionsInfo(
+      Station.fromJson(json["departure_station"]),
+      Station.fromJson(json["arrival_station"]),
+      lastSelected: DateTime.parse(json["last_selected"]),
+    );
   }
 
   SavedSolutionsInfo copyWith({DateTime? lastSelected}) {
-    return SavedSolutionsInfo(this.departureStation, this.arrivalStation,
-        lastSelected: lastSelected ?? this.lastSelected);
+    return SavedSolutionsInfo(
+      this.departureStation,
+      this.arrivalStation,
+      lastSelected: lastSelected ?? this.lastSelected,
+    );
   }
 
   @override

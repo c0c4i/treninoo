@@ -52,7 +52,9 @@ class App extends StatelessWidget {
           RepositoryProvider(
             create: (context) => savedStationsRepository,
           ),
-          RepositoryProvider(create: (context) => savedSolutionInfoRepository)
+          RepositoryProvider(
+            create: (context) => savedSolutionInfoRepository,
+          )
         ],
         child: MultiBlocProvider(
           providers: [
