@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/components/solutions/delay_chip.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
@@ -9,7 +10,7 @@ class SolutionSectionHeader extends StatelessWidget {
   final String? trainCode;
   final DateTime? departureTime;
   final DateTime? arrivalTime;
-  final int? delay;
+  final TrainInfo? trainInfo;
 
   const SolutionSectionHeader({
     Key? key,
@@ -17,13 +18,16 @@ class SolutionSectionHeader extends StatelessWidget {
     this.trainCode,
     this.departureTime,
     this.arrivalTime,
-    this.delay,
+    this.trainInfo,
   }) : super(key: key);
 
   get title {
     if (trainType == "UB") return "Bus";
     return "$trainType" + (trainCode != null ? " $trainCode" : "");
   }
+
+  bool get showDelay =>
+      trainInfo != null && trainInfo!.isDeparted && trainInfo!.delay != null;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class SolutionSectionHeader extends StatelessWidget {
                   color: Primary.normal,
                 ),
               ),
-              if (delay != null) DelayChip(delay: delay),
+              if (showDelay) DelayChip(delay: trainInfo!.delay),
             ],
           ),
         ),
