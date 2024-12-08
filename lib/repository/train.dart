@@ -45,11 +45,13 @@ class APITrain extends TrainRepository {
 
     if (response.data["total"] == 0 && !isItalo) return [];
 
-    if (isItalo) return [Station.fakeItaloStation()];
-
-    return (response.data['stations'] as List)
+    List<Station> stations = (response.data['stations'] as List)
         .map((station) => Station.fromJson(station))
         .toList();
+
+    if (isItalo) stations.add(Station.fakeItaloStation());
+
+    return stations;
   }
 
   @override
