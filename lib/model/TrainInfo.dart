@@ -116,6 +116,8 @@ class TrainInfo extends Equatable {
   bool get haveWarning =>
       status == Status.PARTIALLY_SUPPRESSED && warning != null;
 
+  bool get isSuppressed => status == Status.SUPPRESSED;
+
   @override
   List<Object?> get props => [
         trainType,
