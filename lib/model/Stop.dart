@@ -24,6 +24,8 @@ class Stop extends Equatable {
   final bool currentStation;
   final int? delay;
 
+  final bool suppressed;
+
   bool get isAtLeastArrived {
     return confirmed || currentStation || actualArrivalTime != null;
   }
@@ -43,6 +45,7 @@ class Stop extends Equatable {
     this.confirmed = false,
     this.currentStation = false,
     this.delay,
+    this.suppressed = false,
   });
 
   factory Stop.fromJson(Map<String, dynamic> json) {
@@ -73,6 +76,7 @@ class Stop extends Equatable {
       confirmed: json['confirmed'],
       currentStation: json['currentStation'],
       delay: json['delay'],
+      suppressed: json['suppressed'],
     );
   }
 
@@ -105,7 +109,7 @@ class Stop extends Equatable {
       return planned.format(context);
     }
 
-    return "—:—";
+    return emptyTime;
   }
 
   static String get emptyTime => "—:—";

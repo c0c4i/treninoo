@@ -13,6 +13,7 @@ import 'package:treninoo/view/components/train_status/train_status_details.dart'
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_list.dart';
 import 'package:treninoo/view/components/train_status/train_status_stops_header.dart';
+import 'package:treninoo/view/components/train_status/train_status_warning.dart';
 import 'package:treninoo/view/style/theme.dart';
 
 class TrainStatusPage extends StatefulWidget {
@@ -91,7 +92,10 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             TrainInfoDetails(
                               trainInfo: trainInfo!,
                             ),
-                            SizedBox(height: 24),
+                            SizedBox(height: kPadding),
+                            if (trainInfo!.haveWarning)
+                              TrainStatusWarning(warning: trainInfo!.warning!),
+                            SizedBox(height: kPadding),
                             Semantics(
                               excludeSemantics: true,
                               child: TrainInfoStopsHeader(),

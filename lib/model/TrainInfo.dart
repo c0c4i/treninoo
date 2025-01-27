@@ -6,6 +6,28 @@ import 'package:treninoo/model/Stop.dart';
 
 import '../utils/utils.dart';
 
+enum Status {
+  REGULAR,
+  SUPPRESSED,
+  PARTIALLY_SUPPRESSED,
+  DEVIATED;
+
+  static Status fromString(String status) {
+    switch (status) {
+      case 'REGULAR':
+        return REGULAR;
+      case 'SUPPRESSED':
+        return SUPPRESSED;
+      case 'PARTIALLY_SUPPRESSED':
+        return PARTIALLY_SUPPRESSED;
+      case 'DEVIATED':
+        return DEVIATED;
+      default:
+        throw Exception('Unknown status: $status');
+    }
+  }
+}
+
 class TrainInfo extends Equatable {
   final String trainType;
   final String trainCode;
@@ -17,6 +39,8 @@ class TrainInfo extends Equatable {
   final int? delay;
   final List<Stop>? stops;
   final DateTime? departureDate;
+  final Status status;
+  final String? warning;
 
   TrainInfo({
     required this.trainType,
@@ -29,10 +53,14 @@ class TrainInfo extends Equatable {
     this.delay,
     this.stops,
     this.departureDate,
+    this.status = Status.REGULAR,
+    this.warning,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
     json = json['status'];
+
+    Status status = Status.fromString(json['status']);
     return TrainInfo(
       trainType: json['trainType'],
       trainCode: json['trainCode'].toString(),
@@ -43,6 +71,8 @@ class TrainInfo extends Equatable {
       departureTime: json['firstDepartureTime'],
       delay: json['delay'],
       stops: (json['stops'] as List).map((f) => Stop.fromJson(f)).toList(),
+      status: status,
+      warning: json['warning'],
     );
   }
 
@@ -74,12 +104,17 @@ class TrainInfo extends Equatable {
       delay: delay,
       stops: stops,
       departureDate: departureDate,
+      status: status,
+      warning: warning,
     );
   }
 
   bool get isDeparted => lastPositionRegister != '--';
 
   bool get completed => lastPositionRegister == arrivalStationName;
+
+  bool get haveWarning =>
+      status == Status.PARTIALLY_SUPPRESSED && warning != null;
 
   @override
   List<Object?> get props => [

@@ -56,6 +56,46 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
         : Accent.normal;
   }
 
+  get binarySemantics {
+    if (widget.stop.binary == '-') return null;
+
+    return widget.stop.suppressed
+        ? null
+        : "Binario ${widget.stop.confirmedBinary ? "effettivo" : "previsto"} ${widget.stop.binary}.";
+  }
+
+  get arrivalSemantics {
+    if (widget.stop.suppressed) return null;
+
+    String time = widget.stop.selectTime(
+      context,
+      widget.stop.actualArrivalTime,
+      widget.stop.plannedArrivalTime,
+      widget.stop.predictedArrivalTime,
+      widget.predicted,
+    );
+
+    if (time == Stop.emptyTime) return null;
+
+    return "Arrivo ${widget.stop.actualArrivalTime != null ? 'effettivo' : 'previsto'} $time.";
+  }
+
+  get departureSemantics {
+    if (widget.stop.suppressed) return null;
+
+    String time = widget.stop.selectTime(
+      context,
+      widget.stop.actualDepartureTime,
+      widget.stop.plannedDepartureTime,
+      widget.stop.predictedDepartureTime,
+      widget.predicted,
+    );
+
+    if (time == Stop.emptyTime) return null;
+
+    return "Partenza ${widget.stop.actualDepartureTime != null ? 'effettiva' : 'prevista'} $time.";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,9 +107,12 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
             flex: 4,
             child: Semantics(
               excludeSemantics: true,
-              label: "Stazione: ${widget.stop.station.stationName}.",
+              label: "Stazione: ${widget.stop.station.stationName}." +
+                  (widget.stop.suppressed ? " Stazione soppressa." : ""),
+              button: widget.stop.suppressed ? false : true,
               child: TrainStatusStopStationCell(
                 station: widget.stop.station,
+                suppressed: widget.stop.suppressed,
                 current: widget.current,
               ),
             ),
@@ -78,8 +121,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
             flex: 1,
             child: Semantics(
               excludeSemantics: true,
-              label:
-                  "Binario ${widget.stop.confirmedBinary ? "effettivo" : "previsto"} ${widget.stop.binary}.",
+              label: binarySemantics,
               child: Text(
                 widget.stop.binary,
                 style: Typo.subheaderLight.copyWith(
@@ -92,8 +134,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
           Expanded(
             flex: 2,
             child: Semantics(
-              label:
-                  "Arrivo ${widget.stop.actualArrivalTime != null ? 'effettivo' : 'previsto'} ${widget.stop.selectTime(context, widget.stop.actualArrivalTime, widget.stop.plannedArrivalTime, widget.stop.predictedArrivalTime, widget.predicted)}.",
+              label: arrivalSemantics,
               excludeSemantics: true,
               child: Column(
                 children: [
@@ -126,8 +167,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
           Expanded(
             flex: 2,
             child: Semantics(
-              label:
-                  "Partenza ${widget.stop.actualDepartureTime != null ? 'effettiva' : 'prevista'} ${widget.stop.selectTime(context, widget.stop.actualDepartureTime, widget.stop.plannedDepartureTime, widget.stop.predictedDepartureTime, widget.predicted)}.",
+              label: departureSemantics,
               excludeSemantics: true,
               child: Column(
                 children: [
