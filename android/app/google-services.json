@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "213271336861",
+    "project_id": "treninoo",
+    "storage_bucket": "treninoo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213271336861:android:548d5787dfa127c1b20174",
+        "android_client_info": {
+          "package_name": "it.samuelebesoli.treninoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213271336861-q1qi4qiecd5a0853f1h4m8hg6nhv2pav.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKwVJTNgb85oQMTQy4tD44jdsH2HkUnHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213271336861-q1qi4qiecd5a0853f1h4m8hg6nhv2pav.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "213271336861-fe01q55da9r46n6up6hdkd0knp1nk5cn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "it.samuelebesoli.treninoo",
+                "app_store_id": "1574219058"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
