@@ -76,7 +76,7 @@ class Stop extends Equatable {
       confirmed: json['confirmed'],
       currentStation: json['currentStation'],
       delay: json['delay'],
-      suppressed: json['suppressed'],
+      suppressed: json['suppressed'] ?? false,
     );
   }
 

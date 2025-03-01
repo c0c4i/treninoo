@@ -12,7 +12,7 @@ enum Status {
   PARTIALLY_SUPPRESSED,
   DEVIATED;
 
-  static Status fromString(String status) {
+  static Status fromString(String? status) {
     switch (status) {
       case 'REGULAR':
         return REGULAR;
@@ -23,7 +23,7 @@ enum Status {
       case 'DEVIATED':
         return DEVIATED;
       default:
-        throw Exception('Unknown status: $status');
+        return REGULAR;
     }
   }
 }
