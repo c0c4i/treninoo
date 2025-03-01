@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
+import 'package:treninoo/model/News.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
@@ -28,6 +29,7 @@ abstract class TrainRepository {
   Future<List<Station>> getFollowTrainStations(SavedTrain? savedTrain);
   Future<void> sendFeedback(String feedback, String? email);
   Future<List<Station>> searchStations(String text, SearchStationType type);
+  Future<TrenitaliaNews> getNews();
 }
 
 class APITrain extends TrainRepository {
@@ -185,6 +187,12 @@ class APITrain extends TrainRepository {
     }
 
     return stations;
+  }
+
+  @override
+  Future<TrenitaliaNews> getNews() async {
+    Response response = await dio.get(Endpoint.NEWS);
+    return TrenitaliaNews.fromJson(response.data);
   }
 }
 

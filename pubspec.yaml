@@ -29,6 +29,9 @@ dependencies:
   firebase_crashlytics: ^4.3.2
   firebase_analytics: ^11.4.2
   timelines_plus: ^1.0.6
+  flutter_widget_from_html: ^0.15.3
+  syncfusion_flutter_pdfviewer: ^28.2.7
+  syncfusion_flutter_core: ^28.2.7
 
 dev_dependencies:
   flutter_test:

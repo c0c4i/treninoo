@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/cubit/show_feature.dart';
 import 'package:treninoo/view/pages/favourites_page.dart';
+import 'package:treninoo/view/pages/news_page.dart';
 import 'package:treninoo/view/pages/settings_page.dart';
 import 'package:treninoo/view/pages/search_solutions_page.dart';
 import 'package:treninoo/view/pages/search_station_page.dart';
@@ -59,47 +60,45 @@ class _MyStatefulWidgetState extends State<HomePage> {
     });
   }
 
-  List<BottomNavigationBarItem> buildBottomNavBarItems() {
-    return [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.adjust_rounded),
-        label: 'Stato',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.search_rounded),
-        label: 'Ricerca',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.place_outlined),
-        label: 'Stazione',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.favorite_outline_rounded),
-        label: 'Preferiti',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.tune_outlined),
-        label: 'Generali',
-      ),
-    ];
-  }
-
-  Widget buildPageView() {
-    return PageView(
-      physics: NeverScrollableScrollPhysics(),
-      controller: pageController,
-      children: _widgetOptions,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildPageView(),
+      body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: _widgetOptions,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, NewsPage.route());
+        },
+        child: Icon(Icons.campaign_rounded),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        items: buildBottomNavBarItems(),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.adjust_rounded),
+            label: 'Stato',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search_rounded),
+            label: 'Ricerca',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.place_outlined),
+            label: 'Stazione',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline_rounded),
+            label: 'Preferiti',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.tune_outlined),
+            label: 'Generali',
+          ),
+        ],
         onTap: (index) {
           _onItemTapped(index);
         },
