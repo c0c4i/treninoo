@@ -10,7 +10,5 @@ String getSavedTrainTypeLabel(SavedTrainType savedTrainType) {
       return "recenti";
     case SavedTrainType.favourites:
       return "preferiti";
-    default:
-      return "";
   }
 }
