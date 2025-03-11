@@ -109,6 +109,15 @@ class TrainInfo extends Equatable {
     );
   }
 
+  Stop? findStopByStationCode(String stationCode) {
+    for (Stop stop in stops!) {
+      if (stop.station.stationCode == stationCode) {
+        return stop;
+      }
+    }
+    return null;
+  }
+
   bool get isDeparted => lastPositionRegister != '--';
 
   bool get completed => lastPositionRegister == arrivalStationName;

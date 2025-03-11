@@ -81,7 +81,7 @@ class SavedTrain extends Equatable {
   factory SavedTrain.fromSolution(TrainSolution trainSolution) {
     return SavedTrain(
       trainCode: trainSolution.trainCode!,
-      departureStationName: trainSolution.departureStation,
+      departureStationName: trainSolution.origin,
     );
   }
 
