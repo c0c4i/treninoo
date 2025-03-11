@@ -30,7 +30,7 @@ class SolutionSection extends StatelessWidget {
           ? () {
               SavedTrain savedTrain = new SavedTrain(
                 trainCode: trainSolution.trainCode!,
-                departureStationName: trainSolution.departureStation,
+                departureStationName: trainSolution.origin,
               );
               context.read<ExistBloc>().add(
                     ExistRequest(
@@ -51,6 +51,7 @@ class SolutionSection extends StatelessWidget {
           SizedBox(height: kPadding / 2),
           SolutionSectionStations(
             trainSolution: trainSolution,
+            trainInfo: trainInfo,
           ),
         ],
       ),
@@ -65,12 +66,14 @@ class SolutionSection extends StatelessWidget {
 
   get radius {
     if (size == 1) return BorderRadius.circular(kRadius);
-    if (position == 0)
+
+    if (position == 0) {
       return BorderRadius.vertical(
-          top: Radius.circular(kRadius), bottom: Radius.zero);
-    if (position == size! - 1)
-      return BorderRadius.vertical(
-          bottom: Radius.circular(kRadius), top: Radius.zero);
+        top: Radius.circular(kRadius),
+        bottom: Radius.zero,
+      );
+    }
+
     return BorderRadius.zero;
   }
 }

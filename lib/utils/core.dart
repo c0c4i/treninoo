@@ -9,6 +9,10 @@ String formatDate(DateTime date) {
   return DateFormat("dd/MM/yyyy - HH:mm").format(date);
 }
 
+String formatDateDDMMYYYY(DateTime date) {
+  return DateFormat("dd/MM/yyyy").format(date);
+}
+
 String formatTime(DateTime date) {
   return DateFormat("HH:mm").format(date);
 }
@@ -20,37 +24,38 @@ String formatTimeOfDay(TimeOfDay time) {
 
 String travelTime(DateTime departure, DateTime arrival) {
   Duration travelTime = arrival.difference(departure);
-  int hours = travelTime.inHours;
-  int minutes = travelTime.inMinutes.remainder(60);
-
-  // Ignore hours if 0
-  String hoursString = hours > 0 ? "${hours}h " : "";
-  String minutesString = "${addZeroToNumberLowerThan10(minutes.toString())}m";
-
-  // Return string like hhh mmm
-  return "$hoursString$minutesString";
+  return durationToString(travelTime);
 }
 
 String travelTimeSemantics(DateTime departure, DateTime arrival) {
   Duration travelTime = arrival.difference(departure);
-  int hours = travelTime.inHours;
-  int minutes = travelTime.inMinutes.remainder(60);
-
-  // Ignore hours if 0
-  String hoursString = hours > 0 ? "${hours} ore " : "";
-  String minutesString =
-      "${addZeroToNumberLowerThan10(minutes.toString())} minuti";
-
-  // Return string like hhh mmm
-  return "$hoursString$minutesString";
+  return durationToStringSemantics(travelTime);
 }
 
-// ThemeData getThemeFromString(String value) {
-//   int n = themes.indexOf(value);
-//   switch (n) {
-//     case 0:
-//       return lightTheme;
-//     case 1:
-//       return darkTheme;
-//   }
-// }
+String durationToString(Duration duration) {
+  int days = duration.inDays;
+  int hours = duration.inHours.remainder(24);
+  int minutes = duration.inMinutes.remainder(60);
+
+  List<String> parts = [];
+
+  if (days > 0) parts.add('${days}d');
+  if (hours > 0) parts.add('${hours}h');
+  if (minutes > 0 || parts.isEmpty) parts.add('${minutes}m');
+
+  return parts.join(' ');
+}
+
+String durationToStringSemantics(Duration duration) {
+  int days = duration.inDays;
+  int hours = duration.inHours.remainder(24);
+  int minutes = duration.inMinutes.remainder(60);
+
+  List<String> parts = [];
+
+  if (days > 0) parts.add('${days} giorni');
+  if (hours > 0) parts.add('${hours} ore');
+  if (minutes > 0 || parts.isEmpty) parts.add('${minutes} minuti');
+
+  return parts.join(' ');
+}

@@ -31,7 +31,7 @@ class SolutionsDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                formatDate(solutionsInfo!.fromTime),
+                formatDateDDMMYYYY(solutionsInfo!.fromTime),
                 style: Typo.subheaderLight.copyWith(color: Colors.white),
               ),
               Text(
