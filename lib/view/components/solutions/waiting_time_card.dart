@@ -15,7 +15,7 @@ class WaitingTimeCard extends StatelessWidget {
         horizontal: kPadding,
       ),
       decoration: BoxDecoration(
-        color: Grey.lighter,
+        color: AppTheme.isDarkMode(context) ? Grey.lightest1 : Grey.lighter,
         borderRadius: BorderRadius.circular(kRadius / 2),
       ),
       child: Padding(
@@ -28,7 +28,7 @@ class WaitingTimeCard extends StatelessWidget {
           children: [
             Icon(
               Icons.swap_horiz_rounded,
-              color: Grey.darker,
+              color: AppTheme.isDarkMode(context) ? Grey.dark : Grey.darker,
               size: 20,
               opticalSize: 20,
             ),
@@ -36,7 +36,7 @@ class WaitingTimeCard extends StatelessWidget {
             Text(
               travelTime,
               style: Typo.subheaderHeavy.copyWith(
-                color: Grey.darker,
+                color: AppTheme.isDarkMode(context) ? Grey.dark : Grey.darker,
               ),
             ),
           ],
