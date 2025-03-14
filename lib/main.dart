@@ -17,6 +17,7 @@ import 'repository/train.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'treninoo',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
