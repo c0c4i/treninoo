@@ -1,7 +1,12 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:treninoo/bloc/exist/exist_bloc.dart';
+import 'package:treninoo/bloc/exist/exist_event.dart';
 import 'package:treninoo/model/News.dart';
+import 'package:treninoo/model/SavedTrain.dart';
+import 'package:treninoo/utils/utils.dart';
 import 'package:treninoo/view/pages/news_pdf_viewer.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -48,6 +53,20 @@ class NewsCard extends StatelessWidget {
                   // If it's a a PDF url, render on a pdf viewer
                   if (url.endsWith('.pdf')) {
                     Navigator.push(context, NewsPdfViewer.route(url));
+                    return true;
+                  }
+
+                  // If url contains parms treno, origine and datapartenza, open the train page
+                  if (Utils.isTrainUrl(url)) {
+                    SavedTrain savedTrain = SavedTrain.fromNewsUrl(url);
+                    context.read<ExistBloc>().add(
+                          ExistRequest(savedTrain: savedTrain),
+                        );
+                    return true;
+                  }
+
+                  if (url.contains('cercaTreno')) {
+                    Navigator.pop(context, true);
                     return true;
                   }
 

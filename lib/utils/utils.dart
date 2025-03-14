@@ -29,4 +29,10 @@ class Utils {
 
     return TimeOfDay.fromDateTime(date);
   }
+
+  static bool isTrainUrl(String url) {
+    return url.contains('treno') &&
+        url.contains('origine') &&
+        url.contains('datapartenza');
+  }
 }

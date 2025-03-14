@@ -70,7 +70,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, NewsPage.route());
+          Navigator.push(context, NewsPage.route()).then((searchTrain) {
+            if (searchTrain != true) return;
+            _onItemTapped(0);
+          });
         },
         child: Icon(Icons.campaign_rounded),
       ),

@@ -85,6 +85,20 @@ class SavedTrain extends Equatable {
     );
   }
 
+  factory SavedTrain.fromNewsUrl(String url) {
+    // Get params treno, origine and datapartenza, open the train page
+    Uri uri = Uri.parse(url);
+    String? trainCode = uri.queryParameters['treno'];
+    String? departureStationCode = uri.queryParameters['origine'];
+    String? departureDate = uri.queryParameters['datapartenza'];
+
+    return SavedTrain(
+      trainCode: trainCode ?? '',
+      departureStationCode: departureStationCode ?? '',
+      departureDate: DateTime.tryParse(departureDate ?? ''),
+    );
+  }
+
   SavedTrain copyWith({
     String? description,
     DateTime? departureDate,
