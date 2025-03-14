@@ -29,14 +29,6 @@
             {
               "client_id": "213271336861-q1qi4qiecd5a0853f1h4m8hg6nhv2pav.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "213271336861-fe01q55da9r46n6up6hdkd0knp1nk5cn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "it.samuelebesoli.treninoo",
-                "app_store_id": "1574219058"
-              }
             }
           ]
         }

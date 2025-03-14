@@ -63,7 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '213271336861',
     projectId: 'treninoo',
     storageBucket: 'treninoo.firebasestorage.app',
-    iosClientId: '213271336861-fe01q55da9r46n6up6hdkd0knp1nk5cn.apps.googleusercontent.com',
     iosBundleId: 'it.samuelebesoli.treninoo',
   );
 
