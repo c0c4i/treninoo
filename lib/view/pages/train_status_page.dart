@@ -111,12 +111,14 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                         TrainStatusRequest(
                                             savedTrain: widget.savedTrain),
                                       );
-                                  return context
+
+                                  await context
                                       .read<TrainStatusBloc>()
                                       .stream
                                       .firstWhere(
-                                          (e) => e is! TrainStatusLoading)
-                                      .then((value) => null);
+                                        (e) => e is! TrainStatusLoading,
+                                        orElse: () => TrainStatusInitial(),
+                                      );
                                 },
                                 child: TrainStatusStopList(
                                   stops: trainInfo?.stops,
