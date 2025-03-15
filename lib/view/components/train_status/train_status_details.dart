@@ -64,7 +64,7 @@ class TrainInfoDetails extends StatelessWidget {
                                 ),
                               ),
                             Text(
-                              'Ultimo Rilevamento: ${trainInfo.lastTimeRegister!.format(context)}',
+                              'Ultimo Rilevamento: ${trainInfo.lastTimeRegister != null ? trainInfo.lastTimeRegister!.format(context) : '-'}',
                               style: Typo.bodyLight.copyWith(
                                 color: Grey.dark,
                               ),
