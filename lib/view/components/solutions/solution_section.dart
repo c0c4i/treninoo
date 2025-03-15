@@ -23,6 +23,11 @@ class SolutionSection extends StatelessWidget {
     this.trainInfo,
   }) : super(key: key);
 
+  get rails {
+    if (trainInfo == null) return null;
+    return trainSolution.getRails(trainInfo!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -51,7 +56,7 @@ class SolutionSection extends StatelessWidget {
           SizedBox(height: kPadding / 2),
           SolutionSectionStations(
             trainSolution: trainSolution,
-            trainInfo: trainInfo,
+            trainInfoRails: rails,
           ),
         ],
       ),

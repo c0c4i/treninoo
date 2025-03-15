@@ -138,6 +138,9 @@ class TrainInfo extends Equatable {
         departureTime,
         delay,
         stops,
+        departureDate,
+        status,
+        warning,
       ];
 }
 

@@ -1,52 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:treninoo/model/Stop.dart';
-import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/model/TrainInfoBinaries.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/components/solutions/solution_section_station_row.dart';
 import 'package:treninoo/view/style/theme.dart';
 
-enum RailType { departure, arrival }
-
 class SolutionSectionStations extends StatelessWidget {
   final TrainSolution? trainSolution;
-  final TrainInfo? trainInfo;
+  final TrainInfoRails? trainInfoRails;
 
   const SolutionSectionStations({
     Key? key,
     this.trainSolution,
-    this.trainInfo,
+    this.trainInfoRails,
   }) : super(key: key);
 
-  String? rail(RailType type) {
-    if (trainInfo == null) return null;
-    if (trainSolution!.originStation == null && type == RailType.departure)
-      return null;
-    if (trainSolution!.destinationStation == null && type == RailType.arrival)
-      return null;
-
-    String stationCode = type == RailType.departure
-        ? trainSolution!.originStation!.stationCode
-        : trainSolution!.destinationStation!.stationCode;
-    Stop? stop = trainInfo!.findStopByStationCode(stationCode);
-
-    return stop?.plannedArrivalRail ??
-        stop?.plannedDepartureRail ??
-        stop?.actualArrivalRail ??
-        stop?.actualDepartureRail;
+  String get departureSemanticsLabel {
+    String time = formatTime(trainSolution!.departureTime!);
+    String label = " In partenza alle $time da ${trainSolution!.origin}";
+    if (trainInfoRails?.originRail == null) return label + ".";
+    label += " dal binario ";
+    if (!trainInfoRails!.originRailConfirmed) label += "provvisorio ";
+    label += "${trainInfoRails!.originRail}";
+    return label + ".";
   }
 
-  bool isRailConfirmed(RailType type) {
-    if (trainInfo == null) return false;
-    if (trainSolution!.originStation == null && type == RailType.departure)
-      return false;
-    if (trainSolution!.destinationStation == null && type == RailType.arrival)
-      return false;
-
-    Stop? stop = trainInfo!
-        .findStopByStationCode(trainSolution!.originStation!.stationCode);
-
-    return stop?.actualDepartureRail != null || stop?.actualArrivalRail != null;
+  String get arrivalSemanticsLabel {
+    String time = formatTime(trainSolution!.arrivalTime!);
+    String label = " In arrivo alle $time a ${trainSolution!.destination}";
+    if (trainInfoRails?.destinationRail == null) return label + ".";
+    label += " al binario ";
+    if (!trainInfoRails!.destinationRailConfirmed) label += "provvisorio ";
+    label += "${trainInfoRails!.destinationRail}";
+    return label + ".";
   }
 
   @override
@@ -54,26 +40,24 @@ class SolutionSectionStations extends StatelessWidget {
     return Column(
       children: [
         Semantics(
-          label:
-              " In partenza alle ${formatTime(trainSolution!.departureTime!)} da ${trainSolution!.origin}.",
+          label: departureSemanticsLabel,
           excludeSemantics: true,
           child: SolutionSectionStationRow(
             stationName: trainSolution!.origin,
             time: trainSolution!.departureTime,
-            rail: rail(RailType.departure),
-            confirmedRail: isRailConfirmed(RailType.departure),
+            rail: trainInfoRails?.originRail,
+            confirmedRail: trainInfoRails?.originRailConfirmed,
           ),
         ),
         SizedBox(height: kPadding),
         Semantics(
-          label:
-              " In arrivo alle ${formatTime(trainSolution!.arrivalTime!)} a ${trainSolution!.destination}.",
+          label: arrivalSemanticsLabel,
           excludeSemantics: true,
           child: SolutionSectionStationRow(
             stationName: trainSolution!.destination,
             time: trainSolution!.arrivalTime,
-            rail: rail(RailType.arrival),
-            confirmedRail: isRailConfirmed(RailType.arrival),
+            rail: trainInfoRails?.destinationRail,
+            confirmedRail: trainInfoRails?.destinationRailConfirmed,
           ),
         ),
       ],
