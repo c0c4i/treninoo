@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/widgets.dart';
@@ -30,10 +31,24 @@ class AccessibilityChangesAnnouncer {
           announcements.add(announcement + delay);
           break;
         case TrainInfoDifference.stops:
+          if (oldTrainInfo.stops == null) return;
+
+          if (oldTrainInfo.stops?.length != newTrainInfo.stops?.length) {
+            FirebaseCrashlytics.instance.recordError(
+              "The number of stops has changed",
+              StackTrace.current,
+              information: [
+                "Train code: ${newTrainInfo.trainCode}",
+                "Departure station: ${newTrainInfo.departureStation.stationCode}",
+                "Old stops: ${oldTrainInfo.stops?.map((e) => e.station.stationName).join(", ")}",
+                "New stops: ${newTrainInfo.stops?.map((e) => e.station.stationName).join(", ")}",
+              ],
+            );
+            return;
+          }
+
           // Retrieve which stop has changed
           for (var i = 0; i < newTrainInfo.stops!.length; i++) {
-            if (oldTrainInfo.stops == null) return;
-
             List<StopDifference> stopDifferences =
                 oldTrainInfo.stops![i].compareWith(newTrainInfo.stops![i]);
             if (stopDifferences.isNotEmpty) {
