@@ -55,7 +55,7 @@ class TrainSolution extends Equatable {
 
     TrainInfoRails trainInfoRails = TrainInfoRails();
 
-    String originCode = originStation!.stationCode;
+    String? originCode = originStation?.stationCode;
     String? destinationCode = destinationStation?.stationCode;
 
     for (var stop in trainInfo.stops!) {
@@ -80,8 +80,9 @@ class TrainSolution extends Equatable {
       FirebaseCrashlytics.instance.recordError(
         'Matched stop not found',
         StackTrace.current,
-        reason: 'Train code: ${trainInfo.trainCode}, origin: $originCode',
-        information: [trainInfo.trainCode, originCode],
+        reason:
+            'Train code: ${trainInfo.trainCode}, origin: $originCode, destination: $destinationCode',
+        information: [trainInfo.trainCode, trainInfo.departureStation.toJson()],
       );
     }
 
