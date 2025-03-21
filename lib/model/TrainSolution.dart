@@ -81,7 +81,7 @@ class TrainSolution extends Equatable {
         'Matched stop not found',
         StackTrace.current,
         reason:
-            'Train code: ${trainInfo.trainCode}, origin: $originCode, destination: $destinationCode',
+            'Train: ${trainInfo.trainCode}, origin: $origin, destination: $destination',
         information: [trainInfo.trainCode, trainInfo.departureStation.toJson()],
       );
     }
