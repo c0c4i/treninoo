@@ -80,9 +80,15 @@ class TrainSolution extends Equatable {
       FirebaseCrashlytics.instance.recordError(
         'Matched stop not found',
         StackTrace.current,
-        reason:
-            'Train: ${trainInfo.trainCode}, origin: $origin, destination: $destination',
-        information: [trainInfo.trainCode, trainInfo.departureStation.toJson()],
+        information: [
+          'Train: ${trainInfo.trainCode}',
+          'Origin: $origin',
+          'Origin code: $originCode',
+          'Destination: $destination',
+          'Destination code: $destinationCode',
+          trainInfo.trainCode,
+          trainInfo.departureStation.toJson(),
+        ],
       );
     }
 
