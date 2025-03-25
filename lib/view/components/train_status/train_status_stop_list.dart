@@ -11,11 +11,13 @@ class TrainStatusStopList extends StatefulWidget {
     this.stops,
     this.currentStop,
     required this.delay,
+    this.isDeparted = false,
   }) : super(key: key);
 
   final List<Stop>? stops;
   final String? currentStop;
   final int delay;
+  final bool isDeparted;
 
   @override
   State<TrainStatusStopList> createState() => _TrainStatusStopListState();
@@ -66,6 +68,7 @@ class _TrainStatusStopListState extends State<TrainStatusStopList> {
             delay: widget.delay,
             // predicted: context.watch<PredictedArrivalCubit>().state,
             predicted: true,
+            isDeparted: widget.isDeparted,
           );
         },
         itemCount: widget.stops!.length,

@@ -41,6 +41,7 @@ class TrainInfo extends Equatable {
   final DateTime? departureDate;
   final Status status;
   final String? warning;
+  final bool isCached;
 
   TrainInfo({
     required this.trainType,
@@ -55,6 +56,7 @@ class TrainInfo extends Equatable {
     this.departureDate,
     this.status = Status.REGULAR,
     this.warning,
+    this.isCached = false,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class TrainInfo extends Equatable {
       stops: (json['stops'] as List).map((f) => Stop.fromJson(f)).toList(),
       status: status,
       warning: json['warning'],
+      isCached: json['isCached'] ?? false,
     );
   }
 
@@ -141,6 +144,7 @@ class TrainInfo extends Equatable {
         departureDate,
         status,
         warning,
+        isCached,
       ];
 }
 

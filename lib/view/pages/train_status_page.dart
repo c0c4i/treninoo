@@ -10,6 +10,7 @@ import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/accessibility/changes_announcer.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
+import 'package:treninoo/view/components/train_status/train_status_info_alert.dart';
 import 'package:treninoo/view/components/train_status/train_status_not_found.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_list.dart';
 import 'package:treninoo/view/components/train_status/train_status_stops_header.dart';
@@ -93,7 +94,13 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             TrainInfoDetails(
                               trainInfo: trainInfo!,
                             ),
-                            SizedBox(height: kPadding),
+                            SizedBox(height: kPadding / 2),
+                            if (trainInfo!.isCached)
+                              TrainStatusInfoAlert(
+                                text:
+                                    "Questo treno non ha ancora informazioni in tempo reale",
+                              ),
+                            SizedBox(height: kPadding / 2),
                             if (trainInfo!.haveWarning)
                               TrainStatusWarning(warning: trainInfo!.warning!),
                             if (trainInfo!.isSuppressed)
@@ -124,6 +131,7 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                                   stops: trainInfo?.stops,
                                   currentStop: trainInfo?.lastPositionRegister,
                                   delay: trainInfo!.delay!,
+                                  isDeparted: trainInfo!.isDeparted,
                                 ),
                               ),
                             ),

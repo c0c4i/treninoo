@@ -14,12 +14,14 @@ class TrainStatusStopRow extends StatefulWidget {
     required this.current,
     required this.delay,
     required this.predicted,
+    required this.isDeparted,
   }) : super(key: key);
 
   final Stop stop;
   final bool current;
   final int delay;
   final bool predicted;
+  final bool isDeparted;
 
   @override
   State<TrainStatusStopRow> createState() => _TrainStatusStopRowState();
@@ -96,6 +98,11 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
     return "Partenza ${widget.stop.actualDepartureTime != null ? 'effettiva' : 'prevista'} $time.";
   }
 
+  bool get showSecondTime {
+    if (!widget.isDeparted) return false;
+    return widget.stop.confirmed || widget.predicted;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -137,6 +144,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
               label: arrivalSemantics,
               excludeSemantics: true,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.stop.plannedArrivalTime?.format(context) ??
@@ -146,7 +154,7 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  if (widget.stop.confirmed || widget.predicted)
+                  if (showSecondTime)
                     Text(
                       widget.stop.selectTime(
                         context,
@@ -169,32 +177,37 @@ class _TrainStatusStopRowState extends State<TrainStatusStopRow> {
             child: Semantics(
               label: departureSemantics,
               excludeSemantics: true,
-              child: Column(
-                children: [
-                  Text(
-                    widget.stop.plannedDepartureTime?.format(context) ??
-                        Stop.emptyTime,
-                    style: Typo.subheaderLight.copyWith(
-                      color: Grey.dark,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  // Confirmed or predicted enabled
-                  if (widget.stop.confirmed || widget.predicted)
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: !showSecondTime ? kPadding / 2 : 0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
-                      widget.stop.selectTime(
-                        context,
-                        widget.stop.actualDepartureTime,
-                        widget.stop.plannedDepartureTime,
-                        widget.stop.predictedDepartureTime,
-                        widget.predicted,
-                      ),
+                      widget.stop.plannedDepartureTime?.format(context) ??
+                          Stop.emptyTime,
                       style: Typo.subheaderLight.copyWith(
-                        color: departureColor,
+                        color: Grey.dark,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                ],
+                    if (showSecondTime)
+                      Text(
+                        widget.stop.selectTime(
+                          context,
+                          widget.stop.actualDepartureTime,
+                          widget.stop.plannedDepartureTime,
+                          widget.stop.predictedDepartureTime,
+                          widget.predicted,
+                        ),
+                        style: Typo.subheaderLight.copyWith(
+                          color: departureColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
