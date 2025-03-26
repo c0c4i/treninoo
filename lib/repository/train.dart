@@ -121,12 +121,8 @@ class APITrain extends TrainRepository {
   @override
   Future<List<StationTrain>> getStationDetails(
       Station station, StationDetailsType type) async {
-    // Get last 5 letter of station code (es. 830002998 -> 02998)
-    String stationCode =
-        station.stationCode.substring(station.stationCode.length - 5);
-
     String url =
-        "${Endpoint.STATION_DETAILS_VIAGGIOTRENO}/S$stationCode/${type.endpoint}";
+        "${Endpoint.STATION_DETAILS_LEFRECCE}/${station.stationCode}/${type.endpoint}";
 
     Response response = await dio.get(url);
 
