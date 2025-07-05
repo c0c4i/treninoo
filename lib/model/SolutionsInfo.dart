@@ -7,12 +7,14 @@ class SolutionsInfo {
   Station arrivalStation;
   DateTime fromTime;
   TrainType trainType;
+  bool noChanges;
 
   SolutionsInfo({
     required this.departureStation,
     required this.arrivalStation,
     required this.fromTime,
     required this.trainType,
+    required this.noChanges,
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class SolutionsInfo {
       'departureStation': departureStation.stationCode,
       'arrivalStation': arrivalStation.stationCode,
       'date': DateFormat('yyyy-MM-dd HH:mm').format(fromTime),
+      'noChanges': noChanges,
       ...trainType.toJson(),
     };
   }

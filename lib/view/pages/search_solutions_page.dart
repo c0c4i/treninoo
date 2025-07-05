@@ -5,6 +5,7 @@ import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/buttons/action_button.dart';
+import 'package:treninoo/view/components/buttons/direct_trains_switch.dart';
 import 'package:treninoo/view/components/dialog/date_time_picker.dart';
 import 'package:treninoo/view/components/dialog/station_picker.dart';
 import 'package:treninoo/view/components/dialog/train_type_dialog.dart';
@@ -16,6 +17,7 @@ import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/components/recent_solutions/recent_solutions_list.dart';
 import 'package:treninoo/view/router/routes_names.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 
@@ -33,6 +35,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   Station? arrivalStation;
 
   TrainType trainType = TrainType.all;
+  bool noChanges = false;
 
   @override
   void initState() {
@@ -80,6 +83,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
       arrivalStation: arrivalStation!,
       fromTime: pickedDate,
       trainType: trainType,
+      noChanges: noChanges,
     );
 
     Navigator.pushNamed(
@@ -209,18 +213,45 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
                           onPressed: () => _pickDateTime(),
                         ),
                         Divider(thickness: 1, height: 1),
-                        StationPickerButton(
-                          title: "Tipo di treno",
-                          content: trainType.label,
-                          onPressed: () {
-                            TrainTypeDialog.show(
-                              context: context,
-                              initialType: trainType,
-                            ).then((value) {
-                              if (value != null)
-                                setState(() => trainType = value);
-                            });
-                          },
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: StationPickerButton(
+                                  title: "Tipo di treno",
+                                  content: trainType.label,
+                                  onPressed: () {
+                                    TrainTypeDialog.show(
+                                      context: context,
+                                      initialType: trainType,
+                                    ).then((value) {
+                                      if (value != null)
+                                        setState(() => trainType = value);
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: kPadding / 2),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: kPadding,
+                                ),
+                                child: VerticalDivider(
+                                  width: 2,
+                                  thickness: 1,
+                                  color: Grey.normal,
+                                ),
+                              ),
+                              DirectTrainsSwitch(
+                                value: noChanges,
+                                onChanged: (value) {
+                                  setState(() {
+                                    noChanges = value;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
