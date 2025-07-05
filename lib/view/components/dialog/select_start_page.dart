@@ -6,7 +6,7 @@ import '../../style/typography.dart';
 
 class SelectStartPageDialog {
   static final Map<int, String> _pages = {
-    0: "Stato",
+    0: "Treno",
     1: "Ricerca",
     2: "Stazione",
     3: "Preferiti",
