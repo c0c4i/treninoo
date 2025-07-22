@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/stations/stations.dart';
 import 'package:treninoo/bloc/stations_autocomplete/stations_autocomplete.dart';
+import 'package:treninoo/model/SavedStation.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
 import 'package:treninoo/view/components/stations/station_card.dart';
@@ -42,9 +44,31 @@ class _StationsListState extends State<StationsList> {
                 itemCount: state.stations.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  bool isFavourite = false;
+                  final stationsState = context.read<StationsBloc>().state;
+                  if (context.watch<StationsBloc>().state is StationsSuccess) {
+                    isFavourite =
+                        (stationsState as StationsSuccess).stations.any((s) {
+                      String stationCode = state.stations[index].stationCode;
+                      return s.station.stationCode == stationCode &&
+                          s.isFavourite;
+                    });
+                  }
+
                   return StationCard(
                     station: state.stations[index],
                     onPressed: () => widget.onSelected(state.stations[index]),
+                    onFavorite: () {
+                      SavedStation savedStation = SavedStation(
+                        state.stations[index],
+                        isFavourite: isFavourite,
+                      );
+
+                      context.read<StationsBloc>().add(
+                            UpdateFavorite(savedStation: savedStation),
+                          );
+                    },
+                    isFavourite: isFavourite,
                   );
                 },
                 physics: ClampingScrollPhysics(),

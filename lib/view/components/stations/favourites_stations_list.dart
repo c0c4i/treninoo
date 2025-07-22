@@ -4,6 +4,7 @@ import 'package:treninoo/bloc/stations/stations.dart';
 import 'package:treninoo/model/SavedStation.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/view/components/beautiful_card.dart';
+import 'package:treninoo/view/components/dialog/remove_favourite_station_dialog.dart';
 import 'package:treninoo/view/components/stations/station_card.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -50,6 +51,21 @@ class FavouritesStationsList extends StatelessWidget {
                           isFavourite: favouriteStations[index].isFavourite,
                           onPressed: () {
                             onSelected(favouriteStations[index].station);
+                          },
+                          onLongPress: () async {
+                            bool confirm =
+                                await RemoveFavouriteStationDialog.show(
+                              context,
+                              savedStation: favouriteStations[index],
+                            );
+
+                            if (!confirm) return;
+
+                            context.read<StationsBloc>().add(
+                                  UpdateFavorite(
+                                    savedStation: favouriteStations[index],
+                                  ),
+                                );
                           },
                         );
                       },

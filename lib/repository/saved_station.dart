@@ -26,8 +26,9 @@ class APISavedStation extends SavedStationsRepository {
     List<SavedStation> stations =
         rawStations.map((e) => SavedStation.fromJson(e)).toList();
 
-    // Sort stations by lastSelected
-    stations.sort((a, b) => a.lastSelected.isAfter(b.lastSelected) ? -1 : 1);
+    // Sort by name from A to Z
+    stations
+        .sort((a, b) => a.station.stationName.compareTo(b.station.stationName));
 
     return stations;
   }
@@ -43,13 +44,6 @@ class APISavedStation extends SavedStationsRepository {
     // Remove station from the list
     if (index != -1) stations.removeAt(index);
 
-    // Check if can stay as recent station (less then 3 recent stations)
-    int recentStations = stations.where((e) => !e.isFavourite).length;
-    if (recentStations < 3) {
-      // If true add the station as recent station
-      stations.insert(index, savedStation.copyWith(isFavourite: false));
-    }
-
     sharedPrefs.recentsAndFavouritesStations = jsonEncode(stations);
   }
 
@@ -64,12 +58,14 @@ class APISavedStation extends SavedStationsRepository {
       // Update value of isFavourite of station on the list
       int? index = stations.indexWhere((element) => element.station == station);
 
-      // If station is not in the list, ignore it (should not happen but just in case)
-      if (index == -1) return;
-
-      // Update value of isFavourite
-      SavedStation savedStation = stations[index].copyWith(isFavourite: true);
-      stations[index] = savedStation;
+      // If station is not in the list, add it
+      if (index == -1) {
+        stations.add(SavedStation(station, isFavourite: true));
+      } else {
+        // If station is in the list, update it
+        SavedStation savedStation = stations[index].copyWith(isFavourite: true);
+        stations[index] = savedStation;
+      }
     } else {
       // Handle when user make a new search
 
@@ -79,7 +75,7 @@ class APISavedStation extends SavedStationsRepository {
 
       // If station is not in the list, add it and remove the oldest recent station
       if (savedStationInList == null) {
-        stations.insert(0, SavedStation(station));
+        stations.add(SavedStation(station));
 
         // Modify list to only have 3 recents trains, remove the oldest one based on lastSelected
         int recentStations = stations.where((e) => !e.isFavourite).length;

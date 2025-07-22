@@ -8,6 +8,7 @@ class StationCard extends StatelessWidget {
   final Station station;
   final bool isFavourite;
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   final VoidCallback? onFavorite;
 
   const StationCard({
@@ -15,6 +16,7 @@ class StationCard extends StatelessWidget {
     required this.station,
     this.isFavourite = false,
     this.onPressed,
+    this.onLongPress,
     this.onFavorite,
   }) : super(key: key);
 
@@ -24,6 +26,7 @@ class StationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
+      onLongPress: onLongPress,
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: kPadding,
@@ -39,7 +42,7 @@ class StationCard extends StatelessWidget {
                 child: Text(
                   station.stationName,
                   style: Typo.subheaderHeavy.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
