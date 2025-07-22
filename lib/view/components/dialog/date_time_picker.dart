@@ -96,6 +96,7 @@ class _TimePickerContentState extends State<_TimePickerContent> {
                   ),
                   child: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.dateAndTime,
+                    minuteInterval: 15,
                     initialDateTime: _selectedDate,
                     onDateTimeChanged: (DateTime newDateTime) {
                       setState(() {

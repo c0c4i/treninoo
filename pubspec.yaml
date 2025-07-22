@@ -32,6 +32,8 @@ dependencies:
   flutter_widget_from_html_core: ^0.16.0
   syncfusion_flutter_pdfviewer: ^28.2.7
   syncfusion_flutter_core: ^28.2.7
+  easy_refresh: ^3.4.0
+  syncfusion_flutter_datepicker: ^28.2.12
 
 dev_dependencies:
   flutter_test:

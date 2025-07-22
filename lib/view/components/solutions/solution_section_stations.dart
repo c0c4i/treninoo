@@ -49,7 +49,7 @@ class SolutionSectionStations extends StatelessWidget {
             confirmedRail: trainInfoRails?.originRailConfirmed,
           ),
         ),
-        SizedBox(height: kPadding),
+        SizedBox(height: kPadding / 2),
         Semantics(
           label: arrivalSemanticsLabel,
           excludeSemantics: true,

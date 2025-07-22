@@ -40,16 +40,13 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   @override
   void initState() {
     super.initState();
-    pickedDate = DateTime.now();
+    pickedDate = defaultDate;
   }
 
-  initFields() {
-    setState(() {
-      departureStation = null;
-      arrivalStation = null;
-      pickedDate = DateTime.now();
-      trainType = TrainType.all;
-    });
+  DateTime get defaultDate {
+    DateTime now = DateTime.now();
+    int minutes = (now.minute / 15).floor() * 15;
+    return DateTime(now.year, now.month, now.day, now.hour, minutes);
   }
 
   swapStations() {
@@ -96,7 +93,7 @@ class _SearchSolutionsPageState extends State<SearchSolutionsPage> {
   _onSearchRecentSolution(SavedSolutionsInfo savedSolution) {
     departureStation = savedSolution.departureStation;
     arrivalStation = savedSolution.arrivalStation;
-    pickedDate = DateTime.now();
+    pickedDate = defaultDate;
 
     _getSolutionRequest();
   }

@@ -4,8 +4,7 @@ import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/model/TrainSolution.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/components/solutions/solution_section.dart';
-import 'package:treninoo/view/components/solutions/waiting_time_card.dart';
-import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/colors/success.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
@@ -60,13 +59,7 @@ class SolutionCard extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    if (index != 0)
-                      WaitingTimeCard(
-                        travelTime: travelTime(
-                          solution.trains[index - 1].arrivalTime!,
-                          solution.trains[index].departureTime!,
-                        ),
-                      ),
+                    if (index != 0) Divider(thickness: 1, height: 1),
                     SolutionSection(
                       trainSolution: solution.trains[index],
                       position: index,
@@ -77,39 +70,50 @@ class SolutionCard extends StatelessWidget {
                 );
               },
             ),
-            if (solution.trains.length > 1)
-              Semantics(
-                label: "Totale viaggio $totalDurationSemantics.",
-                excludeSemantics: true,
-                child: Column(
-                  children: [
-                    Divider(thickness: 1, height: 1),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: kPadding,
-                        horizontal: kPadding,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Totale',
-                            style: Typo.subheaderHeavy.copyWith(
-                              color: Primary.normal,
-                            ),
-                          ),
-                          Text(
-                            totalDuration,
-                            style: Typo.subheaderHeavy.copyWith(
-                              color: Primary.normal,
-                            ),
-                          ),
-                        ],
-                      ),
+            Semantics(
+              label: "Totale viaggio $totalDurationSemantics.",
+              excludeSemantics: true,
+              child: Column(
+                children: [
+                  Divider(thickness: 1, height: 1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: kPadding,
+                      horizontal: kPadding,
                     ),
-                  ],
-                ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.access_time_rounded,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            SizedBox(width: kPadding / 2),
+                            Text(
+                              totalDuration,
+                              style: Typo.subheaderHeavy.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        if (solution.price != null)
+                          Text(
+                            "da € ${solution.price!.toStringAsFixed(2)}",
+                            style: Typo.subheaderHeavy.copyWith(
+                              color: Success.dark,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
         style: OutlinedButton.styleFrom(

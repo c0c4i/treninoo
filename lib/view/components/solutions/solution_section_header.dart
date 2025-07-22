@@ -36,11 +36,9 @@ class SolutionSectionHeader extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              Text(
-                title,
-                style: Typo.subheaderHeavy.copyWith(
-                  color: Primary.normal,
-                ),
+              _SolutionHeaderTitle(
+                title: title,
+                trainType: trainType,
               ),
               if (showDelay) DelayChip(delay: trainInfo!.delay),
             ],
@@ -58,6 +56,46 @@ class SolutionSectionHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SolutionHeaderTitle extends StatefulWidget {
+  const _SolutionHeaderTitle({
+    required this.title,
+    this.trainType,
+  });
+
+  final dynamic title;
+  final String? trainType;
+
+  @override
+  State<_SolutionHeaderTitle> createState() => _SolutionHeaderTitleState();
+}
+
+class _SolutionHeaderTitleState extends State<_SolutionHeaderTitle> {
+  Color get trainTypeColor {
+    switch (widget.trainType) {
+      case 'RE':
+      case 'RV':
+        return Color(0xFF3DAE2B);
+      case 'EC':
+      case 'IC':
+        return Color(0xFF008AD8);
+      case 'FR':
+        return Primary.normal;
+      default:
+        return Theme.of(context).colorScheme.onSurface;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      widget.title,
+      style: Typo.subheaderHeavy.copyWith(
+        color: trainTypeColor,
+      ),
     );
   }
 }

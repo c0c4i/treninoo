@@ -21,6 +21,15 @@ class Solutions extends Equatable {
         .toList();
   }
 
+  Solutions updateSolutions(List<Solution> newSolutions) {
+    return Solutions(
+      solutions: newSolutions,
+      departureStation: departureStation,
+      arrivalStation: arrivalStation,
+      fromTime: fromTime,
+    );
+  }
+
   @override
   List<Object?> get props => [solutions];
 }

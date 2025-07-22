@@ -33,44 +33,86 @@ class _SolutionsResultPageState extends State<SolutionsResultPage> {
         .add(AddRecentSolution(solutionsInfo: widget.solutionsInfo));
   }
 
+  SolutionsSuccess? solutionsSuccess;
+
   @override
   Widget build(BuildContext context) {
     return HandleExistBloc(
       child: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kPadding),
-            child: Column(
-              children: <Widget>[
-                BeautifulAppBar(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                child: BeautifulAppBar(
                   title: "Soluzioni",
                 ),
-                SizedBox(height: kPadding),
-                SolutionsDetails(
-                  solutionsInfo: widget.solutionsInfo,
+              ),
+              SizedBox(height: kPadding),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                child: SolutionsDetails(
+                  solutionsInfo: solutionsSuccess != null
+                      ? solutionsSuccess!.solutionsInfo
+                      : widget.solutionsInfo,
                 ),
-                SizedBox(height: 8),
-                Expanded(
-                  child: BlocBuilder<SolutionsBloc, SolutionsState>(
-                    builder: (context, state) {
-                      if (state is SolutionsSuccess)
-                        return SolutionsList(
-                          solutions: state.solutions,
-                          trainInfos: state.trainInfos,
-                        );
-                      if (state is SolutionsLoading)
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      return const SizedBox();
-                    },
-                  ),
+              ),
+              SizedBox(height: 8),
+              Expanded(
+                child: BlocConsumer<SolutionsBloc, SolutionsState>(
+                  listener: (context, state) {
+                    if (state is SolutionsSuccess) {
+                      setState(() {
+                        solutionsSuccess = state;
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    if (solutionsSuccess != null) {
+                      return SolutionsList(
+                        solutions: solutionsSuccess!.solutions,
+                        trainInfos: solutionsSuccess!.trainInfos,
+                        onLoadPreviousSolutions: () async {
+                          context.read<SolutionsBloc>().add(
+                                SolutionsRequest(
+                                  solutionsInfo: solutionsSuccess!.solutionsInfo
+                                      .previousPage(),
+                                ),
+                              );
+
+                          await context.read<SolutionsBloc>().stream.firstWhere(
+                                (e) => e is! SolutionsLoading,
+                                orElse: () => SolutionsInitial(),
+                              );
+                        },
+                        onLoadNextSolutions: () async {
+                          context.read<SolutionsBloc>().add(
+                                SolutionsRequest(
+                                  solutionsInfo: solutionsSuccess!.solutionsInfo
+                                      .nextPage(),
+                                ),
+                              );
+
+                          await context.read<SolutionsBloc>().stream.firstWhere(
+                                (e) => e is! SolutionsLoading,
+                                orElse: () => SolutionsInitial(),
+                              );
+                        },
+                      );
+                    }
+
+                    if (state is SolutionsLoading)
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    return const SizedBox();
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
