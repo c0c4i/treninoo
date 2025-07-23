@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:treninoo/bloc/solutions/solutions.dart';
 import 'package:treninoo/model/SavedTrain.dart';
@@ -19,7 +20,10 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
       : _trainRepository = trainRepository,
         _savedStationsRepository = savedStationsRepository,
         super(SolutionsInitial()) {
-    on<SolutionsRequest>(_mapSolutionsRequest);
+    on<SolutionsRequest>(
+      _mapSolutionsRequest,
+      transformer: restartable(),
+    );
   }
 
   Future<void> _mapSolutionsRequest(
@@ -62,6 +66,7 @@ class SolutionsBloc extends Bloc<SolutionsEvent, SolutionsState> {
       // For train in every solution, get train status and update the solution
       for (Solution solution in solutions.solutions) {
         for (TrainSolution train in solution.trains) {
+          if (allTrainInfos.containsKey(train)) continue;
           try {
             SavedTrain savedTrain = SavedTrain.fromSolution(train);
             TrainInfo trainInfo =
