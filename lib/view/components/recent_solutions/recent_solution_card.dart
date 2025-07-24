@@ -17,76 +17,80 @@ class RecentSolutionCard extends StatelessWidget {
     required this.onSearch,
   });
 
+  final double height = 52;
+
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        padding: EdgeInsets.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: kPadding,
-          vertical: kPadding,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Semantics(
-                label:
-                    "Partenza: ${solutionsInfo.departureStation.stationName} Arrivo: ${solutionsInfo.arrivalStation.stationName}",
-                excludeSemantics: true,
-                button: true,
-                child: Text(
-                  "${solutionsInfo.departureStation.stationName} - ${solutionsInfo.arrivalStation.stationName}",
-                  style: Typo.subheaderHeavy.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
+    return Row(
+      children: [
+        Expanded(
+          child: Semantics(
+            label:
+                "Partenza: ${solutionsInfo.departureStation.stationName} Arrivo: ${solutionsInfo.arrivalStation.stationName}",
+            excludeSemantics: true,
+            button: true,
+            child: SizedBox(
+              height: height,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(kRadius / 2),
                   ),
-                  // overflow: TextOverflow.ellipsis,
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  alignment: Alignment.centerLeft,
+                ),
+                onPressed: onPressed,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: kPadding,
+                    vertical: kPadding,
+                  ),
+                  child: Text(
+                    "${solutionsInfo.departureStation.stationName} - ${solutionsInfo.arrivalStation.stationName}",
+                    style: Typo.subheaderHeavy.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                    // overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ),
-            Container(
-              height: 20,
-              width: 20,
-              child: VerticalDivider(
-                width: 2,
-                thickness: 1,
-                color: Grey.normal,
-              ),
-            ),
-            // GestureDetector(
-            //   onTap: onSearch,
-            //   child: Icon(
-            //     Icons.search,
-            //     color: Primary.normal,
-            //   ),
-            // )
-            Semantics(
-              label:
-                  "Cerca soluzione per ${solutionsInfo.departureStation.stationName} - ${solutionsInfo.arrivalStation.stationName}",
-              excludeSemantics: true,
-              button: true,
-              child: IconButton(
-                onPressed: onSearch,
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
-                splashColor: Primary.lighter,
-                highlightColor: Primary.lighter,
-                splashRadius: 16,
-                icon: Icon(
-                  Icons.search,
-                  color: Primary.normal,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          height: 20,
+          child: VerticalDivider(
+            width: 2,
+            thickness: 1,
+            color: Grey.normal,
+          ),
+        ),
+        Semantics(
+          label:
+              "Cerca soluzione per ${solutionsInfo.departureStation.stationName} - ${solutionsInfo.arrivalStation.stationName}",
+          excludeSemantics: true,
+          button: true,
+          child: SizedBox(
+            width: height,
+            height: height,
+            child: TextButton(
+              onPressed: onSearch,
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.zero,
+              ),
+              child: Icon(
+                Icons.search,
+                color: Primary.normal,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
