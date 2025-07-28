@@ -51,7 +51,7 @@ class SolutionSectionHeader extends StatelessWidget {
           child: Text(
             travelTime(departureTime!, arrivalTime!),
             style: Typo.subheaderHeavy.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

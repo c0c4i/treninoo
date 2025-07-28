@@ -19,7 +19,7 @@ class DescriptionFooter extends StatelessWidget {
           child: Text(
             description!,
             style: Typo.bodyHeavy.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

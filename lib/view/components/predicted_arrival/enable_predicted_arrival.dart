@@ -48,7 +48,7 @@ class PredictedArrival extends StatelessWidget {
               onChanged: (bool value) {
                 context.read<PredictedArrivalCubit>().setValue(value);
               },
-              activeColor: Primary.normal,
+              activeTrackColor: Primary.normal,
             ),
           ],
         ),

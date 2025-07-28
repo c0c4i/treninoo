@@ -52,9 +52,9 @@ class _ThemePickerState extends State<ThemePicker>
             borderRadius: BorderRadius.circular(kRadius - kPadding / 2),
             color: Primary.lightest2,
           ),
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
           labelColor: Primary.normal,
-          unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+          unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
           onTap: (index) {
             AdaptiveTheme.of(context).setThemeMode(
               AdaptiveThemeMode.values[index],

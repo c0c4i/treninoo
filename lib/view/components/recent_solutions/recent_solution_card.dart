@@ -49,7 +49,7 @@ class RecentSolutionCard extends StatelessWidget {
                   child: Text(
                     "${solutionsInfo.departureStation.stationName} - ${solutionsInfo.arrivalStation.stationName}",
                     style: Typo.subheaderHeavy.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     // overflow: TextOverflow.ellipsis,
                   ),

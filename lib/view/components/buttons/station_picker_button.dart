@@ -39,7 +39,7 @@ class StationPickerButton extends StatelessWidget {
               Text(
                 content ?? "-",
                 style: Typo.subheaderHeavy.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],

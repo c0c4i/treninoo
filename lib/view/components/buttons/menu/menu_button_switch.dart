@@ -55,7 +55,7 @@ class MenuButtonSwitch extends StatelessWidget {
             CupertinoSwitch(
               value: value,
               onChanged: onChanged,
-              activeColor: Primary.normal,
+              activeTrackColor: Primary.normal,
             ),
           ],
         ),

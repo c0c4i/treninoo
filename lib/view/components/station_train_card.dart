@@ -88,7 +88,7 @@ class StationTrainCard extends StatelessWidget {
                     Text(
                       stationTrain.time!.format(context),
                       style: Typo.subheaderHeavy.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -145,7 +145,7 @@ class TextWithIcon extends StatelessWidget {
         Text(
           label!,
           style: Typo.subheaderHeavy.copyWith(
-            color: Theme.of(context).colorScheme.onBackground,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         )
       ],

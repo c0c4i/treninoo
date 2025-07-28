@@ -38,7 +38,7 @@ class MenuButtonClick extends StatelessWidget {
               Text(
                 title,
                 style: Typo.subheaderHeavy.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               Text(

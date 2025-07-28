@@ -82,10 +82,10 @@ class _StationStatusPageState extends State<StationStatusPage>
                       color: Primary.lightest2,
                     ),
                     // indicatorPadding: EdgeInsets.all(16),
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
                     labelColor: Primary.normal,
                     unselectedLabelColor:
-                        Theme.of(context).colorScheme.onBackground,
+                        Theme.of(context).colorScheme.onSurface,
                     tabs: [
                       Tab(
                         child: Text(

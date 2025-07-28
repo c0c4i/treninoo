@@ -26,7 +26,7 @@ class SolutionSectionStationRow extends StatelessWidget {
           child: Text(
             formatTime(time!),
             style: Typo.subheaderHeavy.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -36,7 +36,7 @@ class SolutionSectionStationRow extends StatelessWidget {
             child: Text(
               stationName!.toUpperCase(),
               style: Typo.subheaderHeavy.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               overflow: TextOverflow.ellipsis,
             ),
