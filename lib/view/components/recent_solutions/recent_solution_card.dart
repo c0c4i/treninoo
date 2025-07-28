@@ -17,7 +17,7 @@ class RecentSolutionCard extends StatelessWidget {
     required this.onSearch,
   });
 
-  final double height = 52;
+  final double height = 46;
 
   @override
   Widget build(BuildContext context) {
