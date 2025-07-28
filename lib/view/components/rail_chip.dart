@@ -27,8 +27,8 @@ class _RailChipState extends State<RailChip> {
     bool isDarkMode = AppTheme.isDarkMode(context);
 
     if (widget.confirmed) {
-      return Colors.blue.withOpacity(
-        isDarkMode ? 0.2 : 0.1,
+      return Colors.blue.withValues(
+        alpha: isDarkMode ? 0.2 : 0.1,
       );
     }
 

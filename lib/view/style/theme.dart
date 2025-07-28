@@ -57,7 +57,7 @@ class AppTheme {
         borderRadius: const BorderRadius.all(Radius.circular(kRadius)),
       ),
       prefixStyle: TextStyle(
-        color: kGreyColor.withOpacity(0.75),
+        color: kGreyColor.withValues(alpha: 0.75),
       ),
     ),
   );
@@ -90,7 +90,7 @@ class AppTheme {
         borderRadius: const BorderRadius.all(Radius.circular(kRadius)),
       ),
       prefixStyle: TextStyle(
-        color: kGreyColor.withOpacity(0.75),
+        color: kGreyColor.withValues(alpha: 0.75),
       ),
     ),
   );
