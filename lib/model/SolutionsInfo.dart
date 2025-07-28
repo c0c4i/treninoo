@@ -35,7 +35,7 @@ class SolutionsInfo extends Equatable {
   }
 
   SolutionsInfo previousPage() {
-    DateTime previousTime = fromTime.subtract(Duration(minutes: 15));
+    DateTime previousTime = fromTime.subtract(Duration(minutes: 30));
     return SolutionsInfo(
       departureStation: departureStation,
       arrivalStation: arrivalStation,
