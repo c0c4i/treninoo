@@ -9,18 +9,18 @@ import '../buttons/dialog_button.dart';
 
 class TrainNotFoundDialog {
   static show<bool>(
-    BuildContext context, {
+    BuildContext _, {
     required SavedTrain? savedTrain,
     required SavedTrainType? savedTrainType,
   }) async =>
       await showModalBottomSheet<bool>(
-        context: context,
+        context: _,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(25.0),
           ),
         ),
-        builder: (_) {
+        builder: (context) {
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(
