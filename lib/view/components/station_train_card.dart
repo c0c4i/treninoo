@@ -142,10 +142,12 @@ class TextWithIcon extends StatelessWidget {
           color: Theme.of(context).iconTheme.color,
         ),
         SizedBox(width: 8),
-        Text(
-          label!,
-          style: Typo.subheaderHeavy.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+        Expanded(
+          child: Text(
+            label!,
+            style: Typo.subheaderHeavy.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
         )
       ],
