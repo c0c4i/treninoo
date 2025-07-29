@@ -22,7 +22,7 @@ class SolutionSectionStationRow extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 60,
+          width: 56,
           child: Text(
             formatTime(time!),
             style: Typo.subheaderHeavy.copyWith(
