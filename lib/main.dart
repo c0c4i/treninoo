@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +49,20 @@ void main() async {
   SavedStationsRepository savedStationRepository = APISavedStation(sharedPrefs);
   SavedSolutionInfoRepository savedSolutionInfoRepository =
       APISavedSolution(sharedPrefs);
+
+  if (Platform.isAndroid) {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+
+    // If android version is below 8, we need to set the security context
+    if (androidInfo.version.sdkInt < 26) {
+      // Load the Let's Encrypt R3 certificate
+      // This is necessary for Android versions below 8 to trust Let's Encrypt certificates
+      final ByteData data = await rootBundle.load('assets/ca/isrgrootx1.pem');
+      SecurityContext.defaultContext
+          .setTrustedCertificatesBytes(data.buffer.asUint8List());
+    }
+  }
 
   runApp(
     App(
