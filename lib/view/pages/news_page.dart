@@ -4,6 +4,7 @@ import 'package:treninoo/bloc/news/news_bloc.dart';
 import 'package:treninoo/repository/train.dart';
 import 'package:treninoo/view/components/appbar.dart';
 import 'package:treninoo/view/components/news_card.dart';
+import 'package:treninoo/view/components/strike_card.dart';
 import 'package:treninoo/view/components/train_exist/train_handler.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -36,7 +37,7 @@ class _NewsPageState extends State<NewsPage>
   @override
   void initState() {
     context.read<NewsBloc>().add(FetchNews());
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
 
     super.initState();
   }
@@ -77,6 +78,12 @@ class _NewsPageState extends State<NewsPage>
                         style: Typo.bodyHeavy,
                       ),
                     ),
+                    Tab(
+                      child: Text(
+                        "Scioperi",
+                        style: Typo.bodyHeavy,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: kPadding),
@@ -111,6 +118,19 @@ class _NewsPageState extends State<NewsPage>
                                   return NewsCard(
                                     news: state
                                         .news.newsModificheProgrammate[index],
+                                  );
+                                },
+                              ),
+                            ),
+                            RefreshIndicator(
+                              onRefresh: () async {
+                                context.read<NewsBloc>().add(FetchNews());
+                              },
+                              child: ListView.builder(
+                                itemCount: state.news.strikes.length,
+                                itemBuilder: (context, index) {
+                                  return StrikeCard(
+                                    strike: state.news.strikes[index],
                                   );
                                 },
                               ),

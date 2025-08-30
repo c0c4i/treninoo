@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:native_dio_adapter/native_dio_adapter.dart';
-import 'package:treninoo/model/News.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/Solutions.dart';
 import 'package:treninoo/model/SolutionsInfo.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
+import 'package:treninoo/model/TrenitaliaNews.dart';
 import 'package:treninoo/utils/endpoint.dart';
 
 import '../exceptions/more_than_one.dart';

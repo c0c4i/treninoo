@@ -1,26 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-class TrenitaliaNews {
-  final List<News> newsInfomobilita;
-  final List<News> newsModificheProgrammate;
-
-  TrenitaliaNews({
-    required this.newsInfomobilita,
-    required this.newsModificheProgrammate,
-  });
-
-  factory TrenitaliaNews.fromJson(Map<String, dynamic> json) {
-    return TrenitaliaNews(
-      newsInfomobilita: (json['newsInfomobilita'] as List)
-          .map((news) => News.fromJson(news))
-          .toList(),
-      newsModificheProgrammate: (json['newsModificheProgrammate'] as List)
-          .map((news) => News.fromJson(news))
-          .toList(),
-    );
-  }
-}
-
 class News extends Equatable {
   final String title;
   final DateTime? date;
