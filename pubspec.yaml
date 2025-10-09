@@ -35,6 +35,7 @@ dependencies:
   easy_refresh: ^3.4.0
   syncfusion_flutter_datepicker: ^28.2.12
   bloc_concurrency: ^0.3.0
+  device_info_plus: ^11.3.0
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,7 @@ flutter:
   assets:
     - assets/
     - assets/response/
+    - assets/ca/
 
   fonts:
     - family: Cabin
