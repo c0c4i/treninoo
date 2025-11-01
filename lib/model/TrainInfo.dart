@@ -33,6 +33,7 @@ class TrainInfo extends Equatable {
   final String trainCode;
   final TimeOfDay? lastTimeRegister;
   final String? lastPositionRegister;
+  final bool isDeparted;
   final Station departureStation;
   final String arrivalStationName;
   final String departureTime;
@@ -48,6 +49,7 @@ class TrainInfo extends Equatable {
     required this.trainCode,
     this.lastTimeRegister,
     this.lastPositionRegister,
+    required this.isDeparted,
     required this.departureStation,
     required this.arrivalStationName,
     required this.departureTime,
@@ -68,6 +70,7 @@ class TrainInfo extends Equatable {
       trainCode: json['trainCode'].toString(),
       lastTimeRegister: Utils.timestampToTimeOfDay(json['lastDetectionTime']),
       lastPositionRegister: json['lastDetectionStation'],
+      isDeparted: json['isDeparted'] ?? false,
       departureStation: Station.fromJson(json['departureStation']),
       arrivalStationName: json['arrivalStationName'],
       departureTime: json['firstDepartureTime'],
@@ -101,6 +104,7 @@ class TrainInfo extends Equatable {
       trainCode: trainCode,
       lastTimeRegister: lastTimeRegister,
       lastPositionRegister: lastPositionRegister,
+      isDeparted: isDeparted,
       departureStation: departureStation,
       arrivalStationName: arrivalStationName,
       departureTime: departureTime,
@@ -120,8 +124,6 @@ class TrainInfo extends Equatable {
     }
     return null;
   }
-
-  bool get isDeparted => lastPositionRegister != '--';
 
   bool get completed => lastPositionRegister == arrivalStationName;
 
