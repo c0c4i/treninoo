@@ -83,7 +83,7 @@ class _MyStatefulWidgetState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.adjust_rounded),
-            label: 'Stato',
+            label: 'Treno',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search_rounded),
