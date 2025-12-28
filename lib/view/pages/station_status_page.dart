@@ -90,13 +90,13 @@ class _StationStatusPageState extends State<StationStatusPage>
                       Tab(
                         child: Text(
                           "Partenze",
-                          style: Typo.bodyHeavy,
+                          style: Typo.subheaderHeavy,
                         ),
                       ),
                       Tab(
                         child: Text(
                           "Arrivi",
-                          style: Typo.bodyHeavy,
+                          style: Typo.subheaderHeavy,
                         ),
                       ),
                     ],
