@@ -8,6 +8,7 @@ import 'package:treninoo/model/SavedTrain.dart';
 
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/utils/accessibility/changes_announcer.dart';
+import 'package:treninoo/view/components/train_status/train_orientation_card.dart';
 import 'package:treninoo/view/components/train_status/train_status_appbar.dart';
 import 'package:treninoo/view/components/train_status/train_status_details.dart';
 import 'package:treninoo/view/components/train_status/train_status_info_alert.dart';
@@ -105,6 +106,10 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                               TrainStatusWarning(warning: trainInfo!.warning!),
                             if (trainInfo!.isSuppressed)
                               TrainStatusSuppressed(),
+                            if (trainInfo!.orientation != null)
+                              TrainOrientationCard(
+                                orientation: trainInfo!.orientation!,
+                              ),
                             SizedBox(height: kPadding),
                             Semantics(
                               excludeSemantics: true,

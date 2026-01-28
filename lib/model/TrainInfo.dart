@@ -43,6 +43,7 @@ class TrainInfo extends Equatable {
   final Status status;
   final String? warning;
   final bool isCached;
+  final String? orientation;
 
   TrainInfo({
     required this.trainType,
@@ -59,6 +60,7 @@ class TrainInfo extends Equatable {
     this.status = Status.REGULAR,
     this.warning,
     this.isCached = false,
+    this.orientation,
   });
 
   factory TrainInfo.fromJson(Map<String, dynamic> json) {
@@ -79,6 +81,7 @@ class TrainInfo extends Equatable {
       status: status,
       warning: json['warning'],
       isCached: json['isCached'] ?? false,
+      orientation: json['orientation'],
     );
   }
 
@@ -113,6 +116,8 @@ class TrainInfo extends Equatable {
       departureDate: departureDate,
       status: status,
       warning: warning,
+      isCached: isCached,
+      orientation: orientation,
     );
   }
 
@@ -147,6 +152,7 @@ class TrainInfo extends Equatable {
         status,
         warning,
         isCached,
+        orientation,
       ];
 }
 
