@@ -1,27 +1,28 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/style/colors/ErrorColor.dart';
+import 'package:treninoo/view/style/colors/black.dart';
 import 'package:treninoo/view/style/colors/success.dart';
 import 'package:treninoo/view/style/colors/warning.dart';
 
 class DelayUtils {
-  static Color textColor(int? delay, bool isDark) {
+  static Color textColor(int? delay, bool isDark, bool isCancelled) {
+    if (isCancelled) return Colors.white;
     if (delay == null) return isDark ? Success.normal : Success.darker;
     if (delay <= 0) return isDark ? Success.normal : Success.darker;
     if (delay <= 15) return isDark ? Warning.normal : Warning.darker;
     return isDark ? ErrorColor.normal : ErrorColor.darker;
   }
 
-  static Color color(int? delay) {
+  static Color color(int? delay, bool isCancelled) {
+    if (isCancelled) return Black.normal;
     if (delay == null) return Success.lighter;
     if (delay <= 0) return Success.lighter;
     if (delay <= 15) return Warning.lighter;
     return ErrorColor.lighter;
   }
 
-  static String? title(int? delay) {
-    if (delay == null) return null;
+  static String title(int delay, bool isCancelled) {
+    if (isCancelled) return 'Soppresso';
     if (delay > 0) return '+$delay min';
     if (delay < 0) return '$delay min';
     return 'In orario';

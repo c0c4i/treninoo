@@ -10,6 +10,9 @@ class StationTrain {
   final String? plannedRail;
   final String? actualRail;
   final int? delay;
+  final bool isSuppressed;
+  final String? warning;
+  final bool hasDelay;
 
   StationTrain({
     required this.trainCode,
@@ -20,6 +23,9 @@ class StationTrain {
     this.plannedRail,
     this.actualRail,
     this.delay,
+    this.isSuppressed = false,
+    this.warning,
+    this.hasDelay = true,
   });
 
   factory StationTrain.fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,9 @@ class StationTrain {
       plannedRail: json['plannedPlatform'],
       actualRail: json['actualPlatform'],
       delay: json['ritardo'],
+      isSuppressed: json['isCancelled'] ?? false,
+      warning: json['warning'],
+      hasDelay: json['hasDelay'] ?? true,
     );
   }
 }

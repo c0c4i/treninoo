@@ -30,7 +30,7 @@ class TrainInfoDetails extends StatelessWidget {
   }
 
   get delayDescription => DelayUtils.description(trainInfo.delay);
-  get delayColor => DelayUtils.color(trainInfo.delay);
+  get delayColor => DelayUtils.color(trainInfo.delay, trainInfo.isSuppressed);
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +97,7 @@ class TrainInfoDetails extends StatelessWidget {
                             color: DelayUtils.textColor(
                               trainInfo.delay,
                               AppTheme.isDarkMode(context),
+                              trainInfo.isSuppressed,
                             ),
                           ),
                         ),
@@ -106,6 +107,7 @@ class TrainInfoDetails extends StatelessWidget {
                             color: DelayUtils.textColor(
                               trainInfo.delay,
                               AppTheme.isDarkMode(context),
+                              trainInfo.isSuppressed,
                             ),
                           ),
                         ),

@@ -4,12 +4,17 @@ import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class DelayChip extends StatelessWidget {
-  const DelayChip({super.key, this.delay});
+  const DelayChip({
+    super.key,
+    required this.delay,
+    this.isCancelled = false,
+  });
 
-  final int? delay;
+  final int delay;
+  final bool isCancelled;
 
-  get delayTitle => DelayUtils.title(delay);
-  get delayColor => DelayUtils.color(delay);
+  String? get delayTitle => DelayUtils.title(delay, isCancelled);
+  Color get delayColor => DelayUtils.color(delay, isCancelled);
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +30,12 @@ class DelayChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         child: Text(
-          delayTitle!,
+          delayTitle ?? '',
           style: Typo.captionLight.copyWith(
             color: DelayUtils.textColor(
               delay,
               AppTheme.isDarkMode(context),
+              isCancelled,
             ),
           ),
         ),

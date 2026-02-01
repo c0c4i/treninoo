@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/StationTrain.dart';
+import 'package:treninoo/view/components/canceled_overlay.dart';
 import 'package:treninoo/view/components/rail_chip.dart';
 import 'package:treninoo/view/components/solutions/delay_chip.dart';
+import 'package:treninoo/view/components/solutions/not_departed_chip.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
+import 'package:treninoo/view/style/colors/warning.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
@@ -22,6 +25,8 @@ class StationTrainCard extends StatelessWidget {
 
   String semanticsLabel(context) {
     String label = stationTrain.category! + " " + stationTrain.trainCode;
+    if (stationTrain.isSuppressed) return label + " è stato soppresso.";
+
     label += isDeparture ? " in partenza" : " in arrivo";
     label += " alle " + stationTrain.time!.format(context);
     label += isDeparture ? " in direzione " : " da ";
@@ -56,10 +61,17 @@ class StationTrainCard extends StatelessWidget {
       label: semanticsLabel(context),
       excludeSemantics: true,
       child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kRadius),
-          ),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kRadius),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: CustomPaint(
+          painter: stationTrain.isSuppressed
+              ? CanceledOverlayPainter(
+                  isDarkMode: AppTheme.isDarkMode(context),
+                )
+              : null,
           child: OutlinedButton(
             onPressed: () {
               context.read<ExistBloc>().add(
@@ -81,10 +93,23 @@ class StationTrainCard extends StatelessWidget {
                               color: Primary.normal,
                             ),
                           ),
-                          DelayChip(delay: stationTrain.delay),
+                          if (!stationTrain.hasDelay)
+                            NotDepartedChip()
+                          else if (stationTrain.delay != null)
+                            DelayChip(
+                              delay: stationTrain.delay!,
+                              isCancelled: stationTrain.isSuppressed,
+                            ),
                         ],
                       ),
                     ),
+                    if (stationTrain.warning != null) ...[
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        color: Warning.normal,
+                      ),
+                      SizedBox(width: kPadding / 2),
+                    ],
                     Text(
                       stationTrain.time!.format(context),
                       style: Typo.subheaderHeavy.copyWith(
@@ -118,7 +143,9 @@ class StationTrainCard extends StatelessWidget {
               ),
               padding: EdgeInsets.all(kPadding),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

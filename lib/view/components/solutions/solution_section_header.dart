@@ -40,7 +40,7 @@ class SolutionSectionHeader extends StatelessWidget {
                 title: title,
                 trainType: trainType,
               ),
-              if (showDelay) DelayChip(delay: trainInfo!.delay),
+              if (showDelay) DelayChip(delay: trainInfo!.delay!),
             ],
           ),
         ),
