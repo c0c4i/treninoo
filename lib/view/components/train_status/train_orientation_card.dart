@@ -15,6 +15,7 @@ class TrainOrientationCard extends StatelessWidget {
         horizontal: kPadding / 2,
         vertical: kPadding / 2,
       ),
+      margin: EdgeInsets.only(bottom: kPadding),
       decoration: BoxDecoration(
         color: Accent.lightest2,
         borderRadius: BorderRadius.circular(kRadius / 1.5),

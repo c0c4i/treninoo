@@ -11,12 +11,10 @@ class TrainStatusInfoAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kPadding / 2),
+      margin: EdgeInsets.only(bottom: kPadding),
       decoration: BoxDecoration(
         color: Colors.blue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(kRadius / 1.5),
-        border: Border.all(
-          color: Colors.blue.withValues(alpha: 0.2),
-        ),
       ),
       child: Row(
         children: [

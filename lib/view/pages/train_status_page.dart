@@ -95,13 +95,12 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                             TrainInfoDetails(
                               trainInfo: trainInfo!,
                             ),
-                            SizedBox(height: kPadding / 2),
+                            SizedBox(height: kPadding),
                             if (trainInfo!.isCached)
                               TrainStatusInfoAlert(
                                 text:
                                     "Questo treno non ha ancora informazioni in tempo reale",
                               ),
-                            SizedBox(height: kPadding / 2),
                             if (trainInfo!.haveWarning)
                               TrainStatusWarning(warning: trainInfo!.warning!),
                             if (trainInfo!.isSuppressed)
@@ -110,7 +109,6 @@ class _TrainStatusPageState extends State<TrainStatusPage> {
                               TrainOrientationCard(
                                 orientation: trainInfo!.orientation!,
                               ),
-                            SizedBox(height: kPadding),
                             Semantics(
                               excludeSemantics: true,
                               child: TrainInfoStopsHeader(),

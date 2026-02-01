@@ -10,10 +10,10 @@ class TrainStatusSuppressed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kPadding / 2),
+      margin: EdgeInsets.only(bottom: kPadding),
       decoration: BoxDecoration(
-        color: ErrorColor.lightest1,
+        color: ErrorColor.lightest2,
         borderRadius: BorderRadius.circular(kRadius / 1.5),
-        border: Border.all(color: ErrorColor.light),
       ),
       child: Row(
         children: [

@@ -12,23 +12,23 @@ class TrainStatusWarning extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(kPadding / 2),
+      margin: EdgeInsets.only(bottom: kPadding),
       decoration: BoxDecoration(
-        color: Warning.lightest1,
+        color: Warning.lighter,
         borderRadius: BorderRadius.circular(kRadius / 1.5),
-        border: Border.all(color: Warning.light),
       ),
       child: Row(
         children: [
           Icon(
             Icons.warning_amber_rounded,
-            color: Warning.dark,
+            color: Warning.darker,
           ),
           SizedBox(width: kPadding / 2),
           Expanded(
             child: Text(
               warning,
               style: Typo.bodyLight.copyWith(
-                color: Warning.dark,
+                color: Warning.darker,
               ),
             ),
           ),
