@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:treninoo/model/StationTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/model/TrainSolution.dart';
+import 'package:treninoo/utils/core.dart';
 
 import 'Station.dart';
 
@@ -12,6 +13,7 @@ class SavedTrain extends Equatable {
   final String? departureStationName;
   final String? arrivalStationName;
   final String? departureTime;
+  final String? arrivalTime;
   final String? description;
   final DateTime? departureDate;
 
@@ -22,6 +24,7 @@ class SavedTrain extends Equatable {
     this.departureStationName,
     this.departureTime,
     this.arrivalStationName,
+    this.arrivalTime,
     this.description,
     this.departureDate,
   });
@@ -33,6 +36,7 @@ class SavedTrain extends Equatable {
         'departureStationName': departureStationName,
         'arrivalStationName': arrivalStationName,
         'departureTime': departureTime,
+        'arrivalTime': arrivalTime,
         'description': description,
       };
 
@@ -44,11 +48,21 @@ class SavedTrain extends Equatable {
       departureStationName: json['departureStationName'],
       arrivalStationName: json['arrivalStationName'],
       departureTime: json['departureTime'],
+      arrivalTime: json['arrivalTime'],
       description: json['description'],
     );
   }
 
   factory SavedTrain.fromTrainInfo(TrainInfo trainInfo) {
+    bool hasStops = trainInfo.stops != null && trainInfo.stops!.isNotEmpty;
+
+    String? arrivalTime;
+    if (hasStops && trainInfo.stops!.last.plannedArrivalTime != null) {
+      arrivalTime = formatTimeOfDay(
+        trainInfo.stops!.last.plannedArrivalTime!,
+      );
+    }
+
     return SavedTrain(
       trainCode: trainInfo.trainCode,
       trainType: trainInfo.trainType,
@@ -56,6 +70,7 @@ class SavedTrain extends Equatable {
       departureStationName: trainInfo.departureStation.stationName,
       arrivalStationName: trainInfo.arrivalStationName,
       departureTime: trainInfo.departureTime,
+      arrivalTime: arrivalTime,
       departureDate: trainInfo.departureDate,
     );
   }
@@ -119,6 +134,8 @@ class SavedTrain extends Equatable {
     if (trainType == null) return trainCode;
     return '$trainType $trainCode';
   }
+
+  bool get showTimeCard => arrivalTime != null && departureTime != null;
 
   @override
   List<Object?> get props {

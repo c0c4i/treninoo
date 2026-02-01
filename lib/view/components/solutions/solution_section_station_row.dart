@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:treninoo/utils/core.dart';
 import 'package:treninoo/view/components/rail_chip.dart';
+import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class SolutionSectionStationRow extends StatelessWidget {
@@ -21,15 +23,15 @@ class SolutionSectionStationRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: 56,
-          child: Text(
-            formatTime(time!),
-            style: Typo.subheaderHeavy.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+        Text(
+          formatTime(time!),
+          style: GoogleFonts.robotoMono().copyWith(
+            fontSize: Typo.subheaderHeavy.fontSize,
+            fontWeight: Typo.subheaderHeavy.fontWeight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
+        const SizedBox(width: kPadding),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2),

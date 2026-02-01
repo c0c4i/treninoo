@@ -36,6 +36,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^28.2.12
   bloc_concurrency: ^0.3.0
   device_info_plus: ^11.3.0
+  google_fonts: ^6.3.0
 
 dev_dependencies:
   flutter_test:
