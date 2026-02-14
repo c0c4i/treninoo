@@ -11,6 +11,7 @@ class SolutionSectionHeader extends StatelessWidget {
   final DateTime? departureTime;
   final DateTime? arrivalTime;
   final TrainInfo? trainInfo;
+  final int? delay;
 
   const SolutionSectionHeader({
     Key? key,
@@ -19,6 +20,7 @@ class SolutionSectionHeader extends StatelessWidget {
     this.departureTime,
     this.arrivalTime,
     this.trainInfo,
+    this.delay,
   }) : super(key: key);
 
   get title {
@@ -27,7 +29,10 @@ class SolutionSectionHeader extends StatelessWidget {
   }
 
   bool get showDelay =>
-      trainInfo != null && trainInfo!.isDeparted && trainInfo!.delay != null;
+      (trainInfo != null &&
+          trainInfo!.isDeparted &&
+          trainInfo!.delay != null) ||
+      delay != null;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class SolutionSectionHeader extends StatelessWidget {
                   color: Primary.normal,
                 ),
               ),
-              if (showDelay) DelayChip(delay: trainInfo!.delay),
+              if (showDelay) DelayChip(delay: trainInfo?.delay ?? delay),
             ],
           ),
         ),
@@ -53,7 +58,7 @@ class SolutionSectionHeader extends StatelessWidget {
           child: Text(
             travelTime(departureTime!, arrivalTime!),
             style: Typo.subheaderHeavy.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

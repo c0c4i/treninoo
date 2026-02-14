@@ -33,6 +33,21 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      default:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for this platform - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
     }
 
     throw UnsupportedError(
@@ -54,7 +69,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '213271336861',
     projectId: 'treninoo',
     storageBucket: 'treninoo.appspot.com',
-    iosClientId: '213271336861-fe01q55da9r46n6up6hdkd0knp1nk5cn.apps.googleusercontent.com',
+    iosClientId:
+        '213271336861-fe01q55da9r46n6up6hdkd0knp1nk5cn.apps.googleusercontent.com',
     iosBundleId: 'it.samuelebesoli.treninoo',
   );
 }

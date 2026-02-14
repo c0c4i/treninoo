@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:timelines/timelines.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 import 'package:treninoo/model/Stop.dart';
 import 'package:treninoo/view/components/train_status/train_status_stop_row.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
