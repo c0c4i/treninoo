@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/stations/stations.dart';
@@ -49,6 +51,7 @@ class StationPickerContent extends StatefulWidget {
 class _StationPickerContentState extends State<StationPickerContent> {
   final FocusNode searchFocus = FocusNode();
   final TextEditingController searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -57,8 +60,26 @@ class _StationPickerContentState extends State<StationPickerContent> {
     context.read<StationsBloc>().add(GetStations());
   }
 
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   void selectStation(Station station) {
     Navigator.pop(context, station);
+  }
+
+  void _onSearchChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      context.read<StationsAutocompleteBloc>().add(
+            GetStationsAutocomplete(
+              text: text,
+              type: widget.type,
+            ),
+          );
+    });
   }
 
   @override
@@ -109,15 +130,7 @@ class _StationPickerContentState extends State<StationPickerContent> {
                   textCapitalization: TextCapitalization.words,
                   controller: searchController,
                   keyboardType: TextInputType.text,
-                  onChanged: (text) {
-                    setState(() {});
-                    context.read<StationsAutocompleteBloc>().add(
-                          GetStationsAutocomplete(
-                            text: text,
-                            type: widget.type,
-                          ),
-                        );
-                  },
+                  onChanged: _onSearchChanged,
                 ),
                 SizedBox(height: kPadding),
                 if (searchController.text.isNotEmpty)
