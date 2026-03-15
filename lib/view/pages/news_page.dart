@@ -126,14 +126,20 @@ class _NewsPageState extends State<NewsPage>
                               onRefresh: () async {
                                 context.read<NewsBloc>().add(FetchNews());
                               },
-                              child: ListView.builder(
-                                itemCount: state.news.strikes.length,
-                                itemBuilder: (context, index) {
-                                  return StrikeCard(
-                                    strike: state.news.strikes[index],
-                                  );
-                                },
-                              ),
+                              child: state.news.strikes.isNotEmpty
+                                  ? ListView.builder(
+                                      itemCount: state.news.strikes.length,
+                                      itemBuilder: (context, index) {
+                                        return StrikeCard(
+                                          strike: state.news.strikes[index],
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'Nessuno sciopero previsto',
+                                      ),
+                                    ),
                             ),
                           ],
                         );
