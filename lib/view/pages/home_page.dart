@@ -75,7 +75,10 @@ class _MyStatefulWidgetState extends State<HomePage> {
             _onItemTapped(0);
           });
         },
-        child: Icon(Icons.campaign_rounded),
+        child: Icon(
+          Icons.campaign_rounded,
+          color: Colors.white,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
