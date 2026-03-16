@@ -166,7 +166,7 @@ class TextWithIcon extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: Theme.of(context).iconTheme.color,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         SizedBox(width: 8),
         Expanded(

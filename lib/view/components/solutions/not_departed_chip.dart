@@ -15,13 +15,15 @@ class NotDepartedChip extends StatelessWidget {
           vertical: 2,
         ),
         decoration: BoxDecoration(
-          color: Grey.lighter,
+          color: AppTheme.isDarkMode(context) ? Grey.lighter : Grey.lighter,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Text(
           'Non partito',
           style: Typo.captionLight.copyWith(
-            color: Grey.darker,
+            color: AppTheme.isDarkMode(context)
+                ? Color.lerp(Grey.normal, Colors.white, 0.1)
+                : Grey.darker,
           ),
         ),
       ),
