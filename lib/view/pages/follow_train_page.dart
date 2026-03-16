@@ -42,36 +42,40 @@ class _FollowTrainPageState extends State<FollowTrainPage> {
                                 savedTrain: widget.savedTrain),
                           );
                     if (state is FollowTrainStationsSuccess)
-                      return Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: state.stations.length,
-                            itemBuilder: (context, index) {
-                              return RadioListTile(
-                                visualDensity: VisualDensity.comfortable,
-                                title: Text(state.stations[index].stationName),
-                                groupValue: selected,
-                                selected: selected == state.stations[index],
-                                value: state.stations[index],
-                                onChanged: (dynamic station) {
-                                  setState(() {
-                                    selected = station;
-                                  });
-                                },
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(kRadius),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 16),
-                          ActionButton(
-                            title: "Segui",
-                            onPressed: () {},
-                          ),
-                        ],
+                      return RadioGroup(
+                        groupValue: selected,
+                        onChanged: (station) {
+                          setState(() => selected = station);
+                        },
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: state.stations.length,
+                              itemBuilder: (context, index) {
+                                return RadioListTile(
+                                  visualDensity: VisualDensity.comfortable,
+                                  title: Text(
+                                    state.stations[index].stationName,
+                                  ),
+                                  selected: selected == state.stations[index],
+                                  value: state.stations[index],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      kRadius,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            ActionButton(
+                              title: "Segui",
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
                       );
                     if (state is FollowTrainStationsLoading)
                       return Container(

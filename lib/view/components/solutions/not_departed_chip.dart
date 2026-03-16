@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/style/colors/grey.dart';
+import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
 
 class NotDepartedChip extends StatelessWidget {

@@ -40,24 +40,27 @@ class SelectStartPageDialog {
                     height: 8,
                     width: double.infinity,
                   ),
-                  for (var page in _pages.entries)
-                    RadioListTile(
-                      title: Text(page.value),
-                      value: page.key,
+                  RadioGroup(
                       groupValue: context.read<FirstPageCubit>().state,
-                      selected:
-                          context.read<FirstPageCubit>().state == page.key,
                       onChanged: (dynamic value) {
                         context.read<FirstPageCubit>().changePage(value);
                         Navigator.pop(context);
                       },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(kRadius),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: kPadding,
-                      ),
-                    ),
+                      child: Column(
+                        children: [
+                          for (var page in _pages.entries)
+                            RadioListTile(
+                              title: Text(page.value),
+                              value: page.key,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(kRadius),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: kPadding,
+                              ),
+                            ),
+                        ],
+                      ))
                 ],
               ),
             ),
