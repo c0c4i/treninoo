@@ -101,6 +101,10 @@ class AccessibilityChangesAnnouncer {
     // Compose the announcement and announce it
     String announcement = announcements.join(".\n");
     debugPrint(announcement);
-    SemanticsService.announce(announcement, TextDirection.ltr);
+    SemanticsService.sendAnnouncement(
+      View.of(context),
+      announcement,
+      TextDirection.ltr,
+    );
   }
 }
