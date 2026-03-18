@@ -82,6 +82,11 @@ class _StationPickerContentState extends State<StationPickerContent> {
     });
   }
 
+  bool get isLoading {
+    final state = context.watch<StationsAutocompleteBloc>().state;
+    return state is StationsAutocompleteLoading;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -131,6 +136,7 @@ class _StationPickerContentState extends State<StationPickerContent> {
                   controller: searchController,
                   keyboardType: TextInputType.text,
                   onChanged: _onSearchChanged,
+                  loading: isLoading,
                 ),
                 SizedBox(height: kPadding),
                 if (searchController.text.isNotEmpty)

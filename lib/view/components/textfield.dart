@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:treninoo/view/components/prefixicon.dart';
+import 'package:treninoo/view/style/theme.dart';
 
 class BeautifulTextField extends StatelessWidget {
   final String? labelText;
@@ -12,6 +13,7 @@ class BeautifulTextField extends StatelessWidget {
   final bool enabled;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
+  final bool loading;
 
   const BeautifulTextField({
     Key? key,
@@ -25,6 +27,7 @@ class BeautifulTextField extends StatelessWidget {
     this.enabled = true,
     this.focusNode,
     this.onChanged,
+    this.loading = false,
   }) : super(key: key);
 
   @override
@@ -34,6 +37,16 @@ class BeautifulTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon != null ? PrefixIcon(icon: prefixIcon) : null,
+        suffixIcon: loading
+            ? Padding(
+                padding: EdgeInsets.all(kPadding * 1.2),
+                child: SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+            : null,
         contentPadding: EdgeInsets.all(16),
         errorText: errorText,
         floatingLabelBehavior: FloatingLabelBehavior.never,
