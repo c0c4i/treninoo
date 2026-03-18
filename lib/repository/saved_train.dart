@@ -22,6 +22,8 @@ abstract class SavedTrainRepository {
   void removeFavourite(SavedTrain savedTrain);
   void removeRecent(SavedTrain savedTrain);
 
+  void updateFavourite(SavedTrain savedTrain);
+
   bool isFavourite(SavedTrain savedTrain);
 
   Future<void> reorderFavourites(int oldIndex, int newIndex);
@@ -67,6 +69,15 @@ class APISavedTrain extends SavedTrainRepository {
         savedTrain,
         SavedTrainType.recents,
       );
+
+  @override
+  void updateFavourite(SavedTrain savedTrain) {
+    List<SavedTrain?> trains = getFavourites();
+    int index = trains.indexWhere((element) => element == savedTrain);
+    if (index == -1) return;
+    trains[index] = savedTrain;
+    sharedPrefs.favouritesTrains = jsonEncode(trains);
+  }
 
   @override
   bool isFavourite(SavedTrain? savedTrain) {

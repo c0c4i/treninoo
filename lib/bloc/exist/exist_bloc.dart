@@ -27,8 +27,10 @@ class ExistBloc extends Bloc<ExistEvent, ExistState> {
     emit(ExistLoading());
     try {
       final trainInfo = await _trainRepository.getTrainStatus(event.savedTrain);
-      _savedTrainRepository.addRecent(SavedTrain.fromTrainInfo(trainInfo));
       emit(ExistSuccess(trainInfo: trainInfo));
+      SavedTrain savedTrain = SavedTrain.fromTrainInfo(trainInfo);
+      _savedTrainRepository.addRecent(savedTrain);
+      _savedTrainRepository.updateFavourite(savedTrain);
     } on MoreThanOneException catch (exception) {
       emit(ExistMoreThanOne(
         savedTrain: exception.savedTrain,
