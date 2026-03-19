@@ -127,6 +127,7 @@ class SavedTrain extends Equatable {
       departureTime: this.departureTime,
       description: description ?? this.description,
       departureDate: departureDate ?? this.departureDate,
+      arrivalTime: this.arrivalTime,
     );
   }
 

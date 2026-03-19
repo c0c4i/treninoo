@@ -75,7 +75,9 @@ class APISavedTrain extends SavedTrainRepository {
     List<SavedTrain?> trains = getFavourites();
     int index = trains.indexWhere((element) => element == savedTrain);
     if (index == -1) return;
-    trains[index] = savedTrain;
+    trains[index] = savedTrain.copyWith(
+      description: trains[index]?.description,
+    );
     sharedPrefs.favouritesTrains = jsonEncode(trains);
   }
 
