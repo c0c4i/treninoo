@@ -145,7 +145,18 @@ class Stop extends Equatable {
   }
 
   @override
-  List<Object?> get props => [station, delay, confirmed, currentStation];
+  List<Object?> get props => [
+        station,
+        delay,
+        confirmed,
+        currentStation,
+        actualArrivalTime,
+        actualDepartureTime,
+        plannedArrivalRail,
+        actualArrivalRail,
+        plannedDepartureRail,
+        actualDepartureRail,
+      ];
 }
 
 enum StopDifference {
