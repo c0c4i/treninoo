@@ -24,9 +24,14 @@ class AccessibilityChangesAnnouncer {
             announcement += " a ${newTrainInfo.lastPositionRegister}";
           }
 
-          String delay = (newTrainInfo.delay! > 0)
-              ? " con un ritardo di ${newTrainInfo.delay} minuti"
-              : " in orario";
+          String delay;
+          if (newTrainInfo.delay! != 0) {
+            bool isDelayNegative = newTrainInfo.delay!.isNegative;
+            String delayType = isDelayNegative ? "anticipo" : "ritardo";
+            delay = " con un $delayType di ${newTrainInfo.delay!} minuti";
+          } else {
+            delay = " in orario";
+          }
 
           announcements.add(announcement + delay);
           break;
