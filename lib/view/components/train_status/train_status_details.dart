@@ -15,11 +15,14 @@ class TrainInfoDetails extends StatelessWidget {
   semanticLabel(context) {
     if (!isDeparted) return "Treno non ancora partito";
 
-    if (trainInfo.delay != null && trainInfo.delay! > 0) {
+    if (trainInfo.delay != null) {
+      bool isDelayNegative = trainInfo.delay!.isNegative;
+      String delayType = isDelayNegative ? "anticipo" : "ritardo";
+
       if (trainInfo.lastTimeRegister == null) {
-        return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} con un ritardo di ${trainInfo.delay} minuti";
+        return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} con un $delayType di ${trainInfo.delay} minuti";
       }
-      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un ritardo di ${trainInfo.delay} minuti";
+      return "Ultimo rilevamento a ${trainInfo.lastPositionRegister} alle ore ${trainInfo.lastTimeRegister!.format(context)} con un $delayType di ${trainInfo.delay} minuti";
     }
 
     if (trainInfo.lastTimeRegister == null) {
