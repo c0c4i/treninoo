@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:treninoo/bloc/train_status/trainstatus.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/buttons/back_button.dart';
+import 'package:treninoo/view/pages/favourite_segment_page.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 
 import '../../../bloc/favourite/favourite.dart';
@@ -88,12 +90,40 @@ class _TrainAppBarState extends State<TrainAppBar> {
                     child: IconButton(
                       iconSize: 40,
                       onPressed: () {
-                        context.read<FavouriteBloc>().add(
-                              FavouriteToggle(
-                                savedTrain: widget.savedTrain,
-                                value: !state.isFavourite,
+                        if (!state.isFavourite) {
+                          final trainState =
+                              context.read<TrainStatusBloc>().state;
+                          if (trainState is TrainStatusSuccess &&
+                              trainState.trainInfo.stops != null &&
+                              trainState.trainInfo.stops!.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<FavouriteBloc>(),
+                                  child: FavouriteSegmentPage(
+                                    savedTrain: widget.savedTrain,
+                                    stops: trainState.trainInfo.stops!,
+                                  ),
+                                ),
                               ),
                             );
+                          } else {
+                            context.read<FavouriteBloc>().add(
+                                  FavouriteToggle(
+                                    savedTrain: widget.savedTrain,
+                                    value: true,
+                                  ),
+                                );
+                          }
+                        } else {
+                          context.read<FavouriteBloc>().add(
+                                FavouriteToggle(
+                                  savedTrain: widget.savedTrain,
+                                  value: false,
+                                ),
+                              );
+                        }
                       },
                       icon: Icon(
                         state.isFavourite

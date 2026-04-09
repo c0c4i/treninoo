@@ -5,6 +5,7 @@ import 'package:treninoo/bloc/exist/exist.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/view/components/description/description_footer.dart';
 import 'package:treninoo/view/components/saved_train/pick_action.dart';
+import 'package:treninoo/view/style/colors/grey.dart';
 import 'package:treninoo/view/style/colors/primary.dart';
 import 'package:treninoo/view/style/theme.dart';
 import 'package:treninoo/view/style/typography.dart';
@@ -147,6 +148,8 @@ class TrainCardWithTimes extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (savedTrain.showSegmentCard)
+                  SegmentSection(savedTrain: savedTrain),
                 if (savedTrain.description != null)
                   DescriptionFooter(description: savedTrain.description)
               ],
@@ -159,6 +162,89 @@ class TrainCardWithTimes extends StatelessWidget {
             padding: EdgeInsets.zero,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SegmentSection extends StatelessWidget {
+  final SavedTrain savedTrain;
+
+  const SegmentSection({Key? key, required this.savedTrain}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Grey.lightest1,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(kRadius),
+          bottomRight: Radius.circular(kRadius),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: kPadding,
+        vertical: kPadding / 1.5,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Tratto preferito",
+            style: TextStyle(
+              fontSize: 11,
+              color: Primary.normal,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Text(
+                savedTrain.selectedSegmentDepartureTime ?? '     ',
+                style: GoogleFonts.robotoMono().copyWith(
+                  fontSize: Typo.bodyHeavy.fontSize,
+                  fontWeight: Typo.bodyHeavy.fontWeight,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(width: kPadding),
+              Expanded(
+                child: Text(
+                  savedTrain.selectedSegmentDepartureStationName!.toUpperCase(),
+                  style: Typo.bodyHeavy.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 2),
+          Row(
+            children: [
+              Text(
+                savedTrain.selectedSegmentArrivalTime ?? '     ',
+                style: GoogleFonts.robotoMono().copyWith(
+                  fontSize: Typo.bodyHeavy.fontSize,
+                  fontWeight: Typo.bodyHeavy.fontWeight,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(width: kPadding),
+              Expanded(
+                child: Text(
+                  savedTrain.selectedSegmentArrivalStationName!.toUpperCase(),
+                  style: Typo.bodyHeavy.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

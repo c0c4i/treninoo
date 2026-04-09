@@ -16,6 +16,10 @@ class SavedTrain extends Equatable {
   final String? arrivalTime;
   final String? description;
   final DateTime? departureDate;
+  final String? selectedSegmentDepartureStationName;
+  final String? selectedSegmentArrivalStationName;
+  final String? selectedSegmentDepartureTime;
+  final String? selectedSegmentArrivalTime;
 
   SavedTrain({
     this.trainType,
@@ -27,6 +31,10 @@ class SavedTrain extends Equatable {
     this.arrivalTime,
     this.description,
     this.departureDate,
+    this.selectedSegmentDepartureStationName,
+    this.selectedSegmentArrivalStationName,
+    this.selectedSegmentDepartureTime,
+    this.selectedSegmentArrivalTime,
   });
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +46,11 @@ class SavedTrain extends Equatable {
         'departureTime': departureTime,
         'arrivalTime': arrivalTime,
         'description': description,
+        'selectedSegmentDepartureStationName':
+            selectedSegmentDepartureStationName,
+        'selectedSegmentArrivalStationName': selectedSegmentArrivalStationName,
+        'selectedSegmentDepartureTime': selectedSegmentDepartureTime,
+        'selectedSegmentArrivalTime': selectedSegmentArrivalTime,
       };
 
   factory SavedTrain.fromJson(Map<String, dynamic> json) {
@@ -50,6 +63,12 @@ class SavedTrain extends Equatable {
       departureTime: json['departureTime'],
       arrivalTime: json['arrivalTime'],
       description: json['description'],
+      selectedSegmentDepartureStationName:
+          json['selectedSegmentDepartureStationName'],
+      selectedSegmentArrivalStationName:
+          json['selectedSegmentArrivalStationName'],
+      selectedSegmentDepartureTime: json['selectedSegmentDepartureTime'],
+      selectedSegmentArrivalTime: json['selectedSegmentArrivalTime'],
     );
   }
 
@@ -117,6 +136,10 @@ class SavedTrain extends Equatable {
   SavedTrain copyWith({
     String? description,
     DateTime? departureDate,
+    String? selectedSegmentDepartureStationName,
+    String? selectedSegmentArrivalStationName,
+    String? selectedSegmentDepartureTime,
+    String? selectedSegmentArrivalTime,
   }) {
     return SavedTrain(
       trainCode: this.trainCode,
@@ -128,6 +151,15 @@ class SavedTrain extends Equatable {
       description: description ?? this.description,
       departureDate: departureDate ?? this.departureDate,
       arrivalTime: this.arrivalTime,
+      selectedSegmentDepartureStationName:
+          selectedSegmentDepartureStationName ??
+              this.selectedSegmentDepartureStationName,
+      selectedSegmentArrivalStationName: selectedSegmentArrivalStationName ??
+          this.selectedSegmentArrivalStationName,
+      selectedSegmentDepartureTime:
+          selectedSegmentDepartureTime ?? this.selectedSegmentDepartureTime,
+      selectedSegmentArrivalTime:
+          selectedSegmentArrivalTime ?? this.selectedSegmentArrivalTime,
     );
   }
 
@@ -137,6 +169,10 @@ class SavedTrain extends Equatable {
   }
 
   bool get showTimeCard => arrivalTime != null && departureTime != null;
+
+  bool get showSegmentCard =>
+      selectedSegmentDepartureStationName != null &&
+      selectedSegmentArrivalStationName != null;
 
   @override
   List<Object?> get props {

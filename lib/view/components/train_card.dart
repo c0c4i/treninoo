@@ -156,6 +156,8 @@ class TrainCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if (savedTrain.showSegmentCard)
+                SegmentSection(savedTrain: savedTrain),
               if (savedTrain.description != null)
                 DescriptionFooter(description: savedTrain.description)
             ],
