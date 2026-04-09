@@ -15,7 +15,7 @@ class TrainInfoDetails extends StatelessWidget {
   semanticLabel(context) {
     if (!isDeparted) return "Treno non ancora partito";
 
-    if (trainInfo.delay != null) {
+    if (trainInfo.delay != null && trainInfo.delay != 0) {
       bool isDelayNegative = trainInfo.delay!.isNegative;
       String delayType = isDelayNegative ? "anticipo" : "ritardo";
 
