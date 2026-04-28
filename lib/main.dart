@@ -10,6 +10,7 @@ import 'package:treninoo/app.dart';
 import 'package:treninoo/repository/saved_solution.dart';
 import 'package:treninoo/repository/saved_station.dart';
 import 'package:treninoo/repository/saved_train.dart';
+import 'package:treninoo/utils/nearby_stations_service.dart';
 import 'package:treninoo/utils/shared_preference.dart';
 import 'package:treninoo/utils/utils.dart';
 
@@ -49,6 +50,9 @@ void main() async {
   SavedStationsRepository savedStationRepository = APISavedStation(sharedPrefs);
   SavedSolutionInfoRepository savedSolutionInfoRepository =
       APISavedSolution(sharedPrefs);
+
+  // Initialize NearbyStationsService with server cache
+  NearbyStationsService.initialize(trainRepository.dio, sharedPrefs);
 
   if (Platform.isAndroid) {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();

@@ -12,6 +12,8 @@ class SharedPrefs {
   static const String SPRecentsAndFavouritesStations =
       'recents-and-favourites-stations';
   static const String SPrecentsSolutions = 'recents-solutions';
+  static const String SPCachedStationsData = 'cached_stations_data';
+  static const String SPCachedStationsHash = 'cached_stations_hash';
 
   Future<void> setup() async {
     _sharedPrefs = await SharedPreferences.getInstance();
@@ -66,5 +68,27 @@ class SharedPrefs {
 
   set recentsSolutions(String? value) {
     _sharedPrefs.setString(SPrecentsSolutions, value!);
+  }
+
+  String? get cachedStationsData =>
+      _sharedPrefs.getString(SPCachedStationsData);
+
+  set cachedStationsData(String? value) {
+    if (value == null) {
+      _sharedPrefs.remove(SPCachedStationsData);
+      return;
+    }
+    _sharedPrefs.setString(SPCachedStationsData, value);
+  }
+
+  String? get cachedStationsHash =>
+      _sharedPrefs.getString(SPCachedStationsHash);
+
+  set cachedStationsHash(String? value) {
+    if (value == null) {
+      _sharedPrefs.remove(SPCachedStationsHash);
+      return;
+    }
+    _sharedPrefs.setString(SPCachedStationsHash, value);
   }
 }

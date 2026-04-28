@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/bloc/stations/stations.dart';
 import 'package:treninoo/bloc/stations_autocomplete/stations_autocomplete.dart';
+import 'package:treninoo/cubit/nearby_stations.dart';
 import 'package:treninoo/model/Station.dart';
 import 'package:treninoo/repository/train.dart';
+import 'package:treninoo/view/components/stations/nearby_stations_list.dart';
 import 'package:treninoo/view/components/stations/saved_stations_list.dart';
 import 'package:treninoo/view/components/stations/stations_list.dart';
 import 'package:treninoo/view/components/textfield.dart';
@@ -29,10 +31,17 @@ class StationPickerDialog {
           top: Radius.circular(kRadius),
         ),
       ),
-      builder: (_) => BlocProvider(
-        create: (context) => StationsAutocompleteBloc(
-          context.read<TrainRepository>(),
-        ),
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => StationsAutocompleteBloc(
+              context.read<TrainRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => NearbyStationsCubit()..loadNearbyStations(),
+          ),
+        ],
         child: StationPickerContent(type: type),
       ),
     );
@@ -141,8 +150,10 @@ class _StationPickerContentState extends State<StationPickerContent> {
                 SizedBox(height: kPadding),
                 if (searchController.text.isNotEmpty)
                   StationsList(onSelected: selectStation),
-                if (searchController.text.isEmpty)
+                if (searchController.text.isEmpty) ...[
+                  NearbyStationsList(onSelected: selectStation),
                   SavedStationsList(onSelected: selectStation),
+                ],
               ],
             ),
           ),
