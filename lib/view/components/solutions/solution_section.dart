@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:treninoo/model/SavedTrain.dart';
 import 'package:treninoo/model/TrainInfo.dart';
 import 'package:treninoo/model/TrainSolution.dart';
+import 'package:treninoo/view/components/canceled_overlay.dart';
 import 'package:treninoo/view/components/solutions/solution_section_header.dart';
 import 'package:treninoo/view/components/solutions/solution_section_stations.dart';
 import 'package:treninoo/view/style/theme.dart';
@@ -30,41 +31,48 @@ class SolutionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: trainSolution.trainCode != null
-          ? () {
-              SavedTrain savedTrain = new SavedTrain(
-                trainCode: trainSolution.trainCode!,
-                departureStationName: trainSolution.origin,
-              );
-              context.read<ExistBloc>().add(
-                    ExistRequest(
-                      savedTrain: savedTrain,
-                    ),
-                  );
-            }
+    return CustomPaint(
+      painter: trainInfo != null && trainInfo!.isSuppressed
+          ? CanceledOverlayPainter(
+              isDarkMode: AppTheme.isDarkMode(context),
+            )
           : null,
-      child: Column(
-        children: [
-          SolutionSectionHeader(
-            trainType: trainSolution.trainType,
-            trainCode: trainSolution.trainCode,
-            departureTime: trainSolution.departureTime,
-            arrivalTime: trainSolution.arrivalTime,
-            trainInfo: trainInfo,
-          ),
-          SizedBox(height: kPadding / 2),
-          SolutionSectionStations(
-            trainSolution: trainSolution,
-            trainInfoRails: rails,
-          ),
-        ],
-      ),
-      style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
+      child: TextButton(
+        onPressed: trainSolution.trainCode != null
+            ? () {
+                SavedTrain savedTrain = new SavedTrain(
+                  trainCode: trainSolution.trainCode!,
+                  departureStationName: trainSolution.origin,
+                );
+                context.read<ExistBloc>().add(
+                      ExistRequest(
+                        savedTrain: savedTrain,
+                      ),
+                    );
+              }
+            : null,
+        child: Column(
+          children: [
+            SolutionSectionHeader(
+              trainType: trainSolution.trainType,
+              trainCode: trainSolution.trainCode,
+              departureTime: trainSolution.departureTime,
+              arrivalTime: trainSolution.arrivalTime,
+              trainInfo: trainInfo,
+            ),
+            SizedBox(height: kPadding / 2),
+            SolutionSectionStations(
+              trainSolution: trainSolution,
+              trainInfoRails: rails,
+            ),
+          ],
         ),
-        padding: EdgeInsets.all(kPadding),
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: radius,
+          ),
+          padding: EdgeInsets.all(kPadding),
+        ),
       ),
     );
   }

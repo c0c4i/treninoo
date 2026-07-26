@@ -26,8 +26,11 @@ class SolutionSectionHeader extends StatelessWidget {
     return "$trainType" + (trainCode != null ? " $trainCode" : "");
   }
 
-  bool get showDelay =>
-      trainInfo != null && trainInfo!.isDeparted && trainInfo!.delay != null;
+  bool get showDelay {
+    if (trainInfo == null) return false;
+    if (trainInfo!.isSuppressed) return true;
+    return trainInfo!.isDeparted && trainInfo!.delay != null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,11 @@ class SolutionSectionHeader extends StatelessWidget {
                 title: title,
                 trainType: trainType,
               ),
-              if (showDelay) DelayChip(delay: trainInfo!.delay!),
+              if (showDelay)
+                DelayChip(
+                  delay: trainInfo!.delay!,
+                  isCancelled: trainInfo!.isSuppressed,
+                ),
             ],
           ),
         ),
