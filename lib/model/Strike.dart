@@ -16,7 +16,6 @@ class Strike extends Equatable {
   });
 
   factory Strike.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Strike(
       startDate:
           json['startDate'] != null ? DateTime.parse(json['startDate']) : null,

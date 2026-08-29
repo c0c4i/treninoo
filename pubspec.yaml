@@ -35,6 +35,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^32.2.9
   bloc_concurrency: ^0.3.0
   device_info_plus: ^12.3.0
+  geolocator: ^13.0.2
   google_fonts: ^8.0.2
 
 dev_dependencies:

@@ -38,11 +38,15 @@ class _SavedStationsListState extends State<SavedStationsList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "Stazioni preferite e recenti",
-                  style: Typo.bodyHeavy.copyWith(
-                    color: Grey.dark,
-                  ),
+                Row(
+                  children: [
+                    Icon(Icons.favorite_rounded, size: 16, color: Grey.dark),
+                    SizedBox(width: 6),
+                    Text(
+                      "Stazioni preferite e recenti",
+                      style: Typo.bodyHeavy.copyWith(color: Grey.dark),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8),
                 Flexible(
